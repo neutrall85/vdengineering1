@@ -32,15 +32,12 @@ const CONFIG = {
     ROOT_MARGIN: '50px'
   },
   CONTACT: {
-    MAP_URL: 'https://yandex.ru/maps/213/moscow/?ll=37.41917%2C55.947444&z=17',
+    MAP_URL: 'https://yandex.ru/maps/-/CDu~eKqJ',
     EMAIL: 'info@volga-dnepr-engineering.ru',
     PHONE: '+7 (495) 000-00-00'
   },
   DEBUG: false
 };
-
-// Make CONFIG available globally
-window.CONFIG = CONFIG;
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = CONFIG;

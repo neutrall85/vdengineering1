@@ -15,11 +15,7 @@
   <meta property="og:locale" content="ru_RU">
   <meta property="og:site_name" content="Волга-Днепр Инжиниринг">
   
-<<<<<<< HEAD
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://yandex.ru https://mc.yandex.ru; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://yandex.ru; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https:; font-src https://fonts.gstatic.com; connect-src 'self' https://api.volga-dnepr-engineering.ru https://yandex.ru; frame-src 'self' https://yandex.ru;">
-=======
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://yandex.ru; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://yandex.ru https://mc.yandex.ru https://mc.webvisor.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https:; font-src https://fonts.gstatic.com; connect-src 'self' https://api.volga-dnepr-engineering.ru https://yandex.ru https://mc.yandex.ru https://mc.webvisor.org wss://mc.yandex.ru wss://mc.webvisor.org; frame-src 'self' https://yandex.ru;">
->>>>>>> origin/main
   <meta name="X-Content-Type-Options" content="nosniff">
   <meta name="X-Frame-Options" content="SAMEORIGIN">
   <meta name="X-XSS-Protection" content="1; mode=block">
@@ -38,8 +34,14 @@
   
   <!-- Порядок загрузки скриптов важен для правильной инициализации -->
   <script src="js/config.js"></script>
-  <script src="js/utils/utils.js"></script>
-  <script src="js/services/services.js"></script>
+  <script src="js/services/EventBus.js"></script>
+  <script src="js/services/StorageService.js"></script>
+  <script src="js/services/Validator.js"></script>
+  <script src="js/services/RateLimiter.js"></script>
+  <script src="js/services/PhoneFormatter.js"></script>
+  <script src="js/services/ApiClient.js"></script>
+  <script src="js/dom/ElementFactory.js"></script>
+  <script src="js/dom/DOMHelper.js"></script>
   <script src="js/ui/ModalManager.js"></script>
   <script src="js/ui/NavigationManager.js"></script>
   <script src="js/ui/AnimationManager.js"></script>
@@ -48,28 +50,7 @@
   <script src="js/ui/FormManager.js"></script>
   <script src="js/ui/MapManager.js"></script>
   <script src="js/data/newsData.js"></script>
-  <script src="js/services/ConsentManager.js"></script>
   <script src="js/app.js"></script>
-<<<<<<< HEAD
-=======
-  
-  <script>
-    // Инициализация менеджера согласий после загрузки всех скриптов
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof ConsentManager !== 'undefined' && typeof Services !== 'undefined') {
-        const consentManager = new ConsentManager(Services.storage);
-        consentManager.init();
-        // Делаем доступным для отзыва согласия из глобальной области
-        window.consentManager = consentManager;
-      } else {
-        console.error('ConsentManager или Services не загружены');
-      }
-    });
-  </script>
-
- <!-- Yandex.Metrika counter --> <script type="text/javascript">     (function(m,e,t,r,i,k,a){         m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};         m[i].l=1*new Date();         for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}         k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)     })(window, document,'script','https://mc.webvisor.org/metrika/tag_ww.js?id=108333042', 'ym');      ym(108333042, 'init', {ssr:true, webvisor:true, trackHash:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true}); </script>  <!-- /Yandex.Metrika counter -->   
-<!-- /Yandex.Metrika counter -->
->>>>>>> origin/main
 </head>
 <body>
 <!-- Контейнер для отображения ошибок инициализации -->
@@ -96,7 +77,6 @@
       <span></span>
     </button>
   </div>
-<<<<<<< HEAD
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
@@ -110,26 +90,6 @@
   <a href="projects.html">Проекты</a>
   <a href="#partners" onclick="window.closeMobileMenu && window.closeMobileMenu()">Партнёры</a>
   <a href="#contact" onclick="window.closeMobileMenu && window.closeMobileMenu()">Контакты</a>
-=======
-  <ul class="nav-links">
-    <li><a href="about.html">О нас</a></li>
-    <li><a href="services.html">Услуги</a></li>
-    <li><a href="news.html">Новости</a></li>
-    <li><a href="projects.html">Проекты</a></li>
-    <li><a href="#partners">Партнёры</a></li>
-    <li><a href="#contact">Контакты</a></li>
-  </ul>
-</nav>
-
-<div class="mobile-menu" id="mobileMenu">
-  <button class="mobile-menu-close" onclick="window.toggleMobileMenu && window.toggleMobileMenu()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
-  <a href="about.html" onclick="window.toggleMobileMenu && window.toggleMobileMenu()">О нас</a>
-  <a href="services.html" onclick="window.toggleMobileMenu && window.toggleMobileMenu()">Услуги</a>
-  <a href="news.html" onclick="window.toggleMobileMenu && window.toggleMobileMenu()">Новости</a>
-  <a href="projects.html" onclick="window.toggleMobileMenu && window.toggleMobileMenu()">Проекты</a>
-  <a href="#partners" onclick="window.toggleMobileMenu && window.toggleMobileMenu()">Партнёры</a>
-  <a href="#contact" onclick="window.toggleMobileMenu && window.toggleMobileMenu()">Контакты</a>
->>>>>>> origin/main
 </div>
 <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
@@ -288,12 +248,14 @@
             width="100%"
             height="350"
             frameborder="0"
-            style="border: 0; display: block;"
+            style="border: 0; display: block; pointer-events: none;"
             allowfullscreen="true"
             loading="lazy">
           </iframe>
         </div>
-        <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--metallic); text-align: center;"></p>
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--metallic); text-align: center;">
+          <a href="https://yandex.ru/maps/213/moscow/?ll=37.41917%2C55.947444&z=17" target="_blank" style="color: var(--accent-orange); text-decoration: none;">Открыть в Яндекс.Картах</a>
+        </p>
       </div>
     </div>
     <div class="contact-form-container fade-in">
@@ -468,7 +430,6 @@
   <span>Запросить КП</span>
 </button>
 
-<<<<<<< HEAD
 <script>
   // Загрузка последних новостей для главной страницы
   document.addEventListener('DOMContentLoaded', function() {
@@ -496,12 +457,5 @@
     }
   });
 </script>
-=======
-<!-- Политика конфиденциальности (скрытая страница для ссылки из cookie-баннера) -->
-<div id="privacy-policy" style="display: none;">
-  <h2>Политика конфиденциальности</h2>
-  <p>Здесь должно быть подробное описание сбора и обработки данных...</p>
-</div>
->>>>>>> origin/main
 </body>
 </html>

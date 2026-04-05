@@ -31,7 +31,7 @@ class Application {
       this.initialized = true;
       console.log('Application initialized successfully');
       
-      Services.eventBus.emit('app:ready');
+      eventBus.emit('app:ready');
     } catch (error) {
       console.error('Application initialization failed:', error);
       this._showError(error);
@@ -52,20 +52,13 @@ class Application {
     window.scrollToTop = () => navigationManager.scrollToTop();
     window.toggleMobileMenu = () => navigationManager.toggleMobileMenu();
     window.openModal = () => formManager.openModal();
-    window.closeModal = () => UI.modalManager.close('form');
+    window.closeModal = () => modalManager.close('form');
     window.removeFile = (event) => formManager.removeFile();
-<<<<<<< HEAD
     window.openAboutModal = () => modalManager.open('about');
     window.closeAboutModal = () => modalManager.close('about');
     window.closeDetailsModal = () => modalManager.close('details');
     window.closeNewsModal = () => modalManager.close('news');
     window.closeMobileMenu = () => navigationManager.closeMobileMenu();
-=======
-    window.openAboutModal = () => UI.modalManager.open('about');
-    window.closeAboutModal = () => UI.modalManager.close('about');
-    window.closeDetailsModal = () => UI.modalManager.close('details');
-    window.closeNewsModal = () => UI.modalManager.close('news');
->>>>>>> origin/main
     
     window.toggleWidget = (header) => {
       const widget = header.closest('.certificate-widget');
@@ -75,19 +68,19 @@ class Application {
     };
     
     window.openDetailsModal = (title, details) => {
-      const modalTitle = Utils.DOM.getElement('detailsModalTitle');
-      const modalList = Utils.DOM.getElement('detailsModalList');
+      const modalTitle = DOMHelper.getElement('detailsModalTitle');
+      const modalList = DOMHelper.getElement('detailsModalList');
       
       if (modalTitle && modalList) {
         modalTitle.textContent = title;
         modalList.innerHTML = details.map(item => `<li>${item}</li>`).join('');
-        UI.modalManager.open('details');
+        modalManager.open('details');
       }
     };
   }
 
   _setCurrentYear() {
-    const yearElement = Utils.DOM.getElement('currentYear');
+    const yearElement = DOMHelper.getElement('currentYear');
     if (yearElement) {
       yearElement.textContent = new Date().getFullYear();
     }
@@ -158,14 +151,14 @@ class Application {
   }
 
   _showError(error) {
-    const errorContainer = Utils.DOM.getElement('appError');
+    const errorContainer = DOMHelper.getElement('appError');
     if (errorContainer) {
       errorContainer.style.display = 'block';
       errorContainer.innerHTML = `
         <div class="error-message">
           <h2>Ошибка загрузки приложения</h2>
           <p>Произошла ошибка при инициализации сайта. Пожалуйста, обновите страницу.</p>
-          ${window.CONFIG.DEBUG ? `<p class="error-details">${error.message}</p>` : ''}
+          ${CONFIG.DEBUG ? `<p class="error-details">${error.message}</p>` : ''}
           <button onclick="window.location.reload()">Обновить страницу</button>
         </div>
       `;
@@ -175,17 +168,10 @@ class Application {
   }
 }
 
-// Создание экземпляров
-const formRateLimiter = new Utils.RateLimiter(Services.storage);
-const newsRenderer = new NewsRenderer(NEWS_DATA);
-const newsManager = new NewsManager(NEWS_DATA, newsRenderer);
-const formManager = new FormManager(Services.apiClient, formRateLimiter, Utils.Validator);
-
 const app = new Application();
 
 document.addEventListener('DOMContentLoaded', () => {
   app.init();
-<<<<<<< HEAD
 });
 
 // Создание экземпляров
@@ -208,6 +194,4 @@ modalManager.register('form', {
 
 modalManager.register('news', {
   overlayId: 'newsModalOverlay'
-=======
->>>>>>> origin/main
 });

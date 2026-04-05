@@ -17,38 +17,38 @@ class NewsManager {
   }
 
   _initTabs() {
-    const tabs = Utils.DOM.queryAll('.news-tab');
+    const tabs = DOMHelper.queryAll('.news-tab');
     
     tabs.forEach(tab => {
       tab.addEventListener('click', (e) => {
         const year = tab.dataset.year;
         if (!year) return;
         
-        tabs.forEach(t => Utils.DOM.removeClass(t, 'active'));
-        Utils.DOM.addClass(tab, 'active');
+        tabs.forEach(t => DOMHelper.removeClass(t, 'active'));
+        DOMHelper.addClass(tab, 'active');
         
-        Utils.DOM.queryAll('.news-tab-content').forEach(content => {
-          Utils.DOM.removeClass(content, 'active');
+        DOMHelper.queryAll('.news-tab-content').forEach(content => {
+          DOMHelper.removeClass(content, 'active');
         });
         
-        const activeContent = Utils.DOM.getElement(`tab-${year}`);
+        const activeContent = DOMHelper.getElement(`tab-${year}`);
         if (activeContent) {
-          Utils.DOM.addClass(activeContent, 'active');
+          DOMHelper.addClass(activeContent, 'active');
         }
         
         this.activeYear = year;
-        const container = Utils.DOM.getElement(`newsGrid-${year}`);
+        const container = DOMHelper.getElement(`newsGrid-${year}`);
         if (container) {
           this.renderer.render(year, container);
         }
       });
     });
     
-    const activeTab = Utils.DOM.query('.news-tab.active');
+    const activeTab = DOMHelper.query('.news-tab.active');
     if (activeTab?.dataset.year) {
       setTimeout(() => {
         const year = activeTab.dataset.year;
-        const container = Utils.DOM.getElement(`newsGrid-${year}`);
+        const container = DOMHelper.getElement(`newsGrid-${year}`);
         if (container) {
           this.renderer.render(year, container);
         }
@@ -58,7 +58,7 @@ class NewsManager {
   }
 
   _initModal() {
-    UI.modalManager.register('news', {
+    modalManager.register('news', {
       overlayId: 'newsModalOverlay',
       onClose: () => {
         this._resetModalContent();
@@ -85,15 +85,15 @@ class NewsManager {
     if (!news) return;
     
     this._populateModal(news);
-    UI.modalManager.open('news');
+    modalManager.open('news');
   }
 
   _populateModal(news) {
-    const title = Utils.DOM.getElement('newsModalTitle');
-    const date = Utils.DOM.getElement('newsModalDate');
-    const category = Utils.DOM.getElement('newsModalCategory');
-    const image = Utils.DOM.getElement('newsModalImage');
-    const content = Utils.DOM.getElement('newsModalContent');
+    const title = DOMHelper.getElement('newsModalTitle');
+    const date = DOMHelper.getElement('newsModalDate');
+    const category = DOMHelper.getElement('newsModalCategory');
+    const image = DOMHelper.getElement('newsModalImage');
+    const content = DOMHelper.getElement('newsModalContent');
     
     if (title) title.textContent = news.title;
     if (date) date.textContent = news.date;
@@ -106,7 +106,7 @@ class NewsManager {
   }
 
   _resetModalContent() {
-    const image = Utils.DOM.getElement('newsModalImage');
+    const image = DOMHelper.getElement('newsModalImage');
     if (image) image.src = '';
   }
 }

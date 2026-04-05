@@ -12,7 +12,7 @@ class FormManager {
   }
 
   init() {
-    UI.modalManager.register('form', {
+    modalManager.register('form', {
       overlayId: 'modalOverlay',
       onOpen: () => this._resetForm(),
       onClose: () => this._resetForm()
@@ -25,8 +25,8 @@ class FormManager {
   }
 
   _initFileUpload() {
-    const fileInput = Utils.DOM.getElement('fileAttachment');
-    const fileDrop = Utils.DOM.getElement('fileDrop');
+    const fileInput = DOMHelper.getElement('fileAttachment');
+    const fileDrop = DOMHelper.getElement('fileDrop');
     
     if (!fileInput || !fileDrop) return;
     
@@ -59,46 +59,46 @@ class FormManager {
     
     if (!validation.valid) {
       alert(validation.error);
-      const fileInput = Utils.DOM.getElement('fileAttachment');
+      const fileInput = DOMHelper.getElement('fileAttachment');
       if (fileInput) fileInput.value = '';
       return;
     }
     
     this.currentFile = file;
-    const fileNameText = Utils.DOM.getElement('fileNameText');
-    const fileName = Utils.DOM.getElement('fileName');
-    const fileDrop = Utils.DOM.getElement('fileDrop');
+    const fileNameText = DOMHelper.getElement('fileNameText');
+    const fileName = DOMHelper.getElement('fileName');
+    const fileDrop = DOMHelper.getElement('fileDrop');
     
     if (fileNameText) fileNameText.textContent = file.name;
-    if (fileName) Utils.DOM.addClass(fileName, 'show');
-    if (fileDrop) Utils.DOM.addClass(fileDrop, 'has-file');
+    if (fileName) DOMHelper.addClass(fileName, 'show');
+    if (fileDrop) DOMHelper.addClass(fileDrop, 'has-file');
   }
 
   removeFile() {
-    const fileInput = Utils.DOM.getElement('fileAttachment');
-    const fileName = Utils.DOM.getElement('fileName');
-    const fileDrop = Utils.DOM.getElement('fileDrop');
+    const fileInput = DOMHelper.getElement('fileAttachment');
+    const fileName = DOMHelper.getElement('fileName');
+    const fileDrop = DOMHelper.getElement('fileDrop');
     
     this.currentFile = null;
     if (fileInput) fileInput.value = '';
-    if (fileName) Utils.DOM.removeClass(fileName, 'show');
-    if (fileDrop) Utils.DOM.removeClass(fileDrop, 'has-file');
+    if (fileName) DOMHelper.removeClass(fileName, 'show');
+    if (fileDrop) DOMHelper.removeClass(fileDrop, 'has-file');
   }
 
   _initPhoneMask() {
-    const phoneInput = Utils.DOM.getElement('phone');
+    const phoneInput = DOMHelper.getElement('phone');
     if (phoneInput) {
-      Utils.PhoneFormatter.bindToInput(phoneInput);
+      PhoneFormatter.bindToInput(phoneInput);
     }
   }
 
   _initFormSubmit() {
-    const form = Utils.DOM.getElement('proposalForm');
+    const form = DOMHelper.getElement('proposalForm');
     if (form) {
       form.addEventListener('submit', (e) => this._handleSubmit(e));
     }
     
-    const removeBtn = Utils.DOM.query('#fileName svg');
+    const removeBtn = DOMHelper.query('#fileName svg');
     if (removeBtn) {
       removeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -108,7 +108,7 @@ class FormManager {
   }
 
   _initFloatingButton() {
-    const btn = Utils.DOM.query('.floating-cta-btn');
+    const btn = DOMHelper.query('.floating-cta-btn');
     if (btn) {
       btn.addEventListener('click', () => this.openModal());
     }
@@ -116,15 +116,15 @@ class FormManager {
 
   openModal() {
     if (!this.rateLimiter.canProceed()) {
-      const warning = Utils.DOM.getElement('rateLimitWarning');
-      if (warning) Utils.DOM.addClass(warning, 'show');
+      const warning = DOMHelper.getElement('rateLimitWarning');
+      if (warning) DOMHelper.addClass(warning, 'show');
       return;
     }
     
-    const warning = Utils.DOM.getElement('rateLimitWarning');
-    if (warning) Utils.DOM.removeClass(warning, 'show');
+    const warning = DOMHelper.getElement('rateLimitWarning');
+    if (warning) DOMHelper.removeClass(warning, 'show');
     
-    UI.modalManager.open('form');
+    modalManager.open('form');
   }
 
   _validateForm() {
@@ -141,21 +141,21 @@ class FormManager {
     let isValid = true;
     
     fields.forEach(field => {
-      const element = Utils.DOM.getElement(field.id);
-      const errorEl = Utils.DOM.getElement(`${field.id}Error`);
+      const element = DOMHelper.getElement(field.id);
+      const errorEl = DOMHelper.getElement(`${field.id}Error`);
       const value = element?.value?.trim() || '';
       
       if (!field.validate(value)) {
-        if (element) Utils.DOM.addClass(element, 'error');
-        if (errorEl) Utils.DOM.addClass(errorEl, 'show');
+        if (element) DOMHelper.addClass(element, 'error');
+        if (errorEl) DOMHelper.addClass(errorEl, 'show');
         isValid = false;
       } else {
-        if (element) Utils.DOM.removeClass(element, 'error');
-        if (errorEl) Utils.DOM.removeClass(errorEl, 'show');
+        if (element) DOMHelper.removeClass(element, 'error');
+        if (errorEl) DOMHelper.removeClass(errorEl, 'show');
       }
     });
     
-    const honeypot = Utils.DOM.getElement('hp_website');
+    const honeypot = DOMHelper.getElement('hp_website');
     if (honeypot && honeypot.value) {
       return false;
     }
@@ -169,14 +169,14 @@ class FormManager {
     if (!this._validateForm()) return;
     
     if (!this.rateLimiter.canProceed()) {
-      const warning = Utils.DOM.getElement('rateLimitWarning');
-      if (warning) Utils.DOM.addClass(warning, 'show');
+      const warning = DOMHelper.getElement('rateLimitWarning');
+      if (warning) DOMHelper.addClass(warning, 'show');
       return;
     }
     
     this.rateLimiter.record();
     
-    const submitBtn = Utils.DOM.getElement('submitBtn');
+    const submitBtn = DOMHelper.getElement('submitBtn');
     const originalContent = submitBtn.innerHTML;
     
     submitBtn.disabled = true;
@@ -184,27 +184,27 @@ class FormManager {
     
     try {
       const formData = {
-        companyName: Utils.DOM.getElement('companyName')?.value.trim() || '',
-        contactPerson: Utils.DOM.getElement('contactPerson')?.value.trim() || '',
-        email: Utils.DOM.getElement('email')?.value.trim() || '',
-        phone: Utils.DOM.getElement('phone')?.value.trim() || '',
-        aircraftType: Utils.DOM.getElement('aircraftType')?.value || '',
-        serviceType: Utils.DOM.getElement('serviceType')?.value || '',
-        taskDescription: Utils.DOM.getElement('taskDescription')?.value.trim() || ''
+        companyName: DOMHelper.getElement('companyName')?.value.trim() || '',
+        contactPerson: DOMHelper.getElement('contactPerson')?.value.trim() || '',
+        email: DOMHelper.getElement('email')?.value.trim() || '',
+        phone: DOMHelper.getElement('phone')?.value.trim() || '',
+        aircraftType: DOMHelper.getElement('aircraftType')?.value || '',
+        serviceType: DOMHelper.getElement('serviceType')?.value || '',
+        taskDescription: DOMHelper.getElement('taskDescription')?.value.trim() || ''
       };
       
-      const result = await this.Services.apiClient.submitForm(formData);
+      const result = await this.apiClient.submitForm(formData);
       
       if (result.success) {
-        const form = Utils.DOM.getElement('proposalForm');
-        const successMessage = Utils.DOM.getElement('successMessage');
+        const form = DOMHelper.getElement('proposalForm');
+        const successMessage = DOMHelper.getElement('successMessage');
         
         if (form) form.style.display = 'none';
-        if (successMessage) Utils.DOM.addClass(successMessage, 'show');
+        if (successMessage) DOMHelper.addClass(successMessage, 'show');
         
         setTimeout(() => {
-          UI.modalManager.close('form');
-        }, window.CONFIG.ANIMATION.MODAL_CLOSE_DELAY_MS);
+          modalManager.close('form');
+        }, CONFIG.ANIMATION.MODAL_CLOSE_DELAY_MS);
       } else {
         alert(result.error || 'Произошла ошибка при отправке');
       }
@@ -217,32 +217,28 @@ class FormManager {
     }
   }
 
-  get Services() {
-    return window.Services || Services;
-  }
-
   _resetForm() {
-    const form = Utils.DOM.getElement('proposalForm');
-    const successMessage = Utils.DOM.getElement('successMessage');
-    const fileName = Utils.DOM.getElement('fileName');
+    const form = DOMHelper.getElement('proposalForm');
+    const successMessage = DOMHelper.getElement('successMessage');
+    const fileName = DOMHelper.getElement('fileName');
     
     if (form) {
       form.reset();
       form.style.display = 'block';
     }
     
-    if (successMessage) Utils.DOM.removeClass(successMessage, 'show');
-    if (fileName) Utils.DOM.removeClass(fileName, 'show');
+    if (successMessage) DOMHelper.removeClass(successMessage, 'show');
+    if (fileName) DOMHelper.removeClass(fileName, 'show');
     
-    Utils.DOM.queryAll('.form-input, .form-select, .form-textarea').forEach(el => {
-      Utils.DOM.removeClass(el, 'error');
+    DOMHelper.queryAll('.form-input, .form-select, .form-textarea').forEach(el => {
+      DOMHelper.removeClass(el, 'error');
     });
     
-    Utils.DOM.queryAll('.error-message').forEach(el => {
-      Utils.DOM.removeClass(el, 'show');
+    DOMHelper.queryAll('.error-message').forEach(el => {
+      DOMHelper.removeClass(el, 'show');
     });
     
-    const submitBtn = Utils.DOM.getElement('submitBtn');
+    const submitBtn = DOMHelper.getElement('submitBtn');
     if (submitBtn) {
       submitBtn.disabled = false;
       submitBtn.innerHTML = `

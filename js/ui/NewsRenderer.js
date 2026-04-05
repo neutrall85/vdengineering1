@@ -27,7 +27,7 @@ class NewsRenderer {
     newsList.forEach((news, index) => {
       const card = this._createNewsCard(news, index);
       if (index >= DEFAULT_VISIBLE) {
-        Utils.DOM.addClass(card, 'hidden-news');
+        DOMHelper.addClass(card, 'hidden-news');
       }
       fragment.appendChild(card);
     });
@@ -45,7 +45,7 @@ class NewsRenderer {
 
   _createNewsCard(news, index) {
     const article = document.createElement('article');
-    Utils.DOM.addClass(article, 'news-card');
+    DOMHelper.addClass(article, 'news-card');
     article.style.animationDelay = `${index * 50}ms`;
     
     const imageHtml = this._createImageHtml(news);
@@ -58,7 +58,8 @@ class NewsRenderer {
   _createImageHtml(news) {
     return `
       <div class="news-card-image">
-        <img src="${this._escapeHtml(news.image)}" alt="${this._escapeHtml(news.title)}" loading="lazy">
+        <div class="image-placeholder"></div>
+        <img data-src="${this._escapeHtml(news.image)}" alt="${this._escapeHtml(news.title)}" loading="lazy">
         <span class="news-card-category">${this._escapeHtml(news.category)}</span>
       </div>
     `;
@@ -82,14 +83,14 @@ class NewsRenderer {
   }
 
   _addAccordionButton(container, totalNews, defaultVisible) {
-    const existing = Utils.DOM.query('.news-accordion-container', container);
+    const existing = DOMHelper.query('.news-accordion-container', container);
     if (existing) existing.remove();
     
     const wrapper = document.createElement('div');
-    Utils.DOM.addClass(wrapper, 'news-accordion-container');
+    DOMHelper.addClass(wrapper, 'news-accordion-container');
     
     const button = document.createElement('button');
-    Utils.DOM.addClass(button, 'news-accordion-btn');
+    DOMHelper.addClass(button, 'news-accordion-btn');
     button.innerHTML = `
       Показать все (${totalNews - defaultVisible})
       <svg class="accordion-icon" viewBox="0 0 24 24">
@@ -99,22 +100,22 @@ class NewsRenderer {
     
     let expanded = false;
     button.addEventListener('click', () => {
-      const hiddenNews = Utils.DOM.queryAll('.news-card.hidden-news', container);
+      const hiddenNews = DOMHelper.queryAll('.news-card.hidden-news', container);
       
       if (!expanded) {
-        hiddenNews.forEach(card => Utils.DOM.removeClass(card, 'hidden-news'));
+        hiddenNews.forEach(card => DOMHelper.removeClass(card, 'hidden-news'));
         button.innerHTML = `
           Свернуть
           <svg class="accordion-icon" viewBox="0 0 24 24">
             <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
           </svg>
         `;
-        Utils.DOM.addClass(button, 'expanded');
+        DOMHelper.addClass(button, 'expanded');
         expanded = true;
       } else {
-        Utils.DOM.queryAll('.news-card', container).forEach((card, idx) => {
+        DOMHelper.queryAll('.news-card', container).forEach((card, idx) => {
           if (idx >= defaultVisible) {
-            Utils.DOM.addClass(card, 'hidden-news');
+            DOMHelper.addClass(card, 'hidden-news');
           }
         });
         button.innerHTML = `
@@ -123,7 +124,7 @@ class NewsRenderer {
             <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
           </svg>
         `;
-        Utils.DOM.removeClass(button, 'expanded');
+        DOMHelper.removeClass(button, 'expanded');
         expanded = false;
       }
     });
@@ -133,13 +134,23 @@ class NewsRenderer {
   }
 
   _lazyLoadImages(container) {
-    const images = Utils.DOM.queryAll('.news-card-image img', container);
+    const images = DOMHelper.queryAll('.news-card-image img', container);
     
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const img = entry.target;
-          // Изображение уже загружено напрямую через src
+          const src = img.getAttribute('data-src');
+          if (src) {
+            img.src = src;
+            img.removeAttribute('data-src');
+            img.onload = () => {
+              DOMHelper.addClass(img, 'loaded');
+              const placeholder = img.parentElement?.querySelector('.image-placeholder');
+              if (placeholder) placeholder.style.display = 'none';
+            };
+          }
+          observer.unobserve(img);
         }
       });
     }, { threshold: 0.1, rootMargin: '50px' });
@@ -148,9 +159,9 @@ class NewsRenderer {
   }
 
   _animateCards(container) {
-    Utils.DOM.queryAll('.news-card', container).forEach((card, index) => {
+    DOMHelper.queryAll('.news-card', container).forEach((card, index) => {
       setTimeout(() => {
-        Utils.DOM.addClass(card, 'loaded');
+        DOMHelper.addClass(card, 'loaded');
       }, index * 50);
     });
   }

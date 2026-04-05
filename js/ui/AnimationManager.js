@@ -17,20 +17,20 @@ class AnimationManager {
 
   _initFadeInObserver() {
     const options = {
-      threshold: window.CONFIG.ANIMATION.OBSERVER_THRESHOLD,
-      rootMargin: window.CONFIG.ANIMATION.ROOT_MARGIN
+      threshold: CONFIG.ANIMATION.OBSERVER_THRESHOLD,
+      rootMargin: CONFIG.ANIMATION.ROOT_MARGIN
     };
 
     this.fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          Utils.DOM.addClass(entry.target, 'visible');
+          DOMHelper.addClass(entry.target, 'visible');
           this.fadeObserver.unobserve(entry.target);
         }
       });
     }, options);
 
-    Utils.DOM.queryAll('.fade-in').forEach(el => {
+    DOMHelper.queryAll('.fade-in').forEach(el => {
       this.fadeObserver.observe(el);
     });
     
@@ -38,7 +38,7 @@ class AnimationManager {
   }
 
   _initCounters() {
-    const counters = Utils.DOM.queryAll('.stat-number');
+    const counters = DOMHelper.queryAll('.stat-number');
     if (counters.length === 0) return;
 
     this.counterObserver = new IntersectionObserver((entries) => {
@@ -59,7 +59,7 @@ class AnimationManager {
     if (!target || isNaN(target)) return;
 
     let current = 0;
-    const step = target / window.CONFIG.ANIMATION.COUNTER_STEPS;
+    const step = target / CONFIG.ANIMATION.COUNTER_STEPS;
     
     const update = () => {
       current += step;

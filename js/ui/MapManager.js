@@ -1,16 +1,16 @@
 /**
- * Управление картой и модальными окнами
+ * Управление картой
  * ООО "Волга-Днепр Инжиниринг"
  */
 
 class MapManager {
-  constructor(mapUrl = window.CONFIG.CONTACT.MAP_URL) {
+  constructor(mapUrl = CONFIG.CONTACT.MAP_URL) {
     this.mapUrl = mapUrl;
     this.container = null;
   }
 
   init() {
-    this.container = Utils.DOM.getElement('mapContainer');
+    this.container = DOMHelper.getElement('mapContainer');
     if (this.container) {
       this.container.addEventListener('click', () => this.openMap());
       this.container.addEventListener('keydown', (e) => {

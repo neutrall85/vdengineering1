@@ -5,8 +5,8 @@
 
 class NavigationManager {
   constructor() {
-    this.scrollThreshold = window.CONFIG.NAVIGATION.SCROLL_HEADER_THRESHOLD;
-    this.scrollTopThreshold = window.CONFIG.NAVIGATION.SCROLL_TOP_THRESHOLD;
+    this.scrollThreshold = CONFIG.NAVIGATION.SCROLL_HEADER_THRESHOLD;
+    this.scrollTopThreshold = CONFIG.NAVIGATION.SCROLL_TOP_THRESHOLD;
     this.navbar = null;
     this.scrollToTopBtn = null;
     this.mobileMenu = null;
@@ -14,9 +14,9 @@ class NavigationManager {
   }
 
   init() {
-    this.navbar = Utils.DOM.getElement('navbar');
-    this.scrollToTopBtn = Utils.DOM.getElement('scrollToTop');
-    this.mobileMenu = Utils.DOM.getElement('mobileMenu');
+    this.navbar = DOMHelper.getElement('navbar');
+    this.scrollToTopBtn = DOMHelper.getElement('scrollToTop');
+    this.mobileMenu = DOMHelper.getElement('mobileMenu');
     
     this._initSmoothScroll();
     this._initScrollHandler();
@@ -31,7 +31,7 @@ class NavigationManager {
         const href = anchor.getAttribute('href');
         if (href === '#') return;
         
-        const target = Utils.DOM.query(href);
+        const target = DOMHelper.query(href);
         if (target) {
           e.preventDefault();
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -45,7 +45,7 @@ class NavigationManager {
     let timeout;
     this.scrollHandler = () => {
       if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(() => this._handleScroll(), window.CONFIG.PERFORMANCE.SCROLL_DEBOUNCE_MS);
+      timeout = setTimeout(() => this._handleScroll(), CONFIG.PERFORMANCE.SCROLL_DEBOUNCE_MS);
     };
     
     window.addEventListener('scroll', this.scrollHandler, { passive: true });
@@ -56,23 +56,22 @@ class NavigationManager {
     
     if (this.navbar) {
       if (scrollY > this.scrollThreshold) {
-        Utils.DOM.addClass(this.navbar, 'scrolled');
+        DOMHelper.addClass(this.navbar, 'scrolled');
       } else {
-        Utils.DOM.removeClass(this.navbar, 'scrolled');
+        DOMHelper.removeClass(this.navbar, 'scrolled');
       }
     }
     
     if (this.scrollToTopBtn) {
       if (scrollY > this.scrollTopThreshold) {
-        Utils.DOM.addClass(this.scrollToTopBtn, 'visible');
+        DOMHelper.addClass(this.scrollToTopBtn, 'visible');
       } else {
-        Utils.DOM.removeClass(this.scrollToTopBtn, 'visible');
+        DOMHelper.removeClass(this.scrollToTopBtn, 'visible');
       }
     }
   }
 
   _initMobileMenu() {
-<<<<<<< HEAD
   this.mobileMenu = DOMHelper.getElement('mobileMenu');
   this.mobileMenuBtn = DOMHelper.query('.mobile-menu-btn');
   this.mobileMenuOverlay = DOMHelper.getElement('mobileMenuOverlay');
@@ -86,17 +85,6 @@ class NavigationManager {
       e.stopPropagation();
       this.openMobileMenu();
     });
-=======
-    const menuBtn = Utils.DOM.query('.mobile-menu-btn');
-    if (menuBtn) {
-      menuBtn.addEventListener('click', () => this.toggleMobileMenu());
-    }
-    
-    const closeBtn = Utils.DOM.query('.mobile-menu-close', this.mobileMenu);
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => this.toggleMobileMenu());
-    }
->>>>>>> origin/main
   }
   
   // Закрытие через кнопку
@@ -117,7 +105,6 @@ class NavigationManager {
   });
 }
 
-<<<<<<< HEAD
 openMobileMenu() {
   if (!this.mobileMenu) return;
   
@@ -141,30 +128,6 @@ toggleMobileMenu() {
     this.closeMobileMenu();
   } else {
     this.openMobileMenu();
-=======
-  toggleMobileMenu() {
-    if (!this.mobileMenu) return;
-    
-    const isActive = Utils.DOM.hasClass(this.mobileMenu, 'active');
-    
-    if (isActive) {
-      Utils.DOM.removeClass(this.mobileMenu, 'active');
-      Utils.DOM.removeClass(this.navbar, 'mobile-menu-open');
-      Utils.DOM.toggleBodyScroll(false);
-    } else {
-      Utils.DOM.addClass(this.mobileMenu, 'active');
-      Utils.DOM.addClass(this.navbar, 'mobile-menu-open');
-      Utils.DOM.toggleBodyScroll(true);
-    }
-  }
-
-  _closeMobileMenu() {
-    if (this.mobileMenu && Utils.DOM.hasClass(this.mobileMenu, 'active')) {
-      Utils.DOM.removeClass(this.mobileMenu, 'active');
-      Utils.DOM.removeClass(this.navbar, 'mobile-menu-open');
-      Utils.DOM.toggleBodyScroll(false);
-    }
->>>>>>> origin/main
   }
 }
 
