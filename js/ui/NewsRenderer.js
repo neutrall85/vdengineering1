@@ -10,7 +10,11 @@ class NewsRenderer {
   }
 
   render(year, container, options = {}) {
-    if (!container) return;
+    if (!container) {
+      console.warn('Container not found for year:', year);
+      return;
+    }
+    
     if (this.loadedYears.has(year)) return;
     
     this.loadedYears.add(year);
@@ -27,7 +31,7 @@ class NewsRenderer {
     newsList.forEach((news, index) => {
       const card = this._createNewsCard(news, index);
       if (index >= DEFAULT_VISIBLE) {
-        DOMHelper.addClass(card, 'hidden-news');
+        card.classList.add('hidden-news');
       }
       fragment.appendChild(card);
     });
@@ -45,7 +49,7 @@ class NewsRenderer {
 
   _createNewsCard(news, index) {
     const article = document.createElement('article');
-    DOMHelper.addClass(article, 'news-card');
+    article.classList.add('news-card');
     article.style.animationDelay = `${index * 50}ms`;
     
     const imageHtml = this._createImageHtml(news);
@@ -83,14 +87,14 @@ class NewsRenderer {
   }
 
   _addAccordionButton(container, totalNews, defaultVisible) {
-    const existing = DOMHelper.query('.news-accordion-container', container);
+    const existing = container.querySelector('.news-accordion-container');
     if (existing) existing.remove();
     
     const wrapper = document.createElement('div');
-    DOMHelper.addClass(wrapper, 'news-accordion-container');
+    wrapper.classList.add('news-accordion-container');
     
     const button = document.createElement('button');
-    DOMHelper.addClass(button, 'news-accordion-btn');
+    button.classList.add('news-accordion-btn');
     button.innerHTML = `
       Показать все (${totalNews - defaultVisible})
       <svg class="accordion-icon" viewBox="0 0 24 24">
@@ -100,22 +104,23 @@ class NewsRenderer {
     
     let expanded = false;
     button.addEventListener('click', () => {
-      const hiddenNews = DOMHelper.queryAll('.news-card.hidden-news', container);
+      const hiddenNews = container.querySelectorAll('.news-card.hidden-news');
       
       if (!expanded) {
-        hiddenNews.forEach(card => DOMHelper.removeClass(card, 'hidden-news'));
+        hiddenNews.forEach(card => card.classList.remove('hidden-news'));
         button.innerHTML = `
           Свернуть
           <svg class="accordion-icon" viewBox="0 0 24 24">
             <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
           </svg>
         `;
-        DOMHelper.addClass(button, 'expanded');
+        button.classList.add('expanded');
         expanded = true;
       } else {
-        DOMHelper.queryAll('.news-card', container).forEach((card, idx) => {
+        const cards = container.querySelectorAll('.news-card');
+        cards.forEach((card, idx) => {
           if (idx >= defaultVisible) {
-            DOMHelper.addClass(card, 'hidden-news');
+            card.classList.add('hidden-news');
           }
         });
         button.innerHTML = `
@@ -124,7 +129,7 @@ class NewsRenderer {
             <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
           </svg>
         `;
-        DOMHelper.removeClass(button, 'expanded');
+        button.classList.remove('expanded');
         expanded = false;
       }
     });
@@ -134,18 +139,18 @@ class NewsRenderer {
   }
 
   _lazyLoadImages(container) {
-    const images = DOMHelper.queryAll('.news-card-image img', container);
+    const images = container.querySelectorAll('.news-card-image img');
     
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const img = entry.target;
           const src = img.getAttribute('data-src');
-          if (src) {
+          if (src && !img.src) {
             img.src = src;
             img.removeAttribute('data-src');
             img.onload = () => {
-              DOMHelper.addClass(img, 'loaded');
+              img.classList.add('loaded');
               const placeholder = img.parentElement?.querySelector('.image-placeholder');
               if (placeholder) placeholder.style.display = 'none';
             };
@@ -159,9 +164,10 @@ class NewsRenderer {
   }
 
   _animateCards(container) {
-    DOMHelper.queryAll('.news-card', container).forEach((card, index) => {
+    const cards = container.querySelectorAll('.news-card');
+    cards.forEach((card, index) => {
       setTimeout(() => {
-        DOMHelper.addClass(card, 'loaded');
+        card.classList.add('loaded');
       }, index * 50);
     });
   }

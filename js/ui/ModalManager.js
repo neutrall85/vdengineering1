@@ -1,5 +1,5 @@
 /**
- * Управление модальными окнами (Singleton)
+ * Управление модальными окнами
  * ООО "Волга-Днепр Инжиниринг"
  */
 
@@ -12,10 +12,7 @@ class ModalManager {
   }
 
   register(key, config) {
-    if (this.modals.has(key)) {
-      console.warn(`Modal "${key}" already registered, overwriting`);
-    }
-    
+    // Просто перезаписываем без предупреждения
     this.modals.set(key, {
       overlayId: config.overlayId,
       onOpen: config.onOpen || null,
@@ -31,13 +28,22 @@ class ModalManager {
     const config = this.modals.get(key);
     if (!config) return;
     
-    const overlay = DOMHelper.getElement(config.overlayId);
+    const overlay = document.getElementById(config.overlayId);
     if (overlay) {
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
+      // Удаляем старый обработчик, чтобы не дублировать
+      const newOverlay = overlay.cloneNode(true);
+      overlay.parentNode?.replaceChild(newOverlay, overlay);
+      
+      newOverlay.addEventListener('click', (e) => {
+        if (e.target === newOverlay) {
           this.close(key);
         }
       });
+      
+      // Обновляем ссылку в конфиге (необязательно)
+      if (config.overlayId) {
+        document.getElementById(config.overlayId);
+      }
     }
   }
 
@@ -60,18 +66,17 @@ class ModalManager {
       this.close(this.activeModal);
     }
 
-    const overlay = DOMHelper.getElement(config.overlayId);
+    const overlay = document.getElementById(config.overlayId);
     if (!overlay) return false;
 
-    DOMHelper.addClass(overlay, 'active');
-    DOMHelper.toggleBodyScroll(true);
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
     this.activeModal = key;
 
     if (config.shouldFocus) {
-      this.cleanupHandlers = DOMHelper.trapFocus(overlay);
       const focusTarget = options.focusSelector 
-        ? DOMHelper.query(options.focusSelector, overlay)
-        : DOMHelper.query('.modal-close, button, [href], input, select, textarea', overlay);
+        ? document.querySelector(options.focusSelector)
+        : overlay.querySelector('.modal-close, button, [href], input, select, textarea');
       
       if (focusTarget) {
         setTimeout(() => focusTarget.focus(), 100);
@@ -81,7 +86,9 @@ class ModalManager {
     if (config.onOpen) config.onOpen(overlay);
     if (options.onOpen) options.onOpen(overlay);
 
-    eventBus.emit('modal:opened', { key, overlay });
+    if (window.Services?.eventBus) {
+      window.Services.eventBus.emit('modal:opened', { key, overlay });
+    }
     return true;
   }
 
@@ -89,23 +96,20 @@ class ModalManager {
     const config = this.modals.get(key);
     if (!config) return false;
 
-    const overlay = DOMHelper.getElement(config.overlayId);
+    const overlay = document.getElementById(config.overlayId);
     if (!overlay) return false;
 
-    DOMHelper.removeClass(overlay, 'active');
-    DOMHelper.toggleBodyScroll(false);
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
     
     if (this.activeModal === key) {
       this.activeModal = null;
     }
 
-    if (this.cleanupHandlers) {
-      this.cleanupHandlers();
-      this.cleanupHandlers = null;
-    }
-
     if (config.onClose) config.onClose(overlay);
-    eventBus.emit('modal:closed', { key });
+    if (window.Services?.eventBus) {
+      window.Services.eventBus.emit('modal:closed', { key });
+    }
     return true;
   }
 
@@ -123,7 +127,12 @@ class ModalManager {
   }
 }
 
+// Создаём глобальный экземпляр
 const modalManager = new ModalManager();
+
+// Экспортируем в window.UI для совместимости
+window.UI = window.UI || {};
+window.UI.modalManager = modalManager;
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { ModalManager, modalManager };

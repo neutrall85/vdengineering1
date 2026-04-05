@@ -17,21 +17,27 @@ class Application {
       this._initGlobalHelpers();
       this._setCurrentYear();
       
-      await Promise.all(this.modules.map(module => module.init()));
+      // Инициализируем модули последовательно
+      for (const module of this.modules) {
+        try {
+          if (module && typeof module.init === 'function') {
+            await module.init();
+          }
+        } catch (err) {
+          console.warn(`Module ${module.constructor?.name || 'unknown'} init failed:`, err);
+        }
+      }
       
-      // Инициализация плавающей кнопки
       this._initFloatingCTA();
-      
-      // Инициализация анимаций для всех fade-in элементов
       this._initFadeInObserver();
-      
-      // Инициализация счетчиков для всех страниц
       this._initCounters();
       
       this.initialized = true;
       console.log('Application initialized successfully');
       
-      eventBus.emit('app:ready');
+      if (window.Services?.eventBus) {
+        window.Services.eventBus.emit('app:ready');
+      }
     } catch (error) {
       console.error('Application initialization failed:', error);
       this._showError(error);
@@ -45,20 +51,37 @@ class Application {
       mapManager,
       formManager,
       newsManager
-    ];
+    ].filter(m => m != null);
   }
 
   _initGlobalHelpers() {
-    window.scrollToTop = () => navigationManager.scrollToTop();
-    window.toggleMobileMenu = () => navigationManager.toggleMobileMenu();
-    window.openModal = () => formManager.openModal();
-    window.closeModal = () => modalManager.close('form');
-    window.removeFile = (event) => formManager.removeFile();
-    window.openAboutModal = () => modalManager.open('about');
-    window.closeAboutModal = () => modalManager.close('about');
-    window.closeDetailsModal = () => modalManager.close('details');
-    window.closeNewsModal = () => modalManager.close('news');
-    window.closeMobileMenu = () => navigationManager.closeMobileMenu();
+    window.scrollToTop = () => {
+      if (navigationManager) navigationManager.scrollToTop();
+    };
+    window.toggleMobileMenu = () => {
+      if (navigationManager) navigationManager.toggleMobileMenu();
+    };
+    window.openModal = () => {
+      if (formManager) formManager.openModal();
+    };
+    window.closeModal = () => {
+      if (typeof modalManager !== 'undefined') modalManager.close('form');
+    };
+    window.removeFile = (event) => {
+      if (formManager) formManager.removeFile();
+    };
+    window.closeMobileMenu = () => {
+      if (navigationManager) navigationManager.closeMobileMenu();
+    };
+    window.closeAboutModal = () => {
+      if (typeof modalManager !== 'undefined') modalManager.close('about');
+    };
+    window.closeDetailsModal = () => {
+      if (typeof modalManager !== 'undefined') modalManager.close('details');
+    };
+    window.closeNewsModal = () => {
+      if (typeof modalManager !== 'undefined') modalManager.close('news');
+    };
     
     window.toggleWidget = (header) => {
       const widget = header.closest('.certificate-widget');
@@ -68,19 +91,19 @@ class Application {
     };
     
     window.openDetailsModal = (title, details) => {
-      const modalTitle = DOMHelper.getElement('detailsModalTitle');
-      const modalList = DOMHelper.getElement('detailsModalList');
+      const modalTitle = document.getElementById('detailsModalTitle');
+      const modalList = document.getElementById('detailsModalList');
       
       if (modalTitle && modalList) {
         modalTitle.textContent = title;
         modalList.innerHTML = details.map(item => `<li>${item}</li>`).join('');
-        modalManager.open('details');
+        if (typeof modalManager !== 'undefined') modalManager.open('details');
       }
     };
   }
 
   _setCurrentYear() {
-    const yearElement = DOMHelper.getElement('currentYear');
+    const yearElement = document.getElementById('currentYear');
     if (yearElement) {
       yearElement.textContent = new Date().getFullYear();
     }
@@ -88,7 +111,6 @@ class Application {
 
   _initFloatingCTA() {
     const floatingBtn = document.querySelector('.floating-cta-btn');
-    
     if (!floatingBtn) return;
     
     const toggleButton = () => {
@@ -151,15 +173,14 @@ class Application {
   }
 
   _showError(error) {
-    const errorContainer = DOMHelper.getElement('appError');
+    const errorContainer = document.getElementById('appError');
     if (errorContainer) {
       errorContainer.style.display = 'block';
       errorContainer.innerHTML = `
-        <div class="error-message">
+        <div class="error-message" style="background:#f8d7da;color:#721c24;padding:1rem;margin:1rem;border-radius:8px;">
           <h2>Ошибка загрузки приложения</h2>
           <p>Произошла ошибка при инициализации сайта. Пожалуйста, обновите страницу.</p>
-          ${CONFIG.DEBUG ? `<p class="error-details">${error.message}</p>` : ''}
-          <button onclick="window.location.reload()">Обновить страницу</button>
+          <button onclick="window.location.reload()" style="margin-top:0.5rem;padding:0.5rem 1rem;cursor:pointer;">Обновить страницу</button>
         </div>
       `;
     } else {
@@ -168,30 +189,45 @@ class Application {
   }
 }
 
-const app = new Application();
+// Создание экземпляров глобальных объектов
+let newsRenderer, newsManager, formManager;
 
-document.addEventListener('DOMContentLoaded', () => {
+// Функция инициализации после загрузки всех скриптов
+function initApp() {
+  if (typeof NEWS_DATA !== 'undefined') {
+    newsRenderer = new NewsRenderer(NEWS_DATA);
+    newsManager = new NewsManager(NEWS_DATA, newsRenderer);
+  }
+  
+  if (window.Services?.apiClient && window.Utils?.RateLimiter && window.Utils?.Validator) {
+    const formRateLimiter = new window.Utils.RateLimiter(window.Services.storage);
+    formManager = new FormManager(window.Services.apiClient, formRateLimiter, window.Utils.Validator);
+  }
+  
+  // Регистрация модальных окон (только один раз)
+  if (typeof modalManager !== 'undefined') {
+    // Проверяем, не зарегистрированы ли уже
+    if (!modalManager.modals.has('about')) {
+      modalManager.register('about', { overlayId: 'aboutModalOverlay' });
+    }
+    if (!modalManager.modals.has('details')) {
+      modalManager.register('details', { overlayId: 'detailsModalOverlay' });
+    }
+    if (!modalManager.modals.has('form')) {
+      modalManager.register('form', { overlayId: 'modalOverlay' });
+    }
+    if (!modalManager.modals.has('news')) {
+      modalManager.register('news', { overlayId: 'newsModalOverlay' });
+    }
+  }
+  
+  const app = new Application();
   app.init();
-});
+}
 
-// Создание экземпляров
-const newsRenderer = new NewsRenderer(NEWS_DATA);
-const newsManager = new NewsManager(NEWS_DATA, newsRenderer);
-const formManager = new FormManager(apiClient, formRateLimiter, Validator);
-
-// Регистрация дополнительных модальных окон
-modalManager.register('about', {
-  overlayId: 'aboutModalOverlay'
-});
-
-modalManager.register('details', {
-  overlayId: 'detailsModalOverlay'
-});
-
-modalManager.register('form', {
-  overlayId: 'modalOverlay'
-});
-
-modalManager.register('news', {
-  overlayId: 'newsModalOverlay'
-});
+// Запуск после загрузки DOM
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}

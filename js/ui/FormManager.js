@@ -12,12 +12,6 @@ class FormManager {
   }
 
   init() {
-    modalManager.register('form', {
-      overlayId: 'modalOverlay',
-      onOpen: () => this._resetForm(),
-      onClose: () => this._resetForm()
-    });
-    
     this._initFileUpload();
     this._initPhoneMask();
     this._initFormSubmit();

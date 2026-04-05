@@ -11,59 +11,71 @@ class NewsManager {
   }
 
   init() {
+    console.log('NewsManager initializing...');
     this._initTabs();
     this._initModal();
     this._initCardClickHandler();
   }
 
   _initTabs() {
-    const tabs = DOMHelper.queryAll('.news-tab');
+    const tabs = document.querySelectorAll('.news-tab');
+    
+    if (tabs.length === 0) {
+      console.log('No news tabs found');
+      return;
+    }
     
     tabs.forEach(tab => {
       tab.addEventListener('click', (e) => {
         const year = tab.dataset.year;
         if (!year) return;
         
-        tabs.forEach(t => DOMHelper.removeClass(t, 'active'));
-        DOMHelper.addClass(tab, 'active');
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
         
-        DOMHelper.queryAll('.news-tab-content').forEach(content => {
-          DOMHelper.removeClass(content, 'active');
+        document.querySelectorAll('.news-tab-content').forEach(content => {
+          content.classList.remove('active');
         });
         
-        const activeContent = DOMHelper.getElement(`tab-${year}`);
+        const activeContent = document.getElementById(`tab-${year}`);
         if (activeContent) {
-          DOMHelper.addClass(activeContent, 'active');
+          activeContent.classList.add('active');
         }
         
         this.activeYear = year;
-        const container = DOMHelper.getElement(`newsGrid-${year}`);
-        if (container) {
+        const container = document.getElementById(`newsGrid-${year}`);
+        if (container && this.renderer) {
           this.renderer.render(year, container);
         }
       });
     });
     
-    const activeTab = DOMHelper.query('.news-tab.active');
+    // Активируем первый таб и загружаем новости
+    const activeTab = document.querySelector('.news-tab.active');
     if (activeTab?.dataset.year) {
       setTimeout(() => {
         const year = activeTab.dataset.year;
-        const container = DOMHelper.getElement(`newsGrid-${year}`);
-        if (container) {
+        const container = document.getElementById(`newsGrid-${year}`);
+        if (container && this.renderer) {
           this.renderer.render(year, container);
         }
         this.activeYear = year;
       }, 100);
+    } else if (tabs[0]) {
+      // Если нет активного таба, активируем первый
+      tabs[0].classList.add('active');
+      const year = tabs[0].dataset.year;
+      const container = document.getElementById(`newsGrid-${year}`);
+      if (container && this.renderer) {
+        this.renderer.render(year, container);
+      }
+      this.activeYear = year;
     }
   }
 
   _initModal() {
-    modalManager.register('news', {
-      overlayId: 'newsModalOverlay',
-      onClose: () => {
-        this._resetModalContent();
-      }
-    });
+    // Модальное окно уже зарегистрировано в app.js
+    console.log('News modal ready');
   }
 
   _initCardClickHandler() {
@@ -85,15 +97,21 @@ class NewsManager {
     if (!news) return;
     
     this._populateModal(news);
-    modalManager.open('news');
+    
+    const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.UI?.modalManager);
+    if (manager) {
+      manager.open('news');
+    } else {
+      console.warn('ModalManager not available');
+    }
   }
 
   _populateModal(news) {
-    const title = DOMHelper.getElement('newsModalTitle');
-    const date = DOMHelper.getElement('newsModalDate');
-    const category = DOMHelper.getElement('newsModalCategory');
-    const image = DOMHelper.getElement('newsModalImage');
-    const content = DOMHelper.getElement('newsModalContent');
+    const title = document.getElementById('newsModalTitle');
+    const date = document.getElementById('newsModalDate');
+    const category = document.getElementById('newsModalCategory');
+    const image = document.getElementById('newsModalImage');
+    const content = document.getElementById('newsModalContent');
     
     if (title) title.textContent = news.title;
     if (date) date.textContent = news.date;
@@ -106,7 +124,7 @@ class NewsManager {
   }
 
   _resetModalContent() {
-    const image = DOMHelper.getElement('newsModalImage');
+    const image = document.getElementById('newsModalImage');
     if (image) image.src = '';
   }
 }
