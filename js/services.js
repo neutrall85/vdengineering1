@@ -51,7 +51,8 @@ const Services = (function() {
       try {
         const value = this.storage.getItem(key);
         return value ? JSON.parse(value) : defaultValue;
-      } catch {
+      } catch (error) {
+        console.warn(`Storage get error for key "${key}":`, error);
         return defaultValue;
       }
     }
@@ -60,7 +61,8 @@ const Services = (function() {
       try {
         this.storage.setItem(key, JSON.stringify(value));
         return true;
-      } catch {
+      } catch (error) {
+        console.error(`Storage set error for key "${key}":`, error);
         return false;
       }
     }
@@ -69,7 +71,8 @@ const Services = (function() {
       try {
         this.storage.removeItem(key);
         return true;
-      } catch {
+      } catch (error) {
+        console.error(`Storage remove error for key "${key}":`, error);
         return false;
       }
     }
@@ -78,7 +81,8 @@ const Services = (function() {
       try {
         this.storage.clear();
         return true;
-      } catch {
+      } catch (error) {
+        console.error('Storage clear error:', error);
         return false;
       }
     }
@@ -114,6 +118,7 @@ const Services = (function() {
     }
 
     async submitForm(data) {
+      // Имитация отправки на сервер
       await new Promise(resolve => setTimeout(resolve, 500));
       console.log('Form submitted:', data);
       return { success: true, message: 'Заявка успешно отправлена' };
@@ -128,5 +133,8 @@ const Services = (function() {
   return { EventBus, StorageService, ApiClient, eventBus, storage, apiClient };
 })();
 
-// Экспортируем только один глобальный объект
+// Экспортируем в глобальную область
 window.Services = Services;
+window.eventBus = Services.eventBus;
+window.storage = Services.storage;
+window.apiClient = Services.apiClient;

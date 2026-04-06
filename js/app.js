@@ -7,6 +7,7 @@ class Application {
   constructor() {
     this.initialized = false;
     this.modules = [];
+    this.errors = [];
   }
 
   async init() {
@@ -17,23 +18,31 @@ class Application {
       this._initGlobalHelpers();
       this._setCurrentYear();
       
-      // Инициализируем модули последовательно
+      // Инициализируем модули последовательно с обработкой ошибок
       for (const module of this.modules) {
         try {
           if (module && typeof module.init === 'function') {
             await module.init();
+            console.log(`Module ${module.constructor?.name || 'unknown'} initialized`);
           }
         } catch (err) {
-          console.warn(`Module ${module.constructor?.name || 'unknown'} init failed:`, err);
+          const errorMsg = `Module ${module.constructor?.name || 'unknown'} init failed: ${err.message}`;
+          console.warn(errorMsg, err);
+          this.errors.push(errorMsg);
         }
       }
       
       this._initFloatingCTA();
       this._initFadeInObserver();
       this._initCounters();
+      this._initImageLazyLoading();
       
       this.initialized = true;
       console.log('Application initialized successfully');
+      
+      if (this.errors.length > 0) {
+        console.warn('Application initialized with errors:', this.errors);
+      }
       
       if (window.Services?.eventBus) {
         window.Services.eventBus.emit('app:ready');
@@ -46,39 +55,58 @@ class Application {
 
   _registerModules() {
     this.modules = [
-      navigationManager,
-      animationManager,
-      mapManager,
-      formManager,
-      newsManager
+      typeof navigationManager !== 'undefined' ? navigationManager : null,
+      typeof animationManager !== 'undefined' ? animationManager : null,
+      typeof mapManager !== 'undefined' ? mapManager : null,
+      typeof formManager !== 'undefined' ? formManager : null,
+      typeof newsManager !== 'undefined' ? newsManager : null
     ].filter(m => m != null);
+    
+    console.log(`Registered ${this.modules.length} modules`);
   }
 
   _initGlobalHelpers() {
     window.scrollToTop = () => {
       if (navigationManager) navigationManager.scrollToTop();
     };
+    
     window.toggleMobileMenu = () => {
       if (navigationManager) navigationManager.toggleMobileMenu();
     };
+    
     window.openModal = () => {
-      if (formManager) formManager.openModal();
+      if (formManager && typeof formManager.openModal === 'function') {
+        formManager.openModal();
+      } else if (typeof modalManager !== 'undefined') {
+        console.warn('FormManager not ready, opening modal directly');
+        modalManager.open('form');
+      } else {
+        console.error('No modal manager available');
+      }
     };
+    
     window.closeModal = () => {
       if (typeof modalManager !== 'undefined') modalManager.close('form');
     };
+    
     window.removeFile = (event) => {
-      if (formManager) formManager.removeFile();
+      if (formManager && typeof formManager.removeFile === 'function') {
+        formManager.removeFile();
+      }
     };
+    
     window.closeMobileMenu = () => {
       if (navigationManager) navigationManager.closeMobileMenu();
     };
+    
     window.closeAboutModal = () => {
       if (typeof modalManager !== 'undefined') modalManager.close('about');
     };
+    
     window.closeDetailsModal = () => {
       if (typeof modalManager !== 'undefined') modalManager.close('details');
     };
+    
     window.closeNewsModal = () => {
       if (typeof modalManager !== 'undefined') modalManager.close('news');
     };
@@ -96,7 +124,7 @@ class Application {
       
       if (modalTitle && modalList) {
         modalTitle.textContent = title;
-        modalList.innerHTML = details.map(item => `<li>${item}</li>`).join('');
+        modalList.innerHTML = details.map(item => `<li>${Utils.DOM.escapeHtml(item)}</li>`).join('');
         if (typeof modalManager !== 'undefined') modalManager.open('details');
       }
     };
@@ -122,7 +150,7 @@ class Application {
     };
     
     toggleButton();
-    window.addEventListener('scroll', toggleButton);
+    window.addEventListener('scroll', toggleButton, { passive: true });
   }
 
   _initFadeInObserver() {
@@ -172,6 +200,39 @@ class Application {
     counters.forEach(counter => counterObserver.observe(counter));
   }
 
+  _initImageLazyLoading() {
+    // Lazy loading для всех изображений с атрибутом data-src
+    const lazyImages = document.querySelectorAll('img[data-src]');
+    
+    if ('IntersectionObserver' in window) {
+      const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.getAttribute('data-src');
+            if (src) {
+              img.src = src;
+              img.removeAttribute('data-src');
+              img.classList.add('loaded');
+            }
+            imageObserver.unobserve(img);
+          }
+        });
+      }, { rootMargin: '100px' });
+      
+      lazyImages.forEach(img => imageObserver.observe(img));
+    } else {
+      // Fallback для старых браузеров
+      lazyImages.forEach(img => {
+        const src = img.getAttribute('data-src');
+        if (src) {
+          img.src = src;
+          img.removeAttribute('data-src');
+        }
+      });
+    }
+  }
+
   _showError(error) {
     const errorContainer = document.getElementById('appError');
     if (errorContainer) {
@@ -180,13 +241,28 @@ class Application {
         <div class="error-message" style="background:#f8d7da;color:#721c24;padding:1rem;margin:1rem;border-radius:8px;">
           <h2>Ошибка загрузки приложения</h2>
           <p>Произошла ошибка при инициализации сайта. Пожалуйста, обновите страницу.</p>
+          <p style="font-size:0.85rem;margin-top:0.5rem;">${Utils.DOM.escapeHtml(error.message)}</p>
           <button onclick="window.location.reload()" style="margin-top:0.5rem;padding:0.5rem 1rem;cursor:pointer;">Обновить страницу</button>
         </div>
       `;
     } else {
+      console.error('Fatal error:', error);
       alert('Ошибка загрузки приложения: ' + error.message);
     }
   }
+}
+
+// Функция для экранирования HTML (добавляем в Utils, если нет)
+if (typeof Utils !== 'undefined' && Utils.DOM && !Utils.DOM.escapeHtml) {
+  Utils.DOM.escapeHtml = function(str) {
+    if (!str) return '';
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  };
 }
 
 // Создание экземпляров глобальных объектов
@@ -194,33 +270,73 @@ let newsRenderer, newsManager, formManager;
 
 // Функция инициализации после загрузки всех скриптов
 function initApp() {
+  console.log('initApp started');
+  
+  // Проверяем наличие глобальных объектов
+  const hasConfig = typeof window.CONFIG !== 'undefined';
+  const hasServices = typeof window.Services !== 'undefined';
+  const hasUtils = typeof window.Utils !== 'undefined';
+  
+  console.log('Dependencies:', { hasConfig, hasServices, hasUtils });
+  
+  if (!hasConfig || !hasServices || !hasUtils) {
+    console.error('Missing required dependencies!');
+    setTimeout(() => initApp(), 100);
+    return;
+  }
+  
+  // 1. Инициализация менеджеров новостей
   if (typeof NEWS_DATA !== 'undefined') {
-    newsRenderer = new NewsRenderer(NEWS_DATA);
-    newsManager = new NewsManager(NEWS_DATA, newsRenderer);
+    try {
+      if (typeof NewsRenderer !== 'undefined' && typeof NewsManager !== 'undefined') {
+        newsRenderer = new NewsRenderer(NEWS_DATA);
+        newsManager = new NewsManager(NEWS_DATA, newsRenderer);
+        console.log('News modules initialized');
+      } else {
+        console.warn('NewsRenderer or NewsManager not loaded, news will be disabled');
+      }
+    } catch (err) {
+      console.error('News modules initialization failed:', err);
+    }
   }
   
-  if (window.Services?.apiClient && window.Utils?.RateLimiter && window.Utils?.Validator) {
-    const formRateLimiter = new window.Utils.RateLimiter(window.Services.storage);
-    formManager = new FormManager(window.Services.apiClient, formRateLimiter, window.Utils.Validator);
+  // 2. Инициализация FormManager
+  if (hasServices && hasUtils) {
+    try {
+      const formRateLimiter = new window.Utils.RateLimiter(window.Services.storage);
+      formManager = new FormManager(
+        window.Services.apiClient, 
+        formRateLimiter, 
+        window.Utils.Validator
+      );
+      console.log('FormManager initialized');
+    } catch (err) {
+      console.error('FormManager initialization failed:', err);
+    }
+  } else {
+    console.warn('Services or Utils not fully loaded, FormManager not initialized');
   }
   
-  // Регистрация модальных окон (только один раз)
+  // 3. Регистрация модальных окон
   if (typeof modalManager !== 'undefined') {
-    // Проверяем, не зарегистрированы ли уже
-    if (!modalManager.modals.has('about')) {
-      modalManager.register('about', { overlayId: 'aboutModalOverlay' });
-    }
-    if (!modalManager.modals.has('details')) {
-      modalManager.register('details', { overlayId: 'detailsModalOverlay' });
-    }
-    if (!modalManager.modals.has('form')) {
-      modalManager.register('form', { overlayId: 'modalOverlay' });
-    }
-    if (!modalManager.modals.has('news')) {
-      modalManager.register('news', { overlayId: 'newsModalOverlay' });
-    }
+    const modalsToRegister = [
+      { key: 'about', overlayId: 'aboutModalOverlay' },
+      { key: 'details', overlayId: 'detailsModalOverlay' },
+      { key: 'form', overlayId: 'modalOverlay' },
+      { key: 'news', overlayId: 'newsModalOverlay' }
+    ];
+    
+    modalsToRegister.forEach(modal => {
+      if (!modalManager.modals.has(modal.key)) {
+        modalManager.register(modal.key, { overlayId: modal.overlayId });
+      }
+    });
+    console.log('Modals registered');
+  } else {
+    console.error('ModalManager not found!');
   }
   
+  // 4. Запуск основного приложения
   const app = new Application();
   app.init();
 }

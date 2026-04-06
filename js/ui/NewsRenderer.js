@@ -60,10 +60,14 @@ class NewsRenderer {
   }
 
   _createImageHtml(news) {
+    // Используем data-src для lazy loading
     return `
       <div class="news-card-image">
         <div class="image-placeholder"></div>
-        <img data-src="${this._escapeHtml(news.image)}" alt="${this._escapeHtml(news.title)}" loading="lazy">
+        <img data-src="${this._escapeHtml(news.image)}" 
+             alt="${this._escapeHtml(news.title)}" 
+             loading="lazy"
+             onerror="this.src='assets/images/placeholder.jpg'">
         <span class="news-card-category">${this._escapeHtml(news.category)}</span>
       </div>
     `;
@@ -154,6 +158,11 @@ class NewsRenderer {
               const placeholder = img.parentElement?.querySelector('.image-placeholder');
               if (placeholder) placeholder.style.display = 'none';
             };
+            img.onerror = () => {
+              console.warn('Failed to load image:', src);
+              img.src = 'assets/images/placeholder.jpg';
+              img.classList.add('loaded');
+            };
           }
           observer.unobserve(img);
         }
@@ -183,6 +192,4 @@ class NewsRenderer {
   }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = NewsRenderer;
-}
+window.NewsRenderer = NewsRenderer;

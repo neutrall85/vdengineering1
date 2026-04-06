@@ -3,15 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary SEO -->
+  <title>О компании | ООО "Волга-Днепр Инжиниринг"</title>
+  <meta name="description" content="ООО 'Волга-Днепр Инжиниринг' — ведущий разработчик модификаций авиационной техники. 7+ лет опыта, 100+ проектов, 60+ специалистов. Узнайте больше о нашей компании.">
+  <meta name="keywords" content="о компании, авиационный инжиниринг, разработка модификаций, сертификация, Волга-Днепр Инжиниринг, авиационная техника">
+  <meta name="author" content="ООО 'Волга-Днепр Инжиниринг'">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph -->
   <meta property="og:title" content="О компании | ООО &quot;Волга-Днепр Инжиниринг&quot;">
   <meta property="og:description" content="Ведущий разработчик модификаций авиационной техники. Узнайте больше о нашей компании.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://vdengineering.ru/about.html">
+  <meta property="og:image" content="https://vdengineering.ru/assets/images/og-image.jpg">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="Волга-Днепр Инжиниринг">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="О компании | Волга-Днепр Инжиниринг">
+  <meta name="twitter:description" content="Ведущий разработчик модификаций авиационной техники">
+  <meta name="twitter:image" content="https://vdengineering.ru/assets/images/og-image.jpg">
+  
+  <!-- Security -->
   <meta name="X-Content-Type-Options" content="nosniff">
   <meta name="X-Frame-Options" content="SAMEORIGIN">
   <meta name="X-XSS-Protection" content="1; mode=block">
-  <title>О компании | ООО "Волга-Днепр Инжиниринг"</title>
-  <meta name="description" content="ООО 'Волга-Днепр Инжиниринг' — ведущий разработчик модификаций авиационной техники. 7+ лет опыта, 100+ проектов, 60+ специалистов.">
+  <meta name="Referrer-Policy" content="strict-origin-when-cross-origin">
+  
   <link rel="canonical" href="https://vdengineering.ru/about.html">
   <link rel="icon" type="image/png" href="assets/images/tab.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,15 +39,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   
+  <!-- Schema.org markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "О компании",
+    "description": "ООО 'Волга-Днепр Инжиниринг' — ведущий разработчик модификаций авиационной техники",
+    "url": "https://vdengineering.ru/about.html",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Волга-Днепр Инжиниринг",
+      "foundingDate": "2017",
+      "numberOfEmployees": 60,
+      "knowsLanguage": "Russian",
+      "areaServed": "Worldwide"
+    }
+  }
+  </script>
+  
+  <!-- Скрипты (обновлённый порядок) -->
   <script src="js/config.js"></script>
-  <script src="js/services/EventBus.js"></script>
-  <script src="js/services/StorageService.js"></script>
-  <script src="js/services/Validator.js"></script>
-  <script src="js/services/RateLimiter.js"></script>
-  <script src="js/services/PhoneFormatter.js"></script>
-  <script src="js/services/ApiClient.js"></script>
-  <script src="js/dom/ElementFactory.js"></script>
-  <script src="js/dom/DOMHelper.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/utils.js"></script>
   <script src="js/ui/ModalManager.js"></script>
   <script src="js/ui/NavigationManager.js"></script>
   <script src="js/ui/AnimationManager.js"></script>

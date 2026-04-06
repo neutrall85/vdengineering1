@@ -39,6 +39,9 @@ const CONFIG = {
   DEBUG: false
 };
 
+// Экспортируем в глобальную область
+window.CONFIG = CONFIG;
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = CONFIG;
 }

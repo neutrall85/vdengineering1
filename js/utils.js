@@ -67,8 +67,10 @@ const Utils = (function() {
         element
       );
       if (focusable.length === 0) return null;
+      
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
+      
       const handler = (e) => {
         if (e.key !== 'Tab') return;
         if (e.shiftKey) {
@@ -83,6 +85,7 @@ const Utils = (function() {
           }
         }
       };
+      
       element.addEventListener('keydown', handler);
       return () => element.removeEventListener('keydown', handler);
     },
@@ -155,16 +158,23 @@ const Utils = (function() {
 
     file(file, config = window.CONFIG?.FORM) {
       if (!file) return { valid: true };
+      
       if (file.size > config.MAX_FILE_SIZE) {
-        return { valid: false, error: `Максимальный размер файла: ${config.MAX_FILE_SIZE / 1024 / 1024}MB` };
+        return { 
+          valid: false, 
+          error: `Максимальный размер файла: ${config.MAX_FILE_SIZE / 1024 / 1024}MB` 
+        };
       }
+      
       const extension = file.name.split('.').pop().toLowerCase();
       if (!config.ALLOWED_FILE_TYPES.includes(extension)) {
         return { valid: false, error: 'Недопустимый тип файла' };
       }
+      
       if (file.type && !config.ALLOWED_MIME_TYPES.includes(file.type)) {
         console.warn('Необычный MIME-тип:', file.type);
       }
+      
       return { valid: true };
     }
   };
@@ -238,5 +248,9 @@ const Utils = (function() {
   return { DOM, Validator, PhoneFormatter, RateLimiter };
 })();
 
-// Экспортируем только один глобальный объект
+// Экспортируем в глобальную область
 window.Utils = Utils;
+window.DOM = Utils.DOM;
+window.Validator = Utils.Validator;
+window.PhoneFormatter = Utils.PhoneFormatter;
+window.RateLimiter = Utils.RateLimiter;

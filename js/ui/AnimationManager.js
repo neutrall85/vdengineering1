@@ -17,20 +17,30 @@ class AnimationManager {
 
   _initFadeInObserver() {
     const options = {
-      threshold: CONFIG.ANIMATION.OBSERVER_THRESHOLD,
-      rootMargin: CONFIG.ANIMATION.ROOT_MARGIN
+      threshold: window.CONFIG?.ANIMATION?.OBSERVER_THRESHOLD || 0.1,
+      rootMargin: window.CONFIG?.ANIMATION?.ROOT_MARGIN || '50px'
     };
 
     this.fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          DOMHelper.addClass(entry.target, 'visible');
+          // Используем Utils.DOM вместо DOMHelper
+          if (window.Utils && window.Utils.DOM) {
+            window.Utils.DOM.addClass(entry.target, 'visible');
+          } else {
+            entry.target.classList.add('visible');
+          }
           this.fadeObserver.unobserve(entry.target);
         }
       });
     }, options);
 
-    DOMHelper.queryAll('.fade-in').forEach(el => {
+    // Используем Utils.DOM.queryAll вместо DOMHelper.queryAll
+    const elements = window.Utils && window.Utils.DOM 
+      ? window.Utils.DOM.queryAll('.fade-in')
+      : document.querySelectorAll('.fade-in');
+    
+    elements.forEach(el => {
       this.fadeObserver.observe(el);
     });
     
@@ -38,7 +48,10 @@ class AnimationManager {
   }
 
   _initCounters() {
-    const counters = DOMHelper.queryAll('.stat-number');
+    const counters = window.Utils && window.Utils.DOM 
+      ? window.Utils.DOM.queryAll('.stat-number')
+      : document.querySelectorAll('.stat-number');
+    
     if (counters.length === 0) return;
 
     this.counterObserver = new IntersectionObserver((entries) => {
@@ -59,15 +72,16 @@ class AnimationManager {
     if (!target || isNaN(target)) return;
 
     let current = 0;
-    const step = target / CONFIG.ANIMATION.COUNTER_STEPS;
+    const steps = window.CONFIG?.ANIMATION?.COUNTER_STEPS || 100;
+    const step = target / steps;
     
     const update = () => {
       current += step;
       if (current < target) {
-        element.textContent = Math.floor(current) + '+';
+        element.textContent = Math.floor(current);
         requestAnimationFrame(update);
       } else {
-        element.textContent = target + '+';
+        element.textContent = target;
       }
     };
     
@@ -81,6 +95,8 @@ class AnimationManager {
 }
 
 const animationManager = new AnimationManager();
+
+window.AnimationManager = AnimationManager;
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { AnimationManager, animationManager };

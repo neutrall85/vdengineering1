@@ -5,24 +5,33 @@
 
 class NavigationManager {
   constructor() {
-    this.scrollThreshold = CONFIG.NAVIGATION.SCROLL_HEADER_THRESHOLD;
-    this.scrollTopThreshold = CONFIG.NAVIGATION.SCROLL_TOP_THRESHOLD;
+    this.scrollThreshold = window.CONFIG?.NAVIGATION?.SCROLL_HEADER_THRESHOLD || 100;
+    this.scrollTopThreshold = window.CONFIG?.NAVIGATION?.SCROLL_TOP_THRESHOLD || 500;
     this.navbar = null;
     this.scrollToTopBtn = null;
     this.mobileMenu = null;
+    this.mobileMenuBtn = null;
+    this.mobileMenuOverlay = null;
     this.scrollHandler = null;
   }
 
   init() {
-    this.navbar = DOMHelper.getElement('navbar');
-    this.scrollToTopBtn = DOMHelper.getElement('scrollToTop');
-    this.mobileMenu = DOMHelper.getElement('mobileMenu');
-    
-    this._initSmoothScroll();
-    this._initScrollHandler();
-    this._initMobileMenu();
-    
-    this._handleScroll();
+    try {
+      this.navbar = DOM.getElement('navbar');
+      this.scrollToTopBtn = DOM.getElement('scrollToTop');
+      this.mobileMenu = DOM.getElement('mobileMenu');
+      this.mobileMenuBtn = DOM.query('.mobile-menu-btn');
+      this.mobileMenuOverlay = DOM.getElement('mobileMenuOverlay');
+      
+      this._initSmoothScroll();
+      this._initScrollHandler();
+      this._initMobileMenu();
+      this._handleScroll();
+      
+      console.log('NavigationManager initialized');
+    } catch (error) {
+      console.error('NavigationManager init failed:', error);
+    }
   }
 
   _initSmoothScroll() {
@@ -31,11 +40,15 @@ class NavigationManager {
         const href = anchor.getAttribute('href');
         if (href === '#') return;
         
-        const target = DOMHelper.query(href);
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          this._closeMobileMenu();
+        try {
+          const target = DOM.query(href);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            this._closeMobileMenu();
+          }
+        } catch (error) {
+          console.warn('Smooth scroll error:', error);
         }
       });
     });
@@ -45,7 +58,7 @@ class NavigationManager {
     let timeout;
     this.scrollHandler = () => {
       if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(() => this._handleScroll(), CONFIG.PERFORMANCE.SCROLL_DEBOUNCE_MS);
+      timeout = setTimeout(() => this._handleScroll(), window.CONFIG?.PERFORMANCE?.SCROLL_DEBOUNCE_MS || 10);
     };
     
     window.addEventListener('scroll', this.scrollHandler, { passive: true });
@@ -56,80 +69,73 @@ class NavigationManager {
     
     if (this.navbar) {
       if (scrollY > this.scrollThreshold) {
-        DOMHelper.addClass(this.navbar, 'scrolled');
+        DOM.addClass(this.navbar, 'scrolled');
       } else {
-        DOMHelper.removeClass(this.navbar, 'scrolled');
+        DOM.removeClass(this.navbar, 'scrolled');
       }
     }
     
     if (this.scrollToTopBtn) {
       if (scrollY > this.scrollTopThreshold) {
-        DOMHelper.addClass(this.scrollToTopBtn, 'visible');
+        DOM.addClass(this.scrollToTopBtn, 'visible');
       } else {
-        DOMHelper.removeClass(this.scrollToTopBtn, 'visible');
+        DOM.removeClass(this.scrollToTopBtn, 'visible');
       }
     }
   }
 
   _initMobileMenu() {
-  this.mobileMenu = DOMHelper.getElement('mobileMenu');
-  this.mobileMenuBtn = DOMHelper.query('.mobile-menu-btn');
-  this.mobileMenuOverlay = DOMHelper.getElement('mobileMenuOverlay');
-  const closeBtn = DOMHelper.getElement('mobileMenuClose');
-  
-  if (!this.mobileMenu) return;
-  
-  // Открытие меню
-  if (this.mobileMenuBtn) {
-    this.mobileMenuBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.openMobileMenu();
+    if (!this.mobileMenu) return;
+    
+    const closeBtn = DOM.getElement('mobileMenuClose');
+    
+    if (this.mobileMenuBtn) {
+      this.mobileMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.openMobileMenu();
+      });
+    }
+    
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => this.closeMobileMenu());
+    }
+    
+    if (this.mobileMenuOverlay) {
+      this.mobileMenuOverlay.addEventListener('click', () => this.closeMobileMenu());
+    }
+    
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1048 && this.mobileMenu.classList.contains('active')) {
+        this.closeMobileMenu();
+      }
     });
   }
-  
-  // Закрытие через кнопку
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => this.closeMobileMenu());
+
+  openMobileMenu() {
+    if (!this.mobileMenu) return;
+    
+    DOM.addClass(this.mobileMenu, 'active');
+    if (this.mobileMenuOverlay) DOM.addClass(this.mobileMenuOverlay, 'active');
+    if (this.mobileMenuBtn) DOM.addClass(this.mobileMenuBtn, 'active');
+    DOM.toggleBodyScroll(true);
   }
-  
-  // Закрытие по клику на оверлей
-  if (this.mobileMenuOverlay) {
-    this.mobileMenuOverlay.addEventListener('click', () => this.closeMobileMenu());
+
+  closeMobileMenu() {
+    if (!this.mobileMenu) return;
+    
+    DOM.removeClass(this.mobileMenu, 'active');
+    if (this.mobileMenuOverlay) DOM.removeClass(this.mobileMenuOverlay, 'active');
+    if (this.mobileMenuBtn) DOM.removeClass(this.mobileMenuBtn, 'active');
+    DOM.toggleBodyScroll(false);
   }
-  
-  // Закрытие при изменении размера окна
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 1048 && this.mobileMenu.classList.contains('active')) {
+
+  toggleMobileMenu() {
+    if (this.mobileMenu && this.mobileMenu.classList.contains('active')) {
       this.closeMobileMenu();
+    } else {
+      this.openMobileMenu();
     }
-  });
-}
-
-openMobileMenu() {
-  if (!this.mobileMenu) return;
-  
-  DOMHelper.addClass(this.mobileMenu, 'active');
-  if (this.mobileMenuOverlay) DOMHelper.addClass(this.mobileMenuOverlay, 'active');
-  if (this.mobileMenuBtn) DOMHelper.addClass(this.mobileMenuBtn, 'active');
-  DOMHelper.toggleBodyScroll(true);
-}
-
-closeMobileMenu() {
-  if (!this.mobileMenu) return;
-  
-  DOMHelper.removeClass(this.mobileMenu, 'active');
-  if (this.mobileMenuOverlay) DOMHelper.removeClass(this.mobileMenuOverlay, 'active');
-  if (this.mobileMenuBtn) DOMHelper.removeClass(this.mobileMenuBtn, 'active');
-  DOMHelper.toggleBodyScroll(false);
-}
-
-toggleMobileMenu() {
-  if (this.mobileMenu && this.mobileMenu.classList.contains('active')) {
-    this.closeMobileMenu();
-  } else {
-    this.openMobileMenu();
   }
-}
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -144,6 +150,4 @@ toggleMobileMenu() {
 
 const navigationManager = new NavigationManager();
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { NavigationManager, navigationManager };
-}
+window.NavigationManager = NavigationManager;

@@ -12,15 +12,20 @@ class FormManager {
   }
 
   init() {
-    this._initFileUpload();
-    this._initPhoneMask();
-    this._initFormSubmit();
-    this._initFloatingButton();
+    try {
+      this._initFileUpload();
+      this._initPhoneMask();
+      this._initFormSubmit();
+      this._initFloatingButton();
+      console.log('FormManager initialized');
+    } catch (error) {
+      console.error('FormManager init failed:', error);
+    }
   }
 
   _initFileUpload() {
-    const fileInput = DOMHelper.getElement('fileAttachment');
-    const fileDrop = DOMHelper.getElement('fileDrop');
+    const fileInput = DOM.getElement('fileAttachment');
+    const fileDrop = DOM.getElement('fileDrop');
     
     if (!fileInput || !fileDrop) return;
     
@@ -52,47 +57,59 @@ class FormManager {
     const validation = this.validator.file(file);
     
     if (!validation.valid) {
-      alert(validation.error);
-      const fileInput = DOMHelper.getElement('fileAttachment');
+      this._showError(validation.error);
+      const fileInput = DOM.getElement('fileAttachment');
       if (fileInput) fileInput.value = '';
       return;
     }
     
     this.currentFile = file;
-    const fileNameText = DOMHelper.getElement('fileNameText');
-    const fileName = DOMHelper.getElement('fileName');
-    const fileDrop = DOMHelper.getElement('fileDrop');
+    const fileNameText = DOM.getElement('fileNameText');
+    const fileName = DOM.getElement('fileName');
+    const fileDrop = DOM.getElement('fileDrop');
     
     if (fileNameText) fileNameText.textContent = file.name;
-    if (fileName) DOMHelper.addClass(fileName, 'show');
-    if (fileDrop) DOMHelper.addClass(fileDrop, 'has-file');
+    if (fileName) DOM.addClass(fileName, 'show');
+    if (fileDrop) DOM.addClass(fileDrop, 'has-file');
+  }
+
+  _showError(message) {
+    console.error('Form error:', message);
+    const warning = DOM.getElement('rateLimitWarning');
+    if (warning) {
+      warning.innerHTML = `<p>⚠️ ${message}</p>`;
+      DOM.addClass(warning, 'show');
+      setTimeout(() => DOM.removeClass(warning, 'show'), 5000);
+    } else {
+      alert(message);
+    }
   }
 
   removeFile() {
-    const fileInput = DOMHelper.getElement('fileAttachment');
-    const fileName = DOMHelper.getElement('fileName');
-    const fileDrop = DOMHelper.getElement('fileDrop');
+    const fileInput = DOM.getElement('fileAttachment');
+    const fileName = DOM.getElement('fileName');
+    const fileDrop = DOM.getElement('fileDrop');
     
     this.currentFile = null;
     if (fileInput) fileInput.value = '';
-    if (fileName) DOMHelper.removeClass(fileName, 'show');
-    if (fileDrop) DOMHelper.removeClass(fileDrop, 'has-file');
+    if (fileName) DOM.removeClass(fileName, 'show');
+    if (fileDrop) DOM.removeClass(fileDrop, 'has-file');
   }
 
   _initPhoneMask() {
-    const phoneInput = DOMHelper.getElement('phone');
-    if (phoneInput) {
-      PhoneFormatter.bindToInput(phoneInput);
+    const phoneInput = DOM.getElement('phone');
+    if (phoneInput && window.PhoneFormatter) {
+      window.PhoneFormatter.bindToInput(phoneInput);
     }
   }
 
   _initFormSubmit() {
-    const form = DOMHelper.getElement('proposalForm');
+    const form = DOM.getElement('proposalForm');
     if (form) {
       form.addEventListener('submit', (e) => this._handleSubmit(e));
     }
     
-    const removeBtn = DOMHelper.query('#fileName svg');
+    const removeBtn = DOM.query('#fileName svg');
     if (removeBtn) {
       removeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -102,7 +119,7 @@ class FormManager {
   }
 
   _initFloatingButton() {
-    const btn = DOMHelper.query('.floating-cta-btn');
+    const btn = DOM.query('.floating-cta-btn');
     if (btn) {
       btn.addEventListener('click', () => this.openModal());
     }
@@ -110,15 +127,22 @@ class FormManager {
 
   openModal() {
     if (!this.rateLimiter.canProceed()) {
-      const warning = DOMHelper.getElement('rateLimitWarning');
-      if (warning) DOMHelper.addClass(warning, 'show');
+      const warning = DOM.getElement('rateLimitWarning');
+      if (warning) {
+        DOM.addClass(warning, 'show');
+        setTimeout(() => DOM.removeClass(warning, 'show'), 5000);
+      }
       return;
     }
     
-    const warning = DOMHelper.getElement('rateLimitWarning');
-    if (warning) DOMHelper.removeClass(warning, 'show');
+    const warning = DOM.getElement('rateLimitWarning');
+    if (warning) DOM.removeClass(warning, 'show');
     
-    modalManager.open('form');
+    if (typeof modalManager !== 'undefined') {
+      modalManager.open('form');
+    } else {
+      console.error('ModalManager not available');
+    }
   }
 
   _validateForm() {
@@ -135,21 +159,21 @@ class FormManager {
     let isValid = true;
     
     fields.forEach(field => {
-      const element = DOMHelper.getElement(field.id);
-      const errorEl = DOMHelper.getElement(`${field.id}Error`);
+      const element = DOM.getElement(field.id);
+      const errorEl = DOM.getElement(`${field.id}Error`);
       const value = element?.value?.trim() || '';
       
       if (!field.validate(value)) {
-        if (element) DOMHelper.addClass(element, 'error');
-        if (errorEl) DOMHelper.addClass(errorEl, 'show');
+        if (element) DOM.addClass(element, 'error');
+        if (errorEl) DOM.addClass(errorEl, 'show');
         isValid = false;
       } else {
-        if (element) DOMHelper.removeClass(element, 'error');
-        if (errorEl) DOMHelper.removeClass(errorEl, 'show');
+        if (element) DOM.removeClass(element, 'error');
+        if (errorEl) DOM.removeClass(errorEl, 'show');
       }
     });
     
-    const honeypot = DOMHelper.getElement('hp_website');
+    const honeypot = DOM.getElement('hp_website');
     if (honeypot && honeypot.value) {
       return false;
     }
@@ -163,14 +187,14 @@ class FormManager {
     if (!this._validateForm()) return;
     
     if (!this.rateLimiter.canProceed()) {
-      const warning = DOMHelper.getElement('rateLimitWarning');
-      if (warning) DOMHelper.addClass(warning, 'show');
+      const warning = DOM.getElement('rateLimitWarning');
+      if (warning) DOM.addClass(warning, 'show');
       return;
     }
     
     this.rateLimiter.record();
     
-    const submitBtn = DOMHelper.getElement('submitBtn');
+    const submitBtn = DOM.getElement('submitBtn');
     const originalContent = submitBtn.innerHTML;
     
     submitBtn.disabled = true;
@@ -178,33 +202,36 @@ class FormManager {
     
     try {
       const formData = {
-        companyName: DOMHelper.getElement('companyName')?.value.trim() || '',
-        contactPerson: DOMHelper.getElement('contactPerson')?.value.trim() || '',
-        email: DOMHelper.getElement('email')?.value.trim() || '',
-        phone: DOMHelper.getElement('phone')?.value.trim() || '',
-        aircraftType: DOMHelper.getElement('aircraftType')?.value || '',
-        serviceType: DOMHelper.getElement('serviceType')?.value || '',
-        taskDescription: DOMHelper.getElement('taskDescription')?.value.trim() || ''
+        companyName: DOM.getElement('companyName')?.value.trim() || '',
+        contactPerson: DOM.getElement('contactPerson')?.value.trim() || '',
+        email: DOM.getElement('email')?.value.trim() || '',
+        phone: DOM.getElement('phone')?.value.trim() || '',
+        aircraftType: DOM.getElement('aircraftType')?.value || '',
+        serviceType: DOM.getElement('serviceType')?.value || '',
+        taskDescription: DOM.getElement('taskDescription')?.value.trim() || ''
       };
       
       const result = await this.apiClient.submitForm(formData);
       
       if (result.success) {
-        const form = DOMHelper.getElement('proposalForm');
-        const successMessage = DOMHelper.getElement('successMessage');
+        const form = DOM.getElement('proposalForm');
+        const successMessage = DOM.getElement('successMessage');
         
         if (form) form.style.display = 'none';
-        if (successMessage) DOMHelper.addClass(successMessage, 'show');
+        if (successMessage) DOM.addClass(successMessage, 'show');
         
         setTimeout(() => {
-          modalManager.close('form');
-        }, CONFIG.ANIMATION.MODAL_CLOSE_DELAY_MS);
+          if (typeof modalManager !== 'undefined') {
+            modalManager.close('form');
+          }
+          this._resetForm();
+        }, window.CONFIG?.ANIMATION?.MODAL_CLOSE_DELAY_MS || 3000);
       } else {
-        alert(result.error || 'Произошла ошибка при отправке');
+        this._showError(result.error || 'Произошла ошибка при отправке');
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      alert('Произошла ошибка при отправке');
+      this._showError('Произошла ошибка при отправке. Пожалуйста, попробуйте позже.');
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalContent;
@@ -212,41 +239,28 @@ class FormManager {
   }
 
   _resetForm() {
-    const form = DOMHelper.getElement('proposalForm');
-    const successMessage = DOMHelper.getElement('successMessage');
-    const fileName = DOMHelper.getElement('fileName');
+    const form = DOM.getElement('proposalForm');
+    const successMessage = DOM.getElement('successMessage');
+    const fileName = DOM.getElement('fileName');
     
     if (form) {
       form.reset();
       form.style.display = 'block';
     }
     
-    if (successMessage) DOMHelper.removeClass(successMessage, 'show');
-    if (fileName) DOMHelper.removeClass(fileName, 'show');
+    if (successMessage) DOM.removeClass(successMessage, 'show');
+    if (fileName) DOM.removeClass(fileName, 'show');
     
-    DOMHelper.queryAll('.form-input, .form-select, .form-textarea').forEach(el => {
-      DOMHelper.removeClass(el, 'error');
+    DOM.queryAll('.form-input, .form-select, .form-textarea').forEach(el => {
+      DOM.removeClass(el, 'error');
     });
     
-    DOMHelper.queryAll('.error-message').forEach(el => {
-      DOMHelper.removeClass(el, 'show');
+    DOM.queryAll('.error-message').forEach(el => {
+      DOM.removeClass(el, 'show');
     });
-    
-    const submitBtn = DOMHelper.getElement('submitBtn');
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = `
-        <svg viewBox="0 0 24 24">
-          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-        </svg>
-        <span>Отправить запрос</span>
-      `;
-    }
     
     this.currentFile = null;
   }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = FormManager;
-}
+window.FormManager = FormManager;
