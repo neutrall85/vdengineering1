@@ -1193,6 +1193,11 @@ body {
   opacity: 0;
   cursor: pointer;
   z-index: 10;
+  pointer-events: none;
+}
+
+.form-file.has-file input {
+  pointer-events: none;
 }
 
 .form-file-name svg:hover {
@@ -1260,6 +1265,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  position: relative;
+  z-index: 30;
 }
 
 .form-file-item {
@@ -1271,6 +1278,8 @@ body {
   border-radius: 8px;
   font-size: 0.85rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 30;
 }
 
 .form-file-item-name {
@@ -1298,6 +1307,8 @@ body {
   justify-content: center;
   border-radius: 4px;
   transition: background var(--duration-normal) var(--ease-smooth);
+  position: relative;
+  z-index: 20;
 }
 
 .form-file-item-remove:hover {
