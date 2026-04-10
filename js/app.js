@@ -153,19 +153,42 @@ class Application {
 
     if (!floatingBtn) return;
 
+    let hasPassedTitle = false;
+
     const toggleButton = () => {
       const scrollY = window.scrollY;
-      let isTitleVisible = false;
 
-      if (commercialOfferTitle) {
-        const rect = commercialOfferTitle.getBoundingClientRect();
-        isTitleVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      if (scrollY <= 350) {
+        floatingBtn.classList.remove('visible');
+        hasPassedTitle = false;
+        return;
       }
 
-      if (scrollY <= 350 || isTitleVisible) {
-        floatingBtn.classList.remove('visible');
-      } else {
+      if (!commercialOfferTitle) {
         floatingBtn.classList.add('visible');
+        return;
+      }
+
+      const rect = commercialOfferTitle.getBoundingClientRect();
+      const isTitleVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      const isTitleAbove = rect.bottom <= 0; // Заголовок ушел выше экрана
+
+      if (isTitleVisible) {
+        floatingBtn.classList.remove('visible');
+        hasPassedTitle = false;
+        return;
+      }
+
+      if (isTitleAbove) {
+        hasPassedTitle = true;
+        floatingBtn.classList.remove('visible'); // Не показываем кнопку после заголовка
+        return;
+      }
+
+      if (!hasPassedTitle) {
+        floatingBtn.classList.add('visible');
+      } else {
+        floatingBtn.classList.remove('visible');
       }
     };
 

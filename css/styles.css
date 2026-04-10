@@ -993,6 +993,12 @@ body {
   backdrop-filter: blur(5px);
 }
 
+.modal-overlay.active .modal-close {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.2s;
+}
+
 .modal-overlay.active {
   opacity: 1;
   visibility: visible;
@@ -1008,6 +1014,7 @@ body {
   position: relative;
   transform: scale(0.9) translateY(20px);
   transition: transform var(--duration-slow) var(--ease-bounce);
+  padding-right: 60px;
 }
 
 /* ==================== КАСТОМНАЯ ПОЛОСА ПРОКРУТКИ ДЛЯ МОДАЛЬНЫХ ОКОН ==================== */
@@ -1029,8 +1036,9 @@ body {
 }
 
 .modal-header {
-  padding: 1.5rem 1.5rem 0.5rem;
+  padding: 1.5rem 0 0.5rem;
   border-bottom: 1px solid var(--border-color);
+  position: relative;
 }
 
 .modal-title {
@@ -1038,6 +1046,9 @@ body {
   font-weight: 700;
   color: var(--vd);
   margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .modal-subtitle {
@@ -1048,8 +1059,8 @@ body {
 
 .modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: -16px;
+  right: -16px;
   width: 36px;
   height: 36px;
   background: var(--vd-light-gray);
@@ -1061,6 +1072,9 @@ body {
   justify-content: center;
   transition: all var(--duration-fast) var(--ease-elastic);
   z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
 }
 
 .modal-close:hover {
@@ -1079,7 +1093,7 @@ body {
 }
 
 .modal-body {
-  padding: 1.5rem;
+  padding: 1.5rem 0;
 }
 
 /* ==================== ФОРМЫ ==================== */
@@ -1131,7 +1145,7 @@ body {
 }
 
 .form-textarea {
-  min-height: 100px;
+  min-height: 280px;
   resize: vertical;
 }
 
@@ -1148,7 +1162,7 @@ body {
   position: relative;
   border: 2px dashed var(--border-color);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 0.75rem;
   text-align: center;
   background: var(--vd-light-gray);
   transition: all var(--duration-normal) var(--ease-smooth);
@@ -1160,8 +1174,6 @@ body {
   background: rgba(0, 78, 150, 0.05);
   transform: translateY(-2px);
 }
-
-
 
 .form-file.has-file {
   border-style: solid;
@@ -1185,9 +1197,9 @@ body {
 }
 
 .form-file-icon {
-  width: 50px;
-  height: 50px;
-  margin: 0 auto 1rem;
+  width: 32px;
+  height: 32px;
+  margin: 0 auto 0.5rem;
   background: var(--vd);
   border-radius: 50%;
   display: flex;
@@ -1201,29 +1213,30 @@ body {
 }
 
 .form-file-icon svg {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   fill: white;
 }
 
 .form-file-text {
   font-weight: 600;
   color: var(--text-dark);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
 }
 
 .form-file-hint {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--metallic);
 }
 
 .form-file-name {
   display: none;
-  margin-top: 1rem;
-  padding: 0.5rem 0.8rem;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.6rem;
   background: white;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   align-items: center;
   justify-content: space-between;
 }
@@ -1233,8 +1246,8 @@ body {
 }
 
 .form-file-name svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   fill: var(--error-color);
   cursor: pointer;
 }
