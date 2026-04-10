@@ -125,7 +125,6 @@ class FormManager {
       </div>
     `).join('');
 
-    // Добавляем обработчики событий для кнопок удаления
     container.querySelectorAll('.form-file-item-remove').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
