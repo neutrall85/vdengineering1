@@ -149,20 +149,20 @@ class Application {
 
   _initFloatingCTA() {
     const floatingBtn = document.querySelector('.floating-cta-btn');
-    const contactBtn = document.querySelector('#contact .btn-primary'); // или другой селектор
+    const commercialOfferTitle = document.querySelector('#commercial-offer-title');
 
     if (!floatingBtn) return;
 
     const toggleButton = () => {
       const scrollY = window.scrollY;
-      let isContactBtnVisible = false;
+      let isTitleVisible = false;
 
-      if (contactBtn) {
-        const rect = contactBtn.getBoundingClientRect();
-        isContactBtnVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      if (commercialOfferTitle) {
+        const rect = commercialOfferTitle.getBoundingClientRect();
+        isTitleVisible = rect.top < window.innerHeight && rect.bottom > 0;
       }
 
-      if (scrollY <= 350 || isContactBtnVisible) {
+      if (scrollY <= 350 || isTitleVisible) {
         floatingBtn.classList.remove('visible');
       } else {
         floatingBtn.classList.add('visible');
