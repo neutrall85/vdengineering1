@@ -194,14 +194,6 @@ class FormManager {
     if (form) {
       form.addEventListener('submit', (e) => this._handleSubmit(e));
     }
-
-    const removeBtn = DOM.query('#fileName svg');
-    if (removeBtn) {
-      removeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.removeFile();
-      });
-    }
   }
 
   _initFloatingButton() {
