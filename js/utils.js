@@ -342,7 +342,79 @@ const Utils = (function() {
     }
   }
 
-  return { DOM, Sanitizer, Validator, PhoneFormatter, RateLimiter };
+  // ========== Утилиты для работы со строками и slug ==========
+  const SlugUtils = {
+    /**
+     * Месяцы на русском для парсинга
+     */
+    _months: {
+      'январь': '01', 'февраль': '02', 'март': '03', 'апрель': '04',
+      'май': '05', 'июнь': '06', 'июль': '07', 'август': '08',
+      'сентябрь': '09', 'октябрь': '10', 'ноябрь': '11', 'декабрь': '12'
+    },
+
+    /**
+     * Генерирует URL-friendly slug из строки
+     * @param {string} text - исходный текст
+     * @returns {string} slug
+     */
+    generateSlug(text) {
+      if (!text) return '';
+      
+      return text
+        .toLowerCase()
+        .replace(/[^а-яёa-z0-9\s-]/gi, '') // Удаляем спецсимволы
+        .replace(/\s+/g, '-') // Заменяем пробелы на дефисы
+        .replace(/-+/g, '-') // Заменяем множественные дефисы на один
+        .replace(/^-|-$/g, ''); // Удаляем дефисы по краям
+    },
+
+    /**
+     * Парсит дату из строки вида "Февраль 2023" или "Январь 2024"
+     * @param {string} dateStr - строка даты
+     * @returns {{year: string, month: string}} объект с годом и месяцем
+     */
+    parseDate(dateStr) {
+      if (!dateStr) return { year: new Date().getFullYear().toString(), month: '01' };
+      
+      const parts = dateStr.trim().split(/\s+/);
+      const monthName = parts[0].toLowerCase();
+      const year = parts[1] || new Date().getFullYear().toString();
+      
+      const month = this._months[monthName] || '01';
+      return { year, month };
+    },
+
+    /**
+     * Создаёт короткий slug для новости (без ID)
+     * @param {string} title - заголовок новости
+     * @returns {string} slug
+     */
+    createShortSlug(title) {
+      return this.generateSlug(title);
+    },
+
+    /**
+     * Генерирует полную ссылку на новость в формате:
+     * news.html/YYYY/MM/DD/slug
+     * @param {Object} news - объект новости с полями title, id, date
+     * @param {string} baseUrl - базовый URL (по умолчанию news.html)
+     * @returns {string} полная ссылка на новость
+     */
+    generateNewsLink(news, baseUrl = 'news.html') {
+      if (!news || !news.title) return baseUrl;
+      
+      const { year, month } = this.parseDate(news.date);
+      const slug = this.createShortSlug(news.title);
+      
+      // Используем первый день месяца как день публикации
+      const day = '01';
+      
+      return `${baseUrl}/${year}/${month}/${day}/${slug}`;
+    }
+  };
+
+  return { DOM, Sanitizer, Validator, PhoneFormatter, RateLimiter, SlugUtils };
 })();
 
 // Экспортируем в глобальную область
@@ -352,3 +424,4 @@ window.Sanitizer = Utils.Sanitizer;
 window.Validator = Utils.Validator;
 window.PhoneFormatter = Utils.PhoneFormatter;
 window.RateLimiter = Utils.RateLimiter;
+window.SlugUtils = Utils.SlugUtils;

@@ -75,6 +75,8 @@ class NewsRenderer {
   }
 
   _createContentHtml(news) {
+    const newsLink = window.SlugUtils ? window.SlugUtils.generateNewsLink(news) : `news.html#${news.id}`;
+    
     return `
       <div class="news-card-content">
         <div class="news-card-date">
@@ -83,10 +85,10 @@ class NewsRenderer {
         </div>
         <h3 class="news-card-title">${this._escapeHtml(news.title)}</h3>
         <p class="news-card-excerpt">${this._escapeHtml(news.excerpt)}</p>
-        <button class="news-card-link" data-news-id="${news.id}">
+        <a href="${newsLink}" class="news-card-link" data-news-id="${news.id}">
           Подробнее
           <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
-        </button>
+        </a>
       </div>
     `;
   }

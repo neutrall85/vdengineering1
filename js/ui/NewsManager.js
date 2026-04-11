@@ -79,15 +79,56 @@ class NewsManager {
   }
 
   _initCardClickHandler() {
+    // Обработка кликов по ссылкам новостей (теперь это <a> элементы)
     document.addEventListener('click', (e) => {
-      const button = e.target.closest('.news-card-link');
-      if (button) {
-        const newsId = parseInt(button.dataset.newsId, 10);
+      const link = e.target.closest('.news-card-link');
+      if (link) {
+        const newsId = parseInt(link.dataset.newsId, 10);
         if (newsId) {
+          e.preventDefault(); // Предотвращаем переход по ссылке
           this.openNewsModal(newsId);
+          // Обновляем URL с хешем для возможности шеринга
+          const allNews = Object.values(this.newsData).flat();
+          const news = allNews.find(n => n.id === newsId);
+          if (news && window.SlugUtils) {
+            const slug = window.SlugUtils.createNewsSlug(news.title, news.id);
+            history.pushState(null, '', `#${slug}`);
+          }
         }
       }
     });
+    
+    // Проверка хеша при загрузке страницы для открытия конкретной новости
+    this._checkHashOnLoad();
+    
+    // Отслеживание изменений хеша
+    window.addEventListener('hashchange', () => {
+      this._checkHashOnLoad();
+    });
+  }
+
+  _checkHashOnLoad() {
+    const hash = window.location.hash;
+    if (!hash || hash.length < 2) return;
+    
+    const hashValue = hash.substring(1); // Убираем #
+    const lastDashIndex = hashValue.lastIndexOf('-');
+    
+    if (lastDashIndex === -1) return;
+    
+    const idStr = hashValue.substring(lastDashIndex + 1);
+    const newsId = parseInt(idStr, 10);
+    
+    if (!isNaN(newsId)) {
+      const allNews = Object.values(this.newsData).flat();
+      const news = allNews.find(n => n.id === newsId);
+      if (news) {
+        // Небольшая задержка чтобы убедиться что контент загружен
+        setTimeout(() => {
+          this.openNewsModal(newsId);
+        }, 100);
+      }
+    }
   }
 
   openNewsModal(id) {
