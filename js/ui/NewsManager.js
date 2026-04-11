@@ -87,47 +87,87 @@ class NewsManager {
         if (newsId) {
           e.preventDefault(); // Предотвращаем переход по ссылке
           this.openNewsModal(newsId);
-          // Обновляем URL с хешем для возможности шеринга
+          // Обновляем URL с новым форматом для возможности шеринга
           const allNews = Object.values(this.newsData).flat();
           const news = allNews.find(n => n.id === newsId);
           if (news && window.SlugUtils) {
-            const slug = window.SlugUtils.createNewsSlug(news.title, news.id);
-            history.pushState(null, '', `#${slug}`);
+            const newsLink = window.SlugUtils.generateNewsLink(news);
+            history.pushState(null, '', newsLink);
           }
         }
       }
     });
     
-    // Проверка хеша при загрузке страницы для открытия конкретной новости
-    this._checkHashOnLoad();
+    // Проверка URL при загрузке страницы для открытия конкретной новости
+    this._checkUrlOnLoad();
     
-    // Отслеживание изменений хеша
-    window.addEventListener('hashchange', () => {
-      this._checkHashOnLoad();
+    // Отслеживание изменений пути (для SPA навигации)
+    window.addEventListener('popstate', () => {
+      this._checkUrlOnLoad();
     });
   }
 
-  _checkHashOnLoad() {
+  _checkUrlOnLoad() {
+    // Получаем путь после news.html
+    const path = window.location.pathname;
     const hash = window.location.hash;
-    if (!hash || hash.length < 2) return;
     
-    const hashValue = hash.substring(1); // Убираем #
-    const lastDashIndex = hashValue.lastIndexOf('-');
+    // Проверяем формат: /YYYY/MM/DD/slug
+    const match = path.match(/\/(\d{4})\/(\d{2})\/(\d{2})\/([^/]+)$/);
     
-    if (lastDashIndex === -1) return;
+    if (match) {
+      const [, year, month, day, slug] = match;
+      this._findAndOpenNews(year, month, day, slug);
+      return;
+    }
     
-    const idStr = hashValue.substring(lastDashIndex + 1);
-    const newsId = parseInt(idStr, 10);
-    
-    if (!isNaN(newsId)) {
-      const allNews = Object.values(this.newsData).flat();
-      const news = allNews.find(n => n.id === newsId);
-      if (news) {
-        // Небольшая задержка чтобы убедиться что контент загружен
-        setTimeout(() => {
-          this.openNewsModal(newsId);
-        }, 100);
+    // Обратная совместимость со старым форматом #slug-id
+    if (hash && hash.length > 1) {
+      const hashValue = hash.substring(1);
+      const lastDashIndex = hashValue.lastIndexOf('-');
+      
+      if (lastDashIndex !== -1) {
+        const idStr = hashValue.substring(lastDashIndex + 1);
+        const newsId = parseInt(idStr, 10);
+        
+        if (!isNaN(newsId)) {
+          const allNews = Object.values(this.newsData).flat();
+          const news = allNews.find(n => n.id === newsId);
+          if (news) {
+            setTimeout(() => {
+              this.openNewsModal(newsId);
+            }, 100);
+          }
+        }
       }
+    }
+  }
+
+  _findAndOpenNews(year, month, day, slug) {
+    const allNews = Object.values(this.newsData).flat();
+    
+    // Ищем новость по дате и slug
+    const news = allNews.find(n => {
+      const parsedDate = window.SlugUtils ? window.SlugUtils.parseDate(n.date) : null;
+      if (!parsedDate) return false;
+      
+      // Сравниваем год и месяц (день всегда 01 в нашем формате)
+      const dateMatch = parsedDate.year === year && parsedDate.month === month;
+      
+      // Генерируем slug из заголовка и сравниваем
+      const newsSlug = window.SlugUtils ? window.SlugUtils.createShortSlug(n.title) : '';
+      const slugMatch = newsSlug === slug;
+      
+      return dateMatch && slugMatch;
+    });
+    
+    if (news) {
+      // Небольшая задержка чтобы убедиться что контент загружен
+      setTimeout(() => {
+        this.openNewsModal(news.id);
+      }, 100);
+    } else {
+      console.log('News not found for:', { year, month, day, slug });
     }
   }
 
