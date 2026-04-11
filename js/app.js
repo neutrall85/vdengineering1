@@ -369,7 +369,8 @@ function initApp() {
       { key: 'about', overlayId: 'aboutModalOverlay' },
       { key: 'details', overlayId: 'detailsModalOverlay' },
       { key: 'form', overlayId: 'modalOverlay' },
-      { key: 'news', overlayId: 'newsModalOverlay' }
+      { key: 'news', overlayId: 'newsModalOverlay' },
+      { key: 'project', overlayId: 'projectModalOverlay' }
     ];
     
     modalsToRegister.forEach(modal => {

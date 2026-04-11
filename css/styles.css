@@ -55,8 +55,6 @@ body {
               padding var(--duration-normal) var(--ease-smooth);
 }
 
-/* Удалён .navbar.scrolled – цвет не меняется */
-
 .navbar-content {
   max-width: 1400px;
   margin: 0 auto;
