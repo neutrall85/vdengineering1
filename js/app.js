@@ -335,6 +335,8 @@ function initApp() {
       if (typeof NewsRenderer !== 'undefined' && typeof NewsManager !== 'undefined') {
         newsRenderer = new NewsRenderer(NEWS_DATA);
         newsManager = new NewsManager(NEWS_DATA, newsRenderer);
+        newsManager.init();
+        window.newsManager = newsManager;
         console.log('News modules initialized');
       } else {
         console.warn('NewsRenderer or NewsManager not loaded, news will be disabled');
