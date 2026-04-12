@@ -72,6 +72,11 @@ class ModalManager {
     overlay.classList.add('active');
     this.activeModal = key;
 
+    // Если это модальное окно формы, инициализируем загрузку файлов
+    if (key === 'form' && window.formManager) {
+      window.formManager.initFileUploadOnModalOpen();
+    }
+
     if (config.shouldFocus) {
       const focusTarget = options.focusSelector 
         ? document.querySelector(options.focusSelector)

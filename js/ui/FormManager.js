@@ -15,7 +15,6 @@ class FormManager {
 
   init() {
     try {
-      this._initFileUpload();
       this._initPhoneMask();
       this._initFormSubmit();
       this._initFloatingButton();
@@ -23,6 +22,13 @@ class FormManager {
     } catch (error) {
       console.error('FormManager init failed:', error);
     }
+  }
+  
+  /**
+   * Инициализация загрузки файлов - вызывается при открытии модального окна
+   */
+  initFileUploadOnModalOpen() {
+    this._initFileUpload();
   }
 
   _initFileUpload() {

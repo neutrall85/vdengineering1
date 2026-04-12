@@ -25,6 +25,9 @@ class Application {
           activePage: currentPage === 'index' ? '' : currentPage
         });
         console.log('ComponentLoader initialized');
+        
+        // Небольшая задержка чтобы DOM обновился после вставки модального окна
+        await new Promise(resolve => setTimeout(resolve, 0));
       }
 
       this._initGlobalHelpers();
