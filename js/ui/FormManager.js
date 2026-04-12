@@ -179,7 +179,8 @@ class FormManager {
   _renderFileList(fileDrop) {
     // Если fileDrop не передан, пытаемся найти первый доступный
     if (!fileDrop) {
-      fileDrop = document.querySelector('.form-file');
+      // Сначала ищем в модалке, потом на странице
+      fileDrop = document.querySelector('.modal-file-drop') || document.querySelector('.form-file');
     }
     
     // Находим контейнер списка файлов внутри этой зоны загрузки (без # чтобы работало с классом)
@@ -350,10 +351,33 @@ class FormManager {
   }
 
   _initPhoneMask() {
-    const phoneInput = DOM.getElement('phone');
-    if (phoneInput && window.PhoneFormatter) {
-      window.PhoneFormatter.bindToInput(phoneInput);
+    // Применяем маску ко всем полям телефона на странице (и в форме, и в модалке)
+    const applyPhoneMask = (phoneInput) => {
+      if (phoneInput && window.PhoneFormatter) {
+        window.PhoneFormatter.bindToInput(phoneInput);
+      }
+    };
+
+    // Инициализация для главной формы
+    const mainPhoneInput = DOM.getElement('phone');
+    if (mainPhoneInput) {
+      applyPhoneMask(mainPhoneInput);
     }
+
+    // Наблюдаем за появлением модалки и применяем маску к её полю телефона
+    const observer = new MutationObserver(() => {
+      const modalBody = document.getElementById('modalBodyContainer');
+      if (modalBody) {
+        // Ищем по классу который добавили при клонировании
+        const modalPhoneInput = modalBody.querySelector('.modal-phone-input');
+        if (modalPhoneInput && !modalPhoneInput._phoneMaskApplied) {
+          applyPhoneMask(modalPhoneInput);
+          modalPhoneInput._phoneMaskApplied = true;
+        }
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
   }
 
   _initFormSubmit() {

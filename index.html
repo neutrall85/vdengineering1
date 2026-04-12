@@ -410,9 +410,18 @@
       const cloneElements = modalBodyContainer.querySelectorAll('[id]');
       
       cloneElements.forEach(el => {
-      
+        // Оставляем id только для важных элементов формы
         if (el.id && (el.id === 'proposalForm' || el.id === 'submitBtn' || 
-            el.id === 'fileAttachment' || el.id === 'fileDrop' || el.id === 'fileList')) {
+            el.id === 'fileAttachment' || el.id === 'fileDrop' || el.id === 'fileList' ||
+            el.id === 'phone')) {
+          // Для поля телефона добавляем уникальный класс чтобы можно было найти его в модалке
+          if (el.id === 'phone') {
+            el.classList.add('modal-phone-input');
+          }
+          // Для зоны загрузки файлов добавляем класс чтобы можно было найти её в модалке
+          if (el.id === 'fileDrop') {
+            el.classList.add('modal-file-drop');
+          }
         } else if (el.id) {
           el.removeAttribute('id');
         }
