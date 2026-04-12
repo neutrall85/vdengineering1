@@ -127,9 +127,12 @@ class FormManager {
     
     if (!container) return;
 
-    // Удаляем старые обработчики перед перерисовкой
-    const oldButtons = container.querySelectorAll('.form-file-item-remove');
-    oldButtons.forEach(btn => btn.removeEventListener('click', this._handleFileRemove));
+    // Удаляем старые обработчики перед перерисовкой - клонируем контейнер
+    const newContainer = container.cloneNode(false);
+    newContainer.id = container.id;
+    newContainer.className = container.className;
+    container.parentNode.replaceChild(newContainer, container);
+    container = newContainer;
 
     if (this.currentFiles.length === 0) {
       container.innerHTML = '';
