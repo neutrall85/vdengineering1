@@ -117,7 +117,11 @@ class Application {
     };
     
     window.closeNewsModal = () => {
-      if (typeof modalManager !== 'undefined') modalManager.close('news');
+      if (newsManager && typeof newsManager.closeNewsModal === 'function') {
+        newsManager.closeNewsModal();
+      } else if (typeof modalManager !== 'undefined') {
+        modalManager.close('news');
+      }
     };
     
     window.toggleWidget = (header) => {

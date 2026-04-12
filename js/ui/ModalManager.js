@@ -69,8 +69,6 @@ class ModalManager {
     const overlay = document.getElementById(config.overlayId);
     if (!overlay) return false;
 
-    const scrollY = window.scrollY;
-
     overlay.classList.add('active');
     this.activeModal = key;
 

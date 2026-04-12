@@ -411,6 +411,62 @@ const Utils = (function() {
       const day = '01';
       
       return `${baseUrl}/${year}/${month}/${day}/${slug}`;
+    },
+
+    /**
+     * Создаёт slug для новости с ID для использования в хеше
+     * Формат: slug-id (например: poluchenie-sertifikata-2022001)
+     * @param {string} title - заголовок новости
+     * @param {number} id - ID новости
+     * @returns {string} slug с ID
+     */
+    createNewsSlug(title, id) {
+      const shortSlug = this.createShortSlug(title);
+      return `${shortSlug}-${id}`;
+    },
+
+    /**
+     * Извлекает ID новости из slug
+     * @param {string} slug - slug в формате slug-id
+     * @returns {number|null} ID новости или null если не найдено
+     */
+    extractNewsIdFromSlug(slug) {
+      if (!slug) return null;
+      const lastDashIndex = slug.lastIndexOf('-');
+      if (lastDashIndex === -1) return null;
+      
+      const idStr = slug.substring(lastDashIndex + 1);
+      const newsId = parseInt(idStr, 10);
+      
+      return isNaN(newsId) ? null : newsId;
+    },
+
+    /**
+     * Парсит путь вида /YYYY/MM/DD/slug и возвращает данные
+     * @param {string} path - путь относительно текущего домена
+     * @returns {{year: string, month: string, day: string, slug: string}|null}
+     */
+    parseNewsPath(path) {
+      if (!path || path.length < 2) return null;
+      
+      // Убираем ведущий слэш и базовый путь (news.html)
+      let cleanPath = path.replace(/^\/+/, '');
+      if (cleanPath.startsWith('news.html/')) {
+        cleanPath = cleanPath.replace('news.html/', '');
+      }
+      
+      const parts = cleanPath.split('/');
+      if (parts.length < 4) return null;
+      
+      const [year, month, day, ...slugParts] = parts;
+      const slug = slugParts.join('/');
+      
+      // Проверяем что год, месяц и день - числа
+      if (!/^\d{4}$/.test(year) || !/^\d{2}$/.test(month) || !/^\d{2}$/.test(day)) {
+        return null;
+      }
+      
+      return { year, month, day, slug };
     }
   };
 
@@ -425,3 +481,60 @@ window.Validator = Utils.Validator;
 window.PhoneFormatter = Utils.PhoneFormatter;
 window.RateLimiter = Utils.RateLimiter;
 window.SlugUtils = Utils.SlugUtils;
+
+/**
+ * NewsNavigation - Управление URL новостей (DRY & KISS)
+ * Синхронизирует состояние приложения с адресной строкой.
+ */
+const NewsNavigation = {
+    basePath: '',
+    newsManager: null,
+
+    init(newsManager) {
+        this.newsManager = newsManager;
+        this.basePath = window.location.pathname.split('/').slice(0, -1).join('/') + '/';
+        
+        // Обработка кнопок "Назад/Вперед"
+        window.addEventListener('popstate', (e) => {
+            if (e.state?.newsId) {
+                this.newsManager.openNewsModal(e.state.newsId, false);
+            } else {
+                this.newsManager.closeNewsModal();
+            }
+        });
+
+        // Проверка прямого захода по ссылке
+        this.checkDirectLink();
+    },
+
+    checkDirectLink() {
+        const path = window.location.pathname;
+        const match = path.match(/\/(\d{4})\/(\d{2})\/(\d{2})\/(.+)$/);
+        if (!match) return;
+
+        const slugPart = match[4];
+        const lastDashIndex = slugPart.lastIndexOf('-');
+        if (lastDashIndex <= 0) return;
+
+        const id = parseInt(slugPart.slice(lastDashIndex + 1), 10);
+        if (!isNaN(id)) {
+            setTimeout(() => this.newsManager.openNewsModal(id, false), 50);
+        }
+    },
+
+    openNewsUrl(id, title) {
+        const date = new Date();
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const slug = `${SlugUtils.generateSlug(title)}-${id}`;
+        
+        history.pushState({ newsId: id }, '', `/${yyyy}/${mm}/${dd}/${slug}`);
+    },
+
+    restoreBaseUrl() {
+        history.replaceState(null, '', this.basePath);
+    }
+};
+
+window.NewsNavigation = NewsNavigation;

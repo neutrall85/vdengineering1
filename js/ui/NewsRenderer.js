@@ -75,7 +75,11 @@ class NewsRenderer {
   }
 
   _createContentHtml(news) {
-    const newsLink = window.SlugUtils ? window.SlugUtils.generateNewsLink(news) : `news.html#${news.id}`;
+    // Генерируем ссылку в формате: /2023/10/01/korotkoe-nazvanie-id
+    const { year, month } = window.SlugUtils ? window.SlugUtils.parseDate(news.date) : { year: '2023', month: '01' };
+    const day = '01';
+    const shortSlug = window.SlugUtils ? window.SlugUtils.createShortSlug(news.title) : this._escapeHtml(news.title).toLowerCase().replace(/\s+/g, '-');
+    const newsLink = `/${year}/${month}/${day}/${shortSlug}-${news.id}`;
     
     return `
       <div class="news-card-content">
