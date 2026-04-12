@@ -375,14 +375,23 @@ function initApp() {
       { key: 'about', overlayId: 'aboutModalOverlay' },
       { key: 'details', overlayId: 'detailsModalOverlay' },
       { key: 'form', overlayId: 'modalOverlay' },
-      { key: 'news', overlayId: 'newsModalOverlay' },
+      { 
+        key: 'news', 
+        overlayId: 'newsModalOverlay',
+        onClose: () => {
+          // Восстанавливаем базовый URL при закрытии любым способом
+          if (window.NewsNavigation) {
+            window.NewsNavigation.restoreBaseUrl();
+          }
+        }
+      },
       { key: 'project', overlayId: 'projectModalOverlay' },
       { key: 'service', overlayId: 'serviceModalOverlay' }
     ];
     
     modalsToRegister.forEach(modal => {
       if (!modalManager.modals.has(modal.key)) {
-        modalManager.register(modal.key, { overlayId: modal.overlayId });
+        modalManager.register(modal.key, { overlayId: modal.overlayId, onClose: modal.onClose });
       }
     });
     console.log('Modals registered');

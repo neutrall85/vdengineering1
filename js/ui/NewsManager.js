@@ -121,11 +121,7 @@ class NewsManager {
     const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.UI?.modalManager);
     if (manager) {
       manager.close('news');
-      
-      // Восстанавливаем базовый URL
-      if (window.NewsNavigation) {
-        window.NewsNavigation.restoreBaseUrl();
-      }
+      // URL восстанавливается через onClose колбэк в ModalManager
     }
   }
 
