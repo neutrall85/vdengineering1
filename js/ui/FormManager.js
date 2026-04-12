@@ -26,36 +26,42 @@ class FormManager {
   }
 
   _initFileUpload() {
-    const fileInput = DOM.getElement('fileAttachment');
-    const fileDrop = DOM.getElement('fileDrop');
+    // Инициализация для всех зон загрузки на странице
+    const fileDrops = document.querySelectorAll('#fileDrop');
+    
+    fileDrops.forEach(fileDrop => {
+      const fileInput = fileDrop.querySelector('input[type="file"]');
+      if (!fileInput || !fileDrop) return;
 
-    if (!fileInput || !fileDrop) return;
+      // Добавляем атрибут multiple для поддержки нескольких файлов
+      fileInput.setAttribute('multiple', 'multiple');
+      fileInput.addEventListener('change', (e) => this._handleFileSelect(e.target.files, fileDrop));
 
-    // Добавляем атрибут multiple для поддержки нескольких файлов
-    fileInput.setAttribute('multiple', 'multiple');
-    fileInput.addEventListener('change', (e) => this._handleFileSelect(e.target.files));
+      fileDrop.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        fileDrop.style.borderColor = 'var(--vd-blue)';
+        fileDrop.style.background = 'rgba(0, 51, 160, 0.05)';
+      });
 
-    fileDrop.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      fileDrop.style.borderColor = 'var(--vd-blue)';
-      fileDrop.style.background = 'rgba(0, 51, 160, 0.05)';
-    });
+      fileDrop.addEventListener('dragleave', () => {
+        fileDrop.style.borderColor = '';
+        fileDrop.style.background = '';
+      });
 
-    fileDrop.addEventListener('dragleave', () => {
-      fileDrop.style.borderColor = '';
-      fileDrop.style.background = '';
-    });
-
-    fileDrop.addEventListener('drop', (e) => {
-      e.preventDefault();
-      fileDrop.style.borderColor = '';
-      fileDrop.style.background = '';
-      this._handleFileSelect(e.dataTransfer.files);
+      fileDrop.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileDrop.style.borderColor = '';
+        fileDrop.style.background = '';
+        this._handleFileSelect(e.dataTransfer.files, fileDrop);
+      });
     });
   }
 
-  _handleFileSelect(files) {
+  _handleFileSelect(files, fileDrop) {
     if (!files || files.length === 0) return;
+    
+    // Находим контейнер списка файлов для этой зоны загрузки
+    const fileListContainer = fileDrop?.querySelector('#fileList') || DOM.getElement('fileList');
 
     const newFiles = Array.from(files).filter(file => {
       // Проверка размера файла
@@ -90,28 +96,44 @@ class FormManager {
       this._showError(`Максимальное количество файлов: ${this.maxFiles}`);
     }
 
-    this._renderFileList();
+    this._renderFileList(fileDrop);
   }
 
-  _renderFileList() {
-    const fileListContainer = DOM.getElement('fileList');
-
-    // Если контейнер списка файлов не существует, создаём его
-    if (!fileListContainer) {
-      const fileDrop = DOM.getElement('fileDrop');
-      if (!fileDrop) return;
-
-      const container = document.createElement('div');
-      container.id = 'fileList';
-      container.className = 'form-file-list';
-      fileDrop.appendChild(container);
+  _renderFileList(fileDrop) {
+    // Если fileDrop не передан, пытаемся найти его
+    if (!fileDrop) {
+      fileDrop = document.querySelector('#fileDrop');
+    }
+    
+    // Находим контейнер списка файлов внутри этой зоны загрузки
+    let container;
+    if (fileDrop) {
+      container = fileDrop.querySelector('#fileList');
+    }
+    
+    // Если всё ещё не нашли, пробуем глобальный поиск
+    if (!container) {
+      container = DOM.getElement('fileList');
     }
 
-    const container = DOM.getElement('fileList');
+    // Если контейнер списка файлов не существует, создаём его
+    if (!container && fileDrop) {
+      const containerNew = document.createElement('div');
+      containerNew.id = 'fileList';
+      containerNew.className = 'form-file-list';
+      fileDrop.appendChild(containerNew);
+      container = containerNew;
+    }
+    
     if (!container) return;
 
     if (this.currentFiles.length === 0) {
       container.innerHTML = '';
+      // Обновляем текст в зоне загрузки
+      const fileDropText = fileDrop?.querySelector('.form-file-text');
+      if (fileDropText) {
+        fileDropText.textContent = 'Выбрать файл...';
+      }
     } else {
       container.innerHTML = this.currentFiles.map((file, index) => `
         <div class="form-file-item" data-index="${index}">
@@ -131,12 +153,12 @@ class FormManager {
           this.removeFile(index);
         });
       });
-    }
-
-    // Обновляем текст в зоне загрузки
-    const fileDropText = DOM.query('.form-file-text');
-    if (fileDropText) {
-      fileDropText.textContent = `Выбрано файлов: ${this.currentFiles.length}`;
+      
+      // Обновляем текст в зоне загрузки
+      const fileDropText = fileDrop?.querySelector('.form-file-text');
+      if (fileDropText) {
+        fileDropText.textContent = `Выбрано файлов: ${this.currentFiles.length}`;
+      }
     }
   }
 
@@ -178,7 +200,9 @@ class FormManager {
     const fileInput = DOM.getElement('fileAttachment');
     if (fileInput) fileInput.value = '';
 
-    this._renderFileList();
+    // Находим активную зону загрузки для обновления текста
+    const fileDrop = document.querySelector('#fileDrop');
+    this._renderFileList(fileDrop);
   }
 
   _initPhoneMask() {
@@ -347,7 +371,10 @@ class FormManager {
     });
 
     this.currentFiles = [];
-    this._renderFileList();
+    
+    // Находим зону загрузки для сброса текста
+    const fileDrop = document.querySelector('#fileDrop');
+    this._renderFileList(fileDrop);
   }
 }
 
