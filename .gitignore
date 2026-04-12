@@ -1,1 +1,1 @@
-Nothing should be ignored in this case, as the changes only include HTML files (.html) which are source files and not build artifacts, dependencies, or temporary files.
+(js/app.js is a source file, no build artifacts, dependencies, or temp files in the changes - output empty)

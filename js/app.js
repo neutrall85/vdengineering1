@@ -14,7 +14,8 @@ class Application {
     try {
       console.log('Initializing Volga-Dnepr Engineering website...');
       
-      // Инициализация ComponentLoader для загрузки общих компонентов
+      // 1. Сначала инициализация ComponentLoader для загрузки общих компонентов
+      // Это критично, так как FormManager и другие модули зависят от наличия элементов в DOM
       if (typeof ComponentLoader !== 'undefined') {
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
         ComponentLoader.init({ 
@@ -361,7 +362,7 @@ function initApp() {
     }
   }
   
-  // 2. Инициализация FormManager
+  // 2. Инициализация FormManager (после ComponentLoader!)
   if (hasServices && hasUtils) {
     try {
       const formRateLimiter = new window.Utils.RateLimiter(window.Services.storage);
@@ -380,7 +381,7 @@ function initApp() {
     console.warn('Services or Utils not fully loaded, FormManager not initialized');
   }
   
-  // 3. Регистрация модальных окон
+  // 3. Регистрация модальных окон (после ComponentLoader и FormManager)
   if (typeof modalManager !== 'undefined') {
     const modalsToRegister = [
       { key: 'about', overlayId: 'aboutModalOverlay', required: false },
