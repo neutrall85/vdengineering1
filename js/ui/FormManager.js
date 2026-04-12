@@ -112,27 +112,26 @@ class FormManager {
 
     if (this.currentFiles.length === 0) {
       container.innerHTML = '';
-      return;
-    }
+    } else {
+      container.innerHTML = this.currentFiles.map((file, index) => `
+        <div class="form-file-item" data-index="${index}">
+          <span class="form-file-item-name">${this._escapeHtml(file.name)}</span>
+          <span class="form-file-item-size">${this._formatFileSize(file.size)}</span>
+          <button type="button" class="form-file-item-remove" data-index="${index}" aria-label="Удалить файл">
+            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+        </div>
+      `).join('');
 
-    container.innerHTML = this.currentFiles.map((file, index) => `
-      <div class="form-file-item" data-index="${index}">
-        <span class="form-file-item-name">${this._escapeHtml(file.name)}</span>
-        <span class="form-file-item-size">${this._formatFileSize(file.size)}</span>
-        <button type="button" class="form-file-item-remove" data-index="${index}" aria-label="Удалить файл">
-          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-      </div>
-    `).join('');
-
-    container.querySelectorAll('.form-file-item-remove').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const index = parseInt(btn.getAttribute('data-index'), 10);
-        this.removeFile(index);
+      container.querySelectorAll('.form-file-item-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const index = parseInt(btn.getAttribute('data-index'), 10);
+          this.removeFile(index);
+        });
       });
-    });
+    }
 
     // Обновляем текст в зоне загрузки
     const fileDropText = DOM.query('.form-file-text');
