@@ -129,8 +129,11 @@ const ComponentLoader = {
           <p class="error-message" id="emailError">Пожалуйста, введите корректный email</p>
         </div>
         <div class="form-group">
-          <label class="form-label" for="phone">Телефон <span class="required">*</span></label>
-          <input type="tel" class="form-input" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required minlength="10" maxlength="20" autocomplete="tel">
+          <label class="form-label">Телефон <span class="required">*</span></label>
+          <div style="display: flex; gap: 10px;">
+            <input type="tel" class="form-input" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required minlength="10" maxlength="20" autocomplete="tel" style="flex: 1;">
+            <input type="text" class="form-input" id="extension" name="extension" placeholder="доб." maxlength="6" autocomplete="off" style="width: 100px;">
+          </div>
           <p class="error-message" id="phoneError">Пожалуйста, введите корректный номер телефона</p>
         </div>
         <div class="form-group">
