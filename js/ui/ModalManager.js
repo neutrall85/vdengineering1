@@ -73,9 +73,8 @@ class ModalManager {
     // Сохраняем текущую позицию скролла
     this.scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
     
-    // Блокируем скролл body, сохраняя позицию
+    // Блокируем скролл body
     document.body.classList.add('no-scroll');
-    document.body.style.top = `-${this.scrollPosition}px`;
 
     // Небольшая задержка чтобы DOM обновился перед инициализацией
     setTimeout(() => {
@@ -117,13 +116,14 @@ class ModalManager {
 
     overlay.classList.remove('active');
     
+    // Разблокируем скролл body
+    document.body.classList.remove('no-scroll');
+    
+    // Восстанавливаем позицию скролла
+    window.scrollTo(0, this.scrollPosition);
+    
     if (this.activeModal === key) {
       this.activeModal = null;
-      // Восстанавливаем скролл на прежнюю позицию
-      document.body.style.top = '';
-      window.scrollTo(0, this.scrollPosition);
-      // Разблокируем скролл body только если закрываем активное модальное окно
-      document.body.classList.remove('no-scroll');
     }
 
     if (config.onClose) config.onClose(overlay);
@@ -144,11 +144,6 @@ class ModalManager {
     this.modals.forEach((_, key) => {
       this.close(key);
     });
-    // Восстанавливаем скролл после закрытия всех окон
-    document.body.style.top = '';
-    window.scrollTo(0, this.scrollPosition);
-    // Гарантированно разблокируем скролл после закрытия всех окон
-    document.body.classList.remove('no-scroll');
   }
 }
 

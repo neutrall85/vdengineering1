@@ -1,1 +1,1 @@
-(css/styles.css and js/app.js are source files, no build artifacts, dependencies, or temp files in the changes)
+(css/styles.css, js/ui/ModalManager.js) are source code files, and there are no build artifacts, dependencies, or temporary files in the changes. Therefore, no .gitignore rules are needed.
