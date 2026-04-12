@@ -18,6 +18,15 @@ class FormManager {
       this._initPhoneMask();
       this._initFormSubmit();
       this._initFloatingButton();
+      // Инициализируем загрузку файлов для основной формы на странице
+      setTimeout(() => {
+        const mainForm = document.getElementById('commercial-offer');
+        if (mainForm) {
+          this._initFileUpload(mainForm);
+        } else {
+          this._initFileUpload();
+        }
+      }, 50);
       console.log('FormManager initialized');
     } catch (error) {
       console.error('FormManager init failed:', error);
@@ -50,31 +59,50 @@ class FormManager {
   initFileUploadOnModalOpen() {
     // Даем время на рендеринг модального окна перед инициализацией
     setTimeout(() => {
-      this._initFileUpload();
+      const modalBody = document.getElementById('modalBodyContainer');
+      if (modalBody) {
+        this._initFileUpload(modalBody);
+      } else {
+        this._initFileUpload();
+      }
     }, 100);
   }
 
-  _initFileUpload() {
-    // Инициализация для всех зон загрузки на странице
-    const fileDrops = document.querySelectorAll('#fileDrop');
+  _initFileUpload(container = null) {
+    // Если передан контейнер (например, модальное окно), ищем зоны загрузки внутри него
+    // Иначе ищем по всей странице
+    const root = container || document;
+    const fileDrops = root.querySelectorAll('.form-file');
     
-    fileDrops.forEach(originalFileDrop => {
-      const fileInput = originalFileDrop.querySelector('input[type="file"]');
-      if (!fileInput || !originalFileDrop) return;
+    fileDrops.forEach(fileDrop => {
+      const fileInput = fileDrop.querySelector('input[type="file"]');
+      if (!fileInput || !fileDrop) return;
 
       // Добавляем атрибут multiple для поддержки нескольких файлов
       fileInput.setAttribute('multiple', 'multiple');
       
-      // Удаляем старые обработчики с input
+      // Клонируем input для удаления старых обработчиков
       const newInput = fileInput.cloneNode(true);
       fileInput.parentNode.replaceChild(newInput, fileInput);
       
-      newInput.addEventListener('change', (e) => this._handleFileSelect(e.target.files, originalFileDrop));
+      // Обработчик выбора файлов через input
+      newInput.addEventListener('change', (e) => {
+        this._handleFileSelect(e.target.files, fileDrop);
+      });
 
-      // Удаляем старые обработчики drag/drop с fileDrop
-      const newFileDrop = originalFileDrop.cloneNode(true);
-      originalFileDrop.parentNode.replaceChild(newFileDrop, originalFileDrop);
+      // Удаляем старые обработчики drag/drop через клонирование fileDrop
+      const newFileDrop = fileDrop.cloneNode(true);
+      fileDrop.parentNode.replaceChild(newFileDrop, fileDrop);
       
+      // Получаем новый input внутри клонированного fileDrop и переназначаем обработчик
+      const updatedFileInput = newFileDrop.querySelector('input[type="file"]');
+      if (updatedFileInput) {
+        updatedFileInput.addEventListener('change', (e) => {
+          this._handleFileSelect(e.target.files, newFileDrop);
+        });
+      }
+      
+      // Drag & drop обработчики
       newFileDrop.addEventListener('dragover', (e) => {
         e.preventDefault();
         newFileDrop.style.borderColor = 'var(--vd-blue)';
