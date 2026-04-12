@@ -278,55 +278,24 @@ const Utils = (function() {
     }
   };
 
-  // ========== Форматирование телефона ==========
+  // ========== Форматирование телефона (отключено) ==========
   const PhoneFormatter = {
     format(input) {
-      const clean = this._clean(input);
-      if (!clean && input.value !== '') return '+7 (';
-      if (!clean) return '';
-      return this._applyMask(clean);
+      // Возвращаем значение как есть, без форматирования
+      return input.value;
     },
 
     _clean(value) {
-      let cleaned = value.replace(/[^0-9]/g, '');
-      // Если начинается с 8 или 7, убираем первую цифру (будем добавлять +7 автоматически)
-      if (cleaned.startsWith('8')) cleaned = cleaned.slice(1);
-      if (cleaned.startsWith('7')) cleaned = cleaned.slice(1);
-      return cleaned.slice(0, 10);
+      return value;
     },
 
     _applyMask(clean) {
-      // Всегда начинаем с +7
-      if (clean.length === 0) return '+7 (';
-      if (clean.length <= 3) return `+7 (${clean}`;
-      if (clean.length <= 6) return `+7 (${clean.slice(0, 3)}) ${clean.slice(3)}`;
-      if (clean.length <= 8) return `+7 (${clean.slice(0, 3)}) ${clean.slice(3, 6)}-${clean.slice(6)}`;
-      return `+7 (${clean.slice(0, 3)}) ${clean.slice(3, 6)}-${clean.slice(6, 8)}-${clean.slice(8, 10)}`;
+      return clean;
     },
 
     bindToInput(inputElement) {
-      // При фокусе, если поле пустое, сразу показываем +7 (
-      inputElement.addEventListener('focus', () => {
-        if (!inputElement.value || inputElement.value.trim() === '') {
-          inputElement.value = '+7 (';
-        }
-      });
-
-      // При потере фокуса, если введен только +7 (, очищаем поле
-      inputElement.addEventListener('blur', () => {
-        if (inputElement.value === '+7 (' || inputElement.value === '+7') {
-          inputElement.value = '';
-        }
-      });
-
-      const handler = (e) => {
-        const cursorPos = e.target.selectionStart;
-        const formatted = this.format(e.target.value);
-        e.target.value = formatted;
-        if (cursorPos) e.target.setSelectionRange(cursorPos, cursorPos);
-      };
-      inputElement.addEventListener('input', handler);
-      return () => inputElement.removeEventListener('input', handler);
+      // Маска отключена - просто возвращаем пустую функцию
+      return () => {};
     }
   };
 
