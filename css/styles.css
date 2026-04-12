@@ -243,7 +243,7 @@ body:has(.details-modal-overlay.active) {
               url('../assets/images/hero.jpg') center/cover no-repeat;
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: flex-start;
   padding: clamp(60px, 8vh, 100px) 5% clamp(40px, 6vh, 60px);
   position: relative;
   overflow: hidden;
@@ -262,7 +262,9 @@ body:has(.details-modal-overlay.active) {
 
 .hero-content {
   max-width: 900px;
-  margin: 0;
+  width: 100%;
+  margin-left: auto;
+  margin-right: 5%;
   position: relative;
   z-index: 1;
 }
