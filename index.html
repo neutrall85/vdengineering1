@@ -301,7 +301,7 @@
           <p class="error-message" id="taskDescriptionError">Пожалуйста, опишите вашу задачу (минимум 10 символов)</p>
         </div>
         <div class="form-group">
-          <label class="form-label">Вложение (опционально)</label>
+          <label class="form-label" for="fileAttachment">Вложение (опционально)</label>
           <div class="form-file" id="fileDrop">
             <input type="file" id="fileAttachment" name="fileAttachment" accept=".pdf,.doc,.docx,.xls,.xlsx" aria-label="Загрузить файл" multiple>
             <div class="form-file-icon">
@@ -415,10 +415,8 @@
       const cloneElements = modalBodyContainer.querySelectorAll('[id]');
       cloneElements.forEach(el => {
         // Сохраняем id только для критических элементов формы, добавляя суффикс _modal
-        if (el.id && (el.id === 'proposalForm' || el.id === 'submitBtn' || 
-            el.id === 'fileAttachment' || el.id === 'fileDrop' || el.id === 'fileList')) {
+        if (el.id && (el.id === 'proposalForm' || el.id === 'submitBtn')) {
           // Эти id останутся, FormManager ищет их по id
-          // Но чтобы не было конфликта с оригинальной формой, FormManager должен инициализироваться для каждой формы отдельно
         } else if (el.id) {
           el.removeAttribute('id');
         }
