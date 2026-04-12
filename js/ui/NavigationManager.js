@@ -22,7 +22,7 @@ class NavigationManager {
         this.navbar = DOM.getElement('navbar');
         this.scrollToTopBtn = DOM.getElement('scrollToTop');
         this.mobileMenu = DOM.getElement('mobileMenu');
-        this.mobileMenuBtn = DOM.query('.mobile-menu-btn');
+        this.mobileMenuBtn = DOM.getElement('mobileMenuBtn');
         this.mobileMenuOverlay = DOM.getElement('mobileMenuOverlay');
         
         if (!this.navbar || !this.mobileMenu || !this.mobileMenuBtn) {
@@ -116,7 +116,7 @@ class NavigationManager {
     
     const closeBtn = DOM.getElement('mobileMenuClose');
     
-    // Используем делегирование событий для кнопки меню
+    // Используем делегирование событий для кнопки меню (по ID)
     document.addEventListener('click', (e) => {
       if (e.target.closest('#mobileMenuBtn')) {
         e.stopPropagation();

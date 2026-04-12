@@ -50,7 +50,7 @@ const Utils = (function() {
       if (!element && window.CONFIG?.DEBUG) {
         console.warn(`Element with id "${id}" not found`);
       }
-      return element;
+      return element || null;
     },
 
     query(selector, context = document) {
@@ -111,10 +111,12 @@ const Utils = (function() {
     },
 
     addClass(element, ...classes) {
+      if (!element) return;
       classes.forEach(cls => { if (cls) element.classList.add(cls); });
     },
 
     removeClass(element, ...classes) {
+      if (!element) return;
       classes.forEach(cls => { if (cls) element.classList.remove(cls); });
     },
 
