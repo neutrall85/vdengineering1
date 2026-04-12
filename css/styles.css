@@ -1140,6 +1140,12 @@ body:has(.details-modal-overlay.active) {
   padding: 1.5rem;
   max-height: calc(90vh - 100px);
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.modal-body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 /* ==================== ФОРМЫ ==================== */
@@ -1574,9 +1580,15 @@ body:has(.details-modal-overlay.active) {
   max-width: 800px;
   max-height: 90vh;
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
   position: relative;
   transform: scale(0.9);
   transition: transform 0.3s ease;
+}
+
+.news-modal-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .news-modal-overlay.active .news-modal-container {
@@ -1687,9 +1699,15 @@ body:has(.details-modal-overlay.active) {
   max-width: 600px;
   max-height: 80vh;
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
   position: relative;
   transform: scale(0.9);
   transition: transform 0.3s ease;
+}
+
+.details-modal-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .details-modal-overlay.active .details-modal-container {
