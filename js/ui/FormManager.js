@@ -75,7 +75,11 @@ class FormManager {
     const fileDrops = root.querySelectorAll('.form-file');
     
     fileDrops.forEach(fileDrop => {
-      const fileInput = fileDrop.querySelector('input[type="file"]');
+      // Находим input внутри label или напрямую в fileDrop
+      let fileInput = fileDrop.querySelector('label input[type="file"]');
+      if (!fileInput) {
+        fileInput = fileDrop.querySelector('input[type="file"]');
+      }
       if (!fileInput) return;
 
       // Добавляем атрибут multiple для поддержки нескольких файлов
@@ -190,23 +194,12 @@ class FormManager {
         <div class="form-file-item" data-index="${index}">
           <span class="form-file-item-name">${this._escapeHtml(file.name)}</span>
           <span class="form-file-item-size">${this._formatFileSize(file.size)}</span>
-          <button type="button" class="form-file-item-remove" data-index="${index}" aria-label="Удалить файл">
+          <button type="button" class="form-file-item-remove" data-index="${index}" aria-label="Удалить файл" onclick="window.formManager && window.formManager.removeFile(${index}, this.closest('.form-file'))">
             <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
         </div>
       `).join('');
 
-      // Используем делегирование событий для кнопок удаления
-      container.addEventListener('click', (e) => {
-        const removeBtn = e.target.closest('.form-file-item-remove');
-        if (removeBtn) {
-          e.preventDefault();
-          e.stopPropagation();
-          const index = parseInt(removeBtn.getAttribute('data-index'), 10);
-          this.removeFile(index, fileDrop);
-        }
-      });
-      
       // Обновляем текст в зоне загрузки
       const fileDropText = fileDrop?.querySelector('.form-file-text');
       if (fileDropText) {
@@ -258,16 +251,18 @@ class FormManager {
    */
   _showUploadWarning(message, fileDrop) {
     if (!fileDrop) return;
-    
+
     // Находим или создаём контейнер предупреждения внутри зоны загрузки
     let warningContainer = fileDrop.querySelector('.upload-warning-container');
     if (!warningContainer) {
       warningContainer = document.createElement('div');
       warningContainer.className = 'upload-warning-container';
-      // Вставляем перед иконкой и текстом, но после input
-      const input = fileDrop.querySelector('input[type="file"]');
-      if (input && input.nextSibling) {
-        fileDrop.insertBefore(warningContainer, input.nextSibling);
+      // Вставляем после списка файлов
+      const fileList = fileDrop.querySelector('.form-file-list');
+      if (fileList && fileList.nextSibling) {
+        fileDrop.insertBefore(warningContainer, fileList.nextSibling);
+      } else if (fileList) {
+        fileDrop.appendChild(warningContainer);
       } else {
         fileDrop.insertBefore(warningContainer, fileDrop.firstChild);
       }
@@ -298,7 +293,10 @@ class FormManager {
 
     // Сбрасываем value у input в переданном fileDrop, чтобы можно было добавить тот же файл снова
     if (fileDrop) {
-      const fileInput = fileDrop.querySelector('input[type="file"]');
+      let fileInput = fileDrop.querySelector('label input[type="file"]');
+      if (!fileInput) {
+        fileInput = fileDrop.querySelector('input[type="file"]');
+      }
       if (fileInput) fileInput.value = '';
     } else {
       // Если fileDrop не передан, сбрасываем во всех зонах загрузки
