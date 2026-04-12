@@ -14,7 +14,18 @@ class Application {
     try {
       console.log('Initializing Volga-Dnepr Engineering website...');
       
-      this._registerModules();
+      // Инициализация ComponentLoader для загрузки общих компонентов
+      if (typeof ComponentLoader !== 'undefined') {
+        const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+        ComponentLoader.init({ 
+          loadNavbar: true, 
+          loadFooter: true, 
+          loadModal: true,
+          activePage: currentPage === 'index' ? '' : currentPage
+        });
+        console.log('ComponentLoader initialized');
+      }
+
       this._initGlobalHelpers();
       this._setCurrentYear();
       
