@@ -32,6 +32,9 @@
   --duration-normal: 0.35s;
   --duration-slow: 0.5s;
   --duration-slower: 0.7s;
+
+  /* Базовый размер шрифта для пропорционального масштабирования */
+  font-size: 16px;
 }
 
 body {
@@ -39,6 +42,7 @@ body {
   background: white;
   color: var(--text-dark);
   overflow-x: hidden;
+  font-size: clamp(0.875rem, 1vw, 1rem);
 }
 
 /* Блокировка скролла при открытом модальном окне */
@@ -89,14 +93,14 @@ body:has(.details-modal-overlay.active) {
 }
 
 .logo-image {
-  max-width: 180px;
-  max-height: 60px;
+  max-width: clamp(120px, 15vw, 180px);
+  max-height: clamp(40px, 8vh, 60px);
   object-fit: contain;
 }
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: clamp(1rem, 3vw, 2rem);
   list-style: none;
   justify-content: center;
 }
@@ -105,6 +109,7 @@ body:has(.details-modal-overlay.active) {
   color: white;
   text-decoration: none;
   font-weight: 500;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
   transition: color var(--duration-normal) var(--ease-smooth);
   position: relative;
 }
@@ -171,7 +176,7 @@ body:has(.details-modal-overlay.active) {
 .mobile-menu a {
   color: white;
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 4vw, 1.2rem);
   font-weight: 500;
   padding: 1rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
@@ -238,16 +243,46 @@ body:has(.details-modal-overlay.active) {
 
 /* ==================== ГЕРОЙ ==================== */
 .hero {
-  min-height: 70vh;
-  background: linear-gradient(135deg, rgba(255,255,255,0.65) 0%, rgba(248,249,250,0.92) 100%),
-              url('../assets/images/hero.jpg') center/cover no-repeat;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(60px, 8vh, 100px) 5% clamp(40px, 6vh, 60px);
-  position: relative;
+  min-height: 70vh;
+  padding: 0 5%;
   overflow: hidden;
-  text-align: left;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-bg-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.65) 0%, rgba(248,249,250,0.92) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1400px;
+  width: 100%;
 }
 
 .hero::before {
@@ -258,18 +293,16 @@ body:has(.details-modal-overlay.active) {
   right: 0;
   bottom: 0;
   background: radial-gradient(circle at 30% 50%, rgba(0,78,150,0.03) 0%, transparent 70%);
+  z-index: 0;
 }
 
-.hero-content {
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+/* Текстовый блок */
+.hero-text {
+  max-width: 700px;
 }
 
 .hero-text h1 {
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
   font-weight: 800;
   color: var(--vd);
   line-height: 1.2;
@@ -281,7 +314,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .hero-text p {
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
   color: var(--metallic);
   line-height: 1.6;
   margin-bottom: 2rem;
@@ -290,48 +323,71 @@ body:has(.details-modal-overlay.active) {
 .hero-buttons {
   display: flex;
   gap: 1rem;
-  justify-content: left;
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 
 .hero-stats {
   display: flex;
-  justify-content: left;
-  gap: clamp(1.5rem, 3vw, 3rem);
-  margin-top: clamp(1.5rem, 3vh, 3rem);
+  justify-content: flex-start;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-top: clamp(2rem, 4vh, 3rem);
   padding-top: clamp(1rem, 2vh, 2rem);
   border-top: 1px solid rgba(0, 78, 150, 0.15);
+  flex-wrap: wrap;
 }
 
-.hero-stats .stat-number {
-    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-  }
-
-  .hero-stats .stat-label {
-    font-size: clamp(0.65rem, 1.2vw, 0.75rem);
-  }
-
 .stat-number {
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-weight: 800;
   color: var(--vd);
   display: block;
 }
 
 .stat-label {
-  font-size: 0.9rem;
+  font-size: clamp(0.75rem, 1.2vw, 0.9rem);
   color: var(--metallic);
+}
+
+@media (max-width: 1048px) {
+  .hero {
+    text-align: center;
+  }
+  .hero-text {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .hero-text p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-buttons,
+  .hero-stats {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: 60vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    min-height: 50vh;
+  }
 }
 
 /* ==================== КНОПКИ ==================== */
 .btn-primary {
   background: linear-gradient(135deg, var(--vd-orange), var(--vd-orange-light));
   color: white;
-  padding: 1rem 2rem;
+  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(1.5rem, 3vw, 2rem);
   border-radius: 50px;
   text-decoration: none;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
@@ -363,11 +419,11 @@ body:has(.details-modal-overlay.active) {
 .btn-secondary {
   background: transparent;
   color: var(--vd);
-  padding: 0.9rem 1.8rem;
+  padding: clamp(0.7rem, 1.3vw, 0.9rem) clamp(1.3rem, 2.5vw, 1.8rem);
   border-radius: 50px;
   text-decoration: none;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
   border: 2px solid var(--vd);
   cursor: pointer;
   transition: all var(--duration-normal) var(--ease-smooth);
@@ -390,7 +446,7 @@ body:has(.details-modal-overlay.active) {
 
 /* ==================== УСЛУГИ ==================== */
 .services {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: white;
   scroll-margin-top: 80px;
 }
@@ -407,13 +463,13 @@ body:has(.details-modal-overlay.active) {
   color: var(--vd);
   padding: 0.3rem 1rem;
   border-radius: 50px;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1vw, 0.8rem);
   font-weight: 600;
   margin-bottom: 1rem;
 }
 
 .section-header h2 {
-  font-size: 2.2rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-weight: 700;
   color: var(--vd);
   margin-bottom: 1rem;
@@ -422,7 +478,7 @@ body:has(.details-modal-overlay.active) {
 .section-header p {
   color: var(--metallic);
   line-height: 1.6;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
 }
 
 .services-grid {
@@ -436,7 +492,7 @@ body:has(.details-modal-overlay.active) {
 .service-card {
   background: var(--vd-light-gray);
   border-radius: 20px;
-  padding: 2rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
   transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55),
               box-shadow 0.4s ease;
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -494,7 +550,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .service-card h3 {
-  font-size: 1.25rem;
+  font-size: clamp(1.1rem, 2vw, 1.25rem);
   font-weight: 700;
   margin-bottom: 1rem;
   color: var(--vd);
@@ -503,13 +559,13 @@ body:has(.details-modal-overlay.active) {
 .service-card p {
   color: var(--metallic);
   line-height: 1.6;
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
   margin-bottom: 1.5rem;
 }
 
 /* ==================== О НАС PREVIEW ==================== */
 .about-preview {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: var(--vd-light-gray);
 }
 
@@ -534,7 +590,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .about-text h2 {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 700;
   color: var(--vd);
   margin-bottom: 1.5rem;
@@ -544,17 +600,18 @@ body:has(.details-modal-overlay.active) {
   color: var(--metallic);
   line-height: 1.7;
   margin-bottom: 1rem;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
 }
 
 /* ==================== НОВОСТИ PREVIEW ==================== */
 .news-preview {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: white;
 }
 
 .preview-news-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   max-width: 1400px;
   margin: 0 auto;
@@ -575,7 +632,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .news-card-preview-image {
-  height: 220px;
+  height: clamp(180px, 25vw, 220px);
   overflow: hidden;
 }
 
@@ -591,7 +648,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .news-card-preview-content {
-  padding: 1.5rem;
+  padding: clamp(1rem, 2vw, 1.5rem);
 }
 
 .news-card-preview-category {
@@ -600,13 +657,13 @@ body:has(.details-modal-overlay.active) {
   color: var(--vd);
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
-  font-size: 0.7rem;
+  font-size: clamp(0.65rem, 1vw, 0.7rem);
   font-weight: 600;
   margin-bottom: 1rem;
 }
 
 .news-card-preview h3 {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   margin-bottom: 0.75rem;
   color: var(--vd);
   line-height: 1.4;
@@ -615,7 +672,7 @@ body:has(.details-modal-overlay.active) {
 .news-card-preview p {
   color: var(--metallic);
   line-height: 1.6;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
   margin-bottom: 1rem;
 }
 
@@ -623,7 +680,7 @@ body:has(.details-modal-overlay.active) {
   color: var(--vd);
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -637,7 +694,7 @@ body:has(.details-modal-overlay.active) {
 
 /* ==================== ПАРТНЕРЫ ==================== */
 .partners {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: linear-gradient(135deg, var(--vd-light-gray) 0%, white 100%);
   overflow: hidden;
 }
@@ -649,7 +706,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .partners-header h2 {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 700;
   color: var(--vd);
   margin-bottom: 1rem;
@@ -657,7 +714,7 @@ body:has(.details-modal-overlay.active) {
 
 .partners-header p {
   color: var(--metallic);
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
 }
 
 .partners-slider {
@@ -718,7 +775,7 @@ body:has(.details-modal-overlay.active) {
 
 /* ==================== КОНТАКТЫ ==================== */
 .contact {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: white;
 }
 
@@ -731,7 +788,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .contact-info h2 {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 700;
   margin-bottom: 1rem;
   color: var(--vd);
@@ -741,6 +798,7 @@ body:has(.details-modal-overlay.active) {
   color: var(--metallic);
   line-height: 1.6;
   margin-bottom: 2rem;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
 }
 
 .contact-details {
@@ -787,13 +845,13 @@ body:has(.details-modal-overlay.active) {
   font-weight: 700;
   margin-bottom: 0.25rem;
   color: var(--vd);
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
 }
 
 .contact-item-text p,
 .contact-item-text a {
   color: var(--metallic);
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
   text-decoration: none;
   transition: color var(--duration-fast) var(--ease-smooth);
 }
@@ -809,7 +867,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .map-section h3 {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 700;
   margin-bottom: 1rem;
   color: var(--vd);
@@ -820,27 +878,11 @@ body:has(.details-modal-overlay.active) {
 }
 
 .commercial-offer-container h2 {
-  font-size: 1.7rem;
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
   font-weight: 700;
   margin-bottom: 1rem;
   color: var(--vd);
 }
-/* .contact-form-icon {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, var(--vd), var(--vd-dark));
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem;
-}
-
-.contact-form-icon svg {
-  width: 40px;
-  height: 40px;
-  fill: white;
-} */
 
 /* ==================== ФУТЕР ==================== */
 .footer {
@@ -865,13 +907,13 @@ body:has(.details-modal-overlay.active) {
 .footer-brand p {
   color: rgba(255, 255, 255, 0.8);
   line-height: 1.6;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
 }
 
 .footer-links h4 {
   color: white;
   margin-bottom: 1rem;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
   font-weight: 600;
 }
 
@@ -886,7 +928,7 @@ body:has(.details-modal-overlay.active) {
 .footer-links a {
   color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
   transition: color var(--duration-fast) var(--ease-smooth);
 }
 
@@ -901,7 +943,7 @@ body:has(.details-modal-overlay.active) {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   text-align: center;
   color: rgba(255, 255, 255, 0.6);
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 1vw, 0.85rem);
 }
 
 /* ==================== SCROLL TO TOP ==================== */
@@ -948,7 +990,7 @@ body:has(.details-modal-overlay.active) {
   right: 2rem;
   background: linear-gradient(135deg, var(--vd-orange), var(--vd-orange-light));
   color: white;
-  padding: 1rem 1.5rem;
+  padding: clamp(0.8rem, 1.5vw, 1rem) clamp(1.2rem, 2vw, 1.5rem);
   border-radius: 50px;
   border: none;
   cursor: pointer;
@@ -956,7 +998,7 @@ body:has(.details-modal-overlay.active) {
   align-items: center;
   gap: 0.75rem;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
   box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
   transition: all 0.3s ease;
   z-index: 1000;
@@ -1036,21 +1078,6 @@ body:has(.details-modal-overlay.active) {
   transition: transform var(--duration-slow) var(--ease-bounce);
 }
 
-/* ==================== КАСТОМНАЯ ПОЛОСА ПРОКРУТКИ ДЛЯ МОДАЛЬНЫХ ОКОН ==================== */
-.modal-container,
-.news-modal-container,
-.details-modal-container,
-.modal-body {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.modal-container::-webkit-scrollbar,
-.news-modal-container::-webkit-scrollbar,
-.details-modal-container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
 .modal-overlay.active .modal-container {
   transform: scale(1) translateY(0);
 }
@@ -1063,7 +1090,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .modal-title {
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
   font-weight: 700;
   color: var(--vd);
   margin-bottom: 0.5rem;
@@ -1073,7 +1100,7 @@ body:has(.details-modal-overlay.active) {
 
 .modal-subtitle {
   color: var(--metallic);
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
   line-height: 1.5;
 }
 
@@ -1103,10 +1130,6 @@ body:has(.details-modal-overlay.active) {
   fill: white;
 }
 
-.modal-close:hover svg {
-  fill: white;
-}
-
 .modal-body {
   padding: 1.5rem;
   max-height: calc(90vh - 100px);
@@ -1123,7 +1146,7 @@ body:has(.details-modal-overlay.active) {
   font-weight: 600;
   color: var(--vd);
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
 }
 
 .form-label .required {
@@ -1140,7 +1163,7 @@ body:has(.details-modal-overlay.active) {
   border-radius: 12px;
   background: var(--vd-light-gray);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
   color: var(--text-dark);
   transition: all var(--duration-normal) var(--ease-smooth);
 }
@@ -1189,7 +1212,6 @@ body:has(.details-modal-overlay.active) {
   min-height: 120px;
 }
 
-
 .form-file.has-file {
   border-style: solid;
   border-color: var(--success-color);
@@ -1222,7 +1244,6 @@ body:has(.details-modal-overlay.active) {
   justify-content: center;
   transition: transform var(--duration-normal) var(--ease-elastic);
 }
-
 
 .form-file-icon svg {
   width: 16px;
@@ -1384,7 +1405,7 @@ body:has(.details-modal-overlay.active) {
   border-radius: 12px;
   border: none;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
   font-weight: 600;
   cursor: pointer;
   display: flex;
@@ -1463,7 +1484,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .success-title {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 700;
   color: var(--vd);
   margin-bottom: 0.5rem;
@@ -1472,6 +1493,7 @@ body:has(.details-modal-overlay.active) {
 .success-text {
   color: var(--metallic);
   line-height: 1.5;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
 }
 
 .hp-field {
@@ -1584,13 +1606,13 @@ body:has(.details-modal-overlay.active) {
 
 .news-modal-image {
   width: 100%;
-  height: 300px;
+  height: clamp(200px, 30vh, 300px);
   object-fit: cover;
   display: block;
 }
 
 .news-modal-body {
-  padding: 2rem;
+  padding: clamp(1rem, 3vw, 2rem);
 }
 
 .news-modal-category {
@@ -1599,7 +1621,7 @@ body:has(.details-modal-overlay.active) {
   color: var(--vd);
   padding: 0.5rem 1.5rem;
   border-radius: 30px;
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
   font-weight: 600;
   margin-bottom: 1rem;
 }
@@ -1607,11 +1629,11 @@ body:has(.details-modal-overlay.active) {
 .news-modal-date {
   color: var(--metallic);
   margin-bottom: 1rem;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
 }
 
 .news-modal-title {
-  font-size: 1.8rem;
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
   font-weight: 700;
   margin-bottom: 1.5rem;
   line-height: 1.3;
@@ -1621,6 +1643,7 @@ body:has(.details-modal-overlay.active) {
 .news-modal-content {
   color: var(--text-dark);
   line-height: 1.8;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
 }
 
 .news-modal-content p {
@@ -1695,11 +1718,11 @@ body:has(.details-modal-overlay.active) {
 }
 
 .details-modal-body {
-  padding: 2rem;
+  padding: clamp(1.5rem, 4vw, 2rem);
 }
 
 .details-modal-title {
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
   font-weight: 700;
   margin-bottom: 1.5rem;
   line-height: 1.3;
@@ -1715,7 +1738,7 @@ body:has(.details-modal-overlay.active) {
 .details-modal-list li {
   padding: 0.75rem 0;
   color: var(--metallic);
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
   border-bottom: 1px solid var(--border-color);
   position: relative;
   padding-left: 1.75rem;
@@ -1738,12 +1761,12 @@ body:has(.details-modal-overlay.active) {
 }
 
 .page-header h1 {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
   margin-bottom: 1rem;
 }
 
 .page-header p {
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
   max-width: 800px;
   margin: 0 auto;
   opacity: 0.9;
@@ -1753,12 +1776,12 @@ body:has(.details-modal-overlay.active) {
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
 }
 
 .process-section {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: var(--vd-light-gray);
 }
 
@@ -1797,14 +1820,16 @@ body:has(.details-modal-overlay.active) {
 .step h3 {
   color: var(--vd);
   margin-bottom: 0.5rem;
+  font-size: clamp(1.1rem, 2vw, 1.25rem);
 }
 
 .step p {
   color: var(--metallic);
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
 }
 
 .contact-cta {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: var(--vd-light-blue);
   text-align: center;
   color: #004E96;
@@ -1813,7 +1838,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .contact-cta h2 {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   margin-bottom: 1rem;
   position: relative;
   z-index: 1;
@@ -1821,19 +1846,19 @@ body:has(.details-modal-overlay.active) {
 
 .contact-cta p {
   margin-bottom: 2rem;
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
   position: relative;
   z-index: 1;
 }
 
 /* ==================== СТРАНИЦА ПРОЕКТОВ ==================== */
 .projects-full {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
 }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   max-width: 1400px;
   margin: 0 auto;
@@ -1853,7 +1878,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .project-image {
-  height: 250px;
+  height: clamp(200px, 25vw, 250px);
   overflow: hidden;
 }
 
@@ -1869,7 +1894,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .project-content {
-  padding: 1.5rem;
+  padding: clamp(1rem, 2vw, 1.5rem);
 }
 
 .project-category {
@@ -1878,13 +1903,13 @@ body:has(.details-modal-overlay.active) {
   color: var(--vd);
   padding: 0.3rem 1rem;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1vw, 0.8rem);
   font-weight: 600;
   margin-bottom: 1rem;
 }
 
 .project-content h3 {
-  font-size: 1.25rem;
+  font-size: clamp(1rem, 2vw, 1.25rem);
   color: var(--vd);
   margin-bottom: 0.75rem;
 }
@@ -1893,11 +1918,12 @@ body:has(.details-modal-overlay.active) {
   color: var(--metallic);
   line-height: 1.6;
   margin-bottom: 1rem;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
 }
 
 /* ==================== СТРАНИЦА НОВОСТЕЙ ==================== */
 .news-full {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
 }
 
 .news-tabs {
@@ -1914,7 +1940,7 @@ body:has(.details-modal-overlay.active) {
   border: 2px solid var(--border-color);
   border-radius: 50px;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
   font-weight: 600;
   color: var(--text-dark);
   cursor: pointer;
@@ -1962,7 +1988,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .year-divider-year {
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-weight: 800;
   color: var(--vd);
   display: block;
@@ -1970,7 +1996,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .year-divider-label {
-  font-size: 0.85rem;
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
   color: var(--metallic);
   font-weight: 500;
 }
@@ -2035,20 +2061,20 @@ body:has(.details-modal-overlay.active) {
   color: var(--vd);
   padding: 0.4rem 1rem;
   border-radius: 50px;
-  font-size: 0.7rem;
+  font-size: clamp(0.65rem, 1vw, 0.7rem);
   font-weight: 600;
   z-index: 10;
 }
 
 .news-card-content {
-  padding: 1.5rem;
+  padding: clamp(1rem, 2vw, 1.5rem);
   display: flex;
   flex-direction: column;
   background: white;
 }
 
 .news-card-date {
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
   color: var(--vd);
   margin-bottom: 0.75rem;
   display: flex;
@@ -2064,7 +2090,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .news-card-title {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 700;
   margin-bottom: 0.75rem;
   line-height: 1.4;
@@ -2074,7 +2100,7 @@ body:has(.details-modal-overlay.active) {
 .news-card-excerpt {
   color: var(--metallic);
   line-height: 1.6;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
   margin-bottom: 1rem;
 }
 
@@ -2086,7 +2112,7 @@ body:has(.details-modal-overlay.active) {
   align-items: center;
   gap: 0.5rem;
   transition: all var(--duration-normal) var(--ease-elastic);
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
   background: none;
   border: none;
   cursor: pointer;
@@ -2128,7 +2154,7 @@ body:has(.details-modal-overlay.active) {
   border: none;
   border-radius: 50px;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -2156,6 +2182,7 @@ body:has(.details-modal-overlay.active) {
   text-align: center;
   padding: 3rem;
   color: var(--metallic);
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
 }
 
 .image-placeholder {
@@ -2181,7 +2208,7 @@ body:has(.details-modal-overlay.active) {
 
 /* ==================== СТРАНИЦА О НАС ==================== */
 .about-full {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
 }
 
 .about-grid {
@@ -2194,11 +2221,11 @@ body:has(.details-modal-overlay.active) {
 .about-stats {
   background: var(--vd-light-gray);
   border-radius: 24px;
-  padding: 2rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
 }
 
 .about-stats h3 {
-  font-size: 1.3rem;
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
   color: var(--vd);
   margin-bottom: 1.5rem;
 }
@@ -2208,19 +2235,19 @@ body:has(.details-modal-overlay.active) {
 }
 
 .about-stats .stat-number {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
   font-weight: 800;
   color: var(--vd);
   display: block;
 }
 
 .about-stats .stat-label {
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
   color: var(--metallic);
 }
 
 .certificate-section {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: var(--vd-light-gray);
 }
 
@@ -2277,7 +2304,7 @@ body:has(.details-modal-overlay.active) {
 }
 
 .widget-title {
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
   font-weight: 600;
   color: var(--vd);
   position: relative;
@@ -2316,7 +2343,7 @@ body:has(.details-modal-overlay.active) {
 .widget-content li {
   padding: 0.6rem 0;
   color: var(--metallic);
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
   position: relative;
   padding-left: 1.5rem;
   opacity: 0;
@@ -2346,12 +2373,12 @@ body:has(.details-modal-overlay.active) {
 }
 
 .features-section {
-  padding: 60px 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
 }
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   max-width: 1400px;
   margin: 0 auto;
@@ -2360,7 +2387,7 @@ body:has(.details-modal-overlay.active) {
 .feature-card {
   background: white;
   border-radius: 20px;
-  padding: 2rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   text-align: center;
   transition: all var(--duration-normal) var(--ease-elastic);
@@ -2401,11 +2428,13 @@ body:has(.details-modal-overlay.active) {
 .feature-card h3 {
   color: var(--vd);
   margin-bottom: 1rem;
+  font-size: clamp(1.1rem, 2vw, 1.25rem);
 }
 
 .feature-card p {
   color: var(--metallic);
   line-height: 1.6;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
 }
 
 /* ==================== МЕДИА-ЗАПРОСЫ ==================== */
@@ -2416,10 +2445,6 @@ body:has(.details-modal-overlay.active) {
     gap: 2rem;
   }
 
-  .hero-text h1 {
-    font-size: 2rem;
-  }
-
   .news-card {
     grid-template-columns: 1fr;
   }
@@ -2427,13 +2452,13 @@ body:has(.details-modal-overlay.active) {
   .news-card-image {
     min-height: 240px;
   }
-
-  .year-divider-year {
-    font-size: 2rem;
-  }
 }
 
 @media (max-width: 1048px) {
+  :root {
+    font-size: 15px;
+  }
+
   .nav-links {
     display: none;
   }
@@ -2442,16 +2467,21 @@ body:has(.details-modal-overlay.active) {
     display: flex;
   }
 
-  .hero-text h1 {
-    font-size: 1.6rem;
+  .hero-content {
+    left: 0;
+    text-align: center;
+  }
+
+  .hero-text p {
+    max-width: 100%;
+  }
+
+  .hero-buttons {
+    justify-content: center;
   }
 
   .hero-stats {
-    flex-direction: row;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
   }
 
   .services-grid {
@@ -2511,31 +2541,24 @@ body:has(.details-modal-overlay.active) {
 }
 
 @media (max-width: 768px) {
+  :root {
+    font-size: 14px;
+  }
+
+  .hero {
+    min-height: 60vh;
+  }
+
+  .hero-content {
+    width: 95%;
+  }
+
   .page-header h1 {
     font-size: 1.8rem;
   }
 
   .section-header h2 {
     font-size: 1.6rem;
-  }
-
-  .hero-text h1 {
-    font-size: 1.4rem;
-  }
-
-  .hero-text p {
-    font-size: 1rem;
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .btn-primary,
-  .btn-secondary {
-    width: 100%;
-    justify-content: center;
   }
 
   .footer-content {
@@ -2558,14 +2581,6 @@ body:has(.details-modal-overlay.active) {
     padding: 1rem;
   }
 
-  .news-modal-title {
-    font-size: 1.4rem;
-  }
-
-  .news-modal-image {
-    height: 200px;
-  }
-
   .details-modal-body {
     padding: 1.5rem;
   }
@@ -2573,13 +2588,71 @@ body:has(.details-modal-overlay.active) {
   .contact-form-container {
     padding: 1.5rem;
   }
+}
 
+@media (max-width: 550px) {
+  .modal-overlay {
+    overflow: auto;
+    align-items: flex-start;
+    padding: 1rem 0;
+  }
+  
+  .modal-container {
+    margin-top: 1rem;
+    max-width: calc(100% - 2rem);
+    max-height: calc(95vh - 2rem);
+    overflow-y: auto;
+  }
+  
+  .modal-close {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 36px;
+    height: 36px;
+    background: var(--error-color);
+    box-shadow: none;
+  }
+  
+  .modal-close svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .modal-header {
+    padding: 1rem 1rem 0.5rem;
+    padding-right: 45px;
+  }
+  
+  .modal-title {
+    font-size: 1.1rem;
+  }
+  
+  .modal-subtitle {
+    font-size: 0.8rem;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+    max-height: none;
+  }
+  
+  .form-input,
+  .form-select,
   .form-textarea {
-    min-height: 150px;
+    font-size: 16px; /* Предотвращает зум на iOS */
+    padding: 0.7rem 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
+  :root {
+    font-size: 13px;
+  }
+
+  .hero {
+    min-height: 50vh;
+  }
+
   .page-header {
     padding: 100px 5% 40px;
   }
@@ -2614,54 +2687,5 @@ body:has(.details-modal-overlay.active) {
 
   .news-card-title {
     font-size: 1rem;
-  }
-}
-
-@media (max-width: 550px) {
-  .modal-overlay {
-    overflow: auto;
-    align-items: flex-start;
-    padding: 1rem 0;
-  }
-  .modal-container {
-    margin-top: 1rem;
-    max-width: calc(100% - 2rem);
-    max-height: calc(95vh - 2rem);
-    overflow-y: auto;
-  }
-  .modal-close {
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 36px;
-    height: 36px;
-    background: var(--error-color);
-    box-shadow: none;
-  }
-  .modal-close svg {
-    width: 18px;
-    height: 18px;
-  }
-  .modal-header {
-    padding: 1rem 1rem 0.5rem;
-    padding-right: 45px;
-  }
-  .modal-title {
-    font-size: 1.1rem;
-  }
-  .modal-subtitle {
-    font-size: 0.8rem;
-  }
-  .modal-body {
-    padding: 1rem;
-    max-height: none;
-  }
-  .form-textarea {
-    min-height: 120px;
-  }
-  .form-input,
-  .form-select,
-  .form-textarea {
-    font-size: 16px; /* Предотвращает зум на iOS */
-    padding: 0.7rem 0.9rem;
   }
 }
