@@ -112,13 +112,14 @@ class Application {
       if (typeof modalManager !== 'undefined') modalManager.close('form');
     };
     
-    window.removeFile = (event) => {
+    window.removeFile = (event, index) => {
       if (event) {
         event.stopPropagation();
         event.preventDefault();
       }
       if (formManager && typeof formManager.removeFile === 'function') {
-        formManager.removeFile();
+        // Передаем индекс файла для удаления конкретного файла
+        formManager.removeFile(index);
       }
     };
     

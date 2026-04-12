@@ -113,9 +113,9 @@ class FormManager {
     // Находим элемент предупреждения о лимитах для этой зоны загрузки
     const fileLimitWarning = fileDrop?.querySelector('.form-file-limit-warning');
 
-    // Собираем ключи уже загруженных файлов для быстрой проверки дубликатов
-    const existingFileKeys = new Set(this.currentFiles.map(f => `${f.name}:${f.size}`));
+    // Проверяем файлы на дубликаты и другие ограничения перед добавлением
     const validNewFiles = [];
+    const duplicatesFound = new Set();
 
     for (const file of Array.from(files)) {
       // Проверка размера файла
@@ -131,15 +131,29 @@ class FormManager {
         continue;
       }
 
-      // Проверка на дубликаты (среди уже загруженных и новых в текущей партии)
+      // Проверка на дубликаты среди уже загруженных файлов
       const fileKey = `${file.name}:${file.size}`;
-      if (existingFileKeys.has(fileKey)) {
-        this._showUploadWarning(`Файл "${file.name}" уже выбран`, fileDrop);
+      const isDuplicate = this.currentFiles.some(f => `${f.name}:${f.size}` === fileKey);
+      
+      if (isDuplicate) {
+        duplicatesFound.add(file.name);
         continue;
       }
 
-      existingFileKeys.add(fileKey);
+      // Проверка на дубликаты внутри текущей партии
+      const isDuplicateInBatch = validNewFiles.some(f => `${f.name}:${f.size}` === fileKey);
+      if (isDuplicateInBatch) {
+        duplicatesFound.add(file.name);
+        continue;
+      }
+
       validNewFiles.push(file);
+    }
+
+    // Показываем предупреждение о дубликатах только один раз в конце
+    if (duplicatesFound.size > 0) {
+      const duplicateNames = Array.from(duplicatesFound).join(', ');
+      this._showUploadWarning(`Файлы уже выбраны: ${duplicateNames}`, fileDrop);
     }
 
     // Добавляем новые файлы к существующим
@@ -176,8 +190,10 @@ class FormManager {
     
     if (!container) return;
 
-    // Очищаем контейнер перед перерисовкой
-    container.innerHTML = '';
+    // Очищаем контейнер перед перерисовкой и удаляем старый обработчик кликов
+    const newContainer = container.cloneNode(false);
+    container.parentNode.replaceChild(newContainer, container);
+    container = newContainer;
 
     if (this.currentFiles.length === 0) {
       // Обновляем текст в зоне загрузки
@@ -196,16 +212,19 @@ class FormManager {
         </div>
       `).join('');
 
-      // Используем делегирование событий для кнопок удаления
-      container.addEventListener('click', (e) => {
-        const removeBtn = e.target.closest('.form-file-item-remove');
-        if (removeBtn) {
-          e.preventDefault();
-          e.stopPropagation();
-          const index = parseInt(removeBtn.getAttribute('data-index'), 10);
-          this.removeFile(index, fileDrop);
-        }
-      });
+      // Используем делегирование событий для кнопок удаления - вешаем обработчик только один раз
+      if (!container._clickHandlerAttached) {
+        container.addEventListener('click', (e) => {
+          const removeBtn = e.target.closest('.form-file-item-remove');
+          if (removeBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const index = parseInt(removeBtn.getAttribute('data-index'), 10);
+            this.removeFile(index, fileDrop);
+          }
+        });
+        container._clickHandlerAttached = true;
+      }
       
       // Обновляем текст в зоне загрузки
       const fileDropText = fileDrop?.querySelector('.form-file-text');
@@ -288,8 +307,8 @@ class FormManager {
   }
 
   removeFile(index, fileDrop) {
-    if (index === undefined || index === null) {
-      // Удаляем все файлы
+    if (index === undefined || index === null || index === false) {
+      // Удаляем все файлы только если явно передано undefined, null или false
       this.currentFiles = [];
     } else {
       // Удаляем файл по индексу
