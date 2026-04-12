@@ -435,3 +435,11 @@ if (document.readyState === 'loading') {
 } else {
   initApp();
 }
+
+// Авторасширение textarea
+document.addEventListener('input', function(e) {
+  if (e.target.tagName === 'TEXTAREA' && e.target.classList.contains('form-textarea')) {
+    e.target.style.height = 'auto';
+    e.target.style.height = (e.target.scrollHeight) + 'px';
+  }
+});

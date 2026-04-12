@@ -1161,8 +1161,10 @@ body:has(.details-modal-overlay.active) {
 }
 
 .form-textarea {
-  min-height: 280px;
-  resize: vertical;
+  min-height: 60px;
+  height: 60px;
+  resize: none;
+  overflow-y: hidden;
 }
 
 .form-select {
