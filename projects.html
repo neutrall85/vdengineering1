@@ -165,6 +165,28 @@
   </div>
 </div>
 
+<script>
+function openProjectModal(title, details, image, category) {
+  const modalTitle = document.getElementById('projectModalTitle');
+  const modalContent = document.getElementById('projectModalContent');
+  const modalCategory = document.getElementById('projectModalCategory');
+  const modalImage = document.getElementById('projectModalImage');
+
+  if (modalTitle && modalContent) {
+    const sanitizer = window.Utils?.Sanitizer;
+    modalTitle.textContent = sanitizer ? sanitizer.escapeHtml(title) : title;
+    modalCategory.textContent = sanitizer ? sanitizer.escapeHtml(category) : category;
+    modalImage.src = sanitizer ? (sanitizer.isValidUrl(image) ? image : 'assets/images/placeholder.jpg') : image;
+    modalImage.alt = sanitizer ? sanitizer.escapeHtml(title) : title;
+    modalContent.innerHTML = '<ul style="padding-left: 1.5rem; margin-top: 1rem;">' + details.map(item => '<li style="margin-bottom: 0.5rem;">' + (sanitizer ? sanitizer.escapeHtml(item) : item) + '</li>').join('') + '</ul>';
+
+    if (typeof modalManager !== 'undefined') modalManager.open('project');
+  }
+}
+
+function closeProjectModal() {
+  if (typeof modalManager !== 'undefined') modalManager.close('project');
+}
 </script>
 
 <!-- Modal (same as before) -->
