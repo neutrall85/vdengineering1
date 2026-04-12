@@ -65,28 +65,24 @@ class FormManager {
     // Находим элемент предупреждения о лимитах для этой зоны загрузки
     const fileLimitWarning = fileDrop?.querySelector('.form-file-limit-warning');
 
-    let hasSizeError = false;
-    let hasCountError = false;
-
     const newFiles = Array.from(files).filter(file => {
       // Проверка размера файла
       if (file.size > this.maxFileSize) {
-        this._showToast(`Файл "${file.name}" превышает максимальный размер 10MB`, 'warning');
-        hasSizeError = true;
+        this._showError(`Файл "${file.name}" превышает максимальный размер 10MB`, fileLimitWarning);
         return false;
       }
 
       // Проверка типа файла
       const validation = this.validator.file(file);
       if (!validation.valid) {
-        this._showToast(validation.error, 'warning');
+        this._showError(validation.error, fileLimitWarning);
         return false;
       }
 
       // Проверка на дубликаты
       const isDuplicate = this.currentFiles.some(f => f.name === file.name && f.size === file.size);
       if (isDuplicate) {
-        this._showToast(`Файл "${file.name}" уже выбран`, 'warning');
+        this._showError(`Файл "${file.name}" уже выбран`, fileLimitWarning);
         return false;
       }
 
@@ -98,10 +94,8 @@ class FormManager {
 
     // Ограничиваем количество файлов
     if (this.currentFiles.length > this.maxFiles) {
-      const removedCount = this.currentFiles.length - this.maxFiles;
       this.currentFiles = this.currentFiles.slice(0, this.maxFiles);
-      this._showToast(`Максимальное количество файлов: ${this.maxFiles}. Добавлено только ${Math.min(newFiles.length, this.maxFiles)}`, 'warning');
-      hasCountError = true;
+      this._showError(`Максимальное количество файлов: ${this.maxFiles}`, fileLimitWarning);
     }
 
     this._renderFileList(fileDrop);
@@ -196,49 +190,25 @@ class FormManager {
   _showError(message, fileLimitWarning) {
     console.error('Form error:', message);
     
-    // Используем всплывающее уведомление вместо статического предупреждения
-    this._showToast(message, 'warning');
-  }
-
-  _showToast(message, type = 'info') {
-    const container = document.getElementById('toastContainer');
-    if (!container) {
-      console.warn('Toast container not found');
+    // Если передан элемент предупреждения о лимитах файлов, используем его
+    if (fileLimitWarning) {
+      fileLimitWarning.innerHTML = `<p>⚠️ ${message}</p>`;
+      fileLimitWarning.style.display = 'block';
+      setTimeout(() => {
+        fileLimitWarning.style.display = 'none';
+      }, 5000);
       return;
     }
-
-    const toast = document.createElement('div');
-    toast.className = `toast-notification ${type}`;
     
-    let icon = '⚠️';
-    if (type === 'success') icon = '✅';
-    else if (type === 'error') icon = '❌';
-    
-    toast.innerHTML = `
-      <span class="toast-notification-icon">${icon}</span>
-      <span class="toast-notification-message">${this._escapeHtml(message)}</span>
-      <button class="toast-notification-close" aria-label="Закрыть">
-        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/></svg>
-      </button>
-    `;
-
-    container.appendChild(toast);
-
-    // Закрытие по кнопке
-    const closeBtn = toast.querySelector('.toast-notification-close');
-    closeBtn.addEventListener('click', () => this._hideToast(toast));
-
-    // Автоматическое скрытие через 5 секунд
-    setTimeout(() => {
-      this._hideToast(toast);
-    }, 5000);
-  }
-
-  _hideToast(toast) {
-    toast.classList.add('hiding');
-    toast.addEventListener('animationend', () => {
-      toast.remove();
-    });
+    // Иначе используем стандартное предупреждение
+    const warning = DOM.getElement('rateLimitWarning');
+    if (warning) {
+      warning.innerHTML = `<p>⚠️ ${message}</p>`;
+      DOM.addClass(warning, 'show');
+      setTimeout(() => DOM.removeClass(warning, 'show'), 5000);
+    } else {
+      alert(message);
+    }
   }
 
   removeFile(index, fileDrop) {
@@ -395,11 +365,11 @@ class FormManager {
           this._resetForm();
         }, window.CONFIG?.ANIMATION?.MODAL_CLOSE_DELAY_MS || 3000);
       } else {
-        this._showToast(result.error || 'Произошла ошибка при отправке', 'error');
+        this._showError(result.error || 'Произошла ошибка при отправке');
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      this._showToast('Произошла ошибка при отправке. Пожалуйста, попробуйте позже.', 'error');
+      this._showError('Произошла ошибка при отправке. Пожалуйста, попробуйте позже.');
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalContent;
