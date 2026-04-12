@@ -106,6 +106,8 @@ class NewsManager {
     
     const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.UI?.modalManager);
     if (manager) {
+      // Блокируем скролл при открытии модального окна новостей
+      document.body.classList.add('no-scroll');
       manager.open('news');
       
       // Обновляем URL только если нужно и есть NewsNavigation
@@ -121,6 +123,8 @@ class NewsManager {
     const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.UI?.modalManager);
     if (manager) {
       manager.close('news');
+      // Разблокируем скролл при закрытии модального окна новостей
+      document.body.classList.remove('no-scroll');
       // URL восстанавливается через onClose колбэк в ModalManager
     }
   }

@@ -41,8 +41,7 @@ const ComponentLoader = {
   <a href="projects.html">Проекты</a>
   <a href="index.html#partners">Партнёры</a>
   <a href="index.html#contact">Контакты</a>
-</div>
-<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>`,
+</div>`,
 
     // Футер
     footer: `
@@ -206,6 +205,13 @@ const ComponentLoader = {
                 navContainer.innerHTML = this.navbar.trim();
                 const firstBodyChild = document.body.firstChild;
                 document.body.insertBefore(navContainer.firstElementChild, firstBodyChild);
+                
+                // Добавляем mobile-menu-overlay после навигации
+                const overlay = document.createElement('div');
+                overlay.className = 'mobile-menu-overlay';
+                overlay.id = 'mobileMenuOverlay';
+                document.body.appendChild(overlay);
+                
                 this.setActiveLink(activePage);
             } else {
                 // Если навигация уже есть в HTML (для обратной совместимости), обновляем её

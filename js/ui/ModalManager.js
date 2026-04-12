@@ -69,6 +69,9 @@ class ModalManager {
     const overlay = document.getElementById(config.overlayId);
     if (!overlay) return false;
 
+    // Блокируем скролл body
+    document.body.classList.add('no-scroll');
+
     // Небольшая задержка чтобы DOM обновился перед инициализацией
     setTimeout(() => {
       overlay.classList.add('active');
@@ -114,6 +117,8 @@ class ModalManager {
     
     if (this.activeModal === key) {
       this.activeModal = null;
+      // Разблокируем скролл body только если закрываем активное модальное окно
+      document.body.classList.remove('no-scroll');
     }
 
     if (config.onClose) config.onClose(overlay);
@@ -134,6 +139,8 @@ class ModalManager {
     this.modals.forEach((_, key) => {
       this.close(key);
     });
+    // Гарантированно разблокируем скролл после закрытия всех окон
+    document.body.classList.remove('no-scroll');
   }
 }
 

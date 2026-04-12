@@ -41,6 +41,25 @@ body {
   overflow-x: hidden;
 }
 
+/* Блокировка скролла при открытом модальном окне */
+body.no-scroll {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+}
+
+/* Модальные окна новостей и деталей также блокируют скролл */
+.news-modal-overlay.active ~ body,
+.details-modal-overlay.active ~ body,
+body:has(.news-modal-overlay.active),
+body:has(.details-modal-overlay.active) {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+}
+
 /* ==================== НАВИГАЦИЯ ==================== */
 .navbar {
   position: fixed;
@@ -2559,6 +2578,10 @@ body {
   .contact-form-container {
     padding: 1.5rem;
   }
+
+  .form-textarea {
+    min-height: 150px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -2615,5 +2638,8 @@ body {
   }
   .modal-body {
     max-height: calc(95vh - 100px);
+  }
+  .form-textarea {
+    min-height: 120px;
   }
 }

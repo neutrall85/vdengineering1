@@ -1,50 +1,76 @@
 ```
-# Compiled and build artifacts
-*.pyc
-*.o
-*.obj
-*.class
-*.exe
-*.dll
-*.so
-*.a
-*.out
-
 # Dependencies
 node_modules/
-venv/
-.venv/
-__pycache__/
+
+# Build artifacts
 dist/
 build/
 target/
-.gradle/
-.mypy_cache/
-.pytest_cache/
 
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-*.swo
-
-# Environment
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py.class
+*.py.obj
+*.py.out
+*.py.o
+*.py.a
+*.py.so
+*.py.dll
+*.py.exe
+*.py.lib
+*.py.dll.a
+*.py.so.a
+*.py.dylib
+*.py.bundle
+*.py.egg-info
+*.py.egg-info/*
+venv/
+.venv/
 .env
 .env.local
-*.env.*
+.env.*
+.coverage
+htmlcov/
+.mypy_cache/
+.pytest_cache/
+.tox/
+.cover/
+.nox/
+.hypothesis/
+*.mo
+*.pot
 
-# Editors
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Thumbs.db:encryptable
+
+# IDE
 .vscode/
 .idea/
-
-# System files
-.DS_Store
-Thumbs.db
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
+*.swp
+*.swo
+*~
+.project
+*.pydevproject
+.metadata
+bin/
+tmp/
+temp/
 
 # Compressed files
 *.zip
@@ -69,4 +95,7 @@ htmlcov/
 *.tar.bz2
 *.tar.xz
 *.tar.zst
+
+# Coverage
+coverage/
 ```
