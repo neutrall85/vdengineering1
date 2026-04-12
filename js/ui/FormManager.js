@@ -65,7 +65,7 @@ class FormManager {
       } else {
         this._initFileUpload();
       }
-    }, 100);
+    }, 150);
   }
 
   _initFileUpload(container = null) {
@@ -76,49 +76,33 @@ class FormManager {
     
     fileDrops.forEach(fileDrop => {
       const fileInput = fileDrop.querySelector('input[type="file"]');
-      if (!fileInput || !fileDrop) return;
+      if (!fileInput) return;
 
       // Добавляем атрибут multiple для поддержки нескольких файлов
       fileInput.setAttribute('multiple', 'multiple');
       
-      // Клонируем input для удаления старых обработчиков
-      const newInput = fileInput.cloneNode(true);
-      fileInput.parentNode.replaceChild(newInput, fileInput);
-      
       // Обработчик выбора файлов через input
-      newInput.addEventListener('change', (e) => {
+      fileInput.addEventListener('change', (e) => {
         this._handleFileSelect(e.target.files, fileDrop);
       });
 
-      // Удаляем старые обработчики drag/drop через клонирование fileDrop
-      const newFileDrop = fileDrop.cloneNode(true);
-      fileDrop.parentNode.replaceChild(newFileDrop, fileDrop);
-      
-      // Получаем новый input внутри клонированного fileDrop и переназначаем обработчик
-      const updatedFileInput = newFileDrop.querySelector('input[type="file"]');
-      if (updatedFileInput) {
-        updatedFileInput.addEventListener('change', (e) => {
-          this._handleFileSelect(e.target.files, newFileDrop);
-        });
-      }
-      
       // Drag & drop обработчики
-      newFileDrop.addEventListener('dragover', (e) => {
+      fileDrop.addEventListener('dragover', (e) => {
         e.preventDefault();
-        newFileDrop.style.borderColor = 'var(--vd-blue)';
-        newFileDrop.style.background = 'rgba(0, 51, 160, 0.05)';
+        fileDrop.style.borderColor = 'var(--vd-blue)';
+        fileDrop.style.background = 'rgba(0, 51, 160, 0.05)';
       });
 
-      newFileDrop.addEventListener('dragleave', () => {
-        newFileDrop.style.borderColor = '';
-        newFileDrop.style.background = '';
+      fileDrop.addEventListener('dragleave', () => {
+        fileDrop.style.borderColor = '';
+        fileDrop.style.background = '';
       });
 
-      newFileDrop.addEventListener('drop', (e) => {
+      fileDrop.addEventListener('drop', (e) => {
         e.preventDefault();
-        newFileDrop.style.borderColor = '';
-        newFileDrop.style.background = '';
-        this._handleFileSelect(e.dataTransfer.files, newFileDrop);
+        fileDrop.style.borderColor = '';
+        fileDrop.style.background = '';
+        this._handleFileSelect(e.dataTransfer.files, fileDrop);
       });
     });
   }
@@ -171,26 +155,20 @@ class FormManager {
   }
 
   _renderFileList(fileDrop) {
-    // Если fileDrop не передан, пытаемся найти его
+    // Если fileDrop не передан, пытаемся найти первый доступный
     if (!fileDrop) {
-      fileDrop = document.querySelector('#fileDrop');
+      fileDrop = document.querySelector('.form-file');
     }
     
-    // Находим контейнер списка файлов внутри этой зоны загрузки
+    // Находим контейнер списка файлов внутри этой зоны загрузки (без # чтобы работало с классом)
     let container;
     if (fileDrop) {
-      container = fileDrop.querySelector('#fileList');
-    }
-    
-    // Если всё ещё не нашли, пробуем глобальный поиск
-    if (!container) {
-      container = DOM.getElement('fileList');
+      container = fileDrop.querySelector('.form-file-list');
     }
 
     // Если контейнер списка файлов не существует, создаём его
     if (!container && fileDrop) {
       const containerNew = document.createElement('div');
-      containerNew.id = 'fileList';
       containerNew.className = 'form-file-list';
       fileDrop.appendChild(containerNew);
       container = containerNew;
@@ -324,15 +302,15 @@ class FormManager {
       if (fileInput) fileInput.value = '';
     } else {
       // Если fileDrop не передан, сбрасываем во всех зонах загрузки
-      const fileInputs = document.querySelectorAll('#fileDrop input[type="file"]');
+      const fileInputs = document.querySelectorAll('.form-file input[type="file"]');
       fileInputs.forEach(input => {
         input.value = '';
       });
     }
 
-    // Если fileDrop не передан, пытаемся найти его
+    // Если fileDrop не передан, пытаемся найти первый доступный
     if (!fileDrop) {
-      fileDrop = document.querySelector('#fileDrop');
+      fileDrop = document.querySelector('.form-file');
     }
     
     this._renderFileList(fileDrop);
