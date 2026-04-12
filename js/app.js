@@ -158,8 +158,7 @@ class Application {
         const sanitizer = window.Utils?.Sanitizer;
         modalTitle.textContent = sanitizer ? sanitizer.escapeHtml(title) : title;
         modalList.innerHTML = details.map(item => `<li>${sanitizer ? sanitizer.escapeHtml(item) : item}</li>`).join('');
-        // Блокируем скролл при открытии модального окна деталей
-        document.body.classList.add('no-scroll');
+        // Управление скроллом делегировано ModalManager
         if (typeof modalManager !== 'undefined') modalManager.open('details');
       }
     };
