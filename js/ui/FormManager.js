@@ -74,21 +74,21 @@ class FormManager {
     const newFiles = Array.from(files).filter(file => {
       // Проверка размера файла
       if (file.size > this.maxFileSize) {
-        this._showError(`Файл "${file.name}" превышает максимальный размер 10MB`, fileLimitWarning);
+        this._showUploadWarning(`Файл "${file.name}" превышает максимальный размер 10MB`, fileDrop);
         return false;
       }
 
       // Проверка типа файла
       const validation = this.validator.file(file);
       if (!validation.valid) {
-        this._showError(validation.error, fileLimitWarning);
+        this._showUploadWarning(validation.error, fileDrop);
         return false;
       }
 
       // Проверка на дубликаты
       const isDuplicate = this.currentFiles.some(f => f.name === file.name && f.size === file.size);
       if (isDuplicate) {
-        this._showError(`Файл "${file.name}" уже выбран`, fileLimitWarning);
+        this._showUploadWarning(`Файл "${file.name}" уже выбран`, fileDrop);
         return false;
       }
 
@@ -101,7 +101,7 @@ class FormManager {
     // Ограничиваем количество файлов
     if (this.currentFiles.length > this.maxFiles) {
       this.currentFiles = this.currentFiles.slice(0, this.maxFiles);
-      this._showError(`Максимальное количество файлов: ${this.maxFiles}`, fileLimitWarning);
+      this._showUploadWarning(`Максимальное количество файлов: ${this.maxFiles}`, fileDrop);
     }
 
     this._renderFileList(fileDrop);
@@ -215,6 +215,34 @@ class FormManager {
     } else {
       alert(message);
     }
+  }
+
+  /**
+   * Показывает всплывающее предупреждение над зоной загрузки файлов
+   */
+  _showUploadWarning(message, fileDrop) {
+    if (!fileDrop) return;
+    
+    // Находим или создаём контейнер предупреждения
+    let warningContainer = fileDrop.querySelector('.upload-warning-container');
+    if (!warningContainer) {
+      warningContainer = document.createElement('div');
+      warningContainer.className = 'upload-warning-container';
+      fileDrop.insertBefore(warningContainer, fileDrop.firstChild);
+    }
+    
+    warningContainer.innerHTML = `<div class="upload-warning">⚠️ ${this._escapeHtml(message)}</div>`;
+    warningContainer.style.display = 'block';
+    
+    // Скрываем предыдущий таймер если он был
+    if (this.uploadWarningTimeout) {
+      clearTimeout(this.uploadWarningTimeout);
+    }
+    
+    // Автоматически скрываем через 3 секунды
+    this.uploadWarningTimeout = setTimeout(() => {
+      warningContainer.style.display = 'none';
+    }, 3000);
   }
 
   removeFile(index, fileDrop) {

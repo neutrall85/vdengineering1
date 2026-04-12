@@ -17,18 +17,27 @@ class NavigationManager {
 
   init() {
     try {
-      this.navbar = DOM.getElement('navbar');
-      this.scrollToTopBtn = DOM.getElement('scrollToTop');
-      this.mobileMenu = DOM.getElement('mobileMenu');
-      this.mobileMenuBtn = DOM.query('.mobile-menu-btn');
-      this.mobileMenuOverlay = DOM.getElement('mobileMenuOverlay');
-      
-      this._initSmoothScroll();
-      this._initScrollHandler();
-      this._initMobileMenu();
-      this._handleScroll();
-      
-      console.log('NavigationManager initialized');
+      // Небольшая задержка чтобы убедиться что навигация загружена через ComponentLoader
+      setTimeout(() => {
+        this.navbar = DOM.getElement('navbar');
+        this.scrollToTopBtn = DOM.getElement('scrollToTop');
+        this.mobileMenu = DOM.getElement('mobileMenu');
+        this.mobileMenuBtn = DOM.query('.mobile-menu-btn');
+        this.mobileMenuOverlay = DOM.getElement('mobileMenuOverlay');
+        
+        if (!this.navbar || !this.mobileMenu) {
+          console.warn('Navigation elements not found, retrying...');
+          setTimeout(() => this.init(), 100);
+          return;
+        }
+        
+        this._initSmoothScroll();
+        this._initScrollHandler();
+        this._initMobileMenu();
+        this._handleScroll();
+        
+        console.log('NavigationManager initialized');
+      }, 50);
     } catch (error) {
       console.error('NavigationManager init failed:', error);
     }

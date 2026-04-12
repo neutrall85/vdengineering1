@@ -69,30 +69,37 @@ class ModalManager {
     const overlay = document.getElementById(config.overlayId);
     if (!overlay) return false;
 
-    overlay.classList.add('active');
-    this.activeModal = key;
+    // Небольшая задержка чтобы DOM обновился перед инициализацией
+    setTimeout(() => {
+      overlay.classList.add('active');
+      this.activeModal = key;
 
-    // Если это модальное окно формы, инициализируем загрузку файлов
-    if (key === 'form' && window.formManager) {
-      window.formManager.initFileUploadOnModalOpen();
-    }
-
-    if (config.shouldFocus) {
-      const focusTarget = options.focusSelector 
-        ? document.querySelector(options.focusSelector)
-        : overlay.querySelector('.modal-close, button, [href], input, select, textarea');
-      
-      if (focusTarget) {
-        setTimeout(() => focusTarget.focus(), 100);
+      // Если это модальное окно формы, инициализируем загрузку файлов
+      if (key === 'form' && window.formManager) {
+        // Даем время на рендеринг модального окна
+        setTimeout(() => {
+          window.formManager.initFileUploadOnModalOpen();
+        }, 50);
       }
-    }
 
-    if (config.onOpen) config.onOpen(overlay);
-    if (options.onOpen) options.onOpen(overlay);
+      if (config.shouldFocus) {
+        const focusTarget = options.focusSelector 
+          ? document.querySelector(options.focusSelector)
+          : overlay.querySelector('.modal-close, button, [href], input, select, textarea');
+        
+        if (focusTarget) {
+          setTimeout(() => focusTarget.focus(), 100);
+        }
+      }
 
-    if (window.Services?.eventBus) {
-      window.Services.eventBus.emit('modal:opened', { key, overlay });
-    }
+      if (config.onOpen) config.onOpen(overlay);
+      if (options.onOpen) options.onOpen(overlay);
+
+      if (window.Services?.eventBus) {
+        window.Services.eventBus.emit('modal:opened', { key, overlay });
+      }
+    }, 50);
+    
     return true;
   }
 

@@ -15,7 +15,7 @@ class Application {
       console.log('Initializing Volga-Dnepr Engineering website...');
       
       // 1. Сначала инициализация ComponentLoader для загрузки общих компонентов
-      // Это критично, так как FormManager и другие модули зависят от наличия элементов в DOM
+      // Это критично, так как все модули зависят от наличия элементов в DOM
       if (typeof ComponentLoader !== 'undefined') {
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
         ComponentLoader.init({ 
@@ -26,12 +26,15 @@ class Application {
         });
         console.log('ComponentLoader initialized');
         
-        // Небольшая задержка чтобы DOM обновился после вставки модального окна
-        await new Promise(resolve => setTimeout(resolve, 0));
+        // Задержка чтобы DOM обновился после вставки компонентов навигации, футера и модального окна
+        await new Promise(resolve => setTimeout(resolve, 50));
       }
 
       this._initGlobalHelpers();
       this._setCurrentYear();
+      
+      // Повторная регистрация модулей после загрузки компонентов
+      this._registerModules();
       
       // Инициализируем модули последовательно с обработкой ошибок
       for (const module of this.modules) {
@@ -95,6 +98,11 @@ class Application {
     };
     
     window.openModal = () => {
+      // Сначала загружаем форму в модальном окне если нужно
+      if (formManager && typeof formManager.initFileUploadOnModalOpen === 'function') {
+        formManager.initFileUploadOnModalOpen();
+      }
+      
       if (formManager && typeof formManager.openModal === 'function') {
         formManager.openModal();
       } else if (typeof modalManager !== 'undefined') {

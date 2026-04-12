@@ -11,8 +11,12 @@ class AnimationManager {
   }
 
   init() {
-    this._initFadeInObserver();
-    this._initCounters();
+    // Небольшая задержка чтобы убедиться что элементы загружены
+    setTimeout(() => {
+      this._initFadeInObserver();
+      this._initCounters();
+      console.log('AnimationManager initialized');
+    }, 50);
   }
 
   _initFadeInObserver() {
