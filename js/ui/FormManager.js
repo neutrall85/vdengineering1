@@ -33,7 +33,7 @@ class FormManager {
 
   _initFileUpload() {
     // Инициализация для всех зон загрузки на странице
-    const fileDrops = document.querySelectorAll('#fileDrop');
+    const fileDrops = document.querySelectorAll('#fileDropPage, #fileDropModal');
     
     fileDrops.forEach(fileDrop => {
       const fileInput = fileDrop.querySelector('input[type="file"]');
@@ -67,7 +67,7 @@ class FormManager {
     if (!files || files.length === 0) return;
     
     // Находим контейнер списка файлов для этой зоны загрузки
-    const fileListContainer = fileDrop?.querySelector('#fileList') || DOM.getElement('fileList');
+    const fileListContainer = fileDrop?.querySelector('[id^="fileList"]') || DOM.getElement('fileListModal') || DOM.getElement('fileListPage');
     // Находим элемент предупреждения о лимитах для этой зоны загрузки
     const fileLimitWarning = fileDrop?.querySelector('.form-file-limit-warning');
 
@@ -110,18 +110,18 @@ class FormManager {
   _renderFileList(fileDrop) {
     // Если fileDrop не передан, пытаемся найти его
     if (!fileDrop) {
-      fileDrop = document.querySelector('#fileDrop');
+      fileDrop = document.querySelector('#fileDropModal') || document.querySelector('#fileDropPage');
     }
     
     // Находим контейнер списка файлов внутри этой зоны загрузки
     let container;
     if (fileDrop) {
-      container = fileDrop.querySelector('#fileList');
+      container = fileDrop.querySelector('[id^="fileList"]');
     }
     
     // Если всё ещё не нашли, пробуем глобальный поиск
     if (!container) {
-      container = DOM.getElement('fileList');
+      container = DOM.getElement('fileListModal') || DOM.getElement('fileListPage');
     }
 
     // Если контейнер списка файлов не существует, создаём его
@@ -260,12 +260,14 @@ class FormManager {
       this.currentFiles.splice(index, 1);
     }
 
-    const fileInput = DOM.getElement('fileAttachment');
-    if (fileInput) fileInput.value = '';
+    const fileInputModal = DOM.getElement('fileAttachmentModal');
+    const fileInputPage = DOM.getElement('fileAttachmentPage');
+    if (fileInputModal) fileInputModal.value = '';
+    if (fileInputPage) fileInputPage.value = '';
 
     // Если fileDrop не передан, пытаемся найти его
     if (!fileDrop) {
-      fileDrop = document.querySelector('#fileDrop');
+      fileDrop = document.querySelector('#fileDropModal') || document.querySelector('#fileDropPage');
     }
     
     this._renderFileList(fileDrop);
@@ -419,7 +421,8 @@ class FormManager {
   _resetForm() {
     const form = DOM.getElement('proposalForm');
     const successMessage = DOM.getElement('successMessage');
-    const fileList = DOM.getElement('fileList');
+    const fileListModal = DOM.getElement('fileListModal');
+    const fileListPage = DOM.getElement('fileListPage');
 
     if (form) {
       form.reset();
@@ -439,7 +442,7 @@ class FormManager {
     this.currentFiles = [];
     
     // Находим зону загрузки для сброса текста
-    const fileDrop = document.querySelector('#fileDrop');
+    const fileDrop = document.querySelector('#fileDropModal') || document.querySelector('#fileDropPage');
     this._renderFileList(fileDrop);
   }
 }
