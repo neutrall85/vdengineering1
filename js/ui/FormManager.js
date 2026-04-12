@@ -81,11 +81,18 @@ class FormManager {
       // Добавляем атрибут multiple для поддержки нескольких файлов
       fileInput.setAttribute('multiple', 'multiple');
       
+      // Проверяем, был ли уже добавлен обработчик change для этого input
+      if (fileInput._changeHandlerAttached) return;
+      
       // Обработчик выбора файлов через input
       fileInput.addEventListener('change', (e) => {
         this._handleFileSelect(e.target.files, fileDrop);
       });
+      fileInput._changeHandlerAttached = true;
 
+      // Проверяем, были ли уже добавлены drag & drop обработчики
+      if (fileDrop._dragDropHandlerAttached) return;
+      
       // Drag & drop обработчики
       fileDrop.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -104,6 +111,7 @@ class FormManager {
         fileDrop.style.background = '';
         this._handleFileSelect(e.dataTransfer.files, fileDrop);
       });
+      fileDrop._dragDropHandlerAttached = true;
     });
   }
 
@@ -191,9 +199,9 @@ class FormManager {
     if (!container) return;
 
     // Очищаем контейнер перед перерисовкой и удаляем старый обработчик кликов
-    const newContainer = container.cloneNode(false);
-    container.parentNode.replaceChild(newContainer, container);
-    container = newContainer;
+    container.innerHTML = '';
+    // Снимаем флаг обработчика, чтобы при следующей перерисовке он добавился заново
+    delete container._clickHandlerAttached;
 
     if (this.currentFiles.length === 0) {
       // Обновляем текст в зоне загрузки
@@ -307,12 +315,13 @@ class FormManager {
   }
 
   removeFile(index, fileDrop) {
-    if (index === undefined || index === null || index === false) {
-      // Удаляем все файлы только если явно передано undefined, null или false
+    // Если index не является числом (NaN после parseInt), удаляем все файлы
+    const indexNum = parseInt(index, 10);
+    if (isNaN(indexNum)) {
       this.currentFiles = [];
     } else {
       // Удаляем файл по индексу
-      this.currentFiles.splice(index, 1);
+      this.currentFiles.splice(indexNum, 1);
     }
 
     // Сбрасываем value у input в переданном fileDrop, чтобы можно было добавить тот же файл снова
