@@ -1314,10 +1314,8 @@ body {
 
 /* Всплывающее предупреждение над зоной загрузки файлов */
 .upload-warning-container {
-  position: absolute;
-  top: -50px;
-  left: 0;
-  right: 0;
+  position: relative;
+  margin-bottom: 10px;
   z-index: 10;
 }
 
@@ -1331,8 +1329,8 @@ body {
   text-align: center;
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
   animation: slideDown 0.3s ease-out;
-  display: inline-block;
-  max-width: 100%;
+  display: block;
+  width: 100%;
 }
 
 @keyframes slideDown {

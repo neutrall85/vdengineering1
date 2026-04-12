@@ -223,12 +223,18 @@ class FormManager {
   _showUploadWarning(message, fileDrop) {
     if (!fileDrop) return;
     
-    // Находим или создаём контейнер предупреждения
+    // Находим или создаём контейнер предупреждения внутри зоны загрузки
     let warningContainer = fileDrop.querySelector('.upload-warning-container');
     if (!warningContainer) {
       warningContainer = document.createElement('div');
       warningContainer.className = 'upload-warning-container';
-      fileDrop.insertBefore(warningContainer, fileDrop.firstChild);
+      // Вставляем перед иконкой и текстом, но после input
+      const input = fileDrop.querySelector('input[type="file"]');
+      if (input && input.nextSibling) {
+        fileDrop.insertBefore(warningContainer, input.nextSibling);
+      } else {
+        fileDrop.insertBefore(warningContainer, fileDrop.firstChild);
+      }
     }
     
     warningContainer.innerHTML = `<div class="upload-warning">⚠️ ${this._escapeHtml(message)}</div>`;
