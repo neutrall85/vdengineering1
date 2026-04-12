@@ -51,37 +51,46 @@ class FormManager {
     // Даем время на рендеринг модального окна перед инициализацией
     setTimeout(() => {
       this._initFileUpload();
-    }, 50);
+    }, 100);
   }
 
   _initFileUpload() {
     // Инициализация для всех зон загрузки на странице
     const fileDrops = document.querySelectorAll('#fileDrop');
     
-    fileDrops.forEach(fileDrop => {
-      const fileInput = fileDrop.querySelector('input[type="file"]');
-      if (!fileInput || !fileDrop) return;
+    fileDrops.forEach(originalFileDrop => {
+      const fileInput = originalFileDrop.querySelector('input[type="file"]');
+      if (!fileInput || !originalFileDrop) return;
 
       // Добавляем атрибут multiple для поддержки нескольких файлов
       fileInput.setAttribute('multiple', 'multiple');
-      fileInput.addEventListener('change', (e) => this._handleFileSelect(e.target.files, fileDrop));
+      
+      // Удаляем старые обработчики с input
+      const newInput = fileInput.cloneNode(true);
+      fileInput.parentNode.replaceChild(newInput, fileInput);
+      
+      newInput.addEventListener('change', (e) => this._handleFileSelect(e.target.files, originalFileDrop));
 
-      fileDrop.addEventListener('dragover', (e) => {
+      // Удаляем старые обработчики drag/drop с fileDrop
+      const newFileDrop = originalFileDrop.cloneNode(true);
+      originalFileDrop.parentNode.replaceChild(newFileDrop, originalFileDrop);
+      
+      newFileDrop.addEventListener('dragover', (e) => {
         e.preventDefault();
-        fileDrop.style.borderColor = 'var(--vd-blue)';
-        fileDrop.style.background = 'rgba(0, 51, 160, 0.05)';
+        newFileDrop.style.borderColor = 'var(--vd-blue)';
+        newFileDrop.style.background = 'rgba(0, 51, 160, 0.05)';
       });
 
-      fileDrop.addEventListener('dragleave', () => {
-        fileDrop.style.borderColor = '';
-        fileDrop.style.background = '';
+      newFileDrop.addEventListener('dragleave', () => {
+        newFileDrop.style.borderColor = '';
+        newFileDrop.style.background = '';
       });
 
-      fileDrop.addEventListener('drop', (e) => {
+      newFileDrop.addEventListener('drop', (e) => {
         e.preventDefault();
-        fileDrop.style.borderColor = '';
-        fileDrop.style.background = '';
-        this._handleFileSelect(e.dataTransfer.files, fileDrop);
+        newFileDrop.style.borderColor = '';
+        newFileDrop.style.background = '';
+        this._handleFileSelect(e.dataTransfer.files, newFileDrop);
       });
     });
   }
@@ -89,13 +98,11 @@ class FormManager {
   _handleFileSelect(files, fileDrop) {
     if (!files || files.length === 0) return;
     
-    // Находим контейнер списка файлов для этой зоны загрузки
-    const fileListContainer = fileDrop?.querySelector('#fileList') || DOM.getElement('fileList');
     // Находим элемент предупреждения о лимитах для этой зоны загрузки
     const fileLimitWarning = fileDrop?.querySelector('.form-file-limit-warning');
 
-    // Собираем имена уже загруженных файлов для быстрой проверки дубликатов
-    const existingFileNames = new Set(this.currentFiles.map(f => `${f.name}:${f.size}`));
+    // Собираем ключи уже загруженных файлов для быстрой проверки дубликатов
+    const existingFileKeys = new Set(this.currentFiles.map(f => `${f.name}:${f.size}`));
     const validNewFiles = [];
 
     for (const file of Array.from(files)) {
@@ -114,12 +121,12 @@ class FormManager {
 
       // Проверка на дубликаты (среди уже загруженных и новых в текущей партии)
       const fileKey = `${file.name}:${file.size}`;
-      if (existingFileNames.has(fileKey)) {
+      if (existingFileKeys.has(fileKey)) {
         this._showUploadWarning(`Файл "${file.name}" уже выбран`, fileDrop);
         continue;
       }
 
-      existingFileNames.add(fileKey);
+      existingFileKeys.add(fileKey);
       validNewFiles.push(file);
     }
 
@@ -163,15 +170,10 @@ class FormManager {
     
     if (!container) return;
 
-    // Удаляем старые обработчики перед перерисовкой - клонируем контейнер
-    const newContainer = container.cloneNode(false);
-    newContainer.id = container.id;
-    newContainer.className = container.className;
-    container.parentNode.replaceChild(newContainer, container);
-    container = newContainer;
+    // Очищаем контейнер перед перерисовкой
+    container.innerHTML = '';
 
     if (this.currentFiles.length === 0) {
-      container.innerHTML = '';
       // Обновляем текст в зоне загрузки
       const fileDropText = fileDrop?.querySelector('.form-file-text');
       if (fileDropText) {
@@ -288,8 +290,17 @@ class FormManager {
       this.currentFiles.splice(index, 1);
     }
 
-    const fileInput = DOM.getElement('fileAttachment');
-    if (fileInput) fileInput.value = '';
+    // Сбрасываем value у input в переданном fileDrop, чтобы можно было добавить тот же файл снова
+    if (fileDrop) {
+      const fileInput = fileDrop.querySelector('input[type="file"]');
+      if (fileInput) fileInput.value = '';
+    } else {
+      // Если fileDrop не передан, сбрасываем во всех зонах загрузки
+      const fileInputs = document.querySelectorAll('#fileDrop input[type="file"]');
+      fileInputs.forEach(input => {
+        input.value = '';
+      });
+    }
 
     // Если fileDrop не передан, пытаемся найти его
     if (!fileDrop) {
