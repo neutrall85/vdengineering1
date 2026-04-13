@@ -2783,33 +2783,7 @@ body:has(.details-modal-overlay.active) {
 
 /* ==================== МОДАЛЬНЫЕ ОКНА ЮРИДИЧЕСКИХ ДОКУМЕНТОВ ==================== */
 .legal-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 78, 150, 0.95);
-  z-index: 3000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  opacity: 0;
-  visibility: hidden;
-  transition: all var(--duration-normal) var(--ease-smooth);
-  backdrop-filter: blur(5px);
-  overflow: visible;
-}
-
-.legal-modal-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.legal-modal-overlay.active .modal-close {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0.2s;
+  /* Использует базовые стили modal-overlay */
 }
 
 .legal-modal-container {
