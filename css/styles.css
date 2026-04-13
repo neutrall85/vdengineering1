@@ -2623,22 +2623,22 @@ body:has(.details-modal-overlay.active) {
   }
   
   .modal-close {
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 36px;
-    height: 36px;
+    top: 0.25rem;
+    right: 0.25rem;
+    width: 28px;
+    height: 28px;
     background: var(--error-color);
     box-shadow: none;
   }
-  
+
   .modal-close svg {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
   }
-  
+
   .modal-header {
     padding: 1rem 1rem 0.5rem;
-    padding-right: 45px;
+    padding-right: 38px;
   }
   
   .modal-title {
