@@ -56,24 +56,10 @@ class AnimationManager {
     
     if (counters.length === 0) return;
 
-    // Сразу устанавливаем финальные значения для режима чтения
-    counters.forEach(counter => {
-      const target = parseInt(counter.getAttribute('data-target'), 10);
-      if (target && !isNaN(target)) {
-        counter.textContent = target;
-      }
-    });
-
     this.counterObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // Для анимации сбрасываем к 0 и запускаем анимацию
-          const element = entry.target;
-          const target = parseInt(element.getAttribute('data-target'), 10);
-          if (target && !isNaN(target)) {
-            element.textContent = '0';
-            this._animateCounter(element);
-          }
+          this._animateCounter(entry.target);
           this.counterObserver.unobserve(entry.target);
         }
       });
