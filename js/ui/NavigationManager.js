@@ -40,35 +40,13 @@ class NavigationManager {
   }
 
   _initSmoothScroll() {
-    document.querySelectorAll('a[href]').forEach(anchor => {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
-        if (href === '#' || !href) return;
-        
-        // Проверяем, является ли ссылка якорем на текущей странице
-        const isHashLink = href.startsWith('#');
-        const hasHash = href.includes('#') && !isHashLink;
+        if (href === '#') return;
         
         try {
-          let target = null;
-          
-          if (isHashLink) {
-            // Чистый якорь (#partners)
-            target = document.querySelector(href);
-          } else if (hasHash) {
-            // Ссылка с якорем (index.html#contact)
-            const [pagePath, hash] = href.split('#');
-            
-            // Если мы уже на главной странице или это ссылка на главную
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            const isCurrentPage = pagePath === '' || pagePath === currentPage || pagePath === 'index.html';
-            
-            if (isCurrentPage) {
-              // Плавный скролл к якорю на текущей странице
-              target = document.querySelector(`#${hash}`);
-            }
-          }
-          
+          const target = document.querySelector(href);
           if (target) {
             e.preventDefault();
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
