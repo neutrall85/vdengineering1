@@ -2567,6 +2567,10 @@ body:has(.details-modal-overlay.active) {
     text-align: center;
   }
 
+  .footer-brand {
+    display: none;
+  }
+
   .footer-legal ul {
     flex-direction: column;
     align-items: flex-start;
