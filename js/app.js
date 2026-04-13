@@ -15,7 +15,6 @@ class Application {
       console.log('Initializing Volga-Dnepr Engineering website...');
       
       // 1. Сначала инициализация ComponentLoader для загрузки общих компонентов
-      // Это критично, так как все модули зависят от наличия элементов в DOM
       if (typeof ComponentLoader !== 'undefined') {
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
         ComponentLoader.init({ 
@@ -35,14 +34,13 @@ class Application {
             const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
             
             if (nav && mobileMenu && mobileMenuBtn && mobileMenuOverlay) {
-              console.log('Navigation elements found in DOM');
               resolve();
             } else {
-              console.log('Waiting for navigation elements...', { nav: !!nav, mobileMenu: !!mobileMenu, mobileMenuBtn: !!mobileMenuBtn, mobileMenuOverlay: !!mobileMenuOverlay });
-              setTimeout(checkNavElements, 50);
+              setTimeout(checkNavElements, 100);
             }
           };
           checkNavElements();
+          setTimeout(resolve, 3000);
         });
       }
 
@@ -64,7 +62,6 @@ class Application {
           console.warn(errorMsg, err);
           this.errors.push(errorMsg);
           
-          // Отправляем событие об ошибке
           if (window.Services?.eventBus) {
             window.Services.eventBus.emit('module:error', { module: module.constructor?.name, error: err.message });
           }
@@ -117,7 +114,6 @@ class Application {
       if (formManager && typeof formManager.openModal === 'function') {
         formManager.openModal();
       } else if (typeof modalManager !== 'undefined') {
-        console.warn('FormManager not ready, opening modal directly');
         modalManager.open('form');
       } else {
         console.error('No modal manager available');
@@ -134,7 +130,6 @@ class Application {
         event.preventDefault();
       }
       if (formManager && typeof formManager.removeFile === 'function') {
-        // Передаем индекс файла для удаления конкретного файла
         formManager.removeFile(index);
       }
     };
@@ -174,7 +169,6 @@ class Application {
         const sanitizer = window.Utils?.Sanitizer;
         modalTitle.textContent = sanitizer ? sanitizer.escapeHtml(title) : title;
         modalList.innerHTML = details.map(item => `<li>${sanitizer ? sanitizer.escapeHtml(item) : item}</li>`).join('');
-        // Управление скроллом делегировано ModalManager
         if (typeof modalManager !== 'undefined') modalManager.open('details');
       }
     };
@@ -211,7 +205,7 @@ class Application {
 
       const rect = commercialOfferTitle.getBoundingClientRect();
       const isTitleVisible = rect.top < window.innerHeight && rect.bottom > 0;
-      const isTitleAbove = rect.bottom <= 0; // Заголовок ушел выше экрана
+      const isTitleAbove = rect.bottom <= 0;
 
       if (isTitleVisible) {
         floatingBtn.classList.remove('visible');
@@ -221,7 +215,7 @@ class Application {
 
       if (isTitleAbove) {
         hasPassedTitle = true;
-        floatingBtn.classList.remove('visible'); // Не показываем кнопку после заголовка
+        floatingBtn.classList.remove('visible');
         return;
       }
 
@@ -252,7 +246,6 @@ class Application {
   }
 
   _initImageLazyLoading() {
-    // Lazy loading для всех изображений с атрибутом data-src
     const lazyImages = document.querySelectorAll('img[data-src]');
     
     if ('IntersectionObserver' in window) {
@@ -273,7 +266,6 @@ class Application {
       
       lazyImages.forEach(img => imageObserver.observe(img));
     } else {
-      // Fallback для старых браузеров
       lazyImages.forEach(img => {
         const src = img.getAttribute('data-src');
         if (src) {
@@ -285,14 +277,11 @@ class Application {
   }
 
   _initPrefersReducedMotion() {
-    // Проверяем, не хочет ли пользователь отключить анимацию
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     
     if (prefersReducedMotion.matches) {
-      // Добавляем класс на body для отключения анимаций
       document.body.classList.add('reduced-motion');
       
-      // Отключаем все анимации через CSS класс
       const style = document.createElement('style');
       style.textContent = `
         .reduced-motion *,
@@ -307,7 +296,6 @@ class Application {
       document.head.appendChild(style);
     }
     
-    // Следим за изменением настроек
     prefersReducedMotion.addEventListener('change', (e) => {
       if (e.matches) {
         document.body.classList.add('reduced-motion');
@@ -336,7 +324,6 @@ class Application {
   }
 }
 
-// Функция для экранирования HTML (добавляем в Utils, если нет)
 if (typeof Utils !== 'undefined' && Utils.DOM && !Utils.DOM.escapeHtml) {
   Utils.DOM.escapeHtml = function(str) {
     if (!str) return '';
@@ -349,14 +336,11 @@ if (typeof Utils !== 'undefined' && Utils.DOM && !Utils.DOM.escapeHtml) {
   };
 }
 
-// Создание экземпляров глобальных объектов
 let newsRenderer, newsManager, formManager;
 
-// Функция инициализации после загрузки всех скриптов
 function initApp() {
   console.log('initApp started');
   
-  // Проверяем наличие глобальных объектов
   const hasConfig = typeof window.CONFIG !== 'undefined';
   const hasServices = typeof window.Services !== 'undefined';
   const hasUtils = typeof window.Utils !== 'undefined';
@@ -369,7 +353,6 @@ function initApp() {
     return;
   }
   
-  // 1. Инициализация менеджеров новостей
   if (typeof NEWS_DATA !== 'undefined') {
     try {
       if (typeof NewsRenderer !== 'undefined' && typeof NewsManager !== 'undefined') {
@@ -386,7 +369,6 @@ function initApp() {
     }
   }
   
-  // 2. Инициализация FormManager (после ComponentLoader!)
   if (hasServices && hasUtils) {
     try {
       const formRateLimiter = new window.Utils.RateLimiter(window.Services.storage);
@@ -405,7 +387,6 @@ function initApp() {
     console.warn('Services or Utils not fully loaded, FormManager not initialized');
   }
   
-  // 3. Регистрация модальных окон (после ComponentLoader и FormManager)
   if (typeof modalManager !== 'undefined') {
     const modalsToRegister = [
       { key: 'about', overlayId: 'aboutModalOverlay', required: false },
@@ -416,7 +397,6 @@ function initApp() {
         overlayId: 'newsModalOverlay',
         required: false,
         onClose: () => {
-          // Восстанавливаем базовый URL при закрытии любым способом
           if (window.NewsNavigation) {
             window.NewsNavigation.restoreBaseUrl();
           }
@@ -439,19 +419,16 @@ function initApp() {
     console.error('ModalManager not found!');
   }
   
-  // 4. Запуск основного приложения
   const app = new Application();
   app.init();
 }
 
-// Запуск после загрузки DOM
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initApp);
 } else {
   initApp();
 }
 
-// Авторасширение textarea
 document.addEventListener('input', function(e) {
   if (e.target.tagName === 'TEXTAREA' && e.target.classList.contains('form-textarea')) {
     e.target.style.height = 'auto';

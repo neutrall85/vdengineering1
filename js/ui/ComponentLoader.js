@@ -227,6 +227,15 @@ const ComponentLoader = {
             } else {
                 // Если навигация уже есть в HTML (для обратной совместимости), обновляем её
                 existingNav.outerHTML = this.navbar;
+                
+                // Проверяем и добавляем overlay если нет
+                if (!document.getElementById('mobileMenuOverlay')) {
+                    const overlay = document.createElement('div');
+                    overlay.className = 'mobile-menu-overlay';
+                    overlay.id = 'mobileMenuOverlay';
+                    document.body.appendChild(overlay);
+                }
+                
                 this.setActiveLink(activePage);
             }
         }

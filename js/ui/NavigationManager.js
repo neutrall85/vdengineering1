@@ -184,5 +184,6 @@ class NavigationManager {
 }
 
 const navigationManager = new NavigationManager();
+window.navigationManager = navigationManager;
 
 window.NavigationManager = NavigationManager;
