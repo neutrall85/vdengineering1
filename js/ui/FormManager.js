@@ -123,7 +123,6 @@ class FormManager {
 
     // Проверяем файлы на дубликаты и другие ограничения перед добавлением
     const validNewFiles = [];
-    const duplicatesFound = new Set();
 
     for (const file of Array.from(files)) {
       // Проверка размера файла
@@ -144,24 +143,16 @@ class FormManager {
       const isDuplicate = this.currentFiles.some(f => `${f.name}:${f.size}` === fileKey);
       
       if (isDuplicate) {
-        duplicatesFound.add(file.name);
         continue;
       }
 
       // Проверка на дубликаты внутри текущей партии
       const isDuplicateInBatch = validNewFiles.some(f => `${f.name}:${f.size}` === fileKey);
       if (isDuplicateInBatch) {
-        duplicatesFound.add(file.name);
         continue;
       }
 
       validNewFiles.push(file);
-    }
-
-    // Показываем предупреждение о дубликатах только один раз в конце
-    if (duplicatesFound.size > 0) {
-      const duplicateNames = Array.from(duplicatesFound).join(', ');
-      this._showUploadWarning(`Файлы уже выбраны: ${duplicateNames}`, fileDrop);
     }
 
     // Добавляем новые файлы к существующим
