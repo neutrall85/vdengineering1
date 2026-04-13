@@ -26,8 +26,24 @@ class Application {
         });
         console.log('ComponentLoader initialized');
         
-        // Задержка чтобы DOM обновился после вставки компонентов навигации, футера и модального окна
-        await new Promise(resolve => setTimeout(resolve, 50));
+        // Ждём пока элементы навигации появятся в DOM
+        await new Promise((resolve) => {
+          const checkNavElements = () => {
+            const nav = document.getElementById('navbar');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            
+            if (nav && mobileMenu && mobileMenuBtn && mobileMenuOverlay) {
+              console.log('Navigation elements found in DOM');
+              resolve();
+            } else {
+              console.log('Waiting for navigation elements...', { nav: !!nav, mobileMenu: !!mobileMenu, mobileMenuBtn: !!mobileMenuBtn, mobileMenuOverlay: !!mobileMenuOverlay });
+              setTimeout(checkNavElements, 50);
+            }
+          };
+          checkNavElements();
+        });
       }
 
       this._initGlobalHelpers();
