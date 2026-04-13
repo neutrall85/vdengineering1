@@ -1104,27 +1104,28 @@ body:has(.details-modal-overlay.active) {
 
 .modal-close {
   position: absolute;
-  top: -20px;
-  right: -20px;
-  width: 44px;
-  height: 44px;
-  background: var(--vd-light-gray);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  top: 1rem;
+  right: 1rem;
+  width: 45px;
+  height: 45px;
+  background: var(--vd);
   border: none;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--duration-fast) var(--ease-elastic);
   z-index: 10;
+  transition: background var(--duration-fast) var(--ease-smooth);
 }
 
 .modal-close:hover {
-  transform: rotate(90deg) scale(1.05);
-  background: var(--vd);
+  background: var(--vd-dark);
 }
-.modal-close:hover svg {
+
+.modal-close svg {
+  width: 20px;
+  height: 20px;
   fill: white;
 }
 
