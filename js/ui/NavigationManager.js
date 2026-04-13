@@ -17,16 +17,17 @@ class NavigationManager {
 
   init() {
     try {
-      // Простая проверка наличия элементов с минимальной задержкой
-      const tryInit = () => {
-        this.navbar = document.getElementById('navbar');
-        this.scrollToTopBtn = document.getElementById('scrollToTop');
-        this.mobileMenu = document.getElementById('mobileMenu');
-        this.mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        this.mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+      // Ждём пока ComponentLoader загрузит навигацию
+      const checkElements = () => {
+        this.navbar = DOM.getElement('navbar');
+        this.scrollToTopBtn = DOM.getElement('scrollToTop');
+        this.mobileMenu = DOM.getElement('mobileMenu');
+        this.mobileMenuBtn = DOM.getElement('mobileMenuBtn');
+        this.mobileMenuOverlay = DOM.getElement('mobileMenuOverlay');
         
         if (!this.navbar || !this.mobileMenu || !this.mobileMenuBtn) {
-          setTimeout(tryInit, 50);
+          console.warn('Navigation elements not found, retrying...');
+          setTimeout(checkElements, 100);
           return;
         }
         
@@ -38,7 +39,8 @@ class NavigationManager {
         console.log('NavigationManager initialized');
       };
       
-      tryInit();
+      // Начинаем проверку элементов
+      checkElements();
     } catch (error) {
       console.error('NavigationManager init failed:', error);
     }
