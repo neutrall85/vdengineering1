@@ -24,13 +24,13 @@ class Application {
           activePage: currentPage === 'index' ? '' : currentPage
         });
         console.log('ComponentLoader initialized');
-        
-        // Задержка чтобы DOM обновился после вставки компонентов навигации, футера и модального окна
-        await new Promise(resolve => setTimeout(resolve, 50));
       }
 
       this._initGlobalHelpers();
       this._setCurrentYear();
+      
+      // Задержка чтобы DOM обновился после вставки компонентов навигации, футера и модального окна
+      await new Promise(resolve => setTimeout(resolve, 50));
       
       // Повторная регистрация модулей после загрузки компонентов
       this._registerModules();

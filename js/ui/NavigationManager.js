@@ -17,28 +17,23 @@ class NavigationManager {
 
   init() {
     try {
-      // Простая проверка наличия элементов с минимальной задержкой
-      const tryInit = () => {
-        this.navbar = document.getElementById('navbar');
-        this.scrollToTopBtn = document.getElementById('scrollToTop');
-        this.mobileMenu = document.getElementById('mobileMenu');
-        this.mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        this.mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-        
-        if (!this.navbar || !this.mobileMenu || !this.mobileMenuBtn) {
-          setTimeout(tryInit, 50);
-          return;
-        }
-        
-        this._initSmoothScroll();
-        this._initScrollHandler();
-        this._initMobileMenu();
-        this._handleScroll();
-        
-        console.log('NavigationManager initialized');
-      };
+      this.navbar = document.getElementById('navbar');
+      this.scrollToTopBtn = document.getElementById('scrollToTop');
+      this.mobileMenu = document.getElementById('mobileMenu');
+      this.mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      this.mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
       
-      tryInit();
+      if (!this.navbar || !this.mobileMenu || !this.mobileMenuBtn) {
+        console.warn('Navigation elements not found, skipping initialization');
+        return;
+      }
+      
+      this._initSmoothScroll();
+      this._initScrollHandler();
+      this._initMobileMenu();
+      this._handleScroll();
+      
+      console.log('NavigationManager initialized');
     } catch (error) {
       console.error('NavigationManager init failed:', error);
     }
@@ -51,7 +46,7 @@ class NavigationManager {
         if (href === '#') return;
         
         try {
-          const target = DOM.query(href);
+          const target = document.querySelector(href);
           if (target) {
             e.preventDefault();
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -94,17 +89,17 @@ class NavigationManager {
     
     if (this.navbar) {
       if (scrollY > this.scrollThreshold) {
-        DOM.addClass(this.navbar, 'scrolled');
+        this.navbar.classList.add('scrolled');
       } else {
-        DOM.removeClass(this.navbar, 'scrolled');
+        this.navbar.classList.remove('scrolled');
       }
     }
     
     if (this.scrollToTopBtn) {
       if (scrollY > this.scrollTopThreshold) {
-        DOM.addClass(this.scrollToTopBtn, 'visible');
+        this.scrollToTopBtn.classList.add('visible');
       } else {
-        DOM.removeClass(this.scrollToTopBtn, 'visible');
+        this.scrollToTopBtn.classList.remove('visible');
       }
     }
   }
@@ -112,7 +107,7 @@ class NavigationManager {
   _initMobileMenu() {
     if (!this.mobileMenu) return;
     
-    const closeBtn = DOM.getElement('mobileMenuClose');
+    const closeBtn = document.getElementById('mobileMenuClose');
     
     // Используем делегирование событий для кнопки меню (по ID)
     document.addEventListener('click', (e) => {
@@ -147,18 +142,18 @@ class NavigationManager {
   openMobileMenu() {
     if (!this.mobileMenu) return;
     
-    DOM.addClass(this.mobileMenu, 'active');
-    if (this.mobileMenuOverlay) DOM.addClass(this.mobileMenuOverlay, 'active');
-    if (this.mobileMenuBtn) DOM.addClass(this.mobileMenuBtn, 'active');
+    this.mobileMenu.classList.add('active');
+    if (this.mobileMenuOverlay) this.mobileMenuOverlay.classList.add('active');
+    if (this.mobileMenuBtn) this.mobileMenuBtn.classList.add('active');
     document.body.classList.add('no-scroll');
   }
 
   closeMobileMenu() {
     if (!this.mobileMenu) return;
     
-    DOM.removeClass(this.mobileMenu, 'active');
-    if (this.mobileMenuOverlay) DOM.removeClass(this.mobileMenuOverlay, 'active');
-    if (this.mobileMenuBtn) DOM.removeClass(this.mobileMenuBtn, 'active');
+    this.mobileMenu.classList.remove('active');
+    if (this.mobileMenuOverlay) this.mobileMenuOverlay.classList.remove('active');
+    if (this.mobileMenuBtn) this.mobileMenuBtn.classList.remove('active');
     document.body.classList.remove('no-scroll');
   }
 
