@@ -2439,6 +2439,8 @@ body:has(.details-modal-overlay.active) {
   .contact-content {
     grid-template-columns: 1fr;
     gap: 2rem;
+    display: flex;
+    flex-direction: column-reverse;
   }
 
   .news-card {
