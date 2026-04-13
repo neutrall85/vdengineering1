@@ -49,9 +49,9 @@ body.no-scroll {
 }
 
 /* Модальные окна новостей и деталей также блокируют скролл */
-.news-modal-overlay.active ~ body,
+.modal-overlay.active ~ body,
 .details-modal-overlay.active ~ body,
-body:has(.news-modal-overlay.active),
+body:has(.modal-overlay.active),
 body:has(.details-modal-overlay.active) {
   overflow: hidden;
 }
@@ -1540,11 +1540,10 @@ body:has(.details-modal-overlay.active) {
   margin: 0;
 }
 
-/* ==================== НОВОСТНЫЕ МОДАЛЬНЫЕ ОКНА ==================== */
+/* ==================== МОДАЛЬНЫЕ ОКНА (ОБЩИЕ СТИЛИ) ==================== */
 
-/* ==================== БАЗОВЫЕ СТИЛИ МОДАЛЬНЫХ ОКОН (ОБЩИЕ) ==================== */
-/* Базовые стили для всех модальных окон - news-modal, details-modal и других */
-.news-modal-overlay,
+/* ==================== БАЗОВЫЕ СТИЛИ МОДАЛЬНЫХ ОКОН ==================== */
+.modal-overlay,
 .details-modal-overlay {
   position: fixed;
   top: 0;
@@ -1563,14 +1562,14 @@ body:has(.details-modal-overlay.active) {
   backdrop-filter: blur(5px);
 }
 
-.news-modal-overlay.active,
+.modal-overlay.active,
 .details-modal-overlay.active {
   opacity: 1;
   visibility: visible;
 }
 
 /* Контейнер модального окна */
-.news-modal-container,
+.modal-container,
 .details-modal-container {
   background: white;
   border-radius: 24px;
@@ -1585,18 +1584,18 @@ body:has(.details-modal-overlay.active) {
   transition: transform 0.3s ease;
 }
 
-.news-modal-container::-webkit-scrollbar,
+.modal-container::-webkit-scrollbar,
 .details-modal-container::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
 
-.news-modal-overlay.active .news-modal-container,
+.modal-overlay.active .modal-container,
 .details-modal-overlay.active .details-modal-container {
   transform: scale(1);
 }
 
 /* Кнопка закрытия */
-.news-modal-close,
+.modal-close,
 .details-modal-close {
   position: absolute;
   top: 1rem;
@@ -1614,12 +1613,12 @@ body:has(.details-modal-overlay.active) {
   transition: background var(--duration-fast) var(--ease-smooth);
 }
 
-.news-modal-close:hover,
+.modal-close:hover,
 .details-modal-close:hover {
   background: var(--vd-dark);
 }
 
-.news-modal-close svg,
+.modal-close svg,
 .details-modal-close svg {
   width: 20px;
   height: 20px;
@@ -1627,13 +1626,13 @@ body:has(.details-modal-overlay.active) {
 }
 
 /* Тело модального окна */
-.news-modal-body,
+.modal-body,
 .details-modal-body {
   padding: clamp(1rem, 3vw, 2rem);
 }
 
 /* Элементы контента */
-.news-modal-category {
+.modal-category {
   display: inline-block;
   background: var(--vd-light-blue);
   color: var(--vd);
@@ -1644,13 +1643,13 @@ body:has(.details-modal-overlay.active) {
   margin-bottom: 1rem;
 }
 
-.news-modal-date {
+.modal-date {
   color: var(--metallic);
   margin-bottom: 1rem;
   font-size: clamp(0.8rem, 1.2vw, 0.9rem);
 }
 
-.news-modal-title,
+.modal-title,
 .details-modal-title {
   font-size: clamp(1.3rem, 4vw, 1.8rem);
   font-weight: 700;
@@ -1659,24 +1658,24 @@ body:has(.details-modal-overlay.active) {
   color: var(--vd);
 }
 
-.news-modal-content {
+.modal-content {
   color: var(--text-dark);
   line-height: 1.8;
   font-size: clamp(0.9rem, 1.2vw, 1rem);
 }
 
-.news-modal-content p {
+.modal-content p {
   margin-bottom: 1.5rem;
 }
 
-.news-modal-list,
+.modal-list,
 .details-modal-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.news-modal-list li,
+.modal-list li,
 .details-modal-list li {
   padding: 0.75rem 0;
   color: var(--metallic);
@@ -1686,7 +1685,7 @@ body:has(.details-modal-overlay.active) {
   padding-left: 1.75rem;
 }
 
-.news-modal-list li::before,
+.modal-list li::before,
 .details-modal-list li::before {
   content: '✓';
   color: var(--vd);
@@ -1695,7 +1694,7 @@ body:has(.details-modal-overlay.active) {
   left: 0;
 }
 
-.news-modal-image {
+.modal-image {
   width: 100%;
   height: clamp(200px, 30vh, 300px);
   object-fit: cover;
@@ -2543,14 +2542,12 @@ body:has(.details-modal-overlay.active) {
     justify-content: flex-start;
   }
 
-  .modal-container,
-  .news-modal-container {
+  .modal-container {
     max-height: 95vh;
   }
 
   .modal-header,
-  .modal-body,
-  .news-modal-body {
+  .modal-body {
     padding: 1rem;
   }
 
