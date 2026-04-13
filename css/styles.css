@@ -2441,6 +2441,20 @@ body:has(.details-modal-overlay.active) {
     gap: 2rem;
   }
 
+  /* Меняем порядок блоков в контактах на мобильной версии */
+  .contact-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-content .commercial-offer-container {
+    order: 1;
+  }
+
+  .contact-content .contact-info {
+    order: 2;
+  }
+
   .news-card {
     grid-template-columns: 1fr;
   }
@@ -2573,7 +2587,7 @@ body:has(.details-modal-overlay.active) {
 
   .footer-legal ul {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 0.75rem;
   }
 
