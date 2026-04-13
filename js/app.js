@@ -25,25 +25,8 @@ class Application {
         });
         console.log('ComponentLoader initialized');
         
-      // Ждём пока элементы навигации появятся в DOM (упрощённая версия без частых проверок)
-      await new Promise((resolve) => {
-        const checkNavElements = () => {
-          const nav = document.getElementById('navbar');
-          const mobileMenu = document.getElementById('mobileMenu');
-          const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-          const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-          
-          if (nav && mobileMenu && mobileMenuBtn && mobileMenuOverlay) {
-            resolve();
-          } else {
-            // Проверяем реже (500мс вместо 100мс) для снижения нагрузки
-            setTimeout(checkNavElements, 500);
-          }
-        };
-        checkNavElements();
-        // Таймаут безопасности 3 секунды
-        setTimeout(resolve, 3000);
-      });
+        // Задержка чтобы DOM обновился после вставки компонентов навигации, футера и модального окна
+        await new Promise(resolve => setTimeout(resolve, 50));
       }
 
       this._initGlobalHelpers();
