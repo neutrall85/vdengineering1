@@ -149,7 +149,6 @@ class ModalManager {
 
 // Создаём глобальный экземпляр
 const modalManager = new ModalManager();
-window.modalManager = modalManager;
 
 // Экспортируем в window.UI для совместимости
 window.UI = window.UI || {};

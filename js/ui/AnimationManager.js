@@ -97,7 +97,6 @@ class AnimationManager {
 }
 
 const animationManager = new AnimationManager();
-window.animationManager = animationManager;
 
 window.AnimationManager = AnimationManager;
 

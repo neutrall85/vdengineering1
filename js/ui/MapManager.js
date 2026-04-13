@@ -37,7 +37,6 @@ class MapManager {
 }
 
 const mapManager = new MapManager();
-window.mapManager = mapManager;
 
 window.MapManager = MapManager;
 
