@@ -14,6 +14,7 @@ const ComponentLoader = {
       </a>
     </div>
     <ul class="nav-links">
+      <li class="home-link"><a href="index.html">Главная</a></li>
       <li><a href="about.html">О нас</a></li>
       <li><a href="services.html">Услуги</a></li>
       <li><a href="news.html">Новости</a></li>
@@ -33,6 +34,7 @@ const ComponentLoader = {
   <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Закрыть меню">
     <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
   </button>
+  <a href="index.html">Главная</a>
   <a href="about.html">О нас</a>
   <a href="services.html">Услуги</a>
   <a href="news.html">Новости</a>
@@ -221,10 +223,13 @@ const ComponentLoader = {
                 overlay.id = 'mobileMenuOverlay';
                 document.body.appendChild(overlay);
                 
+                // Скрываем ссылку "Главная" только на index.html
+                this._toggleHomeLink(activePage);
                 this.setActiveLink(activePage);
             } else {
                 // Если навигация уже есть в HTML (для обратной совместимости), обновляем её
                 existingNav.outerHTML = this.navbar;
+                this._toggleHomeLink(activePage);
                 this.setActiveLink(activePage);
             }
         }
@@ -290,6 +295,27 @@ const ComponentLoader = {
                 link.classList.add('active');
             }
         });
+    },
+
+    /**
+     * Скрытие/показ ссылки "Главная" в зависимости от текущей страницы
+     * @param {string} activePage - Имя активной страницы
+     */
+    _toggleHomeLink(activePage) {
+        const isIndex = !activePage || activePage === 'index';
+        const displayStyle = isIndex ? 'none' : '';
+        
+        // Скрываем в десктопном меню
+        const homeLinkLi = document.querySelector('.nav-links li.home-link');
+        if (homeLinkLi) {
+            homeLinkLi.style.display = displayStyle;
+        }
+        
+        // Скрываем в мобильном меню
+        const mobileHomeLink = document.querySelector('#mobileMenu a[href="index.html"]');
+        if (mobileHomeLink) {
+            mobileHomeLink.style.display = displayStyle;
+        }
     },
 
     /**

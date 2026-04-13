@@ -173,35 +173,44 @@ class Application {
 
   _initFloatingCTA() {
     const floatingBtn = document.querySelector('.floating-cta-btn');
-    // Поддержка разных селекторов для заголовка contact-cta-title
     const contactCtaTitle = document.querySelector('.contact-cta-title');
 
     if (!floatingBtn) return;
 
+    // Проверяем, есть ли на странице contact-cta-title (about, services, projects)
+    const hasContactCtaTitle = !!contactCtaTitle;
+
     const toggleButton = () => {
       const scrollY = window.scrollY;
 
-      if (scrollY <= 350) {
-        floatingBtn.classList.remove('visible');
-        return;
-      }
+      // Логика для страниц с contact-cta-title (about, services, projects)
+      if (hasContactCtaTitle) {
+        // Кнопка видна сразу после загрузки
+        if (scrollY <= 350) {
+          floatingBtn.classList.add('visible');
+          return;
+        }
 
-      if (!contactCtaTitle) {
+        const rect = contactCtaTitle.getBoundingClientRect();
+        const isTitleVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+        // Скрываем кнопку, когда заголовок виден на экране
+        if (isTitleVisible) {
+          floatingBtn.classList.remove('visible');
+          return;
+        }
+
+        // Показываем кнопку, когда заголовок ушел выше
         floatingBtn.classList.add('visible');
         return;
       }
 
-      const rect = contactCtaTitle.getBoundingClientRect();
-      const isTitleVisible = rect.top < window.innerHeight && rect.bottom > 0;
-
-      // Скрываем кнопку, когда заголовок виден на экране
-      if (isTitleVisible) {
+      // Логика для index.html (без contact-cta-title) - показ только после скролла
+      if (scrollY > 350) {
+        floatingBtn.classList.add('visible');
+      } else {
         floatingBtn.classList.remove('visible');
-        return;
       }
-
-      // Показываем кнопку, когда заголовок ушел выше
-      floatingBtn.classList.add('visible');
     };
 
     toggleButton();
