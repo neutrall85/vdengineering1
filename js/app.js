@@ -143,6 +143,13 @@ class Application {
       }
     };
     
+    // Глобальные функции для модального окна политик
+    window.closePolicyModal = () => {
+      if (typeof ComponentLoader !== 'undefined') {
+        ComponentLoader.closePolicyModal();
+      }
+    };
+    
     window.toggleWidget = (header) => {
       const widget = header.closest('.certificate-widget');
       if (widget) {

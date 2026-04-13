@@ -3,6 +3,86 @@
  * Устраняет дублирование HTML между страницами
  */
 
+// Документы политик (DRY подход - единый источник истины)
+const POLICY_DOCUMENTS = {
+  terms: {
+    title: 'Условия обслуживания',
+    content: `
+      <h2>1. Общие положения</h2>
+      <p>Настоящие Условия обслуживания регулируют отношения между ООО "Волга-Днепр Инжиниринг" и пользователями сайта.</p>
+      
+      <h2>2. Предмет соглашения</h2>
+      <p>Компания предоставляет услуги по разработке модификаций авиационной техники в соответствии с действующим законодательством.</p>
+      
+      <h2>3. Обязательства сторон</h2>
+      <p>Пользователь обязуется использовать информацию сайта в соответствии с законодательством РФ.</p>
+      
+      <h2>4. Ответственность</h2>
+      <p>Компания не несет ответственности за убытки, возникшие в результате использования информации сайта.</p>
+      
+      <h2>5. Изменение условий</h2>
+      <p>Компания вправе вносить изменения в настоящие Условия без предварительного уведомления.</p>
+    `
+  },
+  privacy: {
+    title: 'Политика конфиденциальности',
+    content: `
+      <h2>1. Общие положения</h2>
+      <p>Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональных данных пользователей.</p>
+      
+      <h2>2. Сбор персональных данных</h2>
+      <p>Мы собираем только те данные, которые необходимы для предоставления услуг.</p>
+      
+      <h2>3. Использование данных</h2>
+      <p>Персональные данные используются исключительно для связи с пользователем и предоставления услуг.</p>
+      
+      <h2>4. Защита данных</h2>
+      <p>Компания применяет все необходимые меры для защиты персональных данных пользователей.</p>
+      
+      <h2>5. Передача данных третьим лицам</h2>
+      <p>Передача данных возможна только в случаях, предусмотренных законодательством РФ.</p>
+    `
+  },
+  'personal-data': {
+    title: 'Политика обработки персональных данных',
+    content: `
+      <h2>1. Общие положения</h2>
+      <p>Политика разработана в соответствии с Федеральным законом № 152-ФЗ "О персональных данных".</p>
+      
+      <h2>2. Цели обработки</h2>
+      <p>Обработка персональных данных осуществляется для заключения и исполнения договоров.</p>
+      
+      <h2>3. Правовые основания</h2>
+      <p>Обработка осуществляется с согласия субъекта персональных данных.</p>
+      
+      <h2>4. Объем и категории данных</h2>
+      <p>Обрабатываются: ФИО, контактные данные, информация о компании.</p>
+      
+      <h2>5. Срок обработки</h2>
+      <p>Данные хранятся до достижения целей обработки или отзыва согласия.</p>
+    `
+  },
+  cookies: {
+    title: 'Политика в отношении файлов cookie',
+    content: `
+      <h2>1. Что такое cookie</h2>
+      <p>Cookie — это небольшие текстовые файлы, сохраняемые на устройстве пользователя.</p>
+      
+      <h2>2. Какие cookie мы используем</h2>
+      <p>Мы используем технические cookie для обеспечения работы сайта.</p>
+      
+      <h2>3. Управление cookie</h2>
+      <p>Пользователь может отключить cookie в настройках браузера.</p>
+      
+      <h2>4. Сторонние cookie</h2>
+      <p>На сайте могут использоваться сервисы третьих лиц (Яндекс.Метрика).</p>
+      
+      <h2>5. Обновление политики</h2>
+      <p>Политика может обновляться. Актуальная версия размещена на сайте.</p>
+    `
+  }
+};
+
 const ComponentLoader = {
     // Навигация
     navbar: `
@@ -73,10 +153,10 @@ const ComponentLoader = {
   </div>
   <div class="footer-legal">
     <ul>
-      <li><a href="#terms">Условия обслуживания</a></li>
-      <li><a href="#privacy">Политика конфиденциальности</a></li>
-      <li><a href="#personal-data">Политика обработки персональных данных</a></li>
-      <li><a href="#cookies">Политика в отношении файлов cookie</a></li>
+      <li><a href="#" data-policy="terms">Условия обслуживания</a></li>
+      <li><a href="#" data-policy="privacy">Политика конфиденциальности</a></li>
+      <li><a href="#" data-policy="personal-data">Политика обработки персональных данных</a></li>
+      <li><a href="#" data-policy="cookies">Политика в отношении файлов cookie</a></li>
     </ul>
   </div>
   <div class="footer-bottom">
@@ -239,10 +319,14 @@ const ComponentLoader = {
                 footerContainer.innerHTML = this.footer.trim();
                 document.body.appendChild(footerContainer.firstElementChild);
                 this.updateYear();
+                // Инициализируем обработчики ссылок политик после загрузки футера
+                this.initPolicyLinks();
             } else {
                 // Если футер уже есть в HTML (для обратной совместимости), обновляем его
                 existingFooter.outerHTML = this.footer;
                 this.updateYear();
+                // Инициализируем обработчики ссылок политик после загрузки футера
+                this.initPolicyLinks();
             }
         }
 
@@ -302,6 +386,89 @@ const ComponentLoader = {
         if (yearElement) {
             yearElement.textContent = new Date().getFullYear();
         }
+    },
+
+    /**
+     * Инициализация обработчиков для ссылок политик в футере
+     */
+    initPolicyLinks() {
+        // Делегирование событий для ссылок политик (DRY - один обработчик для всех)
+        document.addEventListener('click', (e) => {
+            const policyLink = e.target.closest('[data-policy]');
+            if (policyLink) {
+                e.preventDefault();
+                const policyKey = policyLink.getAttribute('data-policy');
+                this.openPolicyModal(policyKey);
+            }
+        });
+    },
+
+    /**
+     * Открытие модального окна с текстом политики
+     * @param {string} policyKey - ключ политики (terms, privacy, personal-data, cookies)
+     */
+    openPolicyModal(policyKey) {
+        const policy = POLICY_DOCUMENTS[policyKey];
+        if (!policy) {
+            console.warn(`Policy "${policyKey}" not found`);
+            return;
+        }
+
+        // Создаем модальное окно если его нет
+        let modalOverlay = document.getElementById('policyModalOverlay');
+        if (!modalOverlay) {
+            modalOverlay = document.createElement('div');
+            modalOverlay.id = 'policyModalOverlay';
+            modalOverlay.className = 'modal-overlay';
+            modalOverlay.setAttribute('role', 'dialog');
+            modalOverlay.setAttribute('aria-modal', 'true');
+            modalOverlay.innerHTML = `
+                <div class="modal-container">
+                    <button class="modal-close" onclick="window.closePolicyModal && window.closePolicyModal()" aria-label="Закрыть">
+                        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                    </button>
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="policyModalTitle"></h2>
+                    </div>
+                    <div class="modal-body" id="policyModalContent"></div>
+                </div>
+            `;
+            document.body.appendChild(modalOverlay);
+
+            // Закрытие по клику на overlay
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    this.closePolicyModal();
+                }
+            });
+        }
+
+        // Заполняем контент
+        document.getElementById('policyModalTitle').textContent = policy.title;
+        document.getElementById('policyModalContent').innerHTML = policy.content;
+
+        // Блокируем скролл
+        document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
+        document.body.classList.add('no-scroll');
+
+        // Показываем модальное окно
+        setTimeout(() => {
+            modalOverlay.classList.add('active');
+            const closeBtn = modalOverlay.querySelector('.modal-close');
+            if (closeBtn) closeBtn.focus();
+        }, 50);
+    },
+
+    /**
+     * Закрытие модального окна политики
+     */
+    closePolicyModal() {
+        const modalOverlay = document.getElementById('policyModalOverlay');
+        if (!modalOverlay) return;
+
+        modalOverlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+        document.body.style.paddingRight = '';
     }
 };
 

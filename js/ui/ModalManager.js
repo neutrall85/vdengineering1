@@ -54,6 +54,18 @@ class ModalManager {
         this.close(this.activeModal);
       }
     });
+    
+    // Обработчик Escape для модального окна политик
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const policyModal = document.getElementById('policyModalOverlay');
+        if (policyModal && policyModal.classList.contains('active')) {
+          if (typeof ComponentLoader !== 'undefined') {
+            ComponentLoader.closePolicyModal();
+          }
+        }
+      }
+    });
   }
 
   open(key, options = {}) {
