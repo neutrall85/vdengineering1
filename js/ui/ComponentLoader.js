@@ -73,10 +73,10 @@ const ComponentLoader = {
   </div>
   <div class="footer-legal">
     <ul>
-      <li><a href="#" data-legal-modal="terms">Условия обслуживания</a></li>
-      <li><a href="#" data-legal-modal="privacy">Политика конфиденциальности</a></li>
-      <li><a href="#" data-legal-modal="personal-data">Политика обработки персональных данных</a></li>
-      <li><a href="#" data-legal-modal="cookies">Политика в отношении файлов cookie</a></li>
+      <li><a href="#terms">Условия обслуживания</a></li>
+      <li><a href="#privacy">Политика конфиденциальности</a></li>
+      <li><a href="#personal-data">Политика обработки персональных данных</a></li>
+      <li><a href="#cookies">Политика в отношении файлов cookie</a></li>
     </ul>
   </div>
   <div class="footer-bottom">
@@ -196,23 +196,6 @@ const ComponentLoader = {
   </div>
 </div>`,
 
-    // Модальные окна для юридических документов
-    legalModals: `
-<!-- Legal Documents Modals -->
-<div class="modal-overlay legal-modal-overlay" id="legalModalOverlay" role="dialog" aria-modal="true" aria-labelledby="legalModalTitle">
-  <div class="modal-container legal-modal-container">
-    <button class="modal-close" onclick="window.closeLegalModal && window.closeLegalModal()" aria-label="Закрыть">
-      <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-    </button>
-    <div class="modal-header">
-      <h2 class="modal-title" id="legalModalTitle">Документ</h2>
-    </div>
-    <div class="modal-body legal-modal-body">
-      <div id="legalModalContent"></div>
-    </div>
-  </div>
-</div>`,
-
     /**
      * Инициализация компонентов на странице
      * @param {Object} options - Опции загрузки
@@ -291,14 +274,6 @@ const ComponentLoader = {
             }
         }
 
-        // Загрузка модальных окон для юридических документов
-        const existingLegalModal = document.getElementById('legalModalOverlay');
-        if (!existingLegalModal) {
-            const legalModalContainer = document.createElement('div');
-            legalModalContainer.innerHTML = this.legalModals.trim();
-            document.body.appendChild(legalModalContainer.firstElementChild);
-        }
-
         // Подсветка активной ссылки
         if (activePage) {
             this.setActiveLink(activePage);
@@ -327,127 +302,6 @@ const ComponentLoader = {
         if (yearElement) {
             yearElement.textContent = new Date().getFullYear();
         }
-    },
-
-    /**
-     * Данные юридических документов
-     */
-    legalDocuments: {
-        terms: {
-            title: 'Условия обслуживания',
-            content: `
-                <h3>1. Общие положения</h3>
-                <p>Настоящие Условия обслуживания регулируют отношения между ООО "Волга-Днепр Инжиниринг" и пользователями услуг компании.</p>
-                
-                <h3>2. Предмет соглашения</h3>
-                <p>Компания предоставляет услуги по проектированию модификаций авиационной техники, разработке ремонтной конструкторской документации и сопутствующие инженерные услуги.</p>
-                
-                <h3>3. Обязательства сторон</h3>
-                <p>Клиент обязуется предоставить полную и достоверную информацию о требованиях к модификации. Компания обязуется выполнить работы в соответствии с техническим заданием и действующими нормами авиационного законодательства.</p>
-                
-                <h3>4. Конфиденциальность</h3>
-                <p>Стороны обязуются сохранять конфиденциальность полученной информации в ходе выполнения работ.</p>
-                
-                <h3>5. Заключительные положения</h3>
-                <p>Настоящие условия вступают в силу с момента акцепта клиентом и действуют до полного исполнения обязательств сторонами.</p>
-            `
-        },
-        privacy: {
-            title: 'Политика конфиденциальности',
-            content: `
-                <h3>1. Общие положения</h3>
-                <p>Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональных данных пользователей сайта ООО "Волга-Днепр Инжиниринг".</p>
-                
-                <h3>2. Сбор персональных данных</h3>
-                <p>Мы собираем только те персональные данные, которые необходимы для предоставления услуг и связи с клиентами: имя, контактные данные, информация о компании.</p>
-                
-                <h3>3. Использование данных</h3>
-                <p>Персональные данные используются исключительно для:</p>
-                <ul>
-                    <li>Обработки запросов клиентов</li>
-                    <li>Предоставления информации об услугах компании</li>
-                    <li>Выполнения договорных обязательств</li>
-                </ul>
-                
-                <h3>4. Защита данных</h3>
-                <p>Компания принимает все необходимые меры для защиты персональных данных от несанкционированного доступа.</p>
-                
-                <h3>5. Права субъектов данных</h3>
-                <p>Пользователи имеют право на доступ, исправление и удаление своих персональных данных.</p>
-            `
-        },
-        'personal-data': {
-            title: 'Политика обработки персональных данных',
-            content: `
-                <h3>1. Общие положения</h3>
-                <p>Настоящая Политика определяет порядок обработки персональных данных в ООО "Волга-Днепр Инжиниринг" в соответствии с Федеральным законом № 152-ФЗ.</p>
-                
-                <h3>2. Цели обработки</h3>
-                <p>Обработка персональных данных осуществляется в целях:</p>
-                <ul>
-                    <li>Заключения и исполнения договоров</li>
-                    <li>Информирования о услугах компании</li>
-                    <li>Выполнения требований законодательства</li>
-                </ul>
-                
-                <h3>3. Правовые основания</h3>
-                <p>Обработка осуществляется на основании согласия субъекта данных, а также для исполнения договоров и выполнения требований законодательства.</p>
-                
-                <h3>4. Способы обработки</h3>
-                <p>Обработка производится как автоматизированным, так и неавтоматизированным способом.</p>
-                
-                <h3>5. Хранение данных</h3>
-                <p>Персональные данные хранятся до достижения целей обработки или отзыва согласия субъектом.</p>
-            `
-        },
-        cookies: {
-            title: 'Политика в отношении файлов cookie',
-            content: `
-                <h3>1. Что такое cookie</h3>
-                <p>Cookie — это небольшие текстовые файлы, которые сохраняются на устройстве пользователя при посещении сайта.</p>
-                
-                <h3>2. Используемые типы cookie</h3>
-                <ul>
-                    <li><strong>Технические cookie</strong> — необходимы для функционирования сайта</li>
-                    <li><strong>Аналитические cookie</strong> — помогают улучшить работу сайта</li>
-                </ul>
-                
-                <h3>3. Управление cookie</h3>
-                <p>Пользователь может управлять настройками cookie через браузер. Отключение некоторых cookie может повлиять на функциональность сайта.</p>
-                
-                <h3>4. Сторонние cookie</h3>
-                <p>Некоторые сервисы могут использовать собственные cookie. Рекомендуем ознакомиться с политиками соответствующих сервисов.</p>
-            `
-        }
-    },
-
-    /**
-     * Открытие модального окна юридического документа
-     * @param {string} docKey - Ключ документа (terms, privacy, personal-data, cookies)
-     */
-    openLegalModal(docKey) {
-        const doc = this.legalDocuments[docKey];
-        if (!doc) {
-            console.warn(`Document "${docKey}" not found`);
-            return false;
-        }
-
-        const modalTitle = document.getElementById('legalModalTitle');
-        const modalContent = document.getElementById('legalModalContent');
-        
-        if (modalTitle && modalContent) {
-            modalTitle.textContent = doc.title;
-            modalContent.innerHTML = doc.content;
-            
-            if (typeof modalManager !== 'undefined') {
-                modalManager.open('legal');
-                return true;
-            } else {
-                console.error('ModalManager not available');
-                return false;
-            }
-        }
-        return false;
     }
 };
 

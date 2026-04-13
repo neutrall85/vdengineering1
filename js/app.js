@@ -143,10 +143,6 @@ class Application {
       }
     };
     
-    window.closeLegalModal = () => {
-      if (typeof modalManager !== 'undefined') modalManager.close('legal');
-    };
-    
     window.toggleWidget = (header) => {
       const widget = header.closest('.certificate-widget');
       if (widget) {
@@ -411,8 +407,7 @@ function initApp() {
         }
       },
       { key: 'project', overlayId: 'projectModalOverlay', required: false },
-      { key: 'service', overlayId: 'serviceModalOverlay', required: false },
-      { key: 'legal', overlayId: 'legalModalOverlay', required: false }
+      { key: 'service', overlayId: 'serviceModalOverlay', required: false }
     ];
     
     modalsToRegister.forEach(modal => {
@@ -445,17 +440,5 @@ document.addEventListener('input', function(e) {
   if (e.target.tagName === 'TEXTAREA' && e.target.classList.contains('form-textarea')) {
     e.target.style.height = 'auto';
     e.target.style.height = (e.target.scrollHeight) + 'px';
-  }
-});
-
-// Обработчик кликов на ссылки юридических документов
-document.addEventListener('click', function(e) {
-  const legalLink = e.target.closest('[data-legal-modal]');
-  if (legalLink) {
-    e.preventDefault();
-    const docKey = legalLink.getAttribute('data-legal-modal');
-    if (typeof ComponentLoader !== 'undefined' && typeof ComponentLoader.openLegalModal === 'function') {
-      ComponentLoader.openLegalModal(docKey);
-    }
   }
 });
