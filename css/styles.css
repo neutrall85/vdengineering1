@@ -593,32 +593,32 @@ body.app-ready > footer:not(.footer) {
 
 .section-header {
   text-align: center;
-  max-width: 800px;
-  margin: 0 auto 3rem;
+  max-width: 700px;
+  margin: 0 auto 2rem;
 }
 
 .section-tag {
   display: inline-block;
   background: var(--vd-light-blue);
   color: var(--vd);
-  padding: 0.3rem 1rem;
+  padding: 0.25rem 0.85rem;
   border-radius: 50px;
-  font-size: clamp(0.7rem, 1vw, 0.8rem);
+  font-size: clamp(0.65rem, 0.9vw, 0.75rem);
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
 }
 
 .section-header h2 {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
   font-weight: 700;
   color: var(--vd);
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
 }
 
 .section-header p {
   color: var(--metallic);
-  line-height: 1.6;
-  font-size: clamp(0.875rem, 1.2vw, 1rem);
+  line-height: 1.55;
+  font-size: clamp(0.825rem, 1.1vw, 0.95rem);
 }
 
 .services-grid {
@@ -2474,35 +2474,35 @@ body.app-ready > footer:not(.footer) {
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  max-width: 1400px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .feature-card {
   background: white;
-  border-radius: 20px;
-  padding: clamp(1.5rem, 3vw, 2rem);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
   text-align: center;
   transition: all var(--duration-normal) var(--ease-elastic);
 }
 
 .feature-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
 .feature-icon {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   background: var(--vd-light-blue);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1.25rem;
   transition: background var(--duration-normal) var(--ease-smooth);
 }
 
@@ -2511,8 +2511,8 @@ body.app-ready > footer:not(.footer) {
 }
 
 .feature-icon svg {
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   fill: var(--vd);
   transition: fill var(--duration-normal) var(--ease-smooth);
 }
@@ -2523,14 +2523,14 @@ body.app-ready > footer:not(.footer) {
 
 .feature-card h3 {
   color: var(--vd);
-  margin-bottom: 1rem;
-  font-size: clamp(1.1rem, 2vw, 1.25rem);
+  margin-bottom: 0.85rem;
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
 }
 
 .feature-card p {
   color: var(--metallic);
-  line-height: 1.6;
-  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+  line-height: 1.55;
+  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
 }
 
 /* ==================== МЕДИА-ЗАПРОСЫ ==================== */
@@ -2835,12 +2835,12 @@ body.app-ready > footer:not(.footer) {
 .certificate-widgets-container { max-width: 900px; margin: 0 auto; }
 
 .features-section-padding { padding: 60px 5%; }
-.features-grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto; }
-.feature-card-box { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; }
+.features-grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+.feature-card-box { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 3px 12px rgba(0,0,0,0.06); text-align: center; }
 .feature-icon-circle { width: 60px; height: 60px; background: linear-gradient(135deg, var(--vd), var(--vd-light-blue)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
 .feature-icon-svg { width: 30px; height: 30px; fill: white; }
-.feature-title { color: var(--vd); margin-bottom: 1rem; }
-.feature-desc { color: var(--metallic); line-height: 1.6; }
+.feature-title { color: var(--vd); margin-bottom: 0.75rem; font-size: clamp(1.05rem, 1.8vw, 1.2rem); }
+.feature-desc { color: var(--metallic); line-height: 1.55; font-size: clamp(0.8rem, 1.1vw, 0.9rem); }
 
 .contact-cta-bg { background: var(--vd-light-blue); padding: 60px 5%; text-align: center; color: #004E96; }
 .contact-cta-title { font-size: 2rem; margin-bottom: 1rem; }
@@ -3101,57 +3101,57 @@ body.app-ready > footer:not(.footer) {
 /* ==================== ABOUT PAGE STYLES ==================== */
 /* Основная секция о компании */
 .about-main-section {
-  padding: clamp(60px, 10vh, 100px) 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: white;
 }
 
 .about-content-grid {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 4rem;
+  gap: 3rem;
   align-items: center;
 }
 
 .about-title {
-  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
   font-weight: 700;
   color: var(--vd);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   line-height: 1.2;
 }
 
 .about-text {
   color: var(--metallic);
-  line-height: 1.8;
-  font-size: clamp(1rem, 1.2vw, 1.1rem);
-  margin-bottom: 1.5rem;
+  line-height: 1.7;
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  margin-bottom: 1.25rem;
 }
 
 .about-image-placeholder {
   background: linear-gradient(135deg, var(--vd-light-blue) 0%, var(--vd-light-gray) 100%);
-  border-radius: 20px;
-  height: 400px;
+  border-radius: 16px;
+  height: 350px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 20px 50px rgba(0, 78, 150, 0.1);
+  box-shadow: 0 15px 40px rgba(0, 78, 150, 0.08);
   transition: transform var(--duration-slow) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth);
 }
 
 .about-image-placeholder:hover {
   transform: translateY(-5px);
-  box-shadow: 0 30px 60px rgba(0, 78, 150, 0.15);
+  box-shadow: 0 25px 50px rgba(0, 78, 150, 0.12);
 }
 
 .placeholder-icon {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   color: var(--vd);
   opacity: 0.6;
-  margin-bottom: 1rem;
+  margin-bottom: 0.9rem;
 }
 
 .placeholder-icon svg {
@@ -3167,34 +3167,34 @@ body.app-ready > footer:not(.footer) {
 
 /* Секция направлений деятельности */
 .directions-section {
-  padding: clamp(60px, 10vh, 100px) 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: var(--vd-light-gray);
 }
 
 .directions-grid {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
 }
 
 .direction-card {
   background: white;
-  border-radius: 20px;
-  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border-radius: 16px;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
   transition: all var(--duration-normal) var(--ease-elastic);
   position: relative;
   overflow: hidden;
 }
 
 .direction-card-shadow {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 }
 
 .direction-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 25px 50px rgba(0, 78, 150, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 78, 150, 0.1);
 }
 
 .direction-card::before {
@@ -3203,8 +3203,8 @@ body.app-ready > footer:not(.footer) {
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--vd), var(--vd-orange));
+  height: 3px;
+  background: linear-gradient(90deg, var(--vd), var(--vd-blue));
   transform: scaleX(0);
   transition: transform var(--duration-normal) var(--ease-smooth);
 }
@@ -3214,25 +3214,25 @@ body.app-ready > footer:not(.footer) {
 }
 
 .direction-icon-wrapper {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   background: var(--vd-light-blue);
-  border-radius: 16px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   transition: all var(--duration-normal) var(--ease-bounce);
 }
 
 .direction-card:hover .direction-icon-wrapper {
   background: var(--vd);
-  transform: scale(1.05) rotate(5deg);
+  transform: scale(1.05);
 }
 
 .direction-icon {
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   fill: var(--vd);
   transition: fill var(--duration-normal) var(--ease-smooth);
 }
@@ -3242,16 +3242,16 @@ body.app-ready > footer:not(.footer) {
 }
 
 .direction-title {
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
   font-weight: 700;
   color: var(--vd);
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
 }
 
 .direction-text {
   color: var(--metallic);
-  line-height: 1.7;
-  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.65;
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
 }
 
 /* Секция с фактами и цифрами */
@@ -3310,16 +3310,16 @@ body.app-ready > footer:not(.footer) {
 
 /* Секция миссии */
 .mission-section {
-  padding: clamp(60px, 10vh, 100px) 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 
 .mission-content-grid {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1.2fr;
-  gap: clamp(30px, 5vw, 60px);
+  gap: clamp(25px, 4vw, 50px);
   align-items: center;
 }
 
@@ -3328,57 +3328,57 @@ body.app-ready > footer:not(.footer) {
 }
 
 .mission-text-block {
-  padding: 2rem 0;
+  padding: 1.5rem 0;
 }
 
 .mission-title {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.7rem, 3.5vw, 2.5rem);
   font-weight: 700;
   color: var(--vd);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   line-height: 1.2;
   text-align: center;
 }
 
 .mission-text {
-  font-size: clamp(1rem, 1.2vw, 1.1rem);
-  line-height: 1.8;
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  line-height: 1.7;
   color: var(--metallic);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .mission-text-highlight {
-  font-size: clamp(1.1rem, 1.3vw, 1.2rem);
-  line-height: 1.8;
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem);
+  line-height: 1.7;
   color: var(--vd-blue);
   font-weight: 600;
-  padding: 1.5rem;
+  padding: 1.25rem;
   background: rgba(41, 98, 255, 0.05);
-  border-left: 4px solid var(--vd-blue);
+  border-left: 3px solid var(--vd-blue);
   border-radius: 8px;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 /* Секция ценностей */
 .values-section {
-  padding: clamp(60px, 10vh, 100px) 5%;
+  padding: clamp(40px, 8vh, 80px) 5%;
   background: var(--vd-light-gray);
 }
 
 .values-content {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 4rem;
+  gap: 3rem;
   align-items: start;
 }
 
 .values-title {
-  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
   font-weight: 700;
   color: var(--vd);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .values-list {
@@ -3389,28 +3389,28 @@ body.app-ready > footer:not(.footer) {
 
 .value-item {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
+  border-radius: 12px;
+  padding: 1rem;
   transition: all var(--duration-normal) var(--ease-smooth);
 }
 
 .value-item-shadow {
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .value-item:hover {
-  transform: translateX(10px);
-  box-shadow: 0 15px 35px rgba(0, 78, 150, 0.12);
+  transform: translateX(5px);
+  box-shadow: 0 8px 20px rgba(0, 78, 150, 0.08);
 }
 
 .value-icon {
   flex-shrink: 0;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   background: var(--vd-light-blue);
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3418,19 +3418,19 @@ body.app-ready > footer:not(.footer) {
 }
 
 .value-item:hover .value-icon {
-  background: var(--vd-orange);
-  transform: scale(1.1) rotate(5deg);
+  background: var(--vd-light-blue);
+  transform: scale(1.05);
 }
 
 .value-icon svg {
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   fill: var(--vd);
   transition: fill var(--duration-normal) var(--ease-smooth);
 }
 
 .value-item:hover .value-icon svg {
-  fill: white;
+  fill: var(--vd);
 }
 
 .value-content {
@@ -3438,20 +3438,26 @@ body.app-ready > footer:not(.footer) {
 }
 
 .value-heading {
-  font-size: clamp(1.1rem, 1.5vw, 1.25rem);
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
   font-weight: 700;
   color: var(--vd);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .value-description {
   color: var(--metallic);
-  line-height: 1.7;
-  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.6;
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+}
+
+.values-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .values-image-block .about-image-placeholder {
-  height: 500px;
+  height: 400px;
 }
 
 /* Адаптивность для страницы about */
