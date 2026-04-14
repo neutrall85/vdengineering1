@@ -126,31 +126,6 @@ const ComponentLoader = {
     // Футер
     footer: `
 <footer class="footer">
-  <div class="footer-content">
-    <div class="footer-brand">
-      <div class="logo">
-        <a href="index.html">
-          <img src="assets/images/logo.svg" alt="Волга-Днепр Инжиниринг" class="logo-image">
-        </a>
-      </div>
-      <p>ООО "Волга-Днепр Инжиниринг" - разработка модификаций авиационной техники.</p>
-    </div>
-    <div class="footer-links">
-      <h4>Компания</h4>
-      <ul>
-        <li><a href="about.html">О нас</a></li>
-        <li><a href="services.html">Услуги</a></li>
-        <li><a href="news.html">Новости</a></li>
-        <li><a href="projects.html">Проекты</a></li>
-      </ul>
-    </div>
-    <div class="footer-links">
-      <h4>Ресурсы</h4>
-      <ul>
-        <li><a href="index.html#contact">Контакты</a></li>
-      </ul>
-    </div>
-  </div>
   <div class="footer-legal">
     <ul>
       <li><a href="#" data-policy="terms">Условия обслуживания</a></li>
