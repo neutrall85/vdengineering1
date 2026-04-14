@@ -2801,6 +2801,7 @@ body.app-ready > footer:not(.footer) {
 .service-icon-inline { width: 70px; height: 70px; background: linear-gradient(135deg, var(--vd), var(--vd-light-blue)); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
 .services-cta-inline { text-align: center; margin-top: 2rem; }
 .btn-primary-inline { background: linear-gradient(135deg, var(--vd), var(--vd-light-blue)); box-shadow: 0 10px 30px rgba(0, 51, 160, 0.4); }
+.btn-primary-inline:hover { background: linear-gradient(135deg, var(--vd), var(--vd-light-blue)); box-shadow: 0 12px 35px rgba(0, 51, 160, 0.5); transform: translateY(-3px); }
 .about-preview-inline { padding: 50px 5%; background: var(--vd-light-gray); }
 .about-content-inline { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
 .about-image-inline { width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12); }
