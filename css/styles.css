@@ -3308,6 +3308,56 @@ body.app-ready > footer:not(.footer) {
   line-height: 1.6;
 }
 
+/* Секция миссии */
+.mission-section {
+  padding: clamp(60px, 10vh, 100px) 5%;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.mission-content-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(30px, 5vw, 60px);
+  align-items: center;
+}
+
+.mission-image-block {
+  position: relative;
+}
+
+.mission-text-block {
+  padding: 2rem 0;
+}
+
+.mission-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.mission-text {
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  line-height: 1.8;
+  color: var(--metallic);
+  margin-bottom: 1.5rem;
+}
+
+.mission-text-highlight {
+  font-size: clamp(1.1rem, 1.3vw, 1.2rem);
+  line-height: 1.8;
+  color: var(--vd-blue);
+  font-weight: 600;
+  padding: 1.5rem;
+  background: rgba(41, 98, 255, 0.05);
+  border-left: 4px solid var(--vd-blue);
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
 /* Секция ценностей */
 .values-section {
   padding: clamp(60px, 10vh, 100px) 5%;
@@ -3424,11 +3474,13 @@ body.app-ready > footer:not(.footer) {
   .about-main-section,
   .directions-section,
   .facts-section,
+  .mission-section,
   .values-section {
     padding: clamp(40px, 8vh, 60px) 5%;
   }
   
   .about-content-grid,
+  .mission-content-grid,
   .values-content {
     gap: 2rem;
   }
@@ -3440,6 +3492,10 @@ body.app-ready > footer:not(.footer) {
   
   .directions-grid,
   .facts-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .mission-content-grid {
     grid-template-columns: 1fr;
   }
   
