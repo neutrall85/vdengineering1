@@ -84,7 +84,7 @@ const POLICY_DOCUMENTS = {
 };
 
 const ComponentLoader = {
-    // Навигация
+    // Навигация (ссылка "Главная" добавляется динамически)
     navbar: `
 <nav class="navbar" id="navbar">
   <div class="navbar-content">
@@ -94,6 +94,7 @@ const ComponentLoader = {
       </a>
     </div>
     <ul class="nav-links">
+      <li class="home-link"><a href="index.html">Главная</a></li>
       <li><a href="about.html">О нас</a></li>
       <li><a href="services.html">Услуги</a></li>
       <li><a href="news.html">Новости</a></li>
@@ -113,6 +114,7 @@ const ComponentLoader = {
   <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Закрыть меню">
     <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
   </button>
+  <a href="index.html" class="home-link-mobile">Главная</a>
   <a href="about.html">О нас</a>
   <a href="services.html">Услуги</a>
   <a href="news.html">Новости</a>
@@ -367,7 +369,32 @@ const ComponentLoader = {
      * @param {string} activePage - Имя активной страницы
      */
     setActiveLink(activePage) {
+        // Скрываем ссылку "Главная" на главной странице (index.html)
+        const isHomePage = activePage === '' || activePage === 'index';
+        
+        // Обрабатываем десктопное меню
+        const homeLinkDesktop = document.querySelector('.nav-links .home-link');
+        if (homeLinkDesktop) {
+            homeLinkDesktop.style.display = isHomePage ? 'none' : 'block';
+        }
+        
+        // Обрабатываем мобильное меню
+        const homeLinkMobile = document.querySelector('.mobile-menu .home-link-mobile');
+        if (homeLinkMobile) {
+            homeLinkMobile.style.display = isHomePage ? 'none' : 'block';
+        }
+        
+        // Подсветка активной ссылки
         document.querySelectorAll('.nav-links a').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === activePage || 
+                link.getAttribute('href') === `${activePage}.html`) {
+                link.classList.add('active');
+            }
+        });
+        
+        // Также подсвечиваем активную ссылку в мобильном меню
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('href') === activePage || 
                 link.getAttribute('href') === `${activePage}.html`) {
