@@ -18,11 +18,13 @@ class Application {
       // Это критично, так как все модули зависят от наличия элементов в DOM
       if (typeof ComponentLoader !== 'undefined') {
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-        ComponentLoader.init({ 
-          loadNavbar: true, 
-          loadFooter: true, 
-          loadModal: true,
-          activePage: currentPage === 'index' ? '' : currentPage
+        await new Promise((resolve) => {
+          ComponentLoader.init({ 
+            loadNavbar: true, 
+            loadFooter: true, 
+            loadModal: true,
+            activePage: currentPage === 'index' ? '' : currentPage
+          }, resolve);
         });
         console.log('ComponentLoader initialized');
         
