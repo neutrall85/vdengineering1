@@ -2903,6 +2903,7 @@ body.app-ready > footer:not(.footer) {
   gap: 30px;
   max-width: 1200px;
   margin: 0 auto;
+  align-items: stretch;
 }
 
 .doc-card {
@@ -2911,15 +2912,9 @@ body.app-ready > footer:not(.footer) {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.doc-card::-webkit-scrollbar {
-  display: none;
-}
-
-.doc-card {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .doc-card:hover {
@@ -2984,6 +2979,9 @@ body.app-ready > footer:not(.footer) {
 
 .doc-info {
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .doc-title {
@@ -2991,6 +2989,7 @@ body.app-ready > footer:not(.footer) {
   color: #333;
   margin-bottom: 8px;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 .doc-description {
@@ -2998,12 +2997,14 @@ body.app-ready > footer:not(.footer) {
   font-size: 0.95rem;
   line-height: 1.5;
   margin-bottom: 20px;
+  flex-grow: 1;
 }
 
 .doc-actions {
+  margin-top: auto;
+  padding-top: 15px;
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  align-items: flex-end;
 }
 
 .doc-view-link {
@@ -3019,7 +3020,6 @@ body.app-ready > footer:not(.footer) {
   border: none;
   cursor: pointer;
   padding: 0.5rem 0;
-  margin-top: auto;
   width: fit-content;
 }
 
@@ -3087,7 +3087,7 @@ body.app-ready > footer:not(.footer) {
   }
   
   .doc-preview {
-    height: 160px;
+    min-height: 200px;
   }
 }
 
