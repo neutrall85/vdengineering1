@@ -256,8 +256,9 @@ const ComponentLoader = {
     /**
      * Инициализация компонентов на странице
      * @param {Object} options - Опции загрузки
+     * @param {Function} callback - Функция обратного вызова после загрузки
      */
-    init(options = {}) {
+    init(options = {}, callback = null) {
         const { 
             loadNavbar = true, 
             loadFooter = true, 
@@ -285,6 +286,11 @@ const ComponentLoader = {
                 // Если навигация уже есть в HTML (для обратной совместимости), обновляем её
                 existingNav.outerHTML = this.navbar;
                 this.setActiveLink(activePage);
+            }
+            
+            // Вызываем callback после загрузки навигации
+            if (callback) {
+                setTimeout(callback, 50);
             }
         }
 

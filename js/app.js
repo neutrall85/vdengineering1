@@ -18,11 +18,13 @@ class Application {
       // Это критично, так как все модули зависят от наличия элементов в DOM
       if (typeof ComponentLoader !== 'undefined') {
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-        ComponentLoader.init({ 
-          loadNavbar: true, 
-          loadFooter: true, 
-          loadModal: true,
-          activePage: currentPage === 'index' ? '' : currentPage
+        await new Promise((resolve) => {
+          ComponentLoader.init({ 
+            loadNavbar: true, 
+            loadFooter: true, 
+            loadModal: true,
+            activePage: currentPage === 'index' ? '' : currentPage
+          }, resolve);
         });
         console.log('ComponentLoader initialized');
         
@@ -450,7 +452,12 @@ function initApp() {
     console.error('ModalManager not found!');
   }
   
-  // 4. Запуск основного приложения
+  // 4. Инициализация DocPreviewManager для страницы документов
+  if (typeof DocPreviewManager !== 'undefined') {
+    DocPreviewManager.init();
+  }
+  
+  // 5. Запуск основного приложения
   const app = new Application();
   app.init();
 }
