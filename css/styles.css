@@ -98,32 +98,20 @@ body.app-ready > footer:not(.footer) {
 
 .loader-content {
   text-align: center;
-  position: relative;
 }
 
-.loader-plane-container {
-  width: 80px;
-  height: 80px;
+.loader-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
   margin: 0 auto 20px;
-  position: relative;
-  animation: planeOrbit 2s linear infinite;
 }
 
-.loader-plane {
-  width: 100%;
-  height: 100%;
-  fill: #ffffff;
-  /* Поворачиваем самолет на -90 градусов, чтобы нос смотрел вправо (по ходу движения) */
-  transform: rotate(-90deg);
-}
-
-@keyframes planeOrbit {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .loader-text {
