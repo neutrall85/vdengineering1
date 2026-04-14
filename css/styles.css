@@ -2899,7 +2899,7 @@ body.app-ready > footer:not(.footer) {
 
 .docs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 30px;
   max-width: 1200px;
   margin: 0 auto;
@@ -2908,73 +2908,105 @@ body.app-ready > footer:not(.footer) {
 
 .doc-card {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   height: 100%;
+  cursor: pointer;
+  border: 1px solid rgba(0, 78, 150, 0.08);
 }
 
 .doc-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 78, 150, 0.15);
 }
 
-.doc-preview {
+.doc-thumbnail {
+  position: relative;
   background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
-  height: auto;
-  min-height: 300px;
+  height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   overflow: hidden;
 }
 
-.pdf-frame {
+.thumbnail-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 1;
+}
+
+.doc-icon-large {
+  width: 80px;
+  height: 80px;
+  fill: var(--vd);
+  filter: drop-shadow(0 4px 8px rgba(0, 78, 150, 0.15));
+  transition: transform 0.3s ease;
+}
+
+.doc-card:hover .doc-icon-large {
+  transform: scale(1.1);
+}
+
+.doc-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--vd), var(--vd-dark));
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 78, 150, 0.3);
+}
+
+.doc-overlay {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0, 78, 150, 0.85) 0%, rgba(0, 51, 102, 0.9) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
 }
 
-.pdf-frame.loaded {
+.doc-card:hover .doc-overlay {
   opacity: 1;
-  pointer-events: auto;
 }
 
-.pdf-preview-placeholder {
-  text-align: center;
-  color: #666;
-  transition: opacity 0.3s ease;
+.view-icon {
+  width: 56px;
+  height: 56px;
+  fill: white;
+  transform: scale(0.8);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.pdf-frame.loaded + .pdf-preview-placeholder {
-  opacity: 0;
+.doc-card:hover .view-icon {
+  transform: scale(1);
 }
 
-.pdf-preview-placeholder .doc-icon {
-  width: 64px;
-  height: 64px;
-  fill: #004E96;
-  margin-bottom: 10px;
-}
-
-.pdf-preview-placeholder .doc-type {
-  display: inline-block;
-  background: #004E96;
+.view-text {
   color: white;
-  padding: 4px 12px;
-  border-radius: 4px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .doc-info {
@@ -2985,17 +3017,18 @@ body.app-ready > footer:not(.footer) {
 }
 
 .doc-title {
-  font-size: 1.25rem;
-  color: #333;
-  margin-bottom: 8px;
-  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+  font-weight: 700;
+  line-height: 1.4;
   flex-shrink: 0;
 }
 
 .doc-description {
   color: #666;
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 0.925rem;
+  line-height: 1.6;
   margin-bottom: 20px;
   flex-grow: 1;
 }
@@ -3007,57 +3040,38 @@ body.app-ready > footer:not(.footer) {
   align-items: flex-end;
 }
 
-.doc-view-link {
-  color: var(--vd);
-  text-decoration: none;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all var(--duration-normal) var(--ease-elastic);
-  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem 0;
-  width: fit-content;
-}
-
-.doc-view-link:hover {
-  gap: 1rem;
-  color: var(--vd-dark);
-}
-
-.doc-view-link svg {
-  width: 18px;
-  height: 18px;
-  fill: currentColor;
-}
-
 .btn-doc {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--vd-blue);
+  background: var(--vd);
   color: white;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 12px 24px;
+  border-radius: 8px;
   text-decoration: none;
-  font-weight: 500;
-  transition: background 0.3s ease, transform 0.2s ease;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   border: none;
+  box-shadow: 0 4px 12px rgba(0, 78, 150, 0.25);
 }
 
 .btn-doc:hover {
-  background: var(--vd-dark-blue);
+  background: var(--vd-dark);
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 78, 150, 0.35);
 }
 
 .btn-doc svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   fill: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.btn-doc:hover svg {
+  transform: translateX(4px);
 }
 
 .btn-view {
@@ -3068,12 +3082,105 @@ body.app-ready > footer:not(.footer) {
   background: var(--vd-dark);
 }
 
-.btn-download {
-  background: var(--vd-orange);
+/* PDF Modal Styles */
+.pdf-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.btn-download:hover {
-  background: var(--vd-orange-light);
+.pdf-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.pdf-modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1200px;
+  height: 90vh;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+  transform: scale(0.95) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pdf-modal-overlay.active .pdf-modal {
+  transform: scale(1) translateY(0);
+}
+
+.pdf-modal-header {
+  padding: 20px 24px;
+  background: linear-gradient(135deg, var(--vd-light-blue) 0%, #e6f0fa 100%);
+  border-bottom: 1px solid rgba(0, 78, 150, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.pdf-modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--vd);
+  margin: 0;
+}
+
+.pdf-modal-close {
+  background: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pdf-modal-close:hover {
+  background: var(--vd-orange);
+  transform: rotate(90deg);
+}
+
+.pdf-modal-close svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--vd);
+}
+
+.pdf-modal-close:hover svg {
+  fill: white;
+}
+
+.pdf-modal-content {
+  flex: 1;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+.pdf-modal-content iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 /* Responsive styles for docs page */
@@ -3086,8 +3193,21 @@ body.app-ready > footer:not(.footer) {
     grid-template-columns: 1fr;
   }
   
-  .doc-preview {
-    min-height: 200px;
+  .doc-thumbnail {
+    height: 220px;
+  }
+  
+  .pdf-modal {
+    height: 95vh;
+    max-height: 95vh;
+  }
+  
+  .pdf-modal-header {
+    padding: 15px 16px;
+  }
+  
+  .pdf-modal-title {
+    font-size: 1rem;
   }
 }
 
