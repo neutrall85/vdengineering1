@@ -468,23 +468,24 @@ body.app-ready > footer:not(.footer) {
 }
 
 .hero-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(var(--vd-blue-rgb), 0.15);
+  display: flex;
+  justify-content: flex-start;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-top: clamp(2rem, 4vh, 3rem);
+  padding-top: clamp(1rem, 2vh, 2rem);
+  border-top: 1px solid rgba(0, 78, 150, 0.15);
+  flex-wrap: wrap;
 }
 
 .stat-number {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-weight: 800;
-  color: var(--vd-orange);
+  color: var(--vd);
   display: block;
 }
 
 .stat-label {
-  font-size: 0.8rem;
+  font-size: clamp(0.75rem, 1.2vw, 0.9rem);
   color: var(--metallic);
 }
 
