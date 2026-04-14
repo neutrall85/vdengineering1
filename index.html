@@ -50,37 +50,11 @@
 <!-- Лоадер страницы - показывается до полной загрузки компонентов -->
 <div id="pageLoader" class="page-loader">
   <div class="loader-content">
-    <svg class="loader-spinner" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-      <!-- Орбита -->
-      <circle class="orbit-path" cx="60" cy="60" r="45" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
-      
-      <!-- Группа с самолетиком, вращающаяся по орбите -->
-      <g class="orbit-rotation">
-        <g transform="translate(60, 15)">
-          <!-- Самолетик -->
-          <g class="plane-svg" transform="rotate(90)">
-            <!-- Фюзеляж -->
-            <ellipse cx="0" cy="0" rx="20" ry="6" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(255,255,255,0.6))"/>
-            
-            <!-- Нос самолета -->
-            <path d="M 14 0 L 22 0 L 14 -3 Z" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(255,255,255,0.6))"/>
-            
-            <!-- Хвост -->
-            <path d="M -18 0 L -24 -5 L -24 5 Z" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(255,255,255,0.6))"/>
-            
-            <!-- Крылья -->
-            <path d="M -5 0 L 10 -12 L 15 -12 L 5 0 Z" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(255,255,255,0.6))"/>
-            <path d="M -5 0 L 10 12 L 15 12 L 5 0 Z" fill="#ffffff" filter="drop-shadow(0 0 4px rgba(255,255,255,0.6))"/>
-            
-            <!-- Двигатели/детали -->
-            <circle cx="-10" cy="0" r="3" fill="rgba(255,255,255,0.8)"/>
-          </g>
-        </g>
-      </g>
-      
-      <!-- Центральная точка -->
-      <circle cx="60" cy="60" r="4" fill="rgba(255,255,255,0.4)"/>
-    </svg>
+    <div class="loader-spinner">
+      <div class="plane">
+        <div class="wing"></div>
+      </div>
+    </div>
     <p class="loader-text">Загрузка...</p>
   </div>
 </div>
