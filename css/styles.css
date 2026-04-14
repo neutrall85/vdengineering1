@@ -3450,12 +3450,6 @@ body.app-ready > footer:not(.footer) {
   font-size: clamp(0.85rem, 1vw, 0.95rem);
 }
 
-.values-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .values-image-block .about-image-placeholder {
   height: 400px;
 }
