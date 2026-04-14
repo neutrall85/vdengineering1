@@ -41,12 +41,14 @@
   <script src="js/ui/MapManager.js"></script>
   <script src="js/ui/NewsRenderer.js"></script>
   <script src="js/ui/NewsManager.js"></script>
-  <script src="js/ui/DocPreviewManager.js"></script>
   <script src="js/ui/ComponentLoader.js"></script>
+  <script src="js/ui/DocPreviewManager.js"></script>
   <script src="js/data/newsData.js"></script>
   <script src="js/app.js"></script>
 </head>
 <body>
+  <!-- Навигация и футер загружаются через ComponentLoader -->
+  <div id="nav-placeholder"></div>
 
 <!-- Лоадер страницы - показывается до полной загрузки компонентов -->
 <div id="pageLoader" class="page-loader">
@@ -67,8 +69,6 @@
 
 <div id="appError" class="display-none"></div>
 <div id="toastContainer" class="toast-container"></div>
-
-<!-- Навигация загружается через ComponentLoader -->
 
 <main class="docs-page">
   <section class="page-header">
@@ -150,7 +150,13 @@
   </section>
 </main>
 
+<!-- Футер загружается через ComponentLoader -->
+<div id="footer-placeholder"></div>
 
+<script>
+  // Превью PDF теперь управляется через DocPreviewManager (js/ui/DocPreviewManager.js)
+  // Дополнительный код не требуется - DRY принцип
+</script>
 
 </body>
 </html>
