@@ -106,23 +106,41 @@ body.app-ready > footer:not(.footer) {
   height: 80px;
   margin: 0 auto 20px;
   position: relative;
-  animation: planeOrbit 2s linear infinite;
 }
 
 .loader-plane {
-  width: 100%;
-  height: 100%;
+  width: 40px;
+  height: 40px;
   fill: #ffffff;
-  /* Поворачиваем самолет на -90 градусов, чтобы нос смотрел вправо (по ходу движения) */
-  transform: rotate(-90deg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Начальная позиция: самолет справа от центра, нос смотрит вверх (исходная ориентация SVG) */
+  /* Поворачиваем на -90deg, чтобы нос смотрел вправо (по ходу движения по кругу) */
+  transform-origin: center center;
+  animation: planeFlyOrbit 2s linear infinite;
 }
 
-@keyframes planeOrbit {
+@keyframes planeFlyOrbit {
   0% {
-    transform: rotate(0deg);
+    /* Позиция: справа (3 часа), нос смотрит вверх по движению */
+    transform: translate(20px, -50%) rotate(0deg);
+  }
+  25% {
+    /* Позиция: снизу (6 часов), нос смотрит влево */
+    transform: translate(-50%, 20px) rotate(-90deg);
+  }
+  50% {
+    /* Позиция: слева (9 часов), нос смотрит вниз */
+    transform: translate(-20px, -50%) rotate(-180deg);
+  }
+  75% {
+    /* Позиция: сверху (12 часов), нос смотрит вправо */
+    transform: translate(-50%, -20px) rotate(-270deg);
   }
   100% {
-    transform: rotate(360deg);
+    /* Возврат в начало: справа, нос смотрит вверх */
+    transform: translate(20px, -50%) rotate(-360deg);
   }
 }
 
