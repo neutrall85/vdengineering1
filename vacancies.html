@@ -172,7 +172,7 @@
         </div>
       </div>
       <div class="vacancy-footer">
-        <button class="btn-primary btn-apply" onclick="window.openModal && window.openModal()">Откликнуться</button>
+        <button class="btn-primary btn-apply" onclick="window.openVacanciesModal && window.openVacanciesModal()">Откликнуться</button>
       </div>
     </div>
     
@@ -210,7 +210,7 @@
         </div>
       </div>
       <div class="vacancy-footer">
-        <button class="btn-primary btn-apply" onclick="window.openModal && window.openModal()">Откликнуться</button>
+        <button class="btn-primary btn-apply" onclick="window.openVacanciesModal && window.openVacanciesModal()">Откликнуться</button>
       </div>
     </div>
     
@@ -248,6 +248,44 @@
         </div>
       </div>
       <div class="vacancy-footer">
+        <button class="btn-primary btn-apply" onclick="window.openVacanciesModal && window.openVacanciesModal()">Откликнуться</button>
+      </div>
+    </div>
+    
+    <div class="vacancy-card vacancy-card-open fade-in">
+      <div class="vacancy-header">
+        <h3 class="vacancy-title">Инженер-технолог</h3>
+        <span class="vacancy-department">Производственный отдел</span>
+      </div>
+      <div class="vacancy-body">
+        <div class="vacancy-requirements">
+          <h4>Требования:</h4>
+          <ul>
+            <li>Высшее техническое образование</li>
+            <li>Опыт работы технологом в авиационной промышленности</li>
+            <li>Знание технологических процессов</li>
+            <li>Умение читать чертежи</li>
+          </ul>
+        </div>
+        <div class="vacancy-responsibilities">
+          <h4>Обязанности:</h4>
+          <ul>
+            <li>Разработка технологической документации</li>
+            <li>Сопровождение производства</li>
+            <li>Контроль соблюдения технологии</li>
+            <li>Оптимизация производственных процессов</li>
+          </ul>
+        </div>
+        <div class="vacancy-conditions">
+          <h4>Условия:</h4>
+          <ul>
+            <li>Работа в офисе (Москва)</li>
+            <li>Конкурентная заработная плата</li>
+            <li>Социальный пакет</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vacancy-footer">
         <button class="btn-primary btn-apply" onclick="window.openModal && window.openModal()">Откликнуться</button>
       </div>
     </div>
@@ -259,7 +297,7 @@
   <div class="open-application-content fade-in">
     <h2>Не нашли подходящую вакансию?</h2>
     <p>Мы всегда рады талантливым специалистам! Отправьте нам своё резюме, и мы рассмотрим вашу кандидатуру для будущих возможностей.</p>
-    <button class="btn-secondary" onclick="window.openModal && window.openModal()">Отправить резюме</button>
+    <button class="btn-secondary" onclick="window.openVacanciesModal && window.openVacanciesModal()">Отправить резюме</button>
   </div>
 </section>
 
@@ -267,7 +305,7 @@
 <section class="contact-cta contact-cta-bg">
   <h2 class="contact-cta-title">Готовы присоединиться к команде?</h2>
   <p class="contact-cta-desc">Отправьте отклик на выбранную вакансию или задайте вопросы HR-отделу</p>
-  <button class="btn-primary" onclick="window.openModal && window.openModal()">Заполнить форму отклика</button>
+  <button class="btn-primary" onclick="window.openVacanciesModal && window.openVacanciesModal()">Заполнить форму отклика</button>
 </section>
 
 <!-- Футер и модальное окно загружаются через ComponentLoader -->

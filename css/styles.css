@@ -3552,7 +3552,7 @@ body.app-ready > footer:not(.footer) {
 .vacancy-requirements h4, .vacancy-responsibilities h4, .vacancy-conditions h4 { font-size: 1rem; color: var(--vd); margin-bottom: 0.75rem; font-weight: 600; }
 .vacancy-requirements ul, .vacancy-responsibilities ul, .vacancy-conditions ul { list-style: none; padding: 0; }
 .vacancy-requirements li, .vacancy-responsibilities li, .vacancy-conditions li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; }
-.vacancy-requirements li::before, .vacancy-responsibilities li::before, .vacancy-conditions li::before { content: "•"; color: var(--vd-orange); position: absolute; left: 0; font-weight: bold; }
+.vacancy-requirements li::before, .vacancy-responsibilities li::before, .vacancy-conditions li::before { content: "•"; color: var(--vd-blue); position: absolute; left: 0; font-weight: bold; }
 
 .vacancy-footer { padding: 1.5rem; border-top: 1px solid var(--border-color); background: var(--vd-light-gray); }
 .btn-apply { width: 100%; justify-content: center; }
@@ -3572,4 +3572,87 @@ body.app-ready > footer:not(.footer) {
   .vacancy-header { padding: 1.25rem; }
   .vacancy-body { padding: 1.25rem; }
   .vacancy-footer { padding: 1.25rem; }
+}
+
+/* Стили для чекбокса согласия в модальном окне вакансий */
+.form-agreement-checkbox {
+  background: var(--vd-light-gray);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--vd-blue);
+  border-radius: 4px;
+  margin-top: 2px;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+  background: var(--vd-blue);
+  border-color: var(--vd-blue);
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-label input[type="checkbox"]:hover {
+  border-color: var(--vd-orange);
+}
+
+.checkbox-label input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 78, 150, 0.2);
+}
+
+.checkbox-text {
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+.checkbox-text a {
+  color: var(--vd);
+  text-decoration: underline;
+}
+
+.checkbox-text a:hover {
+  text-decoration: none;
+}
+
+/* Отключенная кнопка отправки */
+.form-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-submit:disabled:hover {
+  transform: none;
+  box-shadow: none;
 }
