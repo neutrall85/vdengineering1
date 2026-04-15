@@ -255,6 +255,84 @@ const ComponentLoader = {
   </div>
 </div>`,
 
+    // Модальное окно для отклика на вакансию
+    vacanciesModal: `
+<!-- Vacancies Application Modal -->
+<div class="modal-overlay" id="vacanciesModalOverlay" role="dialog" aria-modal="true" aria-labelledby="vacanciesModalTitle">
+  <div class="modal-container">
+    <button class="modal-close" onclick="window.closeVacanciesModal && window.closeVacanciesModal()" aria-label="Закрыть">
+      <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
+    <div class="modal-header">
+      <h2 class="modal-title" id="vacanciesModalTitle">Отклик на вакансию</h2>
+      <p class="modal-subtitle">Заполните форму ниже, и мы рассмотрим вашу кандидатуру</p>
+    </div>
+    <div class="modal-body">
+      <div class="rate-limit-warning" id="vacanciesRateLimitWarning">
+        <p>⚠️ Слишком много запросов. Пожалуйста, подождите 60 секунд перед следующей отправкой.</p>
+      </div>
+
+      <div class="success-message" id="vacanciesSuccessMessage">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <h3 class="success-title">Отклик отправлен!</h3>
+        <p class="success-text">Спасибо за ваш интерес. Мы рассмотрим резюме и свяжемся с вами в ближайшее время.</p>
+      </div>
+
+      <form id="vacanciesForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="vacanciesFullName">ФИО <span class="required">*</span></label>
+          <input type="text" class="form-input" id="vacanciesFullName" name="fullName" placeholder="Введите ваши ФИО полностью" required minlength="2" maxlength="200" autocomplete="name">
+          <p class="error-message" id="vacanciesFullNameError">Пожалуйста, введите корректное ФИО</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="vacanciesPhone">Номер телефона <span class="required">*</span></label>
+          <input type="tel" class="form-input" id="vacanciesPhone" name="phone" placeholder="+7 (999) 000-00-00" required minlength="10" maxlength="20" autocomplete="tel">
+          <p class="error-message" id="vacanciesPhoneError">Пожалуйста, введите корректный номер телефона</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="vacanciesEmail">Адрес e-mail <span class="required">*</span></label>
+          <input type="email" class="form-input" id="vacanciesEmail" name="email" placeholder="ваш.email@example.com" required maxlength="255" autocomplete="email">
+          <p class="error-message" id="vacanciesEmailError">Пожалуйста, введите корректный email</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="vacanciesAbout">Расскажите о себе <span class="required">*</span></label>
+          <textarea class="form-textarea" id="vacanciesAbout" name="about" placeholder="Расскажите о вашем опыте, навыках и почему вы хотите работать у нас..." required minlength="10" maxlength="2000"></textarea>
+          <p class="error-message" id="vacanciesAboutError">Пожалуйста, расскажите о себе (минимум 10 символов)</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Резюме (файл) <span class="required">*</span></label>
+          <div class="form-file" id="vacanciesFileDrop">
+            <input type="file" id="vacanciesFileAttachment" name="fileAttachment" accept=".pdf,.doc,.docx,.xls,.xlsx" aria-label="Загрузить резюме" multiple>
+            <div class="form-file-icon">
+              <svg viewBox="0 0 24 24"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>
+            </div>
+            <p class="form-file-text">Выбрать файл...</p>
+            <p class="form-file-hint">PDF, DOC, DOCX, XLS, XLSX (Max 10MB)</p>
+            <div class="form-file-list" id="vacanciesFileList"></div>
+            <div class="form-file-limit-warning" id="vacanciesFileLimitWarning" style="display: none;">
+              <p>⚠️ Превышен лимит: максимум 5 файлов или 10MB на файл</p>
+            </div>
+          </div>
+          <p class="error-message" id="vacanciesFileError">Пожалуйста, прикрепите резюме</p>
+        </div>
+        <div class="form-agreement form-agreement-checkbox">
+          <label class="checkbox-label">
+            <input type="checkbox" id="vacanciesConsent" name="consent" required>
+            <span class="checkbox-text">Я согласен с <a href="#" data-policy="personal-data" target="_blank" rel="noopener noreferrer">Условиями обработки персональных данных</a> <span class="required">*</span></span>
+          </label>
+          <p class="error-message" id="vacanciesConsentError">Необходимо подтвердить согласие</p>
+        </div>
+        <button type="submit" class="form-submit" id="vacanciesSubmitBtn" disabled>
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          <span>Отправить отклик</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>`,
+
     /**
      * Инициализация компонентов на странице
      * @param {Object} options - Опции загрузки
@@ -340,6 +418,19 @@ const ComponentLoader = {
                         });
                     }
                 }, 0);
+            }
+            
+            // Загрузка модального окна для вакансий
+            const existingVacanciesModal = document.getElementById('vacanciesModalOverlay');
+            if (!existingVacanciesModal) {
+                const vacanciesModalContainer = document.createElement('div');
+                vacanciesModalContainer.innerHTML = this.vacanciesModal.trim();
+                document.body.appendChild(vacanciesModalContainer.firstElementChild);
+                
+                // Инициализация обработчиков для модального окна вакансий
+                setTimeout(() => {
+                    this.initVacanciesModal();
+                }, 100);
             }
         }
 
@@ -479,6 +570,116 @@ const ComponentLoader = {
         modalOverlay.classList.remove('active');
         document.body.classList.remove('no-scroll');
         document.body.style.paddingRight = '';
+    },
+
+    /**
+     * Инициализация модального окна вакансий
+     */
+    initVacanciesModal() {
+        // Глобальные функции для открытия/закрытия модального окна вакансий
+        window.openVacanciesModal = () => {
+            const overlay = document.getElementById('vacanciesModalOverlay');
+            if (!overlay) return;
+
+            // Сохраняем текущую позицию скролла
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Блокируем скролл body
+            document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
+            document.body.classList.add('no-scroll');
+
+            overlay.classList.add('active');
+            
+            // Фокус на первом поле
+            setTimeout(() => {
+                const firstInput = overlay.querySelector('input, textarea');
+                if (firstInput) firstInput.focus();
+            }, 100);
+        };
+
+        window.closeVacanciesModal = () => {
+            const overlay = document.getElementById('vacanciesModalOverlay');
+            if (!overlay) return;
+
+            overlay.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+            document.body.style.paddingRight = '';
+        };
+
+        // Обработчик чекбокса согласия
+        const consentCheckbox = document.getElementById('vacanciesConsent');
+        const submitBtn = document.getElementById('vacanciesSubmitBtn');
+        
+        if (consentCheckbox && submitBtn) {
+            consentCheckbox.addEventListener('change', () => {
+                submitBtn.disabled = !consentCheckbox.checked;
+            });
+        }
+
+        // Обработчик отправки формы
+        const vacanciesForm = document.getElementById('vacanciesForm');
+        if (vacanciesForm) {
+            vacanciesForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Проверка чекбокса
+                if (!consentCheckbox || !consentCheckbox.checked) {
+                    const consentError = document.getElementById('vacanciesConsentError');
+                    if (consentError) consentError.classList.add('show');
+                    return;
+                }
+
+                // Здесь будет логика отправки формы
+                console.log('Отправка отклика на вакансию...');
+                
+                // Показываем сообщение об успехе
+                const successMessage = document.getElementById('vacanciesSuccessMessage');
+                const form = document.getElementById('vacanciesForm');
+                
+                if (successMessage && form) {
+                    form.style.display = 'none';
+                    successMessage.classList.add('show');
+                    
+                    // Закрываем модалку через 3 секунды
+                    setTimeout(() => {
+                        window.closeVacanciesModal();
+                        // Сбрасываем форму
+                        form.reset();
+                        form.style.display = 'block';
+                        successMessage.classList.remove('show');
+                        
+                        // Сбрасываем файлы
+                        if (window.formManager) {
+                            window.formManager.currentFiles = [];
+                            const fileList = document.getElementById('vacanciesFileList');
+                            if (fileList) fileList.innerHTML = '';
+                            const fileText = document.querySelector('#vacanciesFileDrop .form-file-text');
+                            if (fileText) fileText.textContent = 'Выбрать файл...';
+                        }
+                    }, 3000);
+                }
+            });
+        }
+
+        // Инициализация загрузки файлов для модального окна вакансий
+        if (window.formManager) {
+            setTimeout(() => {
+                const vacanciesFileDrop = document.getElementById('vacanciesFileDrop');
+                if (vacanciesFileDrop) {
+                    window.formManager._initFileUpload(document.getElementById('vacanciesModalOverlay'));
+                }
+            }, 150);
+        }
+
+        // Обработчик закрытия по клику на оверлей
+        const overlay = document.getElementById('vacanciesModalOverlay');
+        if (overlay) {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    window.closeVacanciesModal();
+                }
+            });
+        }
     }
 };
 
