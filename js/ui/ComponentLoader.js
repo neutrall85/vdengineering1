@@ -255,77 +255,77 @@ const ComponentLoader = {
   </div>
 </div>`,
 
-    // Модальное окно для отклика на вакансию
-    vacanciesModal: `
-<!-- Vacancies Application Modal -->
-<div class="modal-overlay" id="vacanciesModalOverlay" role="dialog" aria-modal="true" aria-labelledby="vacanciesModalTitle">
+    // Универсальное модальное окно для заявок (используется для кнопок "Откликнуться" и "Оставить заявку")
+    universalApplicationModal: `
+<!-- Universal Application Modal -->
+<div class="modal-overlay" id="universalApplicationModalOverlay" role="dialog" aria-modal="true" aria-labelledby="universalApplicationModalTitle">
   <div class="modal-container">
-    <button class="modal-close" onclick="window.closeVacanciesModal && window.closeVacanciesModal()" aria-label="Закрыть">
+    <button class="modal-close" onclick="window.closeUniversalApplicationModal && window.closeUniversalApplicationModal()" aria-label="Закрыть">
       <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
     </button>
     <div class="modal-header">
-      <h2 class="modal-title" id="vacanciesModalTitle">Отклик на вакансию</h2>
-      <p class="modal-subtitle">Заполните форму ниже, и мы рассмотрим вашу кандидатуру</p>
+      <h2 class="modal-title" id="universalApplicationModalTitle">Отклик на вакансию</h2>
+      <p class="modal-subtitle" id="universalApplicationModalSubtitle">Заполните форму ниже, и мы рассмотрим вашу кандидатуру</p>
     </div>
     <div class="modal-body">
-      <div class="rate-limit-warning" id="vacanciesRateLimitWarning">
+      <div class="rate-limit-warning" id="universalRateLimitWarning">
         <p>⚠️ Слишком много запросов. Пожалуйста, подождите 60 секунд перед следующей отправкой.</p>
       </div>
 
-      <div class="success-message" id="vacanciesSuccessMessage">
+      <div class="success-message" id="universalSuccessMessage">
         <div class="success-icon">
           <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
         </div>
-        <h3 class="success-title">Отклик отправлен!</h3>
+        <h3 class="success-title" id="universalSuccessTitle">Отклик отправлен!</h3>
         <p class="success-text">Спасибо за ваш интерес. Мы рассмотрим резюме и свяжемся с вами в ближайшее время.</p>
       </div>
 
-      <form id="vacanciesForm" novalidate>
+      <form id="universalApplicationForm" novalidate>
         <div class="form-group">
-          <label class="form-label" for="vacanciesFullName">ФИО <span class="required">*</span></label>
-          <input type="text" class="form-input" id="vacanciesFullName" name="fullName" placeholder="Введите ваши ФИО полностью" required minlength="2" maxlength="200" autocomplete="name">
-          <p class="error-message" id="vacanciesFullNameError">Пожалуйста, введите корректное ФИО</p>
+          <label class="form-label" for="universalFullName">ФИО <span class="required">*</span></label>
+          <input type="text" class="form-input" id="universalFullName" name="fullName" placeholder="Введите ваши ФИО полностью" required minlength="2" maxlength="200" autocomplete="name">
+          <p class="error-message" id="universalFullNameError">Пожалуйста, введите корректное ФИО</p>
         </div>
         <div class="form-group">
-          <label class="form-label" for="vacanciesPhone">Номер телефона <span class="required">*</span></label>
-          <input type="tel" class="form-input" id="vacanciesPhone" name="phone" placeholder="+7 (999) 000-00-00" required minlength="10" maxlength="20" autocomplete="tel">
-          <p class="error-message" id="vacanciesPhoneError">Пожалуйста, введите корректный номер телефона</p>
+          <label class="form-label" for="universalPhone">Номер телефона <span class="required">*</span></label>
+          <input type="tel" class="form-input" id="universalPhone" name="phone" placeholder="+7 (999) 000-00-00" required minlength="10" maxlength="20" autocomplete="tel">
+          <p class="error-message" id="universalPhoneError">Пожалуйста, введите корректный номер телефона</p>
         </div>
         <div class="form-group">
-          <label class="form-label" for="vacanciesEmail">Адрес e-mail <span class="required">*</span></label>
-          <input type="email" class="form-input" id="vacanciesEmail" name="email" placeholder="ваш.email@example.com" required maxlength="255" autocomplete="email">
-          <p class="error-message" id="vacanciesEmailError">Пожалуйста, введите корректный email</p>
+          <label class="form-label" for="universalEmail">Адрес e-mail <span class="required">*</span></label>
+          <input type="email" class="form-input" id="universalEmail" name="email" placeholder="ваш.email@example.com" required maxlength="255" autocomplete="email">
+          <p class="error-message" id="universalEmailError">Пожалуйста, введите корректный email</p>
         </div>
         <div class="form-group">
-          <label class="form-label" for="vacanciesAbout">Расскажите о себе <span class="required">*</span></label>
-          <textarea class="form-textarea" id="vacanciesAbout" name="about" placeholder="Расскажите о вашем опыте, навыках и почему вы хотите работать у нас..." required minlength="10" maxlength="2000"></textarea>
-          <p class="error-message" id="vacanciesAboutError">Пожалуйста, расскажите о себе (минимум 10 символов)</p>
+          <label class="form-label" for="universalAbout">Расскажите о себе <span class="required">*</span></label>
+          <textarea class="form-textarea" id="universalAbout" name="about" placeholder="Расскажите о вашем опыте, навыках и почему вы хотите работать у нас..." required minlength="10" maxlength="2000"></textarea>
+          <p class="error-message" id="universalAboutError">Пожалуйста, расскажите о себе (минимум 10 символов)</p>
         </div>
         <div class="form-group">
           <label class="form-label">Резюме (файл) <span class="required">*</span></label>
-          <div class="form-file" id="vacanciesFileDrop">
-            <input type="file" id="vacanciesFileAttachment" name="fileAttachment" accept=".pdf,.doc,.docx,.xls,.xlsx" aria-label="Загрузить резюме" required multiple>
+          <div class="form-file" id="universalFileDrop">
+            <input type="file" id="universalFileAttachment" name="fileAttachment" accept=".pdf,.doc,.docx,.xls,.xlsx" aria-label="Загрузить резюме" required multiple>
             <div class="form-file-icon">
               <svg viewBox="0 0 24 24"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>
             </div>
             <p class="form-file-text">Выбрать файл...</p>
             <p class="form-file-hint">PDF, DOC, DOCX, XLS, XLSX (Max 10MB)</p>
-            <div class="form-file-list" id="vacanciesFileList"></div>
-            <div class="form-file-limit-warning" id="vacanciesFileLimitWarning" style="display: none;">
+            <div class="form-file-list" id="universalFileList"></div>
+            <div class="form-file-limit-warning" id="universalFileLimitWarning" style="display: none;">
               <p>⚠️ Превышен лимит: максимум 5 файлов или 10MB на файл</p>
             </div>
           </div>
         </div>
         <div class="form-agreement form-agreement-checkbox">
           <label class="checkbox-label">
-            <input type="checkbox" id="vacanciesConsent" name="consent" required>
+            <input type="checkbox" id="universalConsent" name="consent" required>
             <span class="checkbox-text">Я согласен с <a href="#" data-policy="personal-data" target="_blank" rel="noopener noreferrer">Условиями обработки персональных данных</a> <span class="required">*</span></span>
           </label>
-          <p class="error-message" id="vacanciesConsentError">Необходимо подтвердить согласие</p>
+          <p class="error-message" id="universalConsentError">Необходимо подтвердить согласие</p>
         </div>
-        <button type="submit" class="form-submit" id="vacanciesSubmitBtn" disabled>
+        <button type="submit" class="form-submit" id="universalSubmitBtn" disabled>
           <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-          <span>Отправить отклик</span>
+          <span id="universalSubmitBtnText">Отправить отклик</span>
         </button>
       </form>
     </div>
@@ -419,16 +419,16 @@ const ComponentLoader = {
                 }, 0);
             }
             
-            // Загрузка модального окна для вакансий
-            const existingVacanciesModal = document.getElementById('vacanciesModalOverlay');
-            if (!existingVacanciesModal) {
-                const vacanciesModalContainer = document.createElement('div');
-                vacanciesModalContainer.innerHTML = this.vacanciesModal.trim();
-                document.body.appendChild(vacanciesModalContainer.firstElementChild);
+            // Загрузка универсального модального окна для заявок
+            const existingUniversalModal = document.getElementById('universalApplicationModalOverlay');
+            if (!existingUniversalModal) {
+                const universalModalContainer = document.createElement('div');
+                universalModalContainer.innerHTML = this.universalApplicationModal.trim();
+                document.body.appendChild(universalModalContainer.firstElementChild);
                 
-                // Инициализация обработчиков для модального окна вакансий
+                // Инициализация обработчиков для универсального модального окна
                 setTimeout(() => {
-                    this.initVacanciesModal();
+                    this.initUniversalApplicationModal();
                 }, 100);
             }
         }
@@ -572,13 +572,31 @@ const ComponentLoader = {
     },
 
     /**
-     * Инициализация модального окна вакансий
+     * Инициализация универсального модального окна заявок
+     * @param {string} mode - режим открытия ('vacancy' для кнопок "Откликнуться", 'application' для кнопки "Оставить заявку")
      */
-    initVacanciesModal() {
-        // Глобальные функции для открытия/закрытия модального окна вакансий
-        window.openVacanciesModal = () => {
-            const overlay = document.getElementById('vacanciesModalOverlay');
+    initUniversalApplicationModal() {
+        // Глобальные функции для открытия/закрытия универсального модального окна
+        window.openUniversalApplicationModal = (mode = 'vacancy') => {
+            const overlay = document.getElementById('universalApplicationModalOverlay');
             if (!overlay) return;
+
+            // Динамическая настройка текстов в зависимости от режима
+            const modalTitle = document.getElementById('universalApplicationModalTitle');
+            const submitBtnText = document.getElementById('universalSubmitBtnText');
+            const successTitle = document.getElementById('universalSuccessTitle');
+            
+            if (mode === 'application') {
+                // Режим для кнопки "Оставить заявку"
+                if (modalTitle) modalTitle.textContent = 'Оставить заявку';
+                if (submitBtnText) submitBtnText.textContent = 'Отправить информацию';
+                if (successTitle) successTitle.textContent = 'Данные отправлены!';
+            } else {
+                // Режим для кнопок "Откликнуться" (по умолчанию)
+                if (modalTitle) modalTitle.textContent = 'Отклик на вакансию';
+                if (submitBtnText) submitBtnText.textContent = 'Отправить отклик';
+                if (successTitle) successTitle.textContent = 'Отклик отправлен!';
+            }
 
             // Сохраняем текущую позицию скролла
             const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
@@ -596,8 +614,8 @@ const ComponentLoader = {
             }, 100);
         };
 
-        window.closeVacanciesModal = () => {
-            const overlay = document.getElementById('vacanciesModalOverlay');
+        window.closeUniversalApplicationModal = () => {
+            const overlay = document.getElementById('universalApplicationModalOverlay');
             if (!overlay) return;
 
             overlay.classList.remove('active');
@@ -606,13 +624,13 @@ const ComponentLoader = {
         };
 
         // Обработчик чекбокса согласия и валидации формы
-        const consentCheckbox = document.getElementById('vacanciesConsent');
-        const submitBtn = document.getElementById('vacanciesSubmitBtn');
-        const fullNameInput = document.getElementById('vacanciesFullName');
-        const phoneInput = document.getElementById('vacanciesPhone');
-        const emailInput = document.getElementById('vacanciesEmail');
-        const aboutInput = document.getElementById('vacanciesAbout');
-        const fileInput = document.getElementById('vacanciesFileAttachment');
+        const consentCheckbox = document.getElementById('universalConsent');
+        const submitBtn = document.getElementById('universalSubmitBtn');
+        const fullNameInput = document.getElementById('universalFullName');
+        const phoneInput = document.getElementById('universalPhone');
+        const emailInput = document.getElementById('universalEmail');
+        const aboutInput = document.getElementById('universalAbout');
+        const fileInput = document.getElementById('universalFileAttachment');
         
         function checkFormValidity() {
             if (!consentCheckbox || !consentCheckbox.checked) {
@@ -642,14 +660,14 @@ const ComponentLoader = {
         }
 
         // Обработчик отправки формы
-        const vacanciesForm = document.getElementById('vacanciesForm');
-        if (vacanciesForm) {
-            vacanciesForm.addEventListener('submit', (e) => {
+        const universalForm = document.getElementById('universalApplicationForm');
+        if (universalForm) {
+            universalForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 
                 // Проверка чекбокса
                 if (!consentCheckbox || !consentCheckbox.checked) {
-                    const consentError = document.getElementById('vacanciesConsentError');
+                    const consentError = document.getElementById('universalConsentError');
                     if (consentError) consentError.classList.add('show');
                     return;
                 }
@@ -658,25 +676,25 @@ const ComponentLoader = {
                 let isValid = true;
                 
                 if (!fullNameInput || fullNameInput.value.trim().length < 2) {
-                    const error = document.getElementById('vacanciesFullNameError');
+                    const error = document.getElementById('universalFullNameError');
                     if (error) error.classList.add('show');
                     isValid = false;
                 }
                 
                 if (!phoneInput || phoneInput.value.trim().length < 10) {
-                    const error = document.getElementById('vacanciesPhoneError');
+                    const error = document.getElementById('universalPhoneError');
                     if (error) error.classList.add('show');
                     isValid = false;
                 }
                 
                 if (!emailInput || !emailInput.value.includes('@') || !emailInput.value.includes('.')) {
-                    const error = document.getElementById('vacanciesEmailError');
+                    const error = document.getElementById('universalEmailError');
                     if (error) error.classList.add('show');
                     isValid = false;
                 }
                 
                 if (!aboutInput || aboutInput.value.trim().length < 10) {
-                    const error = document.getElementById('vacanciesAboutError');
+                    const error = document.getElementById('universalAboutError');
                     if (error) error.classList.add('show');
                     isValid = false;
                 }
@@ -684,10 +702,10 @@ const ComponentLoader = {
                 if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
                     const fileError = document.createElement('p');
                     fileError.className = 'error-message show';
-                    fileError.id = 'vacanciesFileError';
+                    fileError.id = 'universalFileError';
                     fileError.textContent = 'Пожалуйста, прикрепите резюме';
                     
-                    const existingError = document.getElementById('vacanciesFileError');
+                    const existingError = document.getElementById('universalFileError');
                     if (!existingError && fileInput) {
                         fileInput.parentElement.appendChild(fileError);
                     }
@@ -697,11 +715,11 @@ const ComponentLoader = {
                 if (!isValid) return;
 
                 // Здесь будет логика отправки формы
-                console.log('Отправка отклика на вакансию...');
+                console.log('Отправка заявки...');
                 
                 // Показываем сообщение об успехе
-                const successMessage = document.getElementById('vacanciesSuccessMessage');
-                const form = document.getElementById('vacanciesForm');
+                const successMessage = document.getElementById('universalSuccessMessage');
+                const form = document.getElementById('universalApplicationForm');
                 
                 if (successMessage && form) {
                     form.style.display = 'none';
@@ -709,7 +727,7 @@ const ComponentLoader = {
                     
                     // Закрываем модалку через 3 секунды
                     setTimeout(() => {
-                        window.closeVacanciesModal();
+                        window.closeUniversalApplicationModal();
                         // Сбрасываем форму
                         form.reset();
                         form.style.display = 'block';
@@ -718,9 +736,9 @@ const ComponentLoader = {
                         // Сбрасываем файлы
                         if (window.formManager) {
                             window.formManager.currentFiles = [];
-                            const fileList = document.getElementById('vacanciesFileList');
+                            const fileList = document.getElementById('universalFileList');
                             if (fileList) fileList.innerHTML = '';
-                            const fileText = document.querySelector('#vacanciesFileDrop .form-file-text');
+                            const fileText = document.querySelector('#universalFileDrop .form-file-text');
                             if (fileText) fileText.textContent = 'Выбрать файл...';
                         }
                     }, 3000);
@@ -728,26 +746,26 @@ const ComponentLoader = {
             });
         }
 
-        // Инициализация загрузки файлов для модального окна вакансий
+        // Инициализация загрузки файлов для универсального модального окна
         if (window.formManager) {
             setTimeout(() => {
-                const vacanciesFileDrop = document.getElementById('vacanciesFileDrop');
-                if (vacanciesFileDrop) {
-                    window.formManager._initFileUpload(document.getElementById('vacanciesModalOverlay'));
+                const universalFileDrop = document.getElementById('universalFileDrop');
+                if (universalFileDrop) {
+                    window.formManager._initFileUpload(document.getElementById('universalApplicationModalOverlay'));
                 }
             }, 150);
         }
 
         // Обработчик закрытия по клику на оверлей
-        const overlay = document.getElementById('vacanciesModalOverlay');
+        const overlay = document.getElementById('universalApplicationModalOverlay');
         if (overlay) {
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
-                    window.closeVacanciesModal();
+                    window.closeUniversalApplicationModal();
                 }
             });
         }
-    }
+    },
 };
 
 // Экспорт для использования в других модулях
