@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary SEO -->
+  <title>Вакансии | ООО "Волга-Днепр Инжиниринг"</title>
+  <meta name="description" content="Присоединяйтесь к команде профессионалов ООО 'Волга-Днепр Инжиниринг'. Актуальные вакансии в области авиационного инжиниринга.">
+  <meta name="keywords" content="вакансии, работа, карьера, авиационный инжиниринг, Волга-Днепр Инжиниринг, трудоустройство">
+  <meta name="author" content="ООО 'Волга-Днепр Инжиниринг'">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Вакансии | Волга-Днепр Инжиниринг">
+  <meta property="og:description" content="Присоединяйтесь к нашей команде профессионалов в области авиационного инжиниринга">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vdengineering.ru/vacancies.html">
+  <meta property="og:image" content="https://vdengineering.ru/assets/images/og-image.jpg">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="Волга-Днепр Инжиниринг">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Вакансии | Волга-Днепр Инжиниринг">
+  <meta name="twitter:description" content="Присоединяйтесь к команде профессионалов">
+  <meta name="twitter:image" content="https://vdengineering.ru/assets/images/og-image.jpg">
+  
+  <!-- Security -->
+  <meta name="X-Content-Type-Options" content="nosniff">
+  <meta name="X-Frame-Options" content="SAMEORIGIN">
+  <meta name="X-XSS-Protection" content="1; mode=block">
+  <meta name="Referrer-Policy" content="strict-origin-when-cross-origin">
+  
+  <link rel="canonical" href="https://vdengineering.ru/vacancies.html">
+  <link rel="icon" type="image/png" href="assets/images/tab.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Schema.org markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Вакансии",
+    "description": "Актуальные вакансии ООО 'Волга-Днепр Инжиниринг'",
+    "url": "https://vdengineering.ru/vacancies.html"
+  }
+  </script>
+  <script src="js/config.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/ui/ComponentLoader.js"></script>
+  <script src="js/ui/ModalManager.js"></script>
+  <script src="js/ui/NavigationManager.js"></script>
+  <script src="js/ui/AnimationManager.js"></script>
+  <script src="js/ui/FormManager.js"></script>
+  <script src="js/app.js"></script>
+</head>
+<body>
+
+<!-- Лоадер страницы - показывается до полной загрузки компонентов -->
+<div id="pageLoader" class="page-loader">
+  <div class="loader-content">
+    <div class="orbit-container">
+      <div class="orbit-ring"></div>
+      <div class="plane-wrapper">
+        <div class="plane-icon">
+          <svg viewBox="0 0 24 24" fill="white">
+            <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <p class="loader-text">Загрузка...</p>
+  </div>
+</div>
+
+<div id="appError" class="display-none"></div>
+<nav class="navbar" id="navbar"></nav>
+
+<section class="page-header page-header-bg">
+  <h1 class="page-header-title">Вакансии</h1>
+  <p class="page-header-desc">Присоединяйтесь к команде профессионалов авиационного инжиниринга</p>
+</section>
+
+<!-- Основная информация о работе в компании -->
+<section class="careers-intro careers-intro-padding">
+  <div class="careers-content-center">
+    <div class="careers-text-block fade-in">
+      <h2 class="careers-title">Почему стоит работать с нами</h2>
+      <p class="careers-text-highlight">
+        ООО "Волга-Днепр Инжиниринг" — это команда талантливых инженеров и специалистов, объединённых общей целью: 
+        создание инновационных решений в области модификации авиационной техники.
+      </p>
+      <div class="careers-benefits-grid">
+        <div class="benefit-card fade-in">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <h3>Интересные проекты</h3>
+          <p>Участие в уникальных проектах по модификации воздушных судов различных типов</p>
+        </div>
+        <div class="benefit-card fade-in">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M12 2L1 21h22L12 2zm0 3.83L19.17 19H4.83L12 5.83zM12 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+          </div>
+          <h3>Профессиональный рост</h3>
+          <p>Возможности для обучения и развития профессиональных компетенций</p>
+        </div>
+        <div class="benefit-card fade-in">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+          </div>
+          <h3>Конкурентная зарплата</h3>
+          <p>Достойное вознаграждение за труд и социальные гарантии</p>
+        </div>
+        <div class="benefit-card fade-in">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          </div>
+          <h3>Команда профессионалов</h3>
+          <p>Работа в коллективе опытных специалистов с многолетним опытом</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Список вакансий -->
+<section class="vacancies-section vacancies-section-padding">
+  <div class="section-header fade-in">
+    <h2>Актуальные вакансии</h2>
+    <p>Выберите подходящую позицию и отправьте нам своё резюме</p>
+  </div>
+  
+  <div class="vacancies-grid-container">
+    <div class="vacancy-card fade-in">
+      <div class="vacancy-header">
+        <h3 class="vacancy-title">Инженер-конструктор</h3>
+        <span class="vacancy-department">Отдел проектирования</span>
+      </div>
+      <div class="vacancy-body">
+        <div class="vacancy-requirements">
+          <h4>Требования:</h4>
+          <ul>
+            <li>Высшее техническое образование (авиационное преимущество)</li>
+            <li>Опыт работы конструктором от 3 лет</li>
+            <li>Знание CAD-систем (CATIA, SolidWorks или аналоги)</li>
+            <li>Понимание процессов проектирования авиационной техники</li>
+            <li>Ответственность, внимательность к деталям</li>
+          </ul>
+        </div>
+        <div class="vacancy-responsibilities">
+          <h4>Обязанности:</h4>
+          <ul>
+            <li>Разработка конструкторской документации</li>
+            <li>Проектирование модификаций авиационной техники</li>
+            <li>Взаимодействие со смежными подразделениями</li>
+            <li>Сопровождение производства</li>
+          </ul>
+        </div>
+        <div class="vacancy-conditions">
+          <h4>Условия:</h4>
+          <ul>
+            <li>Работа в офисе (Москва)</li>
+            <li>Конкурентная заработная плата</li>
+            <li>Социальный пакет</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vacancy-footer">
+        <button class="btn-primary btn-apply" onclick="window.openModal && window.openModal()">Откликнуться</button>
+      </div>
+    </div>
+    
+    <div class="vacancy-card fade-in">
+      <div class="vacancy-header">
+        <h3 class="vacancy-title">Инженер по сертификации</h3>
+        <span class="vacancy-department">Отдел сертификации</span>
+      </div>
+      <div class="vacancy-body">
+        <div class="vacancy-requirements">
+          <h4>Требования:</h4>
+          <ul>
+            <li>Высшее образование (авиационное предпочтение)</li>
+            <li>Знание ФАП-21, АП-21 и других авиационных правил</li>
+            <li>Опыт работы в области сертификации от 2 лет</li>
+            <li>Внимательность, аналитический склад ума</li>
+          </ul>
+        </div>
+        <div class="vacancy-responsibilities">
+          <h4>Обязанности:</h4>
+          <ul>
+            <li>Подготовка документов для сертификации</li>
+            <li>Взаимодействие с сертификационными органами</li>
+            <li>Сопровождение процедур одобрения изменений</li>
+            <li>Ведение проектной документации</li>
+          </ul>
+        </div>
+        <div class="vacancy-conditions">
+          <h4>Условия:</h4>
+          <ul>
+            <li>Работа в офисе (Москва)</li>
+            <li>Конкурентная заработная плата</li>
+            <li>Возможности профессионального роста</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vacancy-footer">
+        <button class="btn-primary btn-apply" onclick="window.openModal && window.openModal()">Откликнуться</button>
+      </div>
+    </div>
+    
+    <div class="vacancy-card fade-in">
+      <div class="vacancy-header">
+        <h3 class="vacancy-title">Ведущий инженер-расчётчик</h3>
+        <span class="vacancy-department">Отдел прочности</span>
+      </div>
+      <div class="vacancy-body">
+        <div class="vacancy-requirements">
+          <h4>Требования:</h4>
+          <ul>
+            <li>Высшее техническое образование</li>
+            <li>Опыт прочностных расчётов от 5 лет</li>
+            <li>Знание CAE-систем (ANSYS, Nastran или аналоги)</li>
+            <li>Опыт расчётов авиационных конструкций</li>
+          </ul>
+        </div>
+        <div class="vacancy-responsibilities">
+          <h4>Обязанности:</h4>
+          <ul>
+            <li>Проведение прочностных расчётов конструкций</li>
+            <li>Анализ напряжённо-деформированного состояния</li>
+            <li>Подготовка отчётной документации</li>
+            <li>Оптимизация конструктивных решений</li>
+          </ul>
+        </div>
+        <div class="vacancy-conditions">
+          <h4>Условия:</h4>
+          <ul>
+            <li>Работа в офисе (Москва)</li>
+            <li>Высокий уровень дохода</li>
+            <li>Участие в интересных проектах</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vacancy-footer">
+        <button class="btn-primary btn-apply" onclick="window.openModal && window.openModal()">Откликнуться</button>
+      </div>
+    </div>
+    
+    <div class="vacancy-card vacancy-card-open fade-in">
+      <div class="vacancy-header">
+        <h3 class="vacancy-title">Инженер-технолог</h3>
+        <span class="vacancy-department">Производственный отдел</span>
+      </div>
+      <div class="vacancy-body">
+        <div class="vacancy-requirements">
+          <h4>Требования:</h4>
+          <ul>
+            <li>Высшее техническое образование</li>
+            <li>Опыт работы технологом в авиационной промышленности</li>
+            <li>Знание технологических процессов</li>
+            <li>Умение читать чертежи</li>
+          </ul>
+        </div>
+        <div class="vacancy-responsibilities">
+          <h4>Обязанности:</h4>
+          <ul>
+            <li>Разработка технологической документации</li>
+            <li>Сопровождение производства</li>
+            <li>Контроль соблюдения технологии</li>
+            <li>Оптимизация производственных процессов</li>
+          </ul>
+        </div>
+        <div class="vacancy-conditions">
+          <h4>Условия:</h4>
+          <ul>
+            <li>Работа в офисе (Москва)</li>
+            <li>Конкурентная заработная плата</li>
+            <li>Социальный пакет</li>
+          </ul>
+        </div>
+      </div>
+      <div class="vacancy-footer">
+        <button class="btn-primary btn-apply" onclick="window.openModal && window.openModal()">Откликнуться</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Секция для кандидатов без открытых вакансий -->
+<section class="open-application open-application-padding">
+  <div class="open-application-content fade-in">
+    <h2>Не нашли подходящую вакансию?</h2>
+    <p>Мы всегда рады талантливым специалистам! Отправьте нам своё резюме, и мы рассмотрим вашу кандидатуру для будущих возможностей.</p>
+    <button class="btn-secondary" onclick="window.openModal && window.openModal()">Отправить резюме</button>
+  </div>
+</section>
+
+<!-- Контакты HR отдела -->
+<section class="contact-cta contact-cta-bg">
+  <h2 class="contact-cta-title">Готовы присоединиться к команде?</h2>
+  <p class="contact-cta-desc">Отправьте отклик на выбранную вакансию или задайте вопросы HR-отделу</p>
+  <button class="btn-primary" onclick="window.openModal && window.openModal()">Заполнить форму отклика</button>
+</section>
+
+<!-- Футер и модальное окно загружаются через ComponentLoader -->
+<button class="scroll-to-top" id="scrollToTop" onclick="window.scrollToTop && window.scrollToTop()" aria-label="Наверх">
+  <svg viewBox="0 0 24 24"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg>
+</button>
+</body>
+</html>

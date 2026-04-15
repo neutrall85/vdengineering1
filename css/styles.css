@@ -3517,3 +3517,59 @@ body.app-ready > footer:not(.footer) {
     margin: 0 auto;
   }
 }
+
+/* ==================== СТРАНИЦА ВАКАНСИИ ==================== */
+.careers-intro-padding { padding: 80px 5% 60px; background: white; }
+.careers-content-center { max-width: 1200px; margin: 0 auto; }
+.careers-title { font-size: 2rem; color: var(--vd); margin-bottom: 1.5rem; text-align: center; }
+.careers-text-highlight { font-size: 1.1rem; color: var(--text-dark); text-align: center; max-width: 900px; margin: 0 auto 3rem; line-height: 1.7; }
+
+.careers-benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem; }
+
+.benefit-card { background: var(--vd-light-gray); padding: 2rem; border-radius: 12px; text-align: center; transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth); }
+.benefit-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 78, 150, 0.15); }
+
+.benefit-icon { width: 60px; height: 60px; background: var(--vd); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+.benefit-icon svg { width: 30px; height: 30px; fill: white; }
+
+.benefit-card h3 { font-size: 1.2rem; color: var(--vd); margin-bottom: 0.75rem; font-weight: 600; }
+.benefit-card p { color: var(--metallic); font-size: 0.95rem; line-height: 1.6; }
+
+/* Вакансии */
+.vacancies-section-padding { padding: 80px 5%; background: var(--vd-light-gray); }
+.vacancies-grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto; }
+
+.vacancy-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth); display: flex; flex-direction: column; }
+.vacancy-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 78, 150, 0.15); }
+.vacancy-card-open { border-left: 4px solid var(--vd-orange); }
+
+.vacancy-header { background: linear-gradient(135deg, var(--vd) 0%, var(--vd-dark) 100%); color: white; padding: 1.5rem; }
+.vacancy-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; }
+.vacancy-department { font-size: 0.9rem; opacity: 0.9; display: block; }
+
+.vacancy-body { padding: 1.5rem; flex: 1; }
+.vacancy-requirements, .vacancy-responsibilities, .vacancy-conditions { margin-bottom: 1.5rem; }
+.vacancy-requirements h4, .vacancy-responsibilities h4, .vacancy-conditions h4 { font-size: 1rem; color: var(--vd); margin-bottom: 0.75rem; font-weight: 600; }
+.vacancy-requirements ul, .vacancy-responsibilities ul, .vacancy-conditions ul { list-style: none; padding: 0; }
+.vacancy-requirements li, .vacancy-responsibilities li, .vacancy-conditions li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; }
+.vacancy-requirements li::before, .vacancy-responsibilities li::before, .vacancy-conditions li::before { content: "•"; color: var(--vd-orange); position: absolute; left: 0; font-weight: bold; }
+
+.vacancy-footer { padding: 1.5rem; border-top: 1px solid var(--border-color); background: var(--vd-light-gray); }
+.btn-apply { width: 100%; justify-content: center; }
+
+/* Открытая заявка */
+.open-application-padding { padding: 80px 5%; background: white; }
+.open-application-content { max-width: 800px; margin: 0 auto; text-align: center; }
+.open-application-content h2 { font-size: 2rem; color: var(--vd); margin-bottom: 1rem; }
+.open-application-content p { font-size: 1.1rem; color: var(--metallic); margin-bottom: 2rem; line-height: 1.7; }
+
+/* Адаптивность для страницы вакансий */
+@media (max-width: 768px) {
+  .careers-intro-padding, .vacancies-section-padding, .open-application-padding { padding: 60px 5%; }
+  .careers-title, .open-application-content h2 { font-size: 1.5rem; }
+  .careers-benefits-grid { grid-template-columns: 1fr; }
+  .vacancies-grid-container { grid-template-columns: 1fr; }
+  .vacancy-header { padding: 1.25rem; }
+  .vacancy-body { padding: 1.25rem; }
+  .vacancy-footer { padding: 1.25rem; }
+}

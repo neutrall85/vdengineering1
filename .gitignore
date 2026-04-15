@@ -1,1 +1,1 @@
-(css/styles.css and docs.html are source files, no build artifacts, dependencies, or temp files detected in changes)
+Nothing needs to be added to the .gitignore file based on the provided changes. The listed files (vacancies.html, css/styles.css, js/ui/ComponentLoader.js) are all source code files that should be tracked in version control.
