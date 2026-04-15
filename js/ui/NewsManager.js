@@ -138,7 +138,7 @@ class NewsManager {
     if (date) date.textContent = sanitizer ? sanitizer.escapeHtml(news.date) : news.date;
     if (category) category.textContent = sanitizer ? sanitizer.escapeHtml(news.category) : news.category;
     if (image) {
-      const imageUrl = news.image || 'assets/images/placeholder.jpg';
+      const imageUrl = sanitizer ? (sanitizer.isValidUrl(news.image) ? news.image : 'assets/images/placeholder.jpg') : news.image;
       image.src = imageUrl;
       image.alt = sanitizer ? sanitizer.escapeHtml(news.title) : news.title;
     }
