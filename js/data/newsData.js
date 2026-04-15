@@ -11,7 +11,7 @@ const NEWS_DATA = {
       excerpt: "ООО \"Волга-Днепр Инжиниринг\" получило сертификат разработчика модификаций авиационной техники в июне 2022 года.",
       category: "Сертификация",
       date: "Июнь 2022",
-      image: "",
+      image: "assets/images/An-124-100.jpeg",
       content: `
       <p>В июне 2022 года ООО \"Волга-Днепр Инжиниринг\" успешно прошло процедуру сертификации и получила сертификат разработчика модификаций авиационной техники.</p>
       <p>Этот сертификат подтверждает нашу способность разрабатывать и внедрять модификации для ВС Ан-124-100 в соответствии с требованиями авиационных регуляторов.</p>
@@ -19,12 +19,11 @@ const NEWS_DATA = {
     },
     {
       id: 20220901,
-      title: "Важная новость номер 2",
       title: "Новость",
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Сентябрь 2022",
-      image: "",
+      image: "assets/images/news-default.jpg",
       content: "<p>Полное описание новости</p>"
     }
   ],
@@ -44,7 +43,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Февраль 2023",
-      image: "",
+      image: "assets/images/news-default.jpg",
       content: "<p>Полное описание новости</p>"
     },
     {
@@ -53,7 +52,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Март 2023",
-      image: "",
+      image: "assets/images/news-default.jpg",
       content: "<p>Полное описание новости</p>"
     },
     {
@@ -62,7 +61,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Апрель 2023",
-      image: "",
+      image: "assets/images/news-default.jpg",
       content: "<p>Полное описание новости</p>"
     },
     {
@@ -71,7 +70,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Май 2023",
-      image: "",
+      image: "assets/images/news-default.jpg",
       content: "<p>Полное описание новости</p>"
     },
     {
@@ -80,7 +79,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Июнь 2023",
-      image: "",
+      image: "assets/images/news-default.jpg",
       content: "<p>Полное описание новости</p>"
     }
   ],
@@ -91,7 +90,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Январь 2024",
-      image: "",
+      image: "assets/images/news-default.jpg",
       content: "<p>Полное описание новости</p>"
     }
   ],
@@ -102,7 +101,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Январь 2025",
-      image: "",
+      image: "assets/images/news-default.jpg",
       content: "<p>Полное описание новости</p>"
     }
   ],
@@ -113,7 +112,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Январь 2026",
-      image: "",
+      image: "assets/images/news-default.jpg",
       content: "<p>Полное описание новости</p>"
     }
   ]
