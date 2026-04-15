@@ -269,7 +269,9 @@ const Utils = (function() {
         return { valid: false, error: 'Недопустимый тип файла' };
       }
       
+      // ✅ ИСПРАВЛЕНО: Добавлена реальная проверка MIME-типа
       if (file.type && !config.ALLOWED_MIME_TYPES.includes(file.type)) {
+        return { valid: false, error: 'Недопустимый MIME-тип файла' };
       }
       
       return { valid: true };

@@ -257,7 +257,10 @@ class FormManager {
     
     // Если передан элемент предупреждения о лимитах файлов, используем его
     if (fileLimitWarning) {
-      fileLimitWarning.innerHTML = `<p>⚠️ ${message}</p>`;
+      const p = document.createElement('p');
+      p.textContent = `⚠️ ${message}`;
+      fileLimitWarning.innerHTML = '';
+      fileLimitWarning.appendChild(p);
       fileLimitWarning.style.display = 'block';
       setTimeout(() => {
         fileLimitWarning.style.display = 'none';
@@ -268,7 +271,10 @@ class FormManager {
     // Иначе используем стандартное предупреждение
     const warning = DOM.getElement('rateLimitWarning');
     if (warning) {
-      warning.innerHTML = `<p>⚠️ ${message}</p>`;
+      const p = document.createElement('p');
+      p.textContent = `⚠️ ${message}`;
+      warning.innerHTML = '';
+      warning.appendChild(p);
       DOM.addClass(warning, 'show');
       setTimeout(() => DOM.removeClass(warning, 'show'), 5000);
     } else {
@@ -296,7 +302,11 @@ class FormManager {
       }
     }
     
-    warningContainer.innerHTML = `<div class="upload-warning">⚠️ ${this._escapeHtml(message)}</div>`;
+    warningContainer.innerHTML = '';
+    const warningDiv = document.createElement('div');
+    warningDiv.className = 'upload-warning';
+    warningDiv.textContent = `⚠️ ${message}`;
+    warningContainer.appendChild(warningDiv);
     warningContainer.style.display = 'block';
     
     // Скрываем предыдущий таймер если он был
