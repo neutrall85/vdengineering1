@@ -49,6 +49,7 @@ class ModalManager {
   }
 
   _initGlobalHandlers() {
+    // Обработчик Escape для всех модальных окон
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.activeModal) {
         this.close(this.activeModal);
@@ -64,6 +65,46 @@ class ModalManager {
             ComponentLoader.closePolicyModal();
           }
         }
+      }
+    });
+    
+    // Единый обработчик для всех кнопок закрытия модальных окон (DRY, KISS)
+    // Закрывает модальное окно напрямую через overlay ID, без зависимости от глобальных функций
+    document.addEventListener('click', (e) => {
+      const closeBtn = e.target.closest('.modal-close, .details-modal-close');
+      if (!closeBtn) return;
+      
+      // Определяем overlay по кнопке закрытия
+      const overlay = closeBtn.closest('.modal-overlay, .details-modal-overlay');
+      if (!overlay) return;
+      
+      const overlayId = overlay.id;
+      
+      // Сопоставление overlay ID с ключами модальных окон в modalManager
+      const modalKeyMap = {
+        'modalOverlay': 'form',
+        'detailsModalOverlay': 'details',
+        'newsModalOverlay': 'news',
+        'universalApplicationModalOverlay': 'universal',
+        'aboutModalOverlay': 'about',
+        'projectModalOverlay': 'project',
+        'serviceModalOverlay': 'service',
+        'policyModalOverlay': 'policy'
+      };
+      
+      const modalKey = modalKeyMap[overlayId];
+      
+      if (modalKey && this.modals.has(modalKey)) {
+        // Закрываем через modalManager (предпочтительный способ)
+        this.close(modalKey);
+      } else if (overlayId === 'policyModalOverlay' && typeof ComponentLoader !== 'undefined') {
+        // Специальный случай для policy modal
+        ComponentLoader.closePolicyModal();
+      } else {
+        // Fallback: просто убираем класс active
+        overlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+        document.body.style.paddingRight = '';
       }
     });
   }

@@ -634,9 +634,14 @@ const ComponentLoader = {
             const overlay = document.getElementById('universalApplicationModalOverlay');
             if (!overlay) return;
 
-            overlay.classList.remove('active');
-            document.body.classList.remove('no-scroll');
-            document.body.style.paddingRight = '';
+            // Используем modalManager если доступен (для консистентности)
+            if (typeof modalManager !== 'undefined' && modalManager.modals.has('universal')) {
+                modalManager.close('universal');
+            } else {
+                overlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+                document.body.style.paddingRight = '';
+            }
         };
 
         // Обработчик чекбокса согласия и валидации формы

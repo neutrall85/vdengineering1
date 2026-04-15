@@ -420,8 +420,10 @@ function initApp() {
           }
         }
       },
+      { key: 'universal', overlayId: 'universalApplicationModalOverlay', required: false },
       { key: 'project', overlayId: 'projectModalOverlay', required: false },
-      { key: 'service', overlayId: 'serviceModalOverlay', required: false }
+      { key: 'service', overlayId: 'serviceModalOverlay', required: false },
+      { key: 'policy', overlayId: 'policyModalOverlay', required: false }
     ];
     
     modalsToRegister.forEach(modal => {
