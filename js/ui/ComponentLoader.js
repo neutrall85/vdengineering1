@@ -100,6 +100,7 @@ const ComponentLoader = {
       <li><a href="news.html">Новости</a></li>
       <li><a href="projects.html">Проекты</a></li>
       <li><a href="docs.html">Документы</a></li>
+      <li><a href="vacancies.html">Вакансии</a></li>
       <li><a href="index.html#partners">Партнёры</a></li>
       <li><a href="index.html#contact">Контакты</a></li>
     </ul>
@@ -121,6 +122,7 @@ const ComponentLoader = {
   <a href="news.html">Новости</a>
   <a href="projects.html">Проекты</a>
   <a href="docs.html">Документы</a>
+  <a href="vacancies.html">Вакансии</a>
   <a href="index.html#partners">Партнёры</a>
   <a href="index.html#contact">Контакты</a>
 </div>`,
