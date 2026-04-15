@@ -3303,7 +3303,7 @@ body.app-ready > footer:not(.footer) {
 
 /* Секция миссии */
 .mission-section {
-  padding: clamp(40px, 8vh, 80px) 5%;
+  padding: clamp(10px, 8vh, 30px) 5%;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 
