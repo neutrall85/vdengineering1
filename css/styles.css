@@ -1382,6 +1382,20 @@ body.app-ready > footer:not(.footer) {
   margin-bottom: 1.25rem;
 }
 
+/* Группа для полей телефона и добавочного номера */
+.form-phone-group {
+  display: flex;
+  gap: 10px;
+}
+
+.form-input-phone {
+  flex: 1;
+}
+
+.form-input-extension {
+  width: 100px;
+}
+
 .form-label {
   display: block;
   font-weight: 600;
@@ -1770,6 +1784,14 @@ body.app-ready > footer:not(.footer) {
   padding: 0.75rem 1rem;
   margin-top: 0.75rem;
   display: none;
+}
+
+.form-file-limit-warning.form-file-limit-hidden {
+  display: none;
+}
+
+.form-file-limit-warning:not(.form-file-limit-hidden) {
+  display: block;
 }
 
 .form-file-limit-warning p {

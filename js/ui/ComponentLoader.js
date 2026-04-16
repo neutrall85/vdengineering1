@@ -125,9 +125,9 @@ const ComponentLoader = {
         </div>
         <div class="form-group">
           <label class="form-label">Телефон <span class="required">*</span></label>
-          <div style="display: flex; gap: 10px;">
-            <input type="tel" class="form-input" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required minlength="10" maxlength="20" autocomplete="tel" style="flex: 1;">
-            <input type="text" class="form-input" id="extension" name="extension" placeholder="доб." maxlength="6" autocomplete="off" style="width: 100px;">
+          <div class="form-phone-group">
+            <input type="tel" class="form-input" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required minlength="10" maxlength="20" autocomplete="tel" class="form-input-phone">
+            <input type="text" class="form-input" id="extension" name="extension" placeholder="доб." maxlength="6" autocomplete="off" class="form-input-extension">
           </div>
           <p class="error-message" id="phoneError">Пожалуйста, введите корректный номер телефона</p>
         </div>
@@ -161,7 +161,7 @@ const ComponentLoader = {
             <p class="form-file-text">Выбрать файл...</p>
             <p class="form-file-hint">PDF, DOC, DOCX, XLS, XLSX (Max 10MB)</p>
             <div class="form-file-list" id="fileList"></div>
-            <div class="form-file-limit-warning" id="fileLimitWarningModal" style="display: none;">
+            <div class="form-file-limit-warning" id="fileLimitWarningModal" class="form-file-limit-hidden">
               <p>⚠️ Превышен лимит: максимум 5 файлов или 10MB на файл</p>
             </div>
           </div>
@@ -239,7 +239,7 @@ const ComponentLoader = {
             <p class="form-file-text">Выбрать файл...</p>
             <p class="form-file-hint">PDF, DOC, DOCX, XLS, XLSX (Max 10MB)</p>
             <div class="form-file-list" id="universalFileList"></div>
-            <div class="form-file-limit-warning" id="universalFileLimitWarning" style="display: none;">
+            <div class="form-file-limit-warning" id="universalFileLimitWarning" class="form-file-limit-hidden">
               <p>⚠️ Превышен лимит: максимум 5 файлов или 10MB на файл</p>
             </div>
           </div>

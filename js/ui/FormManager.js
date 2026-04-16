@@ -285,9 +285,9 @@ class FormManager {
       const p = document.createElement('p');
       p.textContent = `⚠️ ${message}`;
       fileLimitWarning.appendChild(p);
-      fileLimitWarning.style.display = 'block';
+      fileLimitWarning.classList.remove('form-file-limit-hidden');
       setTimeout(() => {
-        fileLimitWarning.style.display = 'none';
+        fileLimitWarning.classList.add('form-file-limit-hidden');
       }, 5000);
       return;
     }
@@ -331,7 +331,7 @@ class FormManager {
     warningDiv.className = 'upload-warning';
     warningDiv.textContent = `⚠️ ${message}`;
     warningContainer.appendChild(warningDiv);
-    warningContainer.style.display = 'block';
+    warningContainer.classList.remove('form-file-limit-hidden');
     
     // Скрываем предыдущий таймер если он был
     if (this.uploadWarningTimeout) {
@@ -340,7 +340,7 @@ class FormManager {
     
     // Автоматически скрываем через 3 секунды
     this.uploadWarningTimeout = setTimeout(() => {
-      warningContainer.style.display = 'none';
+      warningContainer.classList.add('form-file-limit-hidden');
     }, 3000);
   }
 
@@ -487,7 +487,7 @@ class FormManager {
         const form = Utils.DOM.getElement('proposalForm');
         const successMessage = Utils.DOM.getElement('successMessage');
 
-        if (form) form.style.display = 'none';
+        if (form) Utils.DOM.addClass(form, 'form-element-hidden');
         if (successMessage) Utils.DOM.addClass(successMessage, 'show');
 
         setTimeout(() => {
@@ -517,7 +517,7 @@ class FormManager {
 
     if (form) {
       form.reset();
-      form.style.display = 'block';
+      Utils.DOM.removeClass(form, 'form-element-hidden');
     }
 
     if (successMessage) Utils.DOM.removeClass(successMessage, 'show');
