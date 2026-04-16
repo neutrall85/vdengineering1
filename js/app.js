@@ -441,6 +441,12 @@ function initApp() {
         }
       }
     });
+    
+    // Инициализация универсального модального окна заявок если оно есть в DOM
+    const universalModal = document.getElementById('universalApplicationModalOverlay');
+    if (universalModal && typeof ComponentLoader !== 'undefined' && typeof ComponentLoader.initUniversalApplicationModal === 'function') {
+      ComponentLoader.initUniversalApplicationModal();
+    }
   } else {
   }
   
