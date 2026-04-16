@@ -64,14 +64,6 @@ class FormManager {
     const modalBodyContainer = document.getElementById('modalBodyContainer');
     if (!modalBodyContainer) return;
 
-    // Проверяем, есть ли уже форма в модальном окне (для страниц без #commercial-offer)
-    const existingForm = modalBodyContainer.querySelector('#proposalForm');
-    if (existingForm) {
-      // Форма уже есть, просто сбрасываем её и инициализируем обработчики
-      this._resetFormInModal(modalBodyContainer);
-      return;
-    }
-
     const originalFormContainer = document.getElementById('commercial-offer');
     
     if (originalFormContainer) {
