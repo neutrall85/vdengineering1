@@ -46,11 +46,86 @@ class FormManager {
     const warning = DOM.getElement('rateLimitWarning');
     if (warning) DOM.removeClass(warning, 'show');
 
+    // Клонируем форму в модальное окно перед открытием (для index.html)
+    this._cloneFormToModal();
+
     if (typeof modalManager !== 'undefined') {
       modalManager.open('form');
     } else {
       console.error('ModalManager not available');
     }
+  }
+
+  /**
+   * Клонирует форму из основного контейнера в модальное окно
+   * Вызывается при каждом открытии модального окна для актуального состояния
+   */
+  _cloneFormToModal() {
+    const originalFormContainer = document.getElementById('commercial-offer');
+    const modalBodyContainer = document.getElementById('modalBodyContainer');
+    
+    if (!originalFormContainer || !modalBodyContainer) return;
+
+    // Очищаем модальное окно перед клонированием
+    modalBodyContainer.innerHTML = '';
+    
+    const formClone = originalFormContainer.cloneNode(true);
+    formClone.removeAttribute('id');
+    modalBodyContainer.appendChild(formClone);
+    
+    // Обрабатываем дублирующиеся ID
+    const cloneElements = modalBodyContainer.querySelectorAll('[id]');
+    
+    cloneElements.forEach(el => {
+      // Оставляем id только для важных элементов формы
+      if (el.id && (el.id === 'proposalForm' || el.id === 'submitBtn' || 
+          el.id === 'fileAttachment' || el.id === 'fileDrop' || el.id === 'fileList' ||
+          el.id === 'phone')) {
+        // Для поля телефона добавляем уникальный класс чтобы можно было найти его в модалке
+        if (el.id === 'phone') {
+          el.classList.add('modal-phone-input');
+        }
+        // Для зоны загрузки файлов добавляем класс чтобы можно было найти её в модалке
+        if (el.id === 'fileDrop') {
+          el.classList.add('modal-file-drop');
+        }
+      } else if (el.id) {
+        el.removeAttribute('id');
+      }
+    });
+    
+    // Скрываем предупреждения и сообщения об успехе
+    const rateLimitWarning = modalBodyContainer.querySelector('.rate-limit-warning');
+    if (rateLimitWarning) rateLimitWarning.classList.remove('show');
+    
+    const successMessage = modalBodyContainer.querySelector('.success-message');
+    if (successMessage) successMessage.classList.remove('show');
+    
+    // Инициализируем автоподстановку +7 для поля телефона в модалке
+    this._initPhoneAutoPrefix(modalBodyContainer);
+  }
+
+  /**
+   * Инициализация автоподстановки +7 для поля телефона
+   */
+  _initPhoneAutoPrefix(container) {
+    const phoneInputs = container.querySelectorAll('#phone, .modal-phone-input');
+    phoneInputs.forEach(input => {
+      if (input && !input._phonePrefixHandler) {
+        input.addEventListener('blur', function() {
+          let value = this.value.trim();
+          if (value.length > 0 && !value.startsWith('+')) {
+            if (value.startsWith('8') && value.length > 1) {
+              value = '+7' + value.substring(1);
+            } else if (value.length >= 10) {
+              value = '+7' + value;
+            }
+            this.value = value;
+          }
+        });
+        input._phonePrefixHandler = true;
+      }
+    });
   }
 
   /**
@@ -62,6 +137,8 @@ class FormManager {
       const modalBody = document.getElementById('modalBodyContainer');
       if (modalBody) {
         this._initFileUpload(modalBody);
+        // Инициализируем автоподстановку телефона для формы в модалке
+        this._initPhoneAutoPrefix(modalBody);
       } else {
         this._initFileUpload();
       }

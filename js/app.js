@@ -21,7 +21,7 @@ class Application {
           ComponentLoader.init({ 
             loadNavbar: true, 
             loadFooter: true, 
-            loadModal: true,
+            loadModal: true, // Загружаем модалку на всех страницах для универсальности
             activePage: currentPage === 'index' ? '' : currentPage
           }, resolve);
         });

@@ -399,24 +399,7 @@ const ComponentLoader = {
                 const modalContainer = document.createElement('div');
                 modalContainer.innerHTML = this.proposalModal.trim();
                 document.body.appendChild(modalContainer.firstElementChild);
-                
-                // Инициализация автоподстановки +7 для поля телефона в модалке
-                setTimeout(() => {
-                    const modalPhoneInput = document.querySelector('#modalOverlay #phone');
-                    if (modalPhoneInput) {
-                        modalPhoneInput.addEventListener('blur', function() {
-                            let value = this.value.trim();
-                            if (value.length > 0 && !value.startsWith('+')) {
-                                if (value.startsWith('8') && value.length > 1) {
-                                    value = '+7' + value.substring(1);
-                                } else if (value.length >= 10) {
-                                    value = '+7' + value;
-                                }
-                                this.value = value;
-                            }
-                        });
-                    }
-                }, 0);
+                // Автоподстановка +7 и клонирование формы теперь выполняются в FormManager
             }
             
             // Загрузка универсального модального окна для заявок
