@@ -467,10 +467,78 @@
       });
     }
     
-    // Клонирование формы теперь выполняется в FormManager._cloneFormToModal() при открытии модального окна
-    // Это обеспечивает актуальное состояние формы и предотвращает дублирование кода (DRY, KISS)
+    const originalFormContainer = document.getElementById('commercial-offer');
+    const modalBodyContainer = document.getElementById('modalBodyContainer');
     
-    // Автоподстановка +7 для поля телефона - теперь выполняется в FormManager после клонирования формы
+    if (originalFormContainer && modalBodyContainer) {
+
+      const formClone = originalFormContainer.cloneNode(true);
+      
+      formClone.removeAttribute('id');
+      modalBodyContainer.innerHTML = '';
+      modalBodyContainer.appendChild(formClone);
+      
+      const cloneElements = modalBodyContainer.querySelectorAll('[id]');
+      
+      cloneElements.forEach(el => {
+        // Оставляем id только для важных элементов формы
+        if (el.id && (el.id === 'proposalForm' || el.id === 'submitBtn' || 
+            el.id === 'fileAttachment' || el.id === 'fileDrop' || el.id === 'fileList' ||
+            el.id === 'phone')) {
+          // Для поля телефона добавляем уникальный класс чтобы можно было найти его в модалке
+          if (el.id === 'phone') {
+            el.classList.add('modal-phone-input');
+          }
+          // Для зоны загрузки файлов добавляем класс чтобы можно было найти её в модалке
+          if (el.id === 'fileDrop') {
+            el.classList.add('modal-file-drop');
+          }
+        } else if (el.id) {
+          el.removeAttribute('id');
+        }
+      });
+      
+      const rateLimitWarning = modalBodyContainer.querySelector('.rate-limit-warning');
+      if (rateLimitWarning) rateLimitWarning.classList.remove('show');
+      
+      const successMessage = modalBodyContainer.querySelector('.success-message');
+      if (successMessage) successMessage.classList.remove('show');
+    }
+    
+    // Автоподстановка +7 для поля телефона
+    function setupPhoneAutoPrefix(inputElement) {
+      if (!inputElement) return;
+      
+      inputElement.addEventListener('blur', function() {
+        let value = this.value.trim();
+        if (value.length > 0 && !value.startsWith('+')) {
+          // Если номер не начинается с +, добавляем +7
+          if (value.startsWith('8') && value.length > 1) {
+            value = '+7' + value.substring(1);
+          } else if (value.length >= 10) {
+            value = '+7' + value;
+          }
+          this.value = value;
+        }
+      });
+    }
+    
+    // Применяем к основному полю на странице
+    const mainPhoneInput = document.getElementById('phone');
+    if (mainPhoneInput) {
+      setupPhoneAutoPrefix(mainPhoneInput);
+    }
+    
+    // Функция для применения автоподстановки к полям в модалке
+    function applyPhoneAutoPrefixToModal() {
+      const modalPhoneInput = document.querySelector('#modalOverlay #phone');
+      if (modalPhoneInput) {
+        setupPhoneAutoPrefix(modalPhoneInput);
+      }
+    }
+    
+    // Вызываем при открытии модалки (если она уже есть в DOM)
+    applyPhoneAutoPrefixToModal();
     
     const previewGrid = document.getElementById('previewNewsGrid');
     if (previewGrid && typeof NEWS_DATA !== 'undefined') {
