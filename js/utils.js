@@ -278,27 +278,6 @@ const Utils = (function() {
     }
   };
 
-  // ========== Форматирование телефона (отключено) ==========
-  const PhoneFormatter = {
-    format(input) {
-      // Возвращаем значение как есть, без форматирования
-      return input.value;
-    },
-
-    _clean(value) {
-      return value;
-    },
-
-    _applyMask(clean) {
-      return clean;
-    },
-
-    bindToInput(inputElement) {
-      // Маска отключена - просто возвращаем пустую функцию
-      return () => {};
-    }
-  };
-
   // ========== Лимитирование запросов ==========
   class RateLimiter {
     constructor(storage, key = 'lastFormSubmit', limitMs = window.CONFIG?.FORM?.RATE_LIMIT_MS || 60000) {
@@ -459,7 +438,7 @@ const Utils = (function() {
     }
   };
 
-  return { DOM, Sanitizer, Validator, PhoneFormatter, RateLimiter, SlugUtils };
+  return { DOM, Sanitizer, Validator, RateLimiter, SlugUtils };
 })();
 
 // Экспортируем в глобальную область
@@ -467,7 +446,6 @@ window.Utils = Utils;
 window.DOM = Utils.DOM;
 window.Sanitizer = Utils.Sanitizer;
 window.Validator = Utils.Validator;
-window.PhoneFormatter = Utils.PhoneFormatter;
 window.RateLimiter = Utils.RateLimiter;
 window.SlugUtils = Utils.SlugUtils;
 
