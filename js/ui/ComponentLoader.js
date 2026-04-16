@@ -159,7 +159,7 @@ const ComponentLoader = {
       <h2 class="modal-title" id="modalTitle">Запрос коммерческого предложения</h2>
       <p class="modal-subtitle">Заполните форму ниже, и мы свяжемся с вами в течение 24 часов</p>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" id="modalBodyContainer">
       <div class="rate-limit-warning" id="rateLimitWarning">
         <p>⚠️ Слишком много запросов. Пожалуйста, подождите 60 секунд перед следующей отправкой.</p>
       </div>

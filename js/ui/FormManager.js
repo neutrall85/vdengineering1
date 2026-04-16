@@ -61,48 +61,91 @@ class FormManager {
    * Вызывается при каждом открытии модального окна для актуального состояния
    */
   _cloneFormToModal() {
-    const originalFormContainer = document.getElementById('commercial-offer');
     const modalBodyContainer = document.getElementById('modalBodyContainer');
-    
-    if (!originalFormContainer || !modalBodyContainer) return;
+    if (!modalBodyContainer) return;
 
-    // Очищаем модальное окно перед клонированием
-    modalBodyContainer.innerHTML = '';
+    // Проверяем, есть ли уже форма в модальном окне (для страниц без #commercial-offer)
+    const existingForm = modalBodyContainer.querySelector('#proposalForm');
+    if (existingForm) {
+      // Форма уже есть, просто сбрасываем её и инициализируем обработчики
+      this._resetFormInModal(modalBodyContainer);
+      return;
+    }
+
+    const originalFormContainer = document.getElementById('commercial-offer');
     
-    const formClone = originalFormContainer.cloneNode(true);
-    formClone.removeAttribute('id');
-    modalBodyContainer.appendChild(formClone);
-    
-    // Обрабатываем дублирующиеся ID
-    const cloneElements = modalBodyContainer.querySelectorAll('[id]');
-    
-    cloneElements.forEach(el => {
-      // Оставляем id только для важных элементов формы
-      if (el.id && (el.id === 'proposalForm' || el.id === 'submitBtn' || 
-          el.id === 'fileAttachment' || el.id === 'fileDrop' || el.id === 'fileList' ||
-          el.id === 'phone')) {
-        // Для поля телефона добавляем уникальный класс чтобы можно было найти его в модалке
-        if (el.id === 'phone') {
-          el.classList.add('modal-phone-input');
+    if (originalFormContainer) {
+      // Клонируем существующую форму с страницы
+      modalBodyContainer.innerHTML = '';
+      
+      const formClone = originalFormContainer.cloneNode(true);
+      formClone.removeAttribute('id');
+      modalBodyContainer.appendChild(formClone);
+      
+      // Обрабатываем дублирующиеся ID
+      const cloneElements = modalBodyContainer.querySelectorAll('[id]');
+      
+      cloneElements.forEach(el => {
+        // Оставляем id только для важных элементов формы
+        if (el.id && (el.id === 'proposalForm' || el.id === 'submitBtn' || 
+            el.id === 'fileAttachment' || el.id === 'fileDrop' || el.id === 'fileList' ||
+            el.id === 'phone')) {
+          // Для поля телефона добавляем уникальный класс чтобы можно было найти его в модалке
+          if (el.id === 'phone') {
+            el.classList.add('modal-phone-input');
+          }
+          // Для зоны загрузки файлов добавляем класс чтобы можно было найти её в модалке
+          if (el.id === 'fileDrop') {
+            el.classList.add('modal-file-drop');
+          }
+        } else if (el.id) {
+          el.removeAttribute('id');
         }
-        // Для зоны загрузки файлов добавляем класс чтобы можно было найти её в модалке
-        if (el.id === 'fileDrop') {
-          el.classList.add('modal-file-drop');
-        }
-      } else if (el.id) {
-        el.removeAttribute('id');
-      }
-    });
-    
-    // Скрываем предупреждения и сообщения об успехе
-    const rateLimitWarning = modalBodyContainer.querySelector('.rate-limit-warning');
-    if (rateLimitWarning) rateLimitWarning.classList.remove('show');
-    
-    const successMessage = modalBodyContainer.querySelector('.success-message');
-    if (successMessage) successMessage.classList.remove('show');
+      });
+      
+      // Скрываем предупреждения и сообщения об успехе
+      const rateLimitWarning = modalBodyContainer.querySelector('.rate-limit-warning');
+      if (rateLimitWarning) rateLimitWarning.classList.remove('show');
+      
+      const successMessage = modalBodyContainer.querySelector('.success-message');
+      if (successMessage) successMessage.classList.remove('show');
+    } else {
+      // Формы нет на странице - используем содержимое из модального окна по умолчанию
+      // Модальное окно уже содержит форму благодаря ComponentLoader
+      this._resetFormInModal(modalBodyContainer);
+    }
     
     // Инициализируем автоподстановку +7 для поля телефона в модалке
     this._initPhoneAutoPrefix(modalBodyContainer);
+  }
+  
+  /**
+   * Сбрасывает форму в модальном окне к начальному состоянию
+   */
+  _resetFormInModal(container) {
+    const form = container.querySelector('#proposalForm');
+    if (form) {
+      form.reset();
+      // Скрываем все сообщения об ошибках
+      const errorMessages = container.querySelectorAll('.error-message');
+      errorMessages.forEach(el => el.style.display = '');
+      // Снимаем классы ошибок
+      const errorInputs = container.querySelectorAll('.input-error');
+      errorInputs.forEach(el => el.classList.remove('input-error'));
+      // Скрываем предупреждения
+      const rateLimitWarning = container.querySelector('.rate-limit-warning');
+      if (rateLimitWarning) rateLimitWarning.classList.remove('show');
+      const successMessage = container.querySelector('.success-message');
+      if (successMessage) successMessage.classList.remove('show');
+      // Очищаем список файлов
+      this.currentFiles = [];
+      const fileList = container.querySelector('.form-file-list');
+      if (fileList) fileList.innerHTML = '';
+      const fileDropText = container.querySelector('.form-file-text');
+      if (fileDropText) fileDropText.textContent = 'Выбрать файл...';
+      const fileInput = container.querySelector('input[type="file"]');
+      if (fileInput) fileInput.value = '';
+    }
   }
 
   /**
