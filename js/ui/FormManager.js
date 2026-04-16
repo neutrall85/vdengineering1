@@ -191,7 +191,7 @@ class FormManager {
     if (!container) return;
 
     // Очищаем контейнер перед перерисовкой
-    container.innerHTML = '';
+    container.replaceChildren();
 
     if (this.currentFiles.length === 0) {
       // Обновляем текст в зоне загрузки
@@ -200,15 +200,39 @@ class FormManager {
         fileDropText.textContent = 'Выбрать файл...';
       }
     } else {
-      container.innerHTML = this.currentFiles.map((file, index) => `
-        <div class="form-file-item" data-index="${index}">
-          <span class="form-file-item-name">${this._escapeHtml(file.name)}</span>
-          <span class="form-file-item-size">${this._formatFileSize(file.size)}</span>
-          <button type="button" class="form-file-item-remove" data-index="${index}" aria-label="Удалить файл">
-            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-          </button>
-        </div>
-      `).join('');
+      // Создаем элементы через DOM API вместо innerHTML для безопасности
+      this.currentFiles.forEach((file, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('form-file-item');
+        itemDiv.setAttribute('data-index', index);
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.classList.add('form-file-item-name');
+        nameSpan.textContent = file.name;
+        
+        const sizeSpan = document.createElement('span');
+        sizeSpan.classList.add('form-file-item-size');
+        sizeSpan.textContent = this._formatFileSize(file.size);
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.setAttribute('type', 'button');
+        removeBtn.classList.add('form-file-item-remove');
+        removeBtn.setAttribute('data-index', index);
+        removeBtn.setAttribute('aria-label', 'Удалить файл');
+        
+        // Добавляем SVG иконку через DOM API
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z');
+        svg.appendChild(path);
+        removeBtn.appendChild(svg);
+        
+        itemDiv.appendChild(nameSpan);
+        itemDiv.appendChild(sizeSpan);
+        itemDiv.appendChild(removeBtn);
+        container.appendChild(itemDiv);
+      });
 
       // Используем делегирование событий для кнопок удаления - вешаем обработчик только один раз на контейнер
       // Удаляем старый обработчик если он был, чтобы избежать дублирования при перерисовке
@@ -257,9 +281,9 @@ class FormManager {
     
     // Если передан элемент предупреждения о лимитах файлов, используем его
     if (fileLimitWarning) {
+      fileLimitWarning.replaceChildren();
       const p = document.createElement('p');
       p.textContent = `⚠️ ${message}`;
-      fileLimitWarning.innerHTML = '';
       fileLimitWarning.appendChild(p);
       fileLimitWarning.style.display = 'block';
       setTimeout(() => {
@@ -271,9 +295,9 @@ class FormManager {
     // Иначе используем стандартное предупреждение
     const warning = DOM.getElement('rateLimitWarning');
     if (warning) {
+      warning.replaceChildren();
       const p = document.createElement('p');
       p.textContent = `⚠️ ${message}`;
-      warning.innerHTML = '';
       warning.appendChild(p);
       DOM.addClass(warning, 'show');
       setTimeout(() => DOM.removeClass(warning, 'show'), 5000);
@@ -302,7 +326,7 @@ class FormManager {
       }
     }
     
-    warningContainer.innerHTML = '';
+    warningContainer.replaceChildren();
     const warningDiv = document.createElement('div');
     warningDiv.className = 'upload-warning';
     warningDiv.textContent = `⚠️ ${message}`;
@@ -440,10 +464,20 @@ class FormManager {
     this.rateLimiter.record();
 
     const submitBtn = DOM.getElement('submitBtn');
-    const originalContent = submitBtn.innerHTML;
+    
+    // Сохраняем оригинальное содержимое кнопки (текст)
+    const originalText = submitBtn.textContent;
 
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<div class="spinner"></div><span>Отправка...</span>';
+    
+    // Создаем индикатор загрузки через DOM API
+    submitBtn.replaceChildren();
+    const spinner = document.createElement('div');
+    spinner.classList.add('spinner');
+    const loadingText = document.createElement('span');
+    loadingText.textContent = 'Отправка...';
+    submitBtn.appendChild(spinner);
+    submitBtn.appendChild(loadingText);
 
     try {
       const formData = {
@@ -490,7 +524,9 @@ class FormManager {
       this._showError('Произошла ошибка при отправке. Пожалуйста, попробуйте позже.');
     } finally {
       submitBtn.disabled = false;
-      submitBtn.innerHTML = originalContent;
+      // Восстанавливаем оригинальное содержимое кнопки
+      submitBtn.replaceChildren();
+      submitBtn.textContent = originalText;
     }
   }
 

@@ -22,7 +22,10 @@ class NewsRenderer {
     const newsList = this.newsData[year] || [];
     
     if (newsList.length === 0) {
-      container.innerHTML = '<p class="no-news">Нет новостей за выбранный период</p>';
+      const noNews = document.createElement('p');
+      noNews.classList.add('no-news');
+      noNews.textContent = 'Нет новостей за выбранный период';
+      container.appendChild(noNews);
       return;
     }
 
@@ -37,8 +40,7 @@ class NewsRenderer {
       fragment.appendChild(card);
     });
     
-    container.innerHTML = '';
-    container.appendChild(fragment);
+    container.replaceChildren(fragment);
     
     if (newsList.length > DEFAULT_VISIBLE) {
       this._addAccordionButton(container, newsList.length, DEFAULT_VISIBLE);
@@ -53,48 +55,82 @@ class NewsRenderer {
     article.classList.add('news-card');
     article.style.animationDelay = `${index * this.cardStaggerMs}ms`;
     
-    const imageHtml = this._createImageHtml(news);
-    const contentHtml = this._createContentHtml(news);
+    // Создаем элементы через DOM API вместо innerHTML для безопасности
+    const imageContainer = document.createElement('div');
+    imageContainer.classList.add('news-card-image');
     
-    article.innerHTML = imageHtml + contentHtml;
+    const placeholder = document.createElement('div');
+    placeholder.classList.add('image-placeholder');
+    
+    const img = document.createElement('img');
+    img.setAttribute('data-src', news.image);
+    img.setAttribute('alt', news.title);
+    img.setAttribute('loading', 'lazy');
+    img.onerror = function() { this.src = 'assets/images/placeholder.jpg'; };
+    
+    const category = document.createElement('span');
+    category.classList.add('news-card-category');
+    category.textContent = news.category;
+    
+    imageContainer.appendChild(placeholder);
+    imageContainer.appendChild(img);
+    imageContainer.appendChild(category);
+    
+    const contentDiv = document.createElement('div');
+    contentDiv.classList.add('news-card-content');
+    
+    const dateDiv = document.createElement('div');
+    dateDiv.classList.add('news-card-date');
+    
+    // Добавляем SVG иконку через DOM API
+    const dateSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    dateSvg.setAttribute('viewBox', '0 0 24 24');
+    const datePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    datePath.setAttribute('d', 'M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z');
+    dateSvg.appendChild(datePath);
+    dateDiv.appendChild(dateSvg);
+    
+    const dateText = document.createTextNode(` ${this._escapeHtml(news.date)}`);
+    dateDiv.appendChild(dateText);
+    
+    const title = document.createElement('h3');
+    title.classList.add('news-card-title');
+    title.textContent = news.title;
+    
+    const excerpt = document.createElement('p');
+    excerpt.classList.add('news-card-excerpt');
+    excerpt.textContent = news.excerpt;
+    
+    const link = document.createElement('a');
+    link.classList.add('news-card-link');
+    link.setAttribute('href', this._createNewsLink(news));
+    link.setAttribute('data-news-id', news.id);
+    link.textContent = 'Подробнее';
+    
+    // Добавляем SVG иконку через DOM API
+    const linkSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    linkSvg.setAttribute('viewBox', '0 0 24 24');
+    const linkPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    linkPath.setAttribute('d', 'M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z');
+    linkSvg.appendChild(linkPath);
+    link.appendChild(linkSvg);
+    
+    contentDiv.appendChild(dateDiv);
+    contentDiv.appendChild(title);
+    contentDiv.appendChild(excerpt);
+    contentDiv.appendChild(link);
+    
+    article.appendChild(imageContainer);
+    article.appendChild(contentDiv);
+    
     return article;
   }
 
-  _createImageHtml(news) {
-    // Используем data-src для lazy loading
-    return `
-      <div class="news-card-image">
-        <div class="image-placeholder"></div>
-        <img data-src="${this._escapeHtml(news.image)}" 
-             alt="${this._escapeHtml(news.title)}" 
-             loading="lazy"
-             onerror="this.src='assets/images/placeholder.jpg'">
-        <span class="news-card-category">${this._escapeHtml(news.category)}</span>
-      </div>
-    `;
-  }
-
-  _createContentHtml(news) {
-    // Генерируем ссылку в формате: /2023/10/01/korotkoe-nazvanie-id
+  _createNewsLink(news) {
     const { year, month } = window.SlugUtils ? window.SlugUtils.parseDate(news.date) : { year: '2023', month: '01' };
     const day = '01';
     const shortSlug = window.SlugUtils ? window.SlugUtils.createShortSlug(news.title) : this._escapeHtml(news.title).toLowerCase().replace(/\s+/g, '-');
-    const newsLink = `/${year}/${month}/${day}/${shortSlug}-${news.id}`;
-    
-    return `
-      <div class="news-card-content">
-        <div class="news-card-date">
-          <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
-          ${this._escapeHtml(news.date)}
-        </div>
-        <h3 class="news-card-title">${this._escapeHtml(news.title)}</h3>
-        <p class="news-card-excerpt">${this._escapeHtml(news.excerpt)}</p>
-        <a href="${newsLink}" class="news-card-link" data-news-id="${news.id}">
-          Подробнее
-          <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
-        </a>
-      </div>
-    `;
+    return `/${year}/${month}/${day}/${shortSlug}-${news.id}`;
   }
 
   _addAccordionButton(container, totalNews, defaultVisible) {
@@ -106,12 +142,18 @@ class NewsRenderer {
     
     const button = document.createElement('button');
     button.classList.add('news-accordion-btn');
-    button.innerHTML = `
-      Показать ещё (${totalNews - defaultVisible})
-      <svg class="accordion-icon" viewBox="0 0 24 24">
-        <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
-      </svg>
-    `;
+    
+    // Создаем содержимое кнопки через DOM API
+    const buttonText = document.createTextNode(`Показать ещё (${totalNews - defaultVisible})`);
+    button.appendChild(buttonText);
+    
+    const svgIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svgIcon.classList.add('accordion-icon');
+    svgIcon.setAttribute('viewBox', '0 0 24 24');
+    const svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    svgPath.setAttribute('d', 'M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z');
+    svgIcon.appendChild(svgPath);
+    button.appendChild(svgIcon);
     
     let expanded = false;
     let isAnimating = false;
@@ -138,12 +180,8 @@ class NewsRenderer {
           }, idx * 50);
         });
         
-        button.innerHTML = `
-          Свернуть
-          <svg class="accordion-icon" viewBox="0 0 24 24">
-            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
-          </svg>
-        `;
+        // Обновляем текст кнопки
+        button.firstChild.textContent = `Свернуть`;
         button.classList.add('expanded');
         expanded = true;
       } else {
@@ -163,12 +201,8 @@ class NewsRenderer {
           }
         });
         
-        button.innerHTML = `
-          Показать ещё (${totalNews - defaultVisible})
-          <svg class="accordion-icon" viewBox="0 0 24 24">
-            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
-          </svg>
-        `;
+        // Обновляем текст кнопки
+        button.firstChild.textContent = `Показать ещё (${totalNews - defaultVisible})`;
         button.classList.remove('expanded');
         expanded = false;
       }
