@@ -440,8 +440,15 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация обработчиков для кнопок с ID вместо onclick удалена - теперь используется FormManager._initFloatingButton()
-    // Это предотвращает дублирование обработчиков и обеспечивает централизованное управление
+    // Инициализация обработчиков для кнопок с ID вместо onclick
+    const heroRequestQuoteBtn = document.getElementById('heroRequestQuoteBtn');
+    if (heroRequestQuoteBtn) {
+      heroRequestQuoteBtn.addEventListener('click', function() {
+        if (window.openModal && typeof window.openModal === 'function') {
+          window.openModal();
+        }
+      });
+    }
     
     const contactEmailLink = document.getElementById('contactEmailLink');
     if (contactEmailLink) {
@@ -455,8 +462,14 @@
     
     // Обработчики для кнопок закрытия модальных окон удалены - теперь используется единый обработчик в ModalManager.js (DRY, KISS)
     
-    // Обработчики для кнопок открытия модального окна удалены - теперь используется FormManager._initFloatingButton()
-    // Это предотвращает дублирование обработчиков и обеспечивает централизованное управление
+    const floatingCtaBtn = document.getElementById('floatingCtaBtn');
+    if (floatingCtaBtn) {
+      floatingCtaBtn.addEventListener('click', function() {
+        if (window.openModal && typeof window.openModal === 'function') {
+          window.openModal();
+        }
+      });
+    }
     
     const scrollToTopBtn = document.getElementById('scrollToTopBtn');
     if (scrollToTopBtn) {
