@@ -382,10 +382,25 @@ class FormManager {
   }
 
   _initFloatingButton() {
-    const btn = DOM.query('.floating-cta-btn');
-    if (btn) {
-      btn.addEventListener('click', () => this.openModal());
-    }
+    // Инициализация плавающей кнопки и кнопок "Запросить КП" после полной загрузки DOM
+    // Используем отложенную инициализацию чтобы убедиться что все элементы загружены
+    setTimeout(() => {
+      const initButton = (btn) => {
+        if (!btn || btn._handlerAttached) return;
+        btn.addEventListener('click', () => this.openModal());
+        btn._handlerAttached = true;
+      };
+      
+      // Инициализация плавающей кнопки
+      const floatingBtns = document.querySelectorAll('.floating-cta-btn');
+      floatingBtns.forEach(initButton);
+      
+      // Инициализация кнопок "Запросить КП" в hero секции
+      const heroBtns = document.querySelectorAll('#heroRequestQuoteBtn');
+      heroBtns.forEach(initButton);
+      
+      console.log('Floating buttons initialized:', floatingBtns.length + heroBtns.length);
+    }, 100);
   }
 
   openModal() {
