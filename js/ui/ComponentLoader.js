@@ -7,6 +7,11 @@
 // const POLICY_DOCUMENTS определяется в policyDocuments.js
 
 const ComponentLoader = {
+    // Вспомогательная функция для получения ширины скроллбара
+    getScrollbarWidth() {
+        return window.innerWidth - document.documentElement.clientWidth;
+    },
+    
     // Навигация (ссылка "Главная" добавляется динамически)
     navbar: `
 <nav class="navbar" id="navbar">
@@ -373,13 +378,21 @@ const ComponentLoader = {
         // Обрабатываем десктопное меню
         const homeLinkDesktop = document.querySelector('.nav-links .home-link');
         if (homeLinkDesktop) {
-            homeLinkDesktop.style.display = isHomePage ? 'none' : 'block';
+            if (isHomePage) {
+                homeLinkDesktop.classList.add('hidden');
+            } else {
+                homeLinkDesktop.classList.remove('hidden');
+            }
         }
         
         // Обрабатываем мобильное меню
         const homeLinkMobile = document.querySelector('.mobile-menu .home-link-mobile');
         if (homeLinkMobile) {
-            homeLinkMobile.style.display = isHomePage ? 'none' : 'block';
+            if (isHomePage) {
+                homeLinkMobile.classList.add('hidden');
+            } else {
+                homeLinkMobile.classList.remove('hidden');
+            }
         }
         
         // Подсветка активной ссылки
@@ -486,8 +499,12 @@ const ComponentLoader = {
           allowedAttributes: { 'a': ['href', 'target', 'rel'] }
         });
 
-        // Блокируем скролл
-        document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
+        // Блокируем скролл с помощью CSS класса
+        const scrollbarWidth = this.getScrollbarWidth();
+        if (scrollbarWidth > 0) {
+            document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+            document.body.classList.add('scroll-padding-fix');
+        }
         document.body.classList.add('no-scroll');
 
         // Показываем модальное окно
@@ -507,7 +524,8 @@ const ComponentLoader = {
 
         modalOverlay.classList.remove('active');
         document.body.classList.remove('no-scroll');
-        document.body.style.paddingRight = '';
+        document.body.classList.remove('scroll-padding-fix');
+        document.body.style.removeProperty('--scrollbar-width');
     },
 
     /**
@@ -540,8 +558,12 @@ const ComponentLoader = {
             // Сохраняем текущую позицию скролла
             const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
             
-            // Блокируем скролл body
-            document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
+            // Блокируем скролл body с помощью CSS класса
+            const scrollbarWidth = ComponentLoader.getScrollbarWidth();
+            if (scrollbarWidth > 0) {
+                document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+                document.body.classList.add('scroll-padding-fix');
+            }
             document.body.classList.add('no-scroll');
 
             overlay.classList.add('active');
@@ -563,7 +585,8 @@ const ComponentLoader = {
             } else {
                 overlay.classList.remove('active');
                 document.body.classList.remove('no-scroll');
-                document.body.style.paddingRight = '';
+                document.body.classList.remove('scroll-padding-fix');
+                document.body.style.removeProperty('--scrollbar-width');
             }
         };
 
@@ -666,7 +689,7 @@ const ComponentLoader = {
                 const form = document.getElementById('universalApplicationForm');
                 
                 if (successMessage && form) {
-                    form.style.display = 'none';
+                    form.classList.add('form-element-hidden');
                     successMessage.classList.add('show');
                     
                     // Закрываем модалку через 3 секунды
@@ -674,7 +697,7 @@ const ComponentLoader = {
                         window.closeUniversalApplicationModal();
                         // Сбрасываем форму
                         form.reset();
-                        form.style.display = 'block';
+                        form.classList.remove('form-element-hidden');
                         successMessage.classList.remove('show');
                         
                         // Сбрасываем файлы

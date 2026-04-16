@@ -3731,3 +3731,54 @@ body.app-ready > footer:not(.footer) {
   transform: none;
   box-shadow: none;
 }
+
+/* ==================== КЛАССЫ ДЛЯ ComponentLoader (устранение inline-стилей) ==================== */
+
+/* Для управления видимостью ссылок в навигации */
+.nav-link-home-desktop,
+.nav-link-home-mobile {
+    display: block;
+}
+
+.nav-link-home-desktop.hidden,
+.nav-link-home-mobile.hidden {
+    display: none;
+}
+
+/* Для управления видимостью форм */
+.form-element-visible {
+    display: block !important;
+}
+
+.form-element-hidden {
+    display: none !important;
+}
+
+/* Для управления скроллом (уже есть класс no-scroll, добавим padding) */
+body.no-scroll {
+    overflow: hidden;
+}
+
+body.scroll-padding-fix {
+    padding-right: var(--scrollbar-width, 0px);
+}
+
+/* Анимация для плавного появления/исчезновения */
+.fade-transition {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.element-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.element-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Универсальный класс hidden */
+.hidden {
+    display: none !important;
+}
