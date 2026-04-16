@@ -64,6 +64,7 @@ class Application {
       this.initialized = true;
       
       if (this.errors.length > 0) {
+        console.warn('Application initialized with errors:', this.errors);
       }
       
       if (window.Services?.eventBus) {
@@ -99,6 +100,7 @@ class Application {
       } else if (typeof modalManager !== 'undefined') {
         modalManager.open('form');
       } else {
+        console.warn('openModal: Neither formManager nor modalManager is available');
       }
     };
     
@@ -381,8 +383,10 @@ function initApp() {
         newsManager.init();
         window.newsManager = newsManager;
       } else {
+        console.error('NewsRenderer or NewsManager is not defined');
       }
     } catch (err) {
+      console.error('Failed to initialize news managers:', err);
     }
   }
   
@@ -399,8 +403,10 @@ function initApp() {
       window.formManager = formManager;
       window.openModal = () => formManager.openModal();
     } catch (err) {
+      console.error('Failed to initialize FormManager:', err);
     }
   } else {
+    console.warn('Required services or utils are not available for FormManager initialization');
   }
   
   // 3. Регистрация модальных окон (после ComponentLoader и FormManager)
@@ -435,6 +441,7 @@ function initApp() {
       }
     });
   } else {
+    console.warn('modalManager is not defined, skipping modal registration');
   }
   
   // 4. Инициализация DocPreviewManager для страницы документов
