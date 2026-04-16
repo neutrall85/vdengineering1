@@ -24,6 +24,7 @@
   --error-bg: #FEF2F2;
   --vd-orange-rgb: 255, 102, 0;
 
+  /* Анимации и переходы */
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --ease-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -31,6 +32,69 @@
   --duration-normal: 0.35s;
   --duration-slow: 0.5s;
   --duration-slower: 0.7s;
+  --transition-base: all var(--duration-normal) var(--ease-smooth);
+  --transition-fast: all var(--duration-fast) var(--ease-smooth);
+  --transition-slow: all var(--duration-slow) var(--ease-smooth);
+
+  /* Градиенты */
+  --gradient-primary: linear-gradient(135deg, var(--vd) 0%, var(--vd-dark) 100%);
+  --gradient-primary-alt: linear-gradient(135deg, var(--vd), var(--vd-light-blue));
+  --gradient-orange: linear-gradient(135deg, var(--vd-orange), var(--vd-orange-light));
+  --gradient-orange-reverse: linear-gradient(135deg, var(--vd-orange-light), var(--vd-orange));
+  --gradient-light: linear-gradient(135deg, var(--vd-light-gray) 0%, white 100%);
+  --gradient-subtle: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+  --gradient-accent: linear-gradient(90deg, var(--vd), var(--vd-blue));
+  --gradient-loader: linear-gradient(135deg, #0033A0 0%, #002580 100%);
+
+  /* Тени */
+  --shadow-xs: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+  --shadow-2xl: 0 25px 45px rgba(0, 0, 0, 0.18);
+  --shadow-orange-sm: 0 4px 15px rgba(255, 102, 0, 0.3);
+  --shadow-orange-md: 0 8px 25px rgba(255, 102, 0, 0.4);
+  --shadow-orange-lg: 0 10px 30px rgba(255, 102, 0, 0.5);
+  --shadow-primary-sm: 0 4px 15px rgba(0, 78, 150, 0.3);
+  --shadow-primary-md: 0 8px 25px rgba(0, 78, 150, 0.4);
+  --shadow-primary-lg: 0 10px 30px rgba(0, 78, 150, 0.5);
+  --shadow-blue-lg: 0 10px 30px rgba(0, 51, 160, 0.4);
+  --shadow-blue-xl: 0 12px 35px rgba(0, 51, 160, 0.5);
+  --shadow-nav: -5px 0 30px rgba(0, 0, 0, 0.3);
+
+  /* Отступы (шкала spacing) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* Скругления (шкала border-radius) */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Z-index система слоев */
+  --z-base: 1;
+  --z-dropdown: 10;
+  --z-sticky: 30;
+  --z-fixed: 100;
+  --z-modal-backdrop: 1000;
+  --z-modal: 1001;
+  --z-popover: 2000;
+  --z-toast: 2500;
+  --z-tooltip: 3000;
+  --z-loader: 9999;
 
   /* Базовый размер шрифта для пропорционального масштабирования */
   font-size: 16px;
@@ -83,11 +147,11 @@ body.app-ready > footer:not(.footer) {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0033A0 0%, #002580 100%);
+  background: var(--gradient-loader);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: var(--z-loader);
   transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
 }
 
@@ -244,7 +308,7 @@ body.app-ready > footer:not(.footer) {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: var(--z-fixed);
   padding: 1rem 5%;
   background: var(--vd);
   transition: background-color var(--duration-normal) var(--ease-smooth),
@@ -332,14 +396,14 @@ body.app-ready > footer:not(.footer) {
   width: 280px;
   max-width: 80%;
   height: 100vh;
-  background: linear-gradient(135deg, var(--vd) 0%, var(--vd-dark) 100%);
-  z-index: 1001;
+  background: var(--gradient-primary);
+  z-index: var(--z-modal);
   display: flex;
   flex-direction: column;
   padding: 80px 2rem 2rem;
   transform: translateX(100%);
   transition: transform var(--duration-slow) var(--ease-smooth);
-  box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-nav);
   overflow-y: auto;
 }
 
@@ -403,7 +467,7 @@ body.app-ready > footer:not(.footer) {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: var(--z-modal-backdrop);
   opacity: 0;
   visibility: hidden;
   transition: all var(--duration-normal) var(--ease-smooth);
@@ -557,10 +621,10 @@ body.app-ready > footer:not(.footer) {
 
 /* ==================== КНОПКИ ==================== */
 .btn-primary {
-  background: linear-gradient(135deg, var(--vd-orange), var(--vd-orange-light));
+  background: var(--gradient-orange);
   color: white;
   padding: clamp(0.75rem, 1.5vw, 1rem) clamp(1.5rem, 3vw, 2rem);
-  border-radius: 50px;
+  border-radius: var(--radius-full);
   text-decoration: none;
   font-weight: 600;
   font-size: clamp(0.875rem, 1.2vw, 1rem);
@@ -569,15 +633,15 @@ body.app-ready > footer:not(.footer) {
   gap: 0.75rem;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-orange-sm);
+  transition: var(--transition-base);
   overflow: hidden;
 }
 
 .btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(255, 102, 0, 0.4);
-  background: linear-gradient(135deg, var(--vd-orange-light), var(--vd-orange));
+  box-shadow: var(--shadow-orange-md);
+  background: var(--gradient-orange-reverse);
 }
 
 .btn-primary svg {
@@ -1149,10 +1213,10 @@ body.app-ready > footer:not(.footer) {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  background: linear-gradient(135deg, var(--vd-orange), var(--vd-orange-light));
+  background: var(--gradient-orange);
   color: white;
   padding: clamp(0.8rem, 1.5vw, 1rem) clamp(1.2rem, 2vw, 1.5rem);
-  border-radius: 50px;
+  border-radius: var(--radius-full);
   border: none;
   cursor: pointer;
   display: flex;
@@ -1160,9 +1224,9 @@ body.app-ready > footer:not(.footer) {
   gap: 0.75rem;
   font-weight: 600;
   font-size: clamp(0.85rem, 1.2vw, 0.95rem);
-  box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
-  transition: all 0.3s ease;
-  z-index: 1000;
+  box-shadow: var(--shadow-orange-sm);
+  transition: var(--transition-base);
+  z-index: var(--z-fixed);
   opacity: 0;
   visibility: hidden;
 }
@@ -1174,7 +1238,7 @@ body.app-ready > footer:not(.footer) {
 
 .floating-cta-btn:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(255, 102, 0, 0.5);
+  box-shadow: var(--shadow-primary-lg);
 }
 
 .floating-cta-btn svg {
