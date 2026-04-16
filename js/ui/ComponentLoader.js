@@ -448,30 +448,52 @@ const ComponentLoader = {
             modalOverlay.className = 'modal-overlay';
             modalOverlay.setAttribute('role', 'dialog');
             modalOverlay.setAttribute('aria-modal', 'true');
-            modalOverlay.innerHTML = `
-                <div class="modal-container">
-                    <button class="modal-close" id="policyModalCloseBtn" aria-label="Закрыть">
-                        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                    </button>
-                    <div class="modal-header">
-                        <h2 class="modal-title" id="policyModalTitle"></h2>
-                    </div>
-                    <div class="modal-body" id="policyModalContent"></div>
-                </div>
-            `;
+            
+            // Создаем контейнер модального окна
+            const modalContainer = document.createElement('div');
+            modalContainer.className = 'modal-container';
+            
+            // Кнопка закрытия
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'modal-close';
+            closeBtn.id = 'policyModalCloseBtn';
+            closeBtn.setAttribute('aria-label', 'Закрыть');
+            
+            // SVG иконка закрытия
+            const svgNS = 'http://www.w3.org/2000/svg';
+            const svgEl = document.createElementNS(svgNS, 'svg');
+            svgEl.setAttribute('viewBox', '0 0 24 24');
+            const pathEl = document.createElementNS(svgNS, 'path');
+            pathEl.setAttribute('d', 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z');
+            svgEl.appendChild(pathEl);
+            closeBtn.appendChild(svgEl);
+            
+            // Заголовок модального окна
+            const modalHeader = document.createElement('div');
+            modalHeader.className = 'modal-header';
+            const modalTitle = document.createElement('h2');
+            modalTitle.className = 'modal-title';
+            modalTitle.id = 'policyModalTitle';
+            modalHeader.appendChild(modalTitle);
+            
+            // Тело модального окна
+            const modalBody = document.createElement('div');
+            modalBody.className = 'modal-body';
+            modalBody.id = 'policyModalContent';
+            
+            // Собираем структуру
+            modalContainer.appendChild(closeBtn);
+            modalContainer.appendChild(modalHeader);
+            modalContainer.appendChild(modalBody);
+            modalOverlay.appendChild(modalContainer);
             document.body.appendChild(modalOverlay);
             
             // Добавляем обработчик клика на кнопку закрытия
-            setTimeout(() => {
-              const closeBtn = document.getElementById('policyModalCloseBtn');
-              if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                  if (typeof window.closePolicyModal === 'function') {
-                    window.closePolicyModal();
-                  }
-                });
+            closeBtn.addEventListener('click', () => {
+              if (typeof window.closePolicyModal === 'function') {
+                window.closePolicyModal();
               }
-            }, 0);
+            });
 
             // Закрытие по клику на overlay
             modalOverlay.addEventListener('click', (e) => {
