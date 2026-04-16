@@ -1309,6 +1309,19 @@ body.app-ready > footer:not(.footer) {
   margin-bottom: 1.25rem;
 }
 
+.form-phone-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.form-phone-wrapper .form-input:first-child {
+  flex: 1;
+}
+
+.form-phone-wrapper .form-input:last-child {
+  width: 100px;
+}
+
 .form-label {
   display: block;
   font-weight: 600;
