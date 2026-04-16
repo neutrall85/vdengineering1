@@ -27,20 +27,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
-
-  <script src="js/config.js"></script>
-  <script src="js/services.js"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/ui/ComponentLoader.js"></script>
-  <script src="js/ui/ModalManager.js"></script>
-  <script src="js/ui/NavigationManager.js"></script>
-  <script src="js/ui/AnimationManager.js"></script>
-  <script src="js/ui/FormManager.js"></script>
-  <script src="js/ui/MapManager.js"></script>
-  <script src="js/ui/NewsRenderer.js"></script>
-  <script src="js/ui/NewsManager.js"></script>
-  <script src="js/data/newsData.js"></script>
-  <script src="js/app.js"></script>
+  <script type="module" src="js/main.js"></script>
 </head>
 <body>
 
@@ -438,77 +425,6 @@
   <svg viewBox="0 0 24 24"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg>
 </button>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация обработчиков для кнопок с ID вместо onclick удалена - теперь используется FormManager._initFloatingButton()
-    // Это предотвращает дублирование обработчиков и обеспечивает централизованное управление
-    
-    const contactEmailLink = document.getElementById('contactEmailLink');
-    if (contactEmailLink) {
-      contactEmailLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (confirm('Открыть почтовый клиент?')) {
-          window.location.href = this.getAttribute('href');
-        }
-      });
-    }
-    
-    // Обработчики для кнопок закрытия модальных окон удалены - теперь используется единый обработчик в ModalManager.js (DRY, KISS)
-    
-    // Обработчики для кнопок открытия модального окна удалены - теперь используется FormManager._initFloatingButton()
-    // Это предотвращает дублирование обработчиков и обеспечивает централизованное управление
-    
-    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-    if (scrollToTopBtn) {
-      scrollToTopBtn.addEventListener('click', function() {
-        if (window.scrollToTop && typeof window.scrollToTop === 'function') {
-          window.scrollToTop();
-        }
-      });
-    }
-    
-    // Клонирование формы теперь выполняется в FormManager._cloneFormToModal() при открытии модального окна
-    // Это обеспечивает актуальное состояние формы и предотвращает дублирование кода (DRY, KISS)
-    
-    // Автоподстановка +7 для поля телефона - теперь выполняется в FormManager после клонирования формы
-    
-    const previewGrid = document.getElementById('previewNewsGrid');
-    if (previewGrid && typeof NEWS_DATA !== 'undefined') {
-      const allNews = [];
-      for (const year in NEWS_DATA) {
-        allNews.push(...NEWS_DATA[year]);
-      }
-      const latestNews = allNews.sort((a, b) => b.id - a.id).slice(0, 3);
-
-      previewGrid.innerHTML = latestNews.map(news => `
-        <div class="news-card-preview news-card-preview-inline" data-news-id="${news.id}">
-          <div class="news-img-container">
-            <img src="${Sanitizer.escapeHtml(news.image)}" alt="${Sanitizer.escapeHtml(news.title)}" class="news-img-cover">
-          </div>
-          <div class="news-content-padding">
-            <span class="news-category-badge">${Sanitizer.escapeHtml(news.category)}</span>
-            <h3 class="news-title-h3">${Sanitizer.escapeHtml(news.title)}</h3>
-            <p class="news-excerpt-p">${Sanitizer.escapeHtml(news.excerpt)}</p>
-            <button class="news-link-btn" data-news-id="${news.id}">Подробнее →</button>
-          </div>
-        </div>
-      `).join('');
-      
-      // Добавляем обработчики кликов на карточки новостей
-      setTimeout(() => {
-        previewGrid.querySelectorAll('.news-card-preview').forEach(card => {
-          card.addEventListener('click', function(e) {
-            if (!e.target.closest('button')) {
-              const newsId = this.getAttribute('data-news-id');
-              if (window.newsManager && typeof window.newsManager.openNewsModal === 'function') {
-                window.newsManager.openNewsModal(parseInt(newsId, 10));
-              }
-            }
-          });
-        });
-      }, 50);
-    }
-  });
 </script>
 </body>
 </html>
