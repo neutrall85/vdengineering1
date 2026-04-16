@@ -7,13 +7,7 @@ export default defineConfig({
     minify: 'terser',
     rollupOptions: {
       input: {
-        main: './index.html',
-        about: './about.html',
-        services: './services.html',
-        projects: './projects.html',
-        vacancies: './vacancies.html',
-        news: './news.html',
-        docs: './docs.html'
+        main: './index.html'
       },
       output: {
         entryFileNames: 'js/[name].[hash].js',
