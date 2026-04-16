@@ -403,6 +403,26 @@ class FormManager {
     }, 100);
   }
 
+  openModal() {
+    if (!this.rateLimiter.canProceed()) {
+      const warning = DOM.getElement('rateLimitWarning');
+      if (warning) {
+        DOM.addClass(warning, 'show');
+        setTimeout(() => DOM.removeClass(warning, 'show'), 5000);
+      }
+      return;
+    }
+
+    const warning = DOM.getElement('rateLimitWarning');
+    if (warning) DOM.removeClass(warning, 'show');
+
+    if (typeof modalManager !== 'undefined') {
+      modalManager.open('form');
+    } else {
+      console.error('ModalManager not available');
+    }
+  }
+
   _validateForm() {
     const fields = [
       { id: 'companyName', validate: (v) => this.validator.required(v) && this.validator.minLength(v, 2) },
