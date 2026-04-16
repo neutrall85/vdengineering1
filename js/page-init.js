@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+  const scrollToTopBtn = document.getElementById('scrollToTop');
   if (scrollToTopBtn) {
     scrollToTopBtn.addEventListener('click', function() {
       if (window.scrollToTop && typeof window.scrollToTop === 'function') {
