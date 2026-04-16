@@ -159,7 +159,16 @@ class Application {
       if (modalTitle && modalList) {
         const sanitizer = window.Utils?.Sanitizer;
         modalTitle.textContent = sanitizer ? sanitizer.escapeHtml(title) : title;
-        modalList.innerHTML = details.map(item => `<li>${sanitizer ? sanitizer.escapeHtml(item) : item}</li>`).join('');
+        
+        // Создаем список через DOM API вместо innerHTML для безопасности
+        modalList.replaceChildren();
+        const ul = document.createElement('ul');
+        details.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = sanitizer ? sanitizer.escapeHtml(item) : item;
+          ul.appendChild(li);
+        });
+        modalList.appendChild(ul);
         // Управление скроллом делегировано ModalManager
         if (typeof modalManager !== 'undefined') modalManager.open('details');
       }
@@ -309,22 +318,39 @@ class Application {
     const errorContainer = document.getElementById('appError');
     if (errorContainer) {
       errorContainer.style.display = 'block';
-      errorContainer.innerHTML = `
-        <div class="error-message" style="background:#f8d7da;color:#721c24;padding:1rem;margin:1rem;border-radius:8px;">
-          <h2>Ошибка загрузки приложения</h2>
-          <p>Произошла ошибка при инициализации сайта. Пожалуйста, обновите страницу.</p>
-          <p style="font-size:0.85rem;margin-top:0.5rem;">${Utils.DOM.escapeHtml(error.message)}</p>
-          <button id="reloadErrorBtn" style="margin-top:0.5rem;padding:0.5rem 1rem;cursor:pointer;">Обновить страницу</button>
-        </div>
-      `;
-      const reloadBtn = document.getElementById('reloadErrorBtn');
-      if (reloadBtn) {
-        reloadBtn.addEventListener('click', function() {
-          window.location.reload();
-        });
-      }
+      
+      // Создаем элементы через DOM API вместо innerHTML для безопасности
+      errorContainer.replaceChildren();
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.style.cssText = 'background:#f8d7da;color:#721c24;padding:1rem;margin:1rem;border-radius:8px;';
+      
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Ошибка загрузки приложения';
+      errorDiv.appendChild(h2);
+      
+      const p1 = document.createElement('p');
+      p1.textContent = 'Произошла ошибка при инициализации сайта. Пожалуйста, обновите страницу.';
+      errorDiv.appendChild(p1);
+      
+      const p2 = document.createElement('p');
+      p2.style.fontSize = '0.85rem';
+      p2.style.marginTop = '0.5rem';
+      p2.textContent = Utils.Sanitizer.escapeHtml(error.message);
+      errorDiv.appendChild(p2);
+      
+      const reloadBtn = document.createElement('button');
+      reloadBtn.id = 'reloadErrorBtn';
+      reloadBtn.style.cssText = 'margin-top:0.5rem;padding:0.5rem 1rem;cursor:pointer;';
+      reloadBtn.textContent = 'Обновить страницу';
+      reloadBtn.addEventListener('click', function() {
+        window.location.reload();
+      });
+      errorDiv.appendChild(reloadBtn);
+      
+      errorContainer.appendChild(errorDiv);
     } else {
-      alert('Ошибка загрузки приложения: ' + error.message);
+      alert('Ошибка загрузки приложения: ' + Utils.Sanitizer.escapeHtml(error.message));
     }
   }
 }

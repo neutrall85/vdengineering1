@@ -461,13 +461,13 @@ class FormManager {
 
     try {
       const formData = {
-        companyName: Utils.DOM.getElement('companyName')?.value.trim() || '',
-        contactPerson: Utils.DOM.getElement('contactPerson')?.value.trim() || '',
-        email: Utils.DOM.getElement('email')?.value.trim() || '',
-        phone: Utils.DOM.getElement('phone')?.value.trim() || '',
-        aircraftType: Utils.DOM.getElement('aircraftType')?.value || '',
-        serviceType: Utils.DOM.getElement('serviceType')?.value || '',
-        taskDescription: Utils.DOM.getElement('taskDescription')?.value.trim() || '',
+        companyName: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('companyName')?.value.trim() || ''),
+        contactPerson: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('contactPerson')?.value.trim() || ''),
+        email: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('email')?.value.trim() || ''),
+        phone: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('phone')?.value.trim() || ''),
+        aircraftType: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('aircraftType')?.value || ''),
+        serviceType: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('serviceType')?.value || ''),
+        taskDescription: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('taskDescription')?.value.trim() || ''),
         files: this.currentFiles.map(file => ({
           name: file.name,
           size: file.size,
