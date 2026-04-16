@@ -200,15 +200,33 @@ class FormManager {
         fileDropText.textContent = 'Выбрать файл...';
       }
     } else {
-      container.innerHTML = this.currentFiles.map((file, index) => `
-        <div class="form-file-item" data-index="${index}">
-          <span class="form-file-item-name">${this._escapeHtml(file.name)}</span>
-          <span class="form-file-item-size">${this._formatFileSize(file.size)}</span>
-          <button type="button" class="form-file-item-remove" data-index="${index}" aria-label="Удалить файл">
-            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-          </button>
-        </div>
-      `).join('');
+      // Безопасное создание элементов списка файлов без innerHTML
+      container.innerHTML = '';
+      this.currentFiles.forEach((file, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'form-file-item';
+        itemDiv.dataset.index = index;
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'form-file-item-name';
+        nameSpan.textContent = file.name; // textContent автоматически экранирует
+        
+        const sizeSpan = document.createElement('span');
+        sizeSpan.className = 'form-file-item-size';
+        sizeSpan.textContent = this._formatFileSize(file.size);
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'form-file-item-remove';
+        removeBtn.dataset.index = index;
+        removeBtn.setAttribute('aria-label', 'Удалить файл');
+        removeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+        
+        itemDiv.appendChild(nameSpan);
+        itemDiv.appendChild(sizeSpan);
+        itemDiv.appendChild(removeBtn);
+        container.appendChild(itemDiv);
+      });
 
       // Используем делегирование событий для кнопок удаления - вешаем обработчик только один раз на контейнер
       // Удаляем старый обработчик если он был, чтобы избежать дублирования при перерисовке

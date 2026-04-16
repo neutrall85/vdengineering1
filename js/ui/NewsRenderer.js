@@ -62,14 +62,18 @@ class NewsRenderer {
 
   _createImageHtml(news) {
     // Используем data-src для lazy loading
+    const safeImageSrc = this._escapeHtml(news.image);
+    const safeTitle = this._escapeHtml(news.title);
+    const safeCategory = this._escapeHtml(news.category);
+    
     return `
       <div class="news-card-image">
         <div class="image-placeholder"></div>
-        <img data-src="${this._escapeHtml(news.image)}" 
-             alt="${this._escapeHtml(news.title)}" 
+        <img data-src="${safeImageSrc}" 
+             alt="${safeTitle}" 
              loading="lazy"
              onerror="this.src='assets/images/placeholder.jpg'">
-        <span class="news-card-category">${this._escapeHtml(news.category)}</span>
+        <span class="news-card-category">${safeCategory}</span>
       </div>
     `;
   }
@@ -81,15 +85,20 @@ class NewsRenderer {
     const shortSlug = window.SlugUtils ? window.SlugUtils.createShortSlug(news.title) : this._escapeHtml(news.title).toLowerCase().replace(/\s+/g, '-');
     const newsLink = `/${year}/${month}/${day}/${shortSlug}-${news.id}`;
     
+    const safeDate = this._escapeHtml(news.date);
+    const safeTitle = this._escapeHtml(news.title);
+    const safeExcerpt = this._escapeHtml(news.excerpt);
+    const safeNewsId = this._escapeHtml(String(news.id));
+    
     return `
       <div class="news-card-content">
         <div class="news-card-date">
           <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
-          ${this._escapeHtml(news.date)}
+          ${safeDate}
         </div>
-        <h3 class="news-card-title">${this._escapeHtml(news.title)}</h3>
-        <p class="news-card-excerpt">${this._escapeHtml(news.excerpt)}</p>
-        <a href="${newsLink}" class="news-card-link" data-news-id="${news.id}">
+        <h3 class="news-card-title">${safeTitle}</h3>
+        <p class="news-card-excerpt">${safeExcerpt}</p>
+        <a href="${newsLink}" class="news-card-link" data-news-id="${safeNewsId}">
           Подробнее
           <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
         </a>
