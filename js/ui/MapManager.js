@@ -11,8 +11,8 @@ class MapManager {
 
   init() {
     // Используем Utils.DOM.getElement вместо DOMHelper.getElement
-    this.container = window.Utils && window.Utils.DOM 
-      ? window.Utils.DOM.getElement('mapContainer')
+    this.container = window.Utils && Utils.DOM 
+      ? Utils.DOM.getElement('mapContainer')
       : document.getElementById('mapContainer');
     
     if (this.container) {

@@ -35,16 +35,16 @@ class FormManager {
   
   openModal() {
     if (!this.rateLimiter.canProceed()) {
-      const warning = DOM.getElement('rateLimitWarning');
+      const warning = Utils.DOM.getElement('rateLimitWarning');
       if (warning) {
-        DOM.addClass(warning, 'show');
-        setTimeout(() => DOM.removeClass(warning, 'show'), 5000);
+        Utils.DOM.addClass(warning, 'show');
+        setTimeout(() => Utils.DOM.removeClass(warning, 'show'), 5000);
       }
       return;
     }
 
-    const warning = DOM.getElement('rateLimitWarning');
-    if (warning) DOM.removeClass(warning, 'show');
+    const warning = Utils.DOM.getElement('rateLimitWarning');
+    if (warning) Utils.DOM.removeClass(warning, 'show');
 
     if (typeof modalManager !== 'undefined') {
       modalManager.open('form');
@@ -293,14 +293,14 @@ class FormManager {
     }
     
     // Иначе используем стандартное предупреждение
-    const warning = DOM.getElement('rateLimitWarning');
+    const warning = Utils.DOM.getElement('rateLimitWarning');
     if (warning) {
       warning.replaceChildren();
       const p = document.createElement('p');
       p.textContent = `⚠️ ${message}`;
       warning.appendChild(p);
-      DOM.addClass(warning, 'show');
-      setTimeout(() => DOM.removeClass(warning, 'show'), 5000);
+      Utils.DOM.addClass(warning, 'show');
+      setTimeout(() => Utils.DOM.removeClass(warning, 'show'), 5000);
     } else {
       alert(message);
     }
@@ -381,14 +381,14 @@ class FormManager {
   }
 
   _initFormSubmit() {
-    const form = DOM.getElement('proposalForm');
+    const form = Utils.DOM.getElement('proposalForm');
     if (form) {
       form.addEventListener('submit', (e) => this._handleSubmit(e));
     }
   }
 
   _initFloatingButton() {
-    const btn = DOM.query('.floating-cta-btn');
+    const btn = Utils.DOM.query('.floating-cta-btn');
     if (btn) {
       btn.addEventListener('click', () => this.openModal());
     }
@@ -408,21 +408,21 @@ class FormManager {
     let isValid = true;
 
     fields.forEach(field => {
-      const element = DOM.getElement(field.id);
-      const errorEl = DOM.getElement(`${field.id}Error`);
+      const element = Utils.DOM.getElement(field.id);
+      const errorEl = Utils.DOM.getElement(`${field.id}Error`);
       const value = element?.value?.trim() || '';
 
       if (!field.validate(value)) {
-        if (element) DOM.addClass(element, 'error');
-        if (errorEl) DOM.addClass(errorEl, 'show');
+        if (element) Utils.DOM.addClass(element, 'error');
+        if (errorEl) Utils.DOM.addClass(errorEl, 'show');
         isValid = false;
       } else {
-        if (element) DOM.removeClass(element, 'error');
-        if (errorEl) DOM.removeClass(errorEl, 'show');
+        if (element) Utils.DOM.removeClass(element, 'error');
+        if (errorEl) Utils.DOM.removeClass(errorEl, 'show');
       }
     });
 
-    const honeypot = DOM.getElement('hp_website');
+    const honeypot = Utils.DOM.getElement('hp_website');
     if (honeypot && honeypot.value) {
       return false;
     }
@@ -436,14 +436,14 @@ class FormManager {
     if (!this._validateForm()) return;
 
     if (!this.rateLimiter.canProceed()) {
-      const warning = DOM.getElement('rateLimitWarning');
-      if (warning) DOM.addClass(warning, 'show');
+      const warning = Utils.DOM.getElement('rateLimitWarning');
+      if (warning) Utils.DOM.addClass(warning, 'show');
       return;
     }
 
     this.rateLimiter.record();
 
-    const submitBtn = DOM.getElement('submitBtn');
+    const submitBtn = Utils.DOM.getElement('submitBtn');
     
     // Сохраняем оригинальное содержимое кнопки (текст)
     const originalText = submitBtn.textContent;
@@ -461,13 +461,13 @@ class FormManager {
 
     try {
       const formData = {
-        companyName: DOM.getElement('companyName')?.value.trim() || '',
-        contactPerson: DOM.getElement('contactPerson')?.value.trim() || '',
-        email: DOM.getElement('email')?.value.trim() || '',
-        phone: DOM.getElement('phone')?.value.trim() || '',
-        aircraftType: DOM.getElement('aircraftType')?.value || '',
-        serviceType: DOM.getElement('serviceType')?.value || '',
-        taskDescription: DOM.getElement('taskDescription')?.value.trim() || '',
+        companyName: Utils.DOM.getElement('companyName')?.value.trim() || '',
+        contactPerson: Utils.DOM.getElement('contactPerson')?.value.trim() || '',
+        email: Utils.DOM.getElement('email')?.value.trim() || '',
+        phone: Utils.DOM.getElement('phone')?.value.trim() || '',
+        aircraftType: Utils.DOM.getElement('aircraftType')?.value || '',
+        serviceType: Utils.DOM.getElement('serviceType')?.value || '',
+        taskDescription: Utils.DOM.getElement('taskDescription')?.value.trim() || '',
         files: this.currentFiles.map(file => ({
           name: file.name,
           size: file.size,
@@ -484,11 +484,11 @@ class FormManager {
       const result = await this.apiClient.submitForm(formData);
 
       if (result.success) {
-        const form = DOM.getElement('proposalForm');
-        const successMessage = DOM.getElement('successMessage');
+        const form = Utils.DOM.getElement('proposalForm');
+        const successMessage = Utils.DOM.getElement('successMessage');
 
         if (form) form.style.display = 'none';
-        if (successMessage) DOM.addClass(successMessage, 'show');
+        if (successMessage) Utils.DOM.addClass(successMessage, 'show');
 
         setTimeout(() => {
           if (typeof modalManager !== 'undefined') {
@@ -511,23 +511,23 @@ class FormManager {
   }
 
   _resetForm() {
-    const form = DOM.getElement('proposalForm');
-    const successMessage = DOM.getElement('successMessage');
-    const fileList = DOM.getElement('fileList');
+    const form = Utils.DOM.getElement('proposalForm');
+    const successMessage = Utils.DOM.getElement('successMessage');
+    const fileList = Utils.DOM.getElement('fileList');
 
     if (form) {
       form.reset();
       form.style.display = 'block';
     }
 
-    if (successMessage) DOM.removeClass(successMessage, 'show');
+    if (successMessage) Utils.DOM.removeClass(successMessage, 'show');
 
-    DOM.queryAll('.form-input, .form-select, .form-textarea').forEach(el => {
-      DOM.removeClass(el, 'error');
+    Utils.DOM.queryAll('.form-input, .form-select, .form-textarea').forEach(el => {
+      Utils.DOM.removeClass(el, 'error');
     });
 
-    DOM.queryAll('.error-message').forEach(el => {
-      DOM.removeClass(el, 'show');
+    Utils.DOM.queryAll('.error-message').forEach(el => {
+      Utils.DOM.removeClass(el, 'show');
     });
 
     this.currentFiles = [];

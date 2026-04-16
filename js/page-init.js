@@ -128,12 +128,12 @@ document.addEventListener('DOMContentLoaded', function() {
     previewGrid.innerHTML = latestNews.map(news => `
       <div class="news-card-preview news-card-preview-inline" data-news-id="${news.id}">
         <div class="news-img-container">
-          <img src="${Sanitizer.escapeHtml(news.image)}" alt="${Sanitizer.escapeHtml(news.title)}" class="news-img-cover">
+          <img src="${Utils.Sanitizer.escapeHtml(news.image)}" alt="${Utils.Sanitizer.escapeHtml(news.title)}" class="news-img-cover">
         </div>
         <div class="news-content-padding">
-          <span class="news-category-badge">${Sanitizer.escapeHtml(news.category)}</span>
-          <h3 class="news-title-h3">${Sanitizer.escapeHtml(news.title)}</h3>
-          <p class="news-excerpt-p">${Sanitizer.escapeHtml(news.excerpt)}</p>
+          <span class="news-category-badge">${Utils.Sanitizer.escapeHtml(news.category)}</span>
+          <h3 class="news-title-h3">${Utils.Sanitizer.escapeHtml(news.title)}</h3>
+          <p class="news-excerpt-p">${Utils.Sanitizer.escapeHtml(news.excerpt)}</p>
           <button class="news-link-btn" data-news-id="${news.id}">Подробнее →</button>
         </div>
       </div>

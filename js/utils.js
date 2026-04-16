@@ -441,13 +441,8 @@ const Utils = (function() {
   return { DOM, Sanitizer, Validator, RateLimiter, SlugUtils };
 })();
 
-// Экспортируем в глобальную область
+// Экспортируем только основной объект Utils
 window.Utils = Utils;
-window.DOM = Utils.DOM;
-window.Sanitizer = Utils.Sanitizer;
-window.Validator = Utils.Validator;
-window.RateLimiter = Utils.RateLimiter;
-window.SlugUtils = Utils.SlugUtils;
 
 /**
  * NewsNavigation - Управление URL новостей (DRY & KISS)

@@ -377,11 +377,11 @@ function initApp() {
   // 2. Инициализация FormManager (после ComponentLoader!)
   if (hasServices && hasUtils) {
     try {
-      const formRateLimiter = new window.Utils.RateLimiter(window.Services.storage);
+      const formRateLimiter = new Utils.RateLimiter(window.Services.storage);
       formManager = new FormManager(
         window.Services.apiClient, 
         formRateLimiter, 
-        window.Utils.Validator
+        Utils.Validator
       );
       formManager.init();
       window.formManager = formManager;

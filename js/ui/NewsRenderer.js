@@ -127,9 +127,9 @@ class NewsRenderer {
   }
 
   _createNewsLink(news) {
-    const { year, month } = window.SlugUtils ? window.SlugUtils.parseDate(news.date) : { year: '2023', month: '01' };
+    const { year, month } = Utils.SlugUtils ? Utils.SlugUtils.parseDate(news.date) : { year: '2023', month: '01' };
     const day = '01';
-    const shortSlug = window.SlugUtils ? window.SlugUtils.createShortSlug(news.title) : this._escapeHtml(news.title).toLowerCase().replace(/\s+/g, '-');
+    const shortSlug = Utils.SlugUtils ? Utils.SlugUtils.createShortSlug(news.title) : this._escapeHtml(news.title).toLowerCase().replace(/\s+/g, '-');
     return `/${year}/${month}/${day}/${shortSlug}-${news.id}`;
   }
 
