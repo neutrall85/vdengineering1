@@ -1,3 +1,1 @@
-```html
-<!-- Do not ignore HTML files as they appear to be source files in this project -->
-```
+(js/app.js, js/page-projects.js, js/page-services.js, js/services/ConsentManager.js, js/ui/FormManager.js, js/ui/NewsRenderer.js)

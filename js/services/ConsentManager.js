@@ -92,6 +92,8 @@ class ConsentManager {
   _renderBanner() {
     if (document.getElementById('cookie-banner')) return;
 
+    const sanitizer = Utils.Sanitizer || { escapeHtml: (str) => str };
+    
     const bannerHTML = `
       <div id="cookie-banner" class="cookie-banner" role="dialog" aria-modal="true" aria-labelledby="cookie-banner-title">
         <div class="cookie-banner-content">
@@ -130,16 +132,16 @@ class ConsentManager {
             
             <div class="cookie-categories" id="cookie-categories">
               ${Object.values(this.categories).map(cat => `
-                <div class="cookie-category ${cat.required ? 'cookie-category-required' : ''}">
+                <div class="cookie-category ${sanitizer.escapeHtml(cat.required ? 'cookie-category-required' : '')}">
                   <div class="cookie-category-header">
                     <div class="cookie-category-info">
-                      <span class="cookie-category-name">${cat.name}</span>
-                      <span class="cookie-category-desc">${cat.description}</span>
+                      <span class="cookie-category-name">${sanitizer.escapeHtml(cat.name)}</span>
+                      <span class="cookie-category-desc">${sanitizer.escapeHtml(cat.description)}</span>
                     </div>
                     ${cat.required 
                       ? '<span class="cookie-badge-required">Обязательно</span>'
                       : `<label class="cookie-toggle">
-                          <input type="checkbox" data-category="${cat.id}">
+                          <input type="checkbox" data-category="${sanitizer.escapeHtml(cat.id)}">
                           <span class="toggle-slider"></span>
                         </label>`
                     }
@@ -303,7 +305,6 @@ class ConsentManager {
   _checkAdBlock() {
     // Проверка через detection популярных блокировщиков
     const testEl = document.createElement('div');
-    testEl.innerHTML = '&nbsp;';
     testEl.className = 'adsbox';
     testEl.style.position = 'absolute';
     testEl.style.height = '1px';

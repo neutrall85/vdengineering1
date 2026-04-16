@@ -88,7 +88,18 @@ function openServiceModal(title, details, image, category) {
     const sanitizer = window.Utils?.Sanitizer;
     modalTitle.textContent = sanitizer ? sanitizer.escapeHtml(title) : title;
     modalCategory.textContent = sanitizer ? sanitizer.escapeHtml(category) : category;
-    modalContent.innerHTML = '<ul class="modal-list-ul">' + details.map(function(item) { return '<li class="modal-list-li">' + (sanitizer ? sanitizer.escapeHtml(item) : item) + '</li>'; }).join('') + '</ul>';
+    
+    // Создаем список через DOM API вместо innerHTML для безопасности
+    modalContent.replaceChildren();
+    const ul = document.createElement('ul');
+    ul.className = 'modal-list-ul';
+    details.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'modal-list-li';
+      li.textContent = sanitizer ? sanitizer.escapeHtml(item) : item;
+      ul.appendChild(li);
+    });
+    modalContent.appendChild(ul);
 
     if (typeof modalManager !== 'undefined') modalManager.open('service');
   }

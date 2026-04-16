@@ -63,14 +63,14 @@ class NewsRenderer {
     placeholder.classList.add('image-placeholder');
     
     const img = document.createElement('img');
-    img.setAttribute('data-src', news.image);
-    img.setAttribute('alt', news.title);
+    img.setAttribute('data-src', Utils.Sanitizer.escapeHtml(news.image));
+    img.setAttribute('alt', Utils.Sanitizer.escapeHtml(news.title));
     img.setAttribute('loading', 'lazy');
     img.onerror = function() { this.src = 'assets/images/placeholder.jpg'; };
     
     const category = document.createElement('span');
     category.classList.add('news-card-category');
-    category.textContent = news.category;
+    category.textContent = Utils.Sanitizer.escapeHtml(news.category);
     
     imageContainer.appendChild(placeholder);
     imageContainer.appendChild(img);
@@ -95,11 +95,11 @@ class NewsRenderer {
     
     const title = document.createElement('h3');
     title.classList.add('news-card-title');
-    title.textContent = news.title;
+    title.textContent = Utils.Sanitizer.escapeHtml(news.title);
     
     const excerpt = document.createElement('p');
     excerpt.classList.add('news-card-excerpt');
-    excerpt.textContent = news.excerpt;
+    excerpt.textContent = Utils.Sanitizer.escapeHtml(news.excerpt);
     
     const link = document.createElement('a');
     link.classList.add('news-card-link');
