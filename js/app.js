@@ -57,7 +57,6 @@ class Application {
       }
       
       this._initFloatingCTA();
-      this._initFadeInObserver();
       this._initImageLazyLoading();
       this._initPrefersReducedMotion();
       
@@ -238,21 +237,6 @@ class Application {
 
     toggleButton();
     window.addEventListener('scroll', toggleButton, { passive: true });
-  }
-
-  _initFadeInObserver() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '50px' });
-    
-    document.querySelectorAll('.fade-in').forEach(el => {
-      observer.observe(el);
-    });
   }
 
   _initImageLazyLoading() {
