@@ -157,8 +157,15 @@ class Application {
       
       if (modalTitle && modalList) {
         const sanitizer = window.Utils?.Sanitizer;
+        // Безопасная установка текста заголовка
         modalTitle.textContent = sanitizer ? sanitizer.escapeHtml(title) : title;
-        modalList.innerHTML = details.map(item => `<li>${sanitizer ? sanitizer.escapeHtml(item) : item}</li>`).join('');
+        // Безопасное создание элементов списка
+        modalList.innerHTML = '';
+        details.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item; // textContent автоматически экранирует HTML
+          modalList.appendChild(li);
+        });
         // Управление скроллом делегировано ModalManager
         if (typeof modalManager !== 'undefined') modalManager.open('details');
       }

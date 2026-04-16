@@ -1,0 +1,179 @@
+# ===================================================================
+# Файл конфигурации безопасности Apache (.htaccess)
+# ООО "Волга-Днепр Инжиниринг"
+# ===================================================================
+
+# Включаем RewriteEngine
+RewriteEngine On
+
+# ===================================================================
+# 1. HTTPS REDIRECT - Принудительное перенаправление на HTTPS
+# ===================================================================
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ===================================================================
+# 2. HSTS (HTTP Strict Transport Security)
+# Защита от downgrade-атак и cookie hijacking
+# max-age=31536000 (1 год), includeSubDomains, preload
+# ===================================================================
+<IfModule mod_headers.c>
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
+
+# ===================================================================
+# 3. Content Security Policy (CSP) - Усиленная версия
+# Без 'unsafe-inline' для скриптов
+# ===================================================================
+<IfModule mod_headers.c>
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://yandex.ru https://mc.yandex.ru; style-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.volga-dnepr-engineering.ru https://yandex.ru; frame-src 'self' https://yandex.ru; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+</IfModule>
+
+# ===================================================================
+# 4. X-Content-Type-Options - Запрет MIME-sniffing
+# Предотвращает атаки через неправильную интерпретацию типов контента
+# ===================================================================
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# ===================================================================
+# 5. X-Frame-Options - Защита от Clickjacking
+# Запрещает отображение сайта в iframe на других доменах
+# ===================================================================
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# ===================================================================
+# 6. X-XSS-Protection - XSS фильтр браузера
+# Хотя и устарел, но полезен для старых браузеров
+# ===================================================================
+<IfModule mod_headers.c>
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# ===================================================================
+# 7. Referrer-Policy - Контроль передачи Referer
+# Передаем только origin при переходе на другие сайты
+# ===================================================================
+<IfModule mod_headers.c>
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ===================================================================
+# 8. Permissions-Policy - Ограничение возможностей браузера
+# Отключаем ненужные функции для повышения безопасности
+# ===================================================================
+<IfModule mod_headers.c>
+    Header always set Permissions-Policy "geolocation=(self), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+</IfModule>
+
+# ===================================================================
+# 9. Cache-Control для чувствительных данных
+# Запрещаем кэширование HTML страниц
+# ===================================================================
+<FilesMatch "\.(html|htm|php)$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+    </IfModule>
+</FilesMatch>
+
+# ===================================================================
+# 10. Кэширование для статических ресурсов
+# Разрешаем кэширование CSS, JS, изображений
+# ===================================================================
+<FilesMatch "\.(css|js|jpg|jpeg|png|gif|svg|ico|woff|woff2|ttf|eot)$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </IfModule>
+</FilesMatch>
+
+# ===================================================================
+# 11. Блокировка доступа к конфиденциальным файлам
+# Запрещаем доступ к системным файлам
+# ===================================================================
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "(^#.*#|\.(bak|conf|config|dist|fla|inc|ini|log|psd|sh|sql|sw[op])|~)$">
+    Require all denied
+</FilesMatch>
+
+# ===================================================================
+# 12. Защита директорий
+# Запрещаем листинг директорий
+# ===================================================================
+Options -Indexes
+
+# ===================================================================
+# 13. CSRF Protection - Проверка токенов для POST запросов
+# ===================================================================
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_METHOD} POST
+    RewriteCond %{REQUEST_FILENAME} \.php$
+    RewriteCond %{HTTP:X-CSRF-Token} !^.+$
+    RewriteRule ^ - [F,L]
+</IfModule>
+
+# ===================================================================
+# 14. Ограничение размера загружаемых файлов (10MB)
+# ===================================================================
+<IfModule mod_limitipconn.c>
+    MaxConnPerIP 10
+</IfModule>
+
+LimitRequestBody 10485760
+
+# ===================================================================
+# 15. Блокировка подозрительных User-Agent
+# Защита от сканеров уязвимостей
+# ===================================================================
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_USER_AGENT} (nikto|sqlmap|nmap|masscan|nessus|acunetix|burp|dirbuster|gobuster|wfuzz|hydra|metasploit) [NC]
+    RewriteRule ^ - [F,L]
+</IfModule>
+
+# ===================================================================
+# 16. CORS Policy - Ограничение Cross-Origin запросов
+# ===================================================================
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "https://vdengineering.ru"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, X-CSRF-Token"
+    Header set Access-Control-Allow-Credentials "true"
+</IfModule>
+
+# ===================================================================
+# 17. Защита от атак типа Directory Traversal
+# ===================================================================
+<IfModule mod_rewrite.c>
+    RewriteCond %{THE_REQUEST} \.\./ [NC]
+    RewriteRule ^ - [F,L]
+</IfModule>
+
+# ===================================================================
+# 18. Блокировка SQL Injection попыток в URL
+# ===================================================================
+<IfModule mod_rewrite.c>
+    RewriteCond %{QUERY_STRING} (union|select|insert|update|delete|drop|truncate|exec|script|alert|confirm|prompt) [NC]
+    RewriteRule ^ - [F,L]
+</IfModule>
+
+# ===================================================================
+# 19. Блокировка XSS попыток в URL
+# ===================================================================
+<IfModule mod_rewrite.c>
+    RewriteCond %{QUERY_STRING} (<script|javascript:|onerror=|onload=|onclick=|onmouseover=) [NC]
+    RewriteRule ^ - [F,L]
+</IfModule>
+
+# ===================================================================
+# 20. Отключение подписи сервера
+# Скрываем версию Apache
+# ===================================================================
+ServerSignature Off
+ServerTokens Prod
