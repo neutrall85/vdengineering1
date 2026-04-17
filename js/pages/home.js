@@ -3,6 +3,8 @@
  * ООО "Волга-Днепр Инжиниринг"
  */
 
+import { NewsCardRenderer } from '../ui/NewsCardRenderer.js';
+
 /**
  * Рендерит превью последних новостей на главной странице
  * @param {Array} newsList - Массив объектов новостей
@@ -30,7 +32,7 @@ export function renderNewsPreview(newsList, containerId = 'previewNewsGrid', lim
   
   recentNews.forEach(news => {
     // Используем общий рендерер для создания идентичных карточек
-    const card = window.NewsCardRenderer.createCard(news);
+    const card = NewsCardRenderer.createCard(news);
     card.classList.add('news-card--preview');
     fragment.appendChild(card);
   });
