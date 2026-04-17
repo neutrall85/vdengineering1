@@ -71,6 +71,9 @@ class NewsManager {
     this.lightboxOverlay.classList.add('active');
     document.body.classList.add('no-scroll');
     
+    // Добавляем закрытие по клику на изображение
+    this.lightboxImage.onclick = () => this.closeLightbox();
+    
     // Фокус на кнопку закрытия для доступности
     const closeBtn = document.getElementById('lightboxCloseBtn');
     if (closeBtn) {
@@ -85,6 +88,11 @@ class NewsManager {
 
     this.lightboxOverlay.classList.remove('active');
     document.body.classList.remove('no-scroll');
+    
+    // Сбрасываем обработчик клика
+    if (this.lightboxImage) {
+      this.lightboxImage.onclick = null;
+    }
     
     // Очищаем src после анимации
     setTimeout(() => {
