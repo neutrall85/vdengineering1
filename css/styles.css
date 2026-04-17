@@ -956,7 +956,21 @@ body.app-ready > footer {
   line-height: 1.4;
 }
 
+.news-card-preview-title {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  margin-bottom: 0.75rem;
+  color: var(--vd);
+  line-height: 1.4;
+}
+
 .news-card-preview p {
+  color: var(--metallic);
+  line-height: 1.6;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
+  margin-bottom: 1rem;
+}
+
+.news-card-preview-excerpt {
   color: var(--metallic);
   line-height: 1.6;
   font-size: clamp(0.8rem, 1.2vw, 0.9rem);
