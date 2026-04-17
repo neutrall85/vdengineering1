@@ -432,11 +432,6 @@ function initApp() {
       } else {
         Logger.ERROR('NewsRenderer или NewsManager не определен');
       }
-      
-      // Инициализация главной страницы (превью новостей)
-      if (typeof initHomePage !== 'undefined') {
-        initHomePage(NEWS_DATA);
-      }
     } catch (err) {
       Logger.ERROR('Ошибка инициализации менеджеров новостей:', err);
     }
