@@ -111,9 +111,17 @@ const Services = (function() {
       }
     }
 
-    async submitForm(data) {
+    async submitForm(data, options = {}) {
       // Имитация отправки на сервер
       await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Проверяем наличие CSRF токена в заголовках
+      if (options.headers && options.headers['X-CSRF-Token']) {
+        const csrfToken = options.headers['X-CSRF-Token'];
+        // В реальном приложении здесь была бы проверка токена на сервере
+        console.log('CSRF Token received:', csrfToken);
+      }
+      
       return { success: true, message: 'Заявка успешно отправлена' };
     }
   }

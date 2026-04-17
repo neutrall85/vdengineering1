@@ -42,6 +42,9 @@ const CONFIG = {
     CSRF_TOKEN_KEY: 'csrf_token',
     SESSION_STORAGE_KEY: 'form_submitted'
   },
+  YANDEX: {
+    METRIKA_COUNTER_ID: '108333042'
+  },
   DEBUG: false
 };
 

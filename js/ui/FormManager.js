@@ -460,6 +460,10 @@ class FormManager {
     submitBtn.appendChild(loadingText);
 
     try {
+      // Получаем CSRF токен из скрытого поля формы или из sessionStorage
+      const csrfTokenField = form.querySelector('input[name="csrf_token"]');
+      const csrfToken = csrfTokenField?.value || window.CONFIG?.CSRF_TOKEN || '';
+      
       const formData = {
         companyName: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('companyName')?.value.trim() || ''),
         contactPerson: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('contactPerson')?.value.trim() || ''),
@@ -481,7 +485,8 @@ class FormManager {
       // this.currentFiles.forEach(file => formDataWithFiles.append('attachments', file));
       // const result = await this.apiClient.submitFormWithFiles(formDataWithFiles);
 
-      const result = await this.apiClient.submitForm(formData);
+      // Передаем CSRF токен в заголовке запроса
+      const result = await this.apiClient.submitForm(formData, { 'X-CSRF-Token': csrfToken });
 
       if (result.success) {
         const form = Utils.DOM.getElement('proposalForm');

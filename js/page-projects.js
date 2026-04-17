@@ -72,16 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-
-  // Обработчик для кнопки "Наверх"
-  const scrollToTopBtn = document.getElementById('scrollToTop');
-  if (scrollToTopBtn) {
-    scrollToTopBtn.addEventListener('click', function() {
-      if (typeof window.scrollToTop === 'function') {
-        window.scrollToTop();
-      }
-    });
-  }
 });
 
 function openProjectModal(title, details, image, category) {

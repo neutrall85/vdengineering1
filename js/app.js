@@ -17,17 +17,27 @@ class Application {
       // Это критично, так как все модули зависят от наличия элементов в DOM
       if (typeof ComponentLoader !== 'undefined') {
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-        await new Promise((resolve) => {
+        
+        // Подписываемся на событие components:loaded вместо использования setTimeout
+        const componentsLoadedPromise = new Promise((resolve) => {
+          const onComponentsLoaded = () => {
+            document.removeEventListener('components:loaded', onComponentsLoaded);
+            resolve();
+          };
+          document.addEventListener('components:loaded', onComponentsLoaded);
+          
+          // Инициализируем загрузчик
           ComponentLoader.init({ 
             loadNavbar: true, 
             loadFooter: true, 
             loadModal: true,
             activePage: currentPage === 'index' ? '' : currentPage
-          }, resolve);
+          }, () => {
+            // Компоненты загружены, событие будет отправлено в ComponentLoader
+          });
         });
         
-        // Задержка чтобы DOM обновился после вставки компонентов навигации, футера и модального окна
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await componentsLoadedPromise;
       }
       
       // Скрываем лоадер и показываем контент после загрузки компонентов
@@ -323,7 +333,11 @@ class Application {
       errorContainer.replaceChildren();
       const errorDiv = document.createElement('div');
       errorDiv.className = 'error-message';
-      errorDiv.style.cssText = 'background:#f8d7da;color:#721c24;padding:1rem;margin:1rem;border-radius:8px;';
+      errorDiv.style.background = '#f8d7da';
+      errorDiv.style.color = '#721c24';
+      errorDiv.style.padding = '1rem';
+      errorDiv.style.margin = '1rem';
+      errorDiv.style.borderRadius = '8px';
       
       const h2 = document.createElement('h2');
       h2.textContent = 'Ошибка загрузки приложения';
@@ -341,7 +355,9 @@ class Application {
       
       const reloadBtn = document.createElement('button');
       reloadBtn.id = 'reloadErrorBtn';
-      reloadBtn.style.cssText = 'margin-top:0.5rem;padding:0.5rem 1rem;cursor:pointer;';
+      reloadBtn.style.marginTop = '0.5rem';
+      reloadBtn.style.padding = '0.5rem 1rem';
+      reloadBtn.style.cursor = 'pointer';
       reloadBtn.textContent = 'Обновить страницу';
       reloadBtn.addEventListener('click', function() {
         window.location.reload();

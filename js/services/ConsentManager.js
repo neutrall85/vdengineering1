@@ -69,16 +69,22 @@ class ConsentManager {
   _applyConsent(categories) {
     // Если аналитика отключена - отключаем Яндекс.Метрику
     if (categories && !categories.analytics) {
-      if (window.ym) {
-        // Способ 1: Удаляем данные
-        window.ym(108333042, 'userParams', { analytics_enabled: false });
+      try {
+        const counterId = window.CONFIG?.YANDEX?.METRIKA_COUNTER_ID || '108333042';
         
-        // Способ 2: Отключаем отправку данных
-        window.ym(108333042, 'hit', window.location.href, {
-          params: { analytics: 'disabled' }
-        });
-        
-        Logger.INFO('Yandex Metrica disabled by user');
+        if (typeof window.ym !== 'undefined') {
+          // Способ 1: Удаляем данные
+          window.ym(counterId, 'userParams', { analytics_enabled: false });
+          
+          // Способ 2: Отключаем отправку данных
+          window.ym(counterId, 'hit', window.location.href, {
+            params: { analytics: 'disabled' }
+          });
+          
+          Logger.INFO('Yandex Metrica disabled by user');
+        }
+      } catch (error) {
+        Logger.WARN('Error disabling Yandex Metrica:', error.message);
       }
     }
     
