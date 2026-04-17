@@ -236,7 +236,7 @@ const ComponentLoader = {
             <p class="form-file-text">Выбрать файл...</p>
             <p class="form-file-hint">PDF, DOC, DOCX, XLS, XLSX (Max 10MB)</p>
             <div class="form-file-list" id="universalFileList"></div>
-            <div class="form-file-limit-warning" id="universalFileLimitWarning" class="form-file-limit-hidden">
+            <div class="form-file-limit-warning form-file-limit-hidden" id="universalFileLimitWarning">
               <p>⚠️ Превышен лимит: максимум 5 файлов или 10MB на файл</p>
             </div>
           </div>
@@ -545,10 +545,20 @@ const ComponentLoader = {
      * @param {string} mode - режим открытия ('vacancy' для кнопок "Откликнуться", 'application' для кнопки "Отправить заявку")
      */
     initUniversalApplicationModal() {
-        // Глобальные функции для открытия/закрытия универсального модального окна
-        window.openUniversalApplicationModal = (mode = 'vacancy') => {
+        // Глобальная функция для открытия универсального модального окна с поддержкой передачи элемента-триггера
+        window.openApplicationModal = (triggerElement) => {
             const overlay = document.getElementById('universalApplicationModalOverlay');
             if (!overlay) return;
+
+            // Определяем режим по атрибуту data-modal-open или data-vacancy-id
+            let mode = 'vacancy';
+            const vacancyId = triggerElement ? triggerElement.getAttribute('data-vacancy-id') : null;
+            
+            // Если есть ID вакансии - это отклик на конкретную вакансию
+            // Если нет - это общая заявка (кнопка "Оставить заявку")
+            if (!vacancyId) {
+                mode = 'application';
+            }
 
             // Динамическая настройка текстов в зависимости от режима
             const modalTitle = document.getElementById('universalApplicationModalTitle');
@@ -561,7 +571,7 @@ const ComponentLoader = {
                 if (submitBtnText) submitBtnText.textContent = 'Отправить информацию';
                 if (successTitle) successTitle.textContent = 'Данные отправлены!';
             } else {
-                // Режим для кнопок "Откликнуться" (по умолчанию)
+                // Режим для кнопок "Откликнуться"
                 if (modalTitle) modalTitle.textContent = 'Отклик на вакансию';
                 if (submitBtnText) submitBtnText.textContent = 'Отправить отклик';
                 if (successTitle) successTitle.textContent = 'Отклик отправлен!';

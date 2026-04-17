@@ -191,6 +191,13 @@ class Application {
         e.preventDefault();
         if (window.openModal) window.openModal();
       }
+      
+      // Универсальный обработчик для открытия модалки "Отклик на вакансию" (DRY)
+      const applicationTrigger = e.target.closest('[data-modal-open="application"]');
+      if (applicationTrigger) {
+        e.preventDefault();
+        if (window.openApplicationModal) window.openApplicationModal(applicationTrigger);
+      }
     });
   }
 
