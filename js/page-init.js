@@ -213,14 +213,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   };
   
-  // Инициализируем превью новостей после полной загрузки приложения
-  // Ждем события app:ready из EventBus, которое сигнализирует о полной инициализации всех компонентов
-  if (window.Services && window.Services.eventBus) {
-    window.Services.eventBus.on('app:ready', function() {
-      window.initPreviewNews();
-    });
-  } else {
-    // Fallback: если EventBus ещё не доступен, пробуем сразу вызвать функцию
-    window.initPreviewNews();
+  // Подписываемся на событие полной инициализации приложения
+  // Это гарантирует, что newsManager уже создан
+  function subscribeToAppReady() {
+    if (window.Services && window.Services.eventBus) {
+      window.Services.eventBus.on('app:ready', function() {
+        window.initPreviewNews();
+      });
+    }
   }
+  
+  // Подписка должна быть выполнена как можно раньше
+  subscribeToAppReady();
 });
