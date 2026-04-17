@@ -47,17 +47,23 @@ class NavigationManager {
   }
 
   _initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    document.querySelectorAll('a[href^="#"], a[href*="#"]').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
         if (href === '#') return;
         
         try {
-          const target = Utils.DOM.query(href);
+          // Извлекаем хэш из URL (например, #partners из index.html#partners)
+          const hashIndex = href.indexOf('#');
+          if (hashIndex === -1) return;
+          
+          const hash = href.substring(hashIndex);
+          const target = Utils.DOM.query(hash);
+          
           if (target) {
             e.preventDefault();
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            this._closeMobileMenu();
+            this.closeMobileMenu();
           }
         } catch (error) {
           Logger.WARN('Smooth scroll error:', error);
