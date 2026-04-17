@@ -32,23 +32,23 @@
         container.innerHTML = '';
         latestNews.forEach(news => {
             const article = document.createElement('article');
-            article.className = 'news-card';
+            article.className = 'news-card-preview';
             article.innerHTML = `
-                <div class="news-card-image">
+                <div class="news-card-preview-image">
                     <div class="image-placeholder"></div>
                     <img data-src="${escape(news.image || 'assets/images/placeholder.jpg')}" 
                         alt="${escape(news.title)}" loading="lazy"
                         onerror="this.src='assets/images/placeholder.jpg'">
-                    <span class="news-card-category">${escape(news.category)}</span>
+                    <span class="news-card-preview-category">${escape(news.category)}</span>
                 </div>
-                <div class="news-card-content">
+                <div class="news-card-preview-content">
                     <div class="news-card-date">
                         <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
                         ${escape(news.date)}
                     </div>
-                    <h3 class="news-card-title">${escape(news.title)}</h3>
-                    <p class="news-card-excerpt">${escape(news.excerpt)}</p>
-                    <a href="#" class="news-card-link" data-news-id="${news.id}">Подробнее
+                    <h3>${escape(news.title)}</h3>
+                    <p>${escape(news.excerpt)}</p>
+                    <a href="#" class="news-card-preview-link" data-news-id="${news.id}">Подробнее
                         <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
                     </a>
                 </div>
@@ -57,11 +57,11 @@
         });
 
         // ✅ Добавляем класс loaded для видимости карточек
-        container.querySelectorAll('.news-card').forEach(card => card.classList.add('loaded'));
+        container.querySelectorAll('.news-card-preview').forEach(card => card.classList.add('loaded'));
 
         // Делегирование кликов
         container.addEventListener('click', (e) => {
-            const link = e.target.closest('.news-card-link');
+            const link = e.target.closest('.news-card-preview-link');
             if (link && link.dataset.newsId && window.newsManager) {
                 e.preventDefault();
                 window.newsManager.openNewsModal(parseInt(link.dataset.newsId, 10));
