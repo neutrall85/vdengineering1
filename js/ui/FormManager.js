@@ -153,22 +153,20 @@ class FormManager {
     }
 
     // Добавляем новые файлы к существующим
-    const previousCount = this.currentFiles.length;
     const newTotalCount = this.currentFiles.length + validNewFiles.length;
     
     // Ограничиваем количество файлов - проверяем ДО добавления
     let filesToAdd = validNewFiles;
     if (newTotalCount > this.maxFiles) {
       const spaceRemaining = Math.max(0, this.maxFiles - this.currentFiles.length);
-      if (spaceRemaining < validNewFiles.length) {
+      if (spaceRemaining === 0) {
+        // Нет места для новых файлов
+        this._showUploadWarning(`Превышен лимит файлов: ${this.maxFiles}. Удалите старые файлы перед добавлением новых.`, fileDrop);
+        filesToAdd = [];
+      } else if (spaceRemaining < validNewFiles.length) {
+        // Добавляем только часть файлов
         filesToAdd = validNewFiles.slice(0, spaceRemaining);
-        const notAddedCount = validNewFiles.length - spaceRemaining;
-        if (notAddedCount > 0 && spaceRemaining > 0) {
-          this._showUploadWarning(`Добавлено ${spaceRemaining} из ${validNewFiles.length} файлов. Превышен лимит: ${this.maxFiles}`, fileDrop);
-        } else if (this.currentFiles.length >= this.maxFiles) {
-          this._showUploadWarning(`Превышен лимит файлов: ${this.maxFiles}. Удалите старые файлы перед добавлением новых.`, fileDrop);
-          filesToAdd = [];
-        }
+        this._showUploadWarning(`Добавлено ${spaceRemaining} из ${validNewFiles.length} файлов. Превышен лимит: ${this.maxFiles}`, fileDrop);
       }
     }
     

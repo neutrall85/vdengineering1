@@ -121,15 +121,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const latestNews = allNews.sort((a, b) => b.id - a.id).slice(0, 3);
 
     previewGrid.innerHTML = latestNews.map(news => `
-      <div class="news-card-preview news-card-preview-inline" data-news-id="${news.id}">
-        <div class="news-img-container">
-          <img src="${Utils.Sanitizer.escapeHtml(news.image)}" alt="${Utils.Sanitizer.escapeHtml(news.title)}" class="news-img-cover">
+      <div class="news-card-preview" data-news-id="${news.id}">
+        <div class="news-card-preview-image">
+          <img src="${Utils.Sanitizer.escapeHtml(news.image)}" alt="${Utils.Sanitizer.escapeHtml(news.title)}">
         </div>
-        <div class="news-content-padding">
-          <span class="news-category-badge">${Utils.Sanitizer.escapeHtml(news.category)}</span>
-          <h3 class="news-title-h3">${Utils.Sanitizer.escapeHtml(news.title)}</h3>
-          <p class="news-excerpt-p">${Utils.Sanitizer.escapeHtml(news.excerpt)}</p>
-          <button class="news-link-btn" data-news-id="${news.id}">Подробнее →</button>
+        <div class="news-card-preview-content">
+          <span class="news-card-preview-category">${Utils.Sanitizer.escapeHtml(news.category)}</span>
+          <h3>${Utils.Sanitizer.escapeHtml(news.title)}</h3>
+          <p>${Utils.Sanitizer.escapeHtml(news.excerpt)}</p>
+          <button class="news-card-preview-link" data-news-id="${news.id}">Подробнее →</button>
         </div>
       </div>
     `).join('');

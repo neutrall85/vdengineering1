@@ -1,1 +1,1 @@
-Nothing should be ignored since the changes only include source files (.css, .js) and there are no build artifacts, dependencies, or temporary files in the provided file list.
+(js/page-init.js, js/ui/FormManager.js)
