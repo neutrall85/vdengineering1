@@ -119,21 +119,21 @@ body:has(.details-modal-overlay.active) {
 
 /* ==================== НАВИГАЦИЯ ==================== */
 /* Предотвращение мигания контента до загрузки компонентов */
-body:not(.app-ready) > main,
-body:not(.app-ready) > section,
-body:not(.app-ready) > nav:not(#navbar),
-body:not(.app-ready) > footer:not(.footer) {
-  visibility: hidden;
-  opacity: 0;
+/* Скрываем лоадер по умолчанию, показываем во время загрузки */
+body:not(.app-ready) .page-loader {
+  display: flex;
+}
+
+body.app-ready .page-loader {
+  display: none;
 }
 
 body.app-ready > main,
 body.app-ready > section,
-body.app-ready > nav:not(#navbar),
-body.app-ready > footer:not(.footer) {
+body.app-ready > nav,
+body.app-ready > footer {
   visibility: visible;
   opacity: 1;
-  transition: opacity 0.2s ease-in-out;
 }
 
 /* ==================== ЛОАДЕР С САМОЛЁТИКОМ ==================== */
@@ -2889,9 +2889,6 @@ body.app-ready > footer:not(.footer) {
     font-size: 1rem;
   }
 }
-/* ==================== КЛАССЫ ДЛЯ УСТРАНЕНИЯ ИНЛАЙНОВ ==================== */
-/* Удалены избыточные классы-дубликаты, используйте основные классы */
-
 /* ==================== УТИЛИТАРНЫЕ КЛАССЫ ДЛЯ СТРАНИЦ ==================== */
 .page-header-bg { background: var(--vd-light-blue); padding: 120px 5% 60px; text-align: center; color: #004E96; }
 .page-header-title { font-size: 2.5rem; margin-bottom: 1rem; }
