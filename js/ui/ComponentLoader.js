@@ -299,6 +299,9 @@ const ComponentLoader = {
             if (callback) {
                 setTimeout(callback, 50);
             }
+        
+        // Отправляем событие о завершении загрузки компонентов
+        document.dispatchEvent(new CustomEvent('components:loaded'));
         }
 
         // Загрузка футера - вставляем перед закрывающим тегом body
