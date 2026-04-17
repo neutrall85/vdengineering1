@@ -118,45 +118,55 @@ document.addEventListener('DOMContentLoaded', function() {
     const previewGrid = document.getElementById('previewNewsGrid');
     if (!previewGrid || typeof NEWS_DATA === 'undefined') return;
     
-    // Собираем все новости и сортируем по ID (новые сверху)
-    const allNews = [];
-    for (const year in NEWS_DATA) {
-      allNews.push(...NEWS_DATA[year]);
+    // Проверка наличия newsManager
+    if (!window.newsManager) {
+      console.warn('initPreviewNews: newsManager ещё не создан');
+      return;
     }
-    const latestNews = allNews.sort((a, b) => b.id - a.id).slice(0, 3);
 
-    // Очищаем контейнер
-    previewGrid.innerHTML = '';
+    try {
+      // Безопасное получение функции санитизации
+      const escapeHtml = (window.Utils?.Sanitizer?.escapeHtml) || ((str) => String(str));
+      
+      // Собираем все новости и сортируем по ID (новые сверху)
+      const allNews = [];
+      for (const year in NEWS_DATA) {
+        allNews.push(...NEWS_DATA[year]);
+      }
+      const latestNews = allNews.sort((a, b) => b.id - a.id).slice(0, 3);
 
-    // Создаём карточки через DOM API (безопасно, без innerHTML)
-    latestNews.forEach(news => {
-      const article = document.createElement('article');
-      article.className = 'news-card';
+      // Очищаем контейнер
+      previewGrid.innerHTML = '';
 
-      // Блок изображения
-      const imageDiv = document.createElement('div');
-      imageDiv.className = 'news-card-image';
+      // Создаём карточки через DOM API (безопасно, без innerHTML)
+      latestNews.forEach(news => {
+        const article = document.createElement('article');
+        article.className = 'news-card';
 
-      const placeholder = document.createElement('div');
-      placeholder.className = 'image-placeholder';
+        // Блок изображения
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'news-card-image';
 
-      const img = document.createElement('img');
-      img.setAttribute('data-src', Utils.Sanitizer.escapeHtml(news.image) || 'assets/images/placeholder.jpg');
-      img.setAttribute('alt', Utils.Sanitizer.escapeHtml(news.title));
-      img.setAttribute('loading', 'lazy');
-      img.onerror = function() { this.src = 'assets/images/placeholder.jpg'; };
+        const placeholder = document.createElement('div');
+        placeholder.className = 'image-placeholder';
 
-      const categorySpan = document.createElement('span');
-      categorySpan.className = 'news-card-category';
-      categorySpan.textContent = Utils.Sanitizer.escapeHtml(news.category);
+        const img = document.createElement('img');
+        img.setAttribute('data-src', escapeHtml(news.image) || 'assets/images/placeholder.jpg');
+        img.setAttribute('alt', escapeHtml(news.title));
+        img.setAttribute('loading', 'lazy');
+        img.onerror = function() { this.src = 'assets/images/placeholder.jpg'; };
 
-      imageDiv.appendChild(placeholder);
-      imageDiv.appendChild(img);
-      imageDiv.appendChild(categorySpan);
+        const categorySpan = document.createElement('span');
+        categorySpan.className = 'news-card-category';
+        categorySpan.textContent = escapeHtml(news.category);
 
-      // Блок контента
-      const contentDiv = document.createElement('div');
-      contentDiv.className = 'news-card-content';
+        imageDiv.appendChild(placeholder);
+        imageDiv.appendChild(img);
+        imageDiv.appendChild(categorySpan);
+
+        // Блок контента
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'news-card-content';
 
       // Дата с иконкой
       const dateDiv = document.createElement('div');
@@ -211,6 +221,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
     });
+    } catch (error) {
+      console.error('Ошибка при рендеринге превью новостей:', error);
+      if (previewGrid) {
+        previewGrid.innerHTML = '<p class="text-red-500 text-center">Ошибка загрузки новостей.</p>';
+      }
+    }
   };
   
   // Подписываемся на событие полной инициализации приложения
@@ -220,6 +236,9 @@ document.addEventListener('DOMContentLoaded', function() {
       window.Services.eventBus.on('app:ready', function() {
         window.initPreviewNews();
       });
+    } else {
+      // Если шина ещё не готова, пробуем позже (защита от гонки загрузки)
+      setTimeout(subscribeToAppReady, 100);
     }
   }
   
