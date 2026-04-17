@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     try {
-      // Безопасное получение функции санитизации
+      // Безопасное получение функции санитизации (защита от незагруженного Utils)
       const escapeHtml = (window.Utils?.Sanitizer?.escapeHtml) || ((str) => String(str));
       
       // Собираем все новости и сортируем по ID (новые сверху)
@@ -178,15 +178,15 @@ document.addEventListener('DOMContentLoaded', function() {
       datePath.setAttribute('d', 'M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z');
       dateSvg.appendChild(datePath);
       dateDiv.appendChild(dateSvg);
-      dateDiv.appendChild(document.createTextNode(' ' + Utils.Sanitizer.escapeHtml(news.date)));
+      dateDiv.appendChild(document.createTextNode(' ' + escapeHtml(news.date)));
 
       const title = document.createElement('h3');
       title.className = 'news-card-title';
-      title.textContent = Utils.Sanitizer.escapeHtml(news.title);
+      title.textContent = escapeHtml(news.title);
 
       const excerpt = document.createElement('p');
       excerpt.className = 'news-card-excerpt';
-      excerpt.textContent = Utils.Sanitizer.escapeHtml(news.excerpt);
+      excerpt.textContent = escapeHtml(news.excerpt);
 
       const link = document.createElement('a');
       link.className = 'news-card-link';
@@ -229,19 +229,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
   
-  // Подписываемся на событие полной инициализации приложения
-  // Это гарантирует, что newsManager уже создан
-  function subscribeToAppReady() {
-    if (window.Services && window.Services.eventBus) {
-      window.Services.eventBus.on('app:ready', function() {
-        window.initPreviewNews();
-      });
+  // Простая и надежная подписка на событие инициализации
+  // Используем setTimeout 0, чтобы гарантировать, что основной поток инициализации app.js завершился
+  setTimeout(() => {
+    if (window.Services?.eventBus) {
+      window.Services.eventBus.on('app:ready', window.initPreviewNews);
     } else {
-      // Если шина ещё не готова, пробуем позже (защита от гонки загрузки)
-      setTimeout(subscribeToAppReady, 100);
+      // Фолбэк: если шина событий вдруг не готова (крайне редко), пробуем вызвать напрямую
+      // при условии, что newsManager уже существует
+      if (window.newsManager) {
+        window.initPreviewNews();
+      }
     }
-  }
-  
-  // Подписка должна быть выполнена как можно раньше
-  subscribeToAppReady();
+  }, 0);
 });
