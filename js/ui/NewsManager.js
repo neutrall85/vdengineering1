@@ -157,9 +157,4 @@ class NewsManager {
   }
 }
 
-export { NewsManager };
 window.NewsManager = NewsManager;
-
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = NewsManager;
-}

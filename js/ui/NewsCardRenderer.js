@@ -4,7 +4,7 @@
  * Принципы: DRY, KISS, CSP-safe (нет innerHTML с пользовательскими данными, нет инлайн-событий).
  */
 
-export class NewsCardRenderer {
+class NewsCardRenderer {
     /**
      * Создает DOM-элемент карточки новости
      * @param {Object} news - Объект данных новости
@@ -102,3 +102,5 @@ export class NewsCardRenderer {
         });
     }
 }
+
+window.NewsCardRenderer = NewsCardRenderer;

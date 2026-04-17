@@ -3,8 +3,6 @@
  * ООО "Волга-Днепр Инжиниринг"
  */
 
-import { NewsCardRenderer } from './NewsCardRenderer.js';
-
 class NewsRenderer {
   constructor(newsData) {
     this.newsData = newsData;
@@ -36,7 +34,7 @@ class NewsRenderer {
     
     newsList.forEach((news, index) => {
       // Используем общий рендерер для создания карточки
-      const card = NewsCardRenderer.createCard(news);
+      const card = window.NewsCardRenderer.createCard(news);
       card.style.animationDelay = `${index * this.cardStaggerMs}ms`;
       
       if (index >= DEFAULT_VISIBLE) {
@@ -188,5 +186,4 @@ class NewsRenderer {
   }
 }
 
-export { NewsRenderer };
 window.NewsRenderer = NewsRenderer;
