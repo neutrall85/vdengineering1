@@ -1,29 +1,17 @@
 /**
  * Инициализация обработчиков для страницы вакансий
  * ООО "Волга-Днепр Инжиниринг"
+ * 
+ * Примечание: Основные обработчики открытия модалок реализованы
+ * через делегирование событий в app.js (data-modal-open="proposal")
  */
 
 // Экспортируем функцию инициализации для module режима
 export function initVacanciesPage() {
-  // Обработчики для кнопок "Откликнуться" на вакансии
-  const applyButtons = document.querySelectorAll('.vacancy-apply-btn');
-  applyButtons.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      if (typeof window.openUniversalApplicationModal === 'function') {
-        window.openUniversalApplicationModal('vacancy');
-      }
-    });
-  });
+  // Дополнительная логика может быть добавлена здесь при необходимости
+  // Например, передача данных о вакансии в модальное окно
   
-  // Обработчик для кнопки "Оставить заявку"
-  const applicationBtn = document.getElementById('vacanciesApplicationBtn');
-  if (applicationBtn) {
-    applicationBtn.addEventListener('click', function() {
-      if (typeof window.openUniversalApplicationModal === 'function') {
-        window.openUniversalApplicationModal('application');
-      }
-    });
-  }
+  console.log('Страница вакансий инициализирована');
 }
 
 // Автозапуск если не используется как модуль, или ожидание DOMContentLoaded
