@@ -138,15 +138,14 @@ document.addEventListener('DOMContentLoaded', function() {
       placeholder.className = 'image-placeholder';
 
       const img = document.createElement('img');
-      const imageUrl = news.image || 'assets/images/placeholder.jpg';
-      img.setAttribute('src', imageUrl);
-      img.setAttribute('alt', news.title);
+      img.setAttribute('data-src', Utils.Sanitizer.escapeHtml(news.image) || 'assets/images/placeholder.jpg');
+      img.setAttribute('alt', Utils.Sanitizer.escapeHtml(news.title));
       img.setAttribute('loading', 'lazy');
       img.onerror = function() { this.src = 'assets/images/placeholder.jpg'; };
 
       const categorySpan = document.createElement('span');
       categorySpan.className = 'news-card-category';
-      categorySpan.textContent = news.category;
+      categorySpan.textContent = Utils.Sanitizer.escapeHtml(news.category);
 
       imageDiv.appendChild(placeholder);
       imageDiv.appendChild(img);
@@ -166,15 +165,15 @@ document.addEventListener('DOMContentLoaded', function() {
       datePath.setAttribute('d', 'M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z');
       dateSvg.appendChild(datePath);
       dateDiv.appendChild(dateSvg);
-      dateDiv.appendChild(document.createTextNode(' ' + news.date));
+      dateDiv.appendChild(document.createTextNode(' ' + Utils.Sanitizer.escapeHtml(news.date)));
 
       const title = document.createElement('h3');
       title.className = 'news-card-title';
-      title.textContent = news.title;
+      title.textContent = Utils.Sanitizer.escapeHtml(news.title);
 
       const excerpt = document.createElement('p');
       excerpt.className = 'news-card-excerpt';
-      excerpt.textContent = news.excerpt;
+      excerpt.textContent = Utils.Sanitizer.escapeHtml(news.excerpt);
 
       const link = document.createElement('a');
       link.className = 'news-card-link';
