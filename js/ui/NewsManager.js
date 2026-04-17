@@ -8,6 +8,8 @@ class NewsManager {
     this.newsData = newsData;
     this.renderer = renderer;
     this.activeYear = null;
+    this.lightboxOverlay = null;
+    this.lightboxImage = null;
   }
 
   init() {
@@ -15,6 +17,83 @@ class NewsManager {
     this._initTabs();
     this._initModal();
     this._initCardClickHandler();
+    this._initLightbox();
+  }
+
+  _initLightbox() {
+    this.lightboxOverlay = document.getElementById('lightboxOverlay');
+    this.lightboxImage = document.getElementById('lightboxImage');
+    const closeBtn = document.getElementById('lightboxCloseBtn');
+
+    if (!this.lightboxOverlay || !this.lightboxImage) {
+      Logger.WARN('Lightbox elements not found');
+      return;
+    }
+
+    // Клик по изображению в модалке новостей открывает лайтбокс
+    const modalImage = document.getElementById('newsModalImage');
+    if (modalImage) {
+      modalImage.addEventListener('click', () => {
+        if (modalImage.src && modalImage.src !== window.location.href + '#') {
+          this.openLightbox(modalImage.src, modalImage.alt);
+        }
+      });
+      modalImage.style.cursor = 'zoom-in';
+    }
+
+    // Закрытие лайтбокса по кнопке
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => this.closeLightbox());
+    }
+
+    // Закрытие лайтбокса по клику на оверлей
+    this.lightboxOverlay.addEventListener('click', (e) => {
+      if (e.target === this.lightboxOverlay) {
+        this.closeLightbox();
+      }
+    });
+
+    // Закрытие по Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.lightboxOverlay.classList.contains('active')) {
+        this.closeLightbox();
+      }
+    });
+
+    Logger.INFO('Lightbox initialized');
+  }
+
+  openLightbox(imageSrc, imageAlt) {
+    if (!this.lightboxOverlay || !this.lightboxImage) return;
+
+    this.lightboxImage.src = imageSrc;
+    this.lightboxImage.alt = imageAlt || 'Изображение новости';
+    this.lightboxOverlay.classList.add('active');
+    document.body.classList.add('no-scroll');
+    
+    // Фокус на кнопку закрытия для доступности
+    const closeBtn = document.getElementById('lightboxCloseBtn');
+    if (closeBtn) {
+      setTimeout(() => closeBtn.focus(), 100);
+    }
+
+    Logger.INFO('Lightbox opened');
+  }
+
+  closeLightbox() {
+    if (!this.lightboxOverlay) return;
+
+    this.lightboxOverlay.classList.remove('active');
+    document.body.classList.remove('no-scroll');
+    
+    // Очищаем src после анимации
+    setTimeout(() => {
+      if (this.lightboxImage) {
+        this.lightboxImage.src = '';
+      }
+    }, 300);
+
+    Logger.INFO('Lightbox closed');
   }
 
   _initTabs() {
