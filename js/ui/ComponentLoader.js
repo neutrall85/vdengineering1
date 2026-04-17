@@ -161,9 +161,6 @@ const ComponentLoader = {
             <p class="form-file-text">Выбрать файл...</p>
             <p class="form-file-hint">PDF, DOC, DOCX, XLS, XLSX (Max 10MB)</p>
             <div class="form-file-list" id="fileList"></div>
-            <div class="form-file-limit-warning" id="fileLimitWarningModal" class="form-file-limit-hidden">
-              <p>⚠️ Превышен лимит: максимум 5 файлов или 10MB на файл</p>
-            </div>
           </div>
         </div>
         <div class="form-agreement">
