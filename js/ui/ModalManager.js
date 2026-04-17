@@ -30,21 +30,13 @@ class ModalManager {
     if (!config) return;
     
     const overlay = document.getElementById(config.overlayId);
-    if (overlay) {
-      // Удаляем старый обработчик, чтобы не дублировать
-      const newOverlay = overlay.cloneNode(true);
-      overlay.parentNode?.replaceChild(newOverlay, overlay);
-      
-      newOverlay.addEventListener('click', (e) => {
-        if (e.target === newOverlay) {
+    if (overlay && !overlay._clickHandlerAttached) {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
           this.close(key);
         }
       });
-      
-      // Обновляем ссылку в конфиге (необязательно)
-      if (config.overlayId) {
-        document.getElementById(config.overlayId);
-      }
+      overlay._clickHandlerAttached = true;
     }
   }
 

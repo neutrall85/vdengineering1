@@ -183,6 +183,15 @@ class Application {
         if (typeof modalManager !== 'undefined') modalManager.open('details');
       }
     };
+    
+    // Универсальный обработчик для открытия модалки "Запросить КП" (DRY)
+    document.addEventListener('click', (e) => {
+      const modalTrigger = e.target.closest('[data-modal-open="proposal"]');
+      if (modalTrigger) {
+        e.preventDefault();
+        if (window.openModal) window.openModal();
+      }
+    });
   }
 
   _hidePageLoader() {

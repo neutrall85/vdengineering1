@@ -66,7 +66,7 @@ class NewsRenderer {
     img.setAttribute('data-src', Utils.Sanitizer.escapeHtml(news.image));
     img.setAttribute('alt', Utils.Sanitizer.escapeHtml(news.title));
     img.setAttribute('loading', 'lazy');
-    img.onerror = function() { this.src = 'assets/images/placeholder.jpg'; };
+    img.addEventListener('error', function() { this.src = 'assets/images/placeholder.jpg'; });
     
     const category = document.createElement('span');
     category.classList.add('news-card-category');
