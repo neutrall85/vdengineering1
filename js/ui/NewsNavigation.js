@@ -189,9 +189,11 @@ class NewsNavigation {
   }
 }
 
-// Экспортируем глобально
-window.NewsNavigation = new NewsNavigation();
+// Создаем и экспортируем экземпляр
+const newsNavigationInstance = new NewsNavigation();
+export { NewsNavigation, newsNavigationInstance as NewsNavigation };
+window.NewsNavigation = newsNavigationInstance;
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { NewsNavigation };
+  module.exports = { NewsNavigation: newsNavigationInstance };
 }
