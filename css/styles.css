@@ -55,6 +55,8 @@
   --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.12);
   --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
   --shadow-2xl: 0 25px 45px rgba(0, 0, 0, 0.18);
+  --shadow-orange-sm: 0 4px 15px rgba(var(--vd-orange-rgb), 0.2);
+  --shadow-orange-md: 0 8px 25px rgba(var(--vd-orange-rgb), 0.3);
   --shadow-orange: 0 4px 15px rgba(var(--vd-orange-rgb), 0.3);
   --shadow-primary: 0 4px 15px rgba(0, 78, 150, 0.3);
   --shadow-nav: -5px 0 30px rgba(0, 0, 0, 0.3);
@@ -902,80 +904,7 @@ body.app-ready > footer {
   background: var(--vd-dark);
 }
 
-.news-card-preview {
-  background: white;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  transition: transform var(--duration-normal) var(--ease-elastic),
-              box-shadow var(--duration-normal) var(--ease-smooth);
-}
-
-.news-card-preview:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-}
-
-.news-card-preview-image {
-  height: clamp(180px, 25vw, 220px);
-  overflow: hidden;
-}
-
-.news-card-preview-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform var(--duration-slower) var(--ease-smooth);
-}
-
-.news-card-preview:hover .news-card-preview-image img {
-  transform: scale(1.08);
-}
-
-.news-card-preview-content {
-  padding: clamp(1rem, 2vw, 1.5rem);
-}
-
-.news-card-preview-category {
-  display: inline-block;
-  background: var(--vd-light-blue);
-  color: var(--vd);
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: clamp(0.65rem, 1vw, 0.7rem);
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.news-card-preview h3 {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  margin-bottom: 0.75rem;
-  color: var(--vd);
-  line-height: 1.4;
-}
-
-.news-card-preview p {
-  color: var(--metallic);
-  line-height: 1.6;
-  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
-  margin-bottom: 1rem;
-}
-
-.news-card-preview-link {
-  color: var(--vd);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: gap var(--duration-normal) var(--ease-elastic);
-}
-
-.news-card-preview-link:hover {
-  gap: 1rem;
-  color: var(--vd);
-}
+/* Стили для карточек новостей на главной странице используют классы news-card (см. секцию СТРАНИЦА НОВОСТЕЙ) */
 
 /* ==================== ПАРТНЕРЫ ==================== */
 .partners {
