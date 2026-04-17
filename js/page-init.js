@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Вызываем при открытии модалки (если она уже есть в DOM)
   applyPhoneAutoPrefixToModal();
-  
+
   const previewGrid = document.getElementById('previewNewsGrid');
   if (previewGrid && typeof NEWS_DATA !== 'undefined') {
     const allNews = [];
@@ -120,27 +120,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     const latestNews = allNews.sort((a, b) => b.id - a.id).slice(0, 3);
 
-    previewGrid.innerHTML = latestNews.map(news => `
-      <div class="news-card-preview" data-news-id="${news.id}">
-        <div class="news-card-preview-image">
-          <img src="${Utils.Sanitizer.escapeHtml(news.image)}" alt="${Utils.Sanitizer.escapeHtml(news.title)}">
-        </div>
-        <div class="news-card-preview-content">
-          <span class="news-card-preview-category">${Utils.Sanitizer.escapeHtml(news.category)}</span>
-          <h3>${Utils.Sanitizer.escapeHtml(news.title)}</h3>
-          <p>${Utils.Sanitizer.escapeHtml(news.excerpt)}</p>
-          <button class="news-card-preview-link" data-news-id="${news.id}">Подробнее →</button>
-        </div>
-      </div>
-    `).join('');
-    
+    // Используем NewsRenderer для создания карточек - обеспечиваем единый стиль
+    const renderer = new NewsRenderer(NEWS_DATA);
+    latestNews.forEach((news, index) => {
+      const card = renderer._createNewsCard(news, index);
+      previewGrid.appendChild(card);
+    });
+
     // Добавляем обработчики кликов на карточки новостей
     setTimeout(() => {
-      previewGrid.querySelectorAll('.news-card-preview').forEach(card => {
+      previewGrid.querySelectorAll('.news-card').forEach(card => {
         card.addEventListener('click', function(e) {
-          if (!e.target.closest('button')) {
-            const newsId = this.getAttribute('data-news-id');
-            if (window.newsManager && typeof window.newsManager.openNewsModal === 'function') {
+          if (!e.target.closest('a')) {
+            const link = this.querySelector('.news-card-link');
+            const newsId = link ? link.getAttribute('data-news-id') : null;
+            if (newsId && window.newsManager && typeof window.newsManager.openNewsModal === 'function') {
               window.newsManager.openNewsModal(parseInt(newsId, 10));
             }
           }

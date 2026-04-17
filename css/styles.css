@@ -872,6 +872,7 @@ body.app-ready > footer {
   background: var(--vd-light-gray);
 }
 
+/* ==================== ПРЕВЬЮ НОВОСТЕЙ ==================== */
 .preview-news-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -900,81 +901,6 @@ body.app-ready > footer {
 
 .text-center-mt2 .btn-primary:hover {
   background: var(--vd-dark);
-}
-
-.news-card-preview {
-  background: white;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  transition: transform var(--duration-normal) var(--ease-elastic),
-              box-shadow var(--duration-normal) var(--ease-smooth);
-}
-
-.news-card-preview:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-}
-
-.news-card-preview-image {
-  height: clamp(180px, 25vw, 220px);
-  overflow: hidden;
-}
-
-.news-card-preview-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform var(--duration-slower) var(--ease-smooth);
-}
-
-.news-card-preview:hover .news-card-preview-image img {
-  transform: scale(1.08);
-}
-
-.news-card-preview-content {
-  padding: clamp(1rem, 2vw, 1.5rem);
-}
-
-.news-card-preview-category {
-  display: inline-block;
-  background: var(--vd-light-blue);
-  color: var(--vd);
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: clamp(0.65rem, 1vw, 0.7rem);
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.news-card-preview h3 {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  margin-bottom: 0.75rem;
-  color: var(--vd);
-  line-height: 1.4;
-}
-
-.news-card-preview p {
-  color: var(--metallic);
-  line-height: 1.6;
-  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
-  margin-bottom: 1rem;
-}
-
-.news-card-preview-link {
-  color: var(--vd);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: clamp(0.8rem, 1.2vw, 0.9rem);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: gap var(--duration-normal) var(--ease-elastic);
-}
-
-.news-card-preview-link:hover {
-  gap: 1rem;
-  color: var(--vd);
 }
 
 /* ==================== ПАРТНЕРЫ ==================== */
@@ -2302,16 +2228,14 @@ body.app-ready > footer {
   margin: 0 auto;
 }
 
+/* Единый класс для карточек новостей - используется и на главной, и на news.html */
 .news-card {
   background: white;
-  display: grid;
-  grid-template-columns: 35% 1fr;
   border-radius: 20px;
   overflow: hidden;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid var(--border-color);
-  transition: all var(--duration-normal) var(--ease-smooth);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform var(--duration-normal) var(--ease-elastic),
+              box-shadow var(--duration-normal) var(--ease-smooth);
   opacity: 0;
   transform: translateX(-30px);
 }
@@ -2322,14 +2246,14 @@ body.app-ready > footer {
 }
 
 .news-card:hover {
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  transform: translateY(-4px);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
 }
 
 .news-card-image {
-  position: relative;
-  min-height: 240px;
+  height: clamp(180px, 25vw, 220px);
   overflow: hidden;
+  position: relative;
   background: var(--vd-light-gray);
 }
 
@@ -2355,8 +2279,8 @@ body.app-ready > footer {
   left: 1rem;
   background: var(--vd-light-blue);
   color: var(--vd);
-  padding: 0.4rem 1rem;
-  border-radius: 50px;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
   font-size: clamp(0.65rem, 1vw, 0.7rem);
   font-weight: 600;
   z-index: 10;
