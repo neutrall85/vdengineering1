@@ -118,6 +118,7 @@ const NEWS_DATA = {
   ]
 };
 
+export { NEWS_DATA };
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = NEWS_DATA;
 }
