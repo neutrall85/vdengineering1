@@ -112,40 +112,101 @@ document.addEventListener('DOMContentLoaded', function() {
   // Вызываем при открытии модалки (если она уже есть в DOM)
   applyPhoneAutoPrefixToModal();
   
+  // Инициализация карточек новостей на главной странице
   const previewGrid = document.getElementById('previewNewsGrid');
   if (previewGrid && typeof NEWS_DATA !== 'undefined') {
+    // Собираем все новости и сортируем по ID (новые сверху)
     const allNews = [];
     for (const year in NEWS_DATA) {
       allNews.push(...NEWS_DATA[year]);
     }
     const latestNews = allNews.sort((a, b) => b.id - a.id).slice(0, 3);
 
-    previewGrid.innerHTML = latestNews.map(news => `
-      <div class="news-card-preview" data-news-id="${news.id}">
-        <div class="news-card-preview-image">
-          <img src="${Utils.Sanitizer.escapeHtml(news.image)}" alt="${Utils.Sanitizer.escapeHtml(news.title)}">
-        </div>
-        <div class="news-card-preview-content">
-          <span class="news-card-preview-category">${Utils.Sanitizer.escapeHtml(news.category)}</span>
-          <h3>${Utils.Sanitizer.escapeHtml(news.title)}</h3>
-          <p>${Utils.Sanitizer.escapeHtml(news.excerpt)}</p>
-          <button class="news-card-preview-link" data-news-id="${news.id}">Подробнее →</button>
-        </div>
-      </div>
-    `).join('');
-    
-    // Добавляем обработчики кликов на карточки новостей
-    setTimeout(() => {
-      previewGrid.querySelectorAll('.news-card-preview').forEach(card => {
-        card.addEventListener('click', function(e) {
-          if (!e.target.closest('button')) {
-            const newsId = this.getAttribute('data-news-id');
-            if (window.newsManager && typeof window.newsManager.openNewsModal === 'function') {
-              window.newsManager.openNewsModal(parseInt(newsId, 10));
-            }
-          }
-        });
-      });
-    }, 50);
+    // Очищаем контейнер
+    previewGrid.innerHTML = '';
+
+    // Создаём карточки через DOM API (безопасно, без innerHTML)
+    latestNews.forEach(news => {
+      const article = document.createElement('article');
+      article.className = 'news-card';
+
+      // Блок изображения
+      const imageDiv = document.createElement('div');
+      imageDiv.className = 'news-card-image';
+
+      const placeholder = document.createElement('div');
+      placeholder.className = 'image-placeholder';
+
+      const img = document.createElement('img');
+      img.setAttribute('data-src', Utils.Sanitizer.escapeHtml(news.image) || 'assets/images/placeholder.jpg');
+      img.setAttribute('alt', Utils.Sanitizer.escapeHtml(news.title));
+      img.setAttribute('loading', 'lazy');
+      img.onerror = function() { this.src = 'assets/images/placeholder.jpg'; };
+
+      const categorySpan = document.createElement('span');
+      categorySpan.className = 'news-card-category';
+      categorySpan.textContent = Utils.Sanitizer.escapeHtml(news.category);
+
+      imageDiv.appendChild(placeholder);
+      imageDiv.appendChild(img);
+      imageDiv.appendChild(categorySpan);
+
+      // Блок контента
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'news-card-content';
+
+      // Дата с иконкой
+      const dateDiv = document.createElement('div');
+      dateDiv.className = 'news-card-date';
+
+      const dateSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      dateSvg.setAttribute('viewBox', '0 0 24 24');
+      const datePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      datePath.setAttribute('d', 'M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z');
+      dateSvg.appendChild(datePath);
+      dateDiv.appendChild(dateSvg);
+      dateDiv.appendChild(document.createTextNode(' ' + Utils.Sanitizer.escapeHtml(news.date)));
+
+      const title = document.createElement('h3');
+      title.className = 'news-card-title';
+      title.textContent = Utils.Sanitizer.escapeHtml(news.title);
+
+      const excerpt = document.createElement('p');
+      excerpt.className = 'news-card-excerpt';
+      excerpt.textContent = Utils.Sanitizer.escapeHtml(news.excerpt);
+
+      const link = document.createElement('a');
+      link.className = 'news-card-link';
+      link.setAttribute('data-news-id', news.id);
+      link.setAttribute('href', '#');
+      link.textContent = 'Подробнее';
+
+      const linkSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      linkSvg.setAttribute('viewBox', '0 0 24 24');
+      const linkPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      linkPath.setAttribute('d', 'M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z');
+      linkSvg.appendChild(linkPath);
+      link.appendChild(linkSvg);
+
+      contentDiv.appendChild(dateDiv);
+      contentDiv.appendChild(title);
+      contentDiv.appendChild(excerpt);
+      contentDiv.appendChild(link);
+
+      article.appendChild(imageDiv);
+      article.appendChild(contentDiv);
+      previewGrid.appendChild(article);
+    });
+
+    // Делегирование событий: открытие модалки по клику на ссылку "Подробнее"
+    previewGrid.addEventListener('click', (e) => {
+      const link = e.target.closest('.news-card-link');
+      if (link && link.dataset.newsId) {
+        e.preventDefault();
+        if (window.newsManager && typeof window.newsManager.openNewsModal === 'function') {
+          window.newsManager.openNewsModal(parseInt(link.dataset.newsId, 10));
+        }
+      }
+    });
   }
 });
