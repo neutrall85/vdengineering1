@@ -117,9 +117,6 @@ class FormManager {
 
   _handleFileSelect(files, fileDrop) {
     if (!files || files.length === 0) return;
-    
-    // Находим элемент предупреждения о лимитах для этой зоны загрузки
-    const fileLimitWarning = fileDrop?.querySelector('.form-file-limit-warning');
 
     // Проверяем файлы на дубликаты и другие ограничения перед добавлением
     const validNewFiles = [];
@@ -141,7 +138,7 @@ class FormManager {
       // Проверка на дубликаты среди уже загруженных файлов
       const fileKey = `${file.name}:${file.size}`;
       const isDuplicate = this.currentFiles.some(f => `${f.name}:${f.size}` === fileKey);
-      
+
       if (isDuplicate) {
         continue;
       }
@@ -158,10 +155,13 @@ class FormManager {
     // Добавляем новые файлы к существующим
     this.currentFiles = [...this.currentFiles, ...validNewFiles];
 
-    // Ограничиваем количество файлов
-    if (this.currentFiles.length > this.maxFiles) {
+    // Ограничиваем количество файлов - показываем предупреждение только если файлы были обрезаны
+    if (this.currentFiles.length > this.maxFiles && validNewFiles.length > 0) {
+      const removedCount = this.currentFiles.length - this.maxFiles;
       this.currentFiles = this.currentFiles.slice(0, this.maxFiles);
-      this._showUploadWarning(`Максимальное количество файлов: ${this.maxFiles}`, fileDrop);
+      if (removedCount > 0) {
+        this._showUploadWarning(`Добавлено только ${this.maxFiles - (this.currentFiles.length - validNewFiles.length)} из ${validNewFiles.length} файлов. Максимум: ${this.maxFiles}`, fileDrop);
+      }
     }
 
     this._renderFileList(fileDrop);

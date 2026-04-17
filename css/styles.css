@@ -839,10 +839,37 @@ body.app-ready > footer {
   font-size: clamp(0.875rem, 1.2vw, 1rem);
 }
 
+/* ==================== SERVICES CTA ==================== */
+.services-cta {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+.services-cta-inline {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+.services-cta .btn-primary,
+.services-cta-inline .btn-primary {
+  background: var(--vd);
+  color: white;
+}
+
+.services-cta .btn-primary:hover,
+.services-cta-inline .btn-primary:hover {
+  background: var(--vd-dark);
+}
+
 /* ==================== НОВОСТИ PREVIEW ==================== */
 .news-preview {
   padding: clamp(40px, 8vh, 80px) 5%;
   background: white;
+}
+
+.news-preview-inline {
+  padding: clamp(40px, 8vh, 80px) 5%;
+  background: var(--vd-light-gray);
 }
 
 .preview-news-grid {
@@ -851,6 +878,28 @@ body.app-ready > footer {
   gap: 2rem;
   max-width: 1400px;
   margin: 0 auto;
+}
+
+.news-grid-inline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.text-center-mt2 {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+.text-center-mt2 .btn-primary {
+  background: var(--vd);
+  color: white;
+}
+
+.text-center-mt2 .btn-primary:hover {
+  background: var(--vd-dark);
 }
 
 .news-card-preview {
