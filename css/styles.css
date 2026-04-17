@@ -1672,6 +1672,10 @@ body.app-ready > footer {
   width: 100%;
 }
 
+.upload-warning-container.form-file-limit-hidden {
+  display: none;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;

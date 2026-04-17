@@ -5,14 +5,18 @@
 
 document.addEventListener('DOMContentLoaded', function() {
   // Инициализация обработчиков для кнопок с ID вместо onclick
-  const heroRequestQuoteBtn = document.getElementById('heroRequestQuoteBtn');
-  if (heroRequestQuoteBtn) {
-    heroRequestQuoteBtn.addEventListener('click', function() {
-      if (window.openModal && typeof window.openModal === 'function') {
-        window.openModal();
-      }
-    });
-  }
+  const quoteButtons = ['heroRequestQuoteBtn', 'aboutRequestQuoteBtn', 'servicesRequestQuoteBtn'];
+  
+  quoteButtons.forEach(btnId => {
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.addEventListener('click', function() {
+        if (window.openModal && typeof window.openModal === 'function') {
+          window.openModal();
+        }
+      });
+    }
+  });
   
   const contactEmailLink = document.getElementById('contactEmailLink');
   if (contactEmailLink) {

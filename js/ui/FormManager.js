@@ -154,17 +154,25 @@ class FormManager {
 
     // Добавляем новые файлы к существующим
     const previousCount = this.currentFiles.length;
-    this.currentFiles = [...this.currentFiles, ...validNewFiles];
-
-    // Ограничиваем количество файлов - показываем предупреждение только если файлы были обрезаны
-    if (this.currentFiles.length > this.maxFiles && validNewFiles.length > 0) {
-      const removedCount = this.currentFiles.length - this.maxFiles;
-      this.currentFiles = this.currentFiles.slice(0, this.maxFiles);
-      if (removedCount > 0) {
-        const addedCount = validNewFiles.length - removedCount;
-        this._showUploadWarning(`Добавлено ${addedCount} из ${validNewFiles.length} файлов. Максимум: ${this.maxFiles}`, fileDrop);
+    const newTotalCount = this.currentFiles.length + validNewFiles.length;
+    
+    // Ограничиваем количество файлов - проверяем ДО добавления
+    let filesToAdd = validNewFiles;
+    if (newTotalCount > this.maxFiles) {
+      const spaceRemaining = Math.max(0, this.maxFiles - this.currentFiles.length);
+      if (spaceRemaining < validNewFiles.length) {
+        filesToAdd = validNewFiles.slice(0, spaceRemaining);
+        const notAddedCount = validNewFiles.length - spaceRemaining;
+        if (notAddedCount > 0 && spaceRemaining > 0) {
+          this._showUploadWarning(`Добавлено ${spaceRemaining} из ${validNewFiles.length} файлов. Превышен лимит: ${this.maxFiles}`, fileDrop);
+        } else if (this.currentFiles.length >= this.maxFiles) {
+          this._showUploadWarning(`Превышен лимит файлов: ${this.maxFiles}. Удалите старые файлы перед добавлением новых.`, fileDrop);
+          filesToAdd = [];
+        }
       }
     }
+    
+    this.currentFiles = [...this.currentFiles, ...filesToAdd];
 
     this._renderFileList(fileDrop);
   }
