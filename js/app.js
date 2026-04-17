@@ -408,11 +408,16 @@ function initApp() {
         newsManager = new NewsManager(NEWS_DATA, newsRenderer);
         newsManager.init();
         window.newsManager = newsManager;
+        
+        // Инициализация роутинга новостей если доступен
+        if (typeof NewsNavigation !== 'undefined') {
+          NewsNavigation.init(newsManager);
+        }
       } else {
-        Logger.ERROR('NewsRenderer or NewsManager is not defined');
+        Logger.ERROR('NewsRenderer или NewsManager не определен');
       }
     } catch (err) {
-      Logger.ERROR('Failed to initialize news managers:', err);
+      Logger.ERROR('Ошибка инициализации менеджеров новостей:', err);
     }
   }
   

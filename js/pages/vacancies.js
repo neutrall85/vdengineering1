@@ -1,5 +1,10 @@
-// Инициализация обработчиков после загрузки DOM
-document.addEventListener('DOMContentLoaded', function() {
+/**
+ * Инициализация обработчиков для страницы вакансий
+ * ООО "Волга-Днепр Инжиниринг"
+ */
+
+// Экспортируем функцию инициализации для module режима
+export function initVacanciesPage() {
   // Обработчики для кнопок "Откликнуться" на вакансии
   const applyButtons = document.querySelectorAll('.vacancy-apply-btn');
   applyButtons.forEach(function(btn) {
@@ -9,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-
+  
   // Обработчик для кнопки "Оставить заявку"
   const applicationBtn = document.getElementById('vacanciesApplicationBtn');
   if (applicationBtn) {
@@ -19,4 +24,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-});
+}
+
+// Автозапуск если не используется как модуль, или ожидание DOMContentLoaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initVacanciesPage);
+} else {
+  initVacanciesPage();
+}

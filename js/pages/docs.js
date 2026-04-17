@@ -3,7 +3,8 @@
  * ООО "Волга-Днепр Инжиниринг"
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+// Экспортируем функцию инициализации для использования в module режиме
+export function initDocsPage() {
   // Обработчик для кнопок просмотра документов
   const docViewLinks = document.querySelectorAll('.doc-view-link');
   
@@ -11,7 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     link.addEventListener('click', function(e) {
       // Можно добавить дополнительную логику при клике на просмотр документа
       // Например, аналитику или логирование
-      Logger.INFO('Просмотр документа:', this.href);
+      if (typeof Logger !== 'undefined') {
+        Logger.INFO('Просмотр документа:', this.href);
+      }
     });
   });
 
@@ -36,4 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
-});
+}
+
+// Автозапуск если не используется как модуль, или ожидание DOMContentLoaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDocsPage);
+} else {
+  initDocsPage();
+}

@@ -43,8 +43,8 @@ const projectsData = {
   }
 };
 
-// Инициализация обработчиков после загрузки DOM
-document.addEventListener('DOMContentLoaded', function() {
+// Экспортируем функцию инициализации для module режима
+export function initProjectsPage() {
   // Обработчики для кнопок "Подробнее"
   const projectButtons = document.querySelectorAll('.project-details-btn');
   projectButtons.forEach(function(btn) {
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-});
+}
 
 function openProjectModal(title, details, image, category) {
   const modalTitle = document.getElementById('projectModalTitle');
@@ -105,4 +105,11 @@ function openProjectModal(title, details, image, category) {
 
 function closeProjectModal() {
   if (typeof modalManager !== 'undefined') modalManager.close('project');
+}
+
+// Автозапуск если не используется как модуль, или ожидание DOMContentLoaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initProjectsPage);
+} else {
+  initProjectsPage();
 }

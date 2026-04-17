@@ -38,8 +38,8 @@ const servicesData = {
   }
 };
 
-// Инициализация обработчиков после загрузки DOM
-document.addEventListener('DOMContentLoaded', function() {
+// Экспортируем функцию инициализации для module режима
+export function initServicesPage() {
   // Обработчики для кнопок "Подробнее"
   const serviceButtons = document.querySelectorAll('.service-details-btn');
   serviceButtons.forEach(function(btn) {
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-});
+}
 
 function openServiceModal(title, details, image, category) {
   const modalTitle = document.getElementById('serviceModalTitle');
@@ -97,4 +97,11 @@ function openServiceModal(title, details, image, category) {
 
 function closeServiceModal() {
   if (typeof modalManager !== 'undefined') modalManager.close('service');
+}
+
+// Автозапуск если не используется как модуль, или ожидание DOMContentLoaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initServicesPage);
+} else {
+  initServicesPage();
 }

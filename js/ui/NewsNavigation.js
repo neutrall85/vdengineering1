@@ -174,6 +174,19 @@ class NewsNavigation {
     this.newsManager = null;
     this.currentNewsId = null;
   }
+
+  /**
+   * Восстановление базового URL (удаление news slug из пути)
+   * Вызывается при закрытии модального окна новости
+   */
+  restoreBaseUrl() {
+    if (this.currentNewsId) {
+      // Очищаем состояние истории
+      history.replaceState({}, '', '/news.html');
+      this.currentNewsId = null;
+      Logger.INFO('URL восстановлен к /news.html');
+    }
+  }
 }
 
 // Экспортируем глобально
