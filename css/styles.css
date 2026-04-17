@@ -2331,15 +2331,18 @@ body.app-ready > footer {
 .news-card-image {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: 250px; /* Фиксированная высота для ровной сетки */
   overflow: hidden;
   background: var(--vd-light-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .news-card-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   transition: transform var(--duration-slower) var(--ease-smooth);
   opacity: 0;
