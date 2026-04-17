@@ -917,7 +917,8 @@ body.app-ready > footer {
 }
 
 .news-card-preview-image {
-  height: clamp(180px, 25vw, 220px);
+  width: 100%;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
 }
 
@@ -925,6 +926,7 @@ body.app-ready > footer {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform var(--duration-slower) var(--ease-smooth);
 }
 
@@ -2328,7 +2330,8 @@ body.app-ready > footer {
 
 .news-card-image {
   position: relative;
-  min-height: 240px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: var(--vd-light-gray);
 }
@@ -2337,6 +2340,7 @@ body.app-ready > footer {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform var(--duration-slower) var(--ease-smooth);
   opacity: 0;
 }
