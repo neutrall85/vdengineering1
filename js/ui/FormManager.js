@@ -153,6 +153,7 @@ class FormManager {
     }
 
     // Добавляем новые файлы к существующим
+    const previousCount = this.currentFiles.length;
     this.currentFiles = [...this.currentFiles, ...validNewFiles];
 
     // Ограничиваем количество файлов - показываем предупреждение только если файлы были обрезаны
@@ -160,7 +161,8 @@ class FormManager {
       const removedCount = this.currentFiles.length - this.maxFiles;
       this.currentFiles = this.currentFiles.slice(0, this.maxFiles);
       if (removedCount > 0) {
-        this._showUploadWarning(`Добавлено только ${this.maxFiles - (this.currentFiles.length - validNewFiles.length)} из ${validNewFiles.length} файлов. Максимум: ${this.maxFiles}`, fileDrop);
+        const addedCount = validNewFiles.length - removedCount;
+        this._showUploadWarning(`Добавлено ${addedCount} из ${validNewFiles.length} файлов. Максимум: ${this.maxFiles}`, fileDrop);
       }
     }
 
