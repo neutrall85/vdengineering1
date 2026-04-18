@@ -85,10 +85,9 @@
 
     // ---- Остальные обработчики (кнопки, форма, телефон) ----
     document.addEventListener('DOMContentLoaded', function() {
-        // Кнопки "Запросить КП"
-        ['heroRequestQuoteBtn', 'aboutRequestQuoteBtn', 'servicesRequestQuoteBtn'].forEach(btnId => {
-            const btn = document.getElementById(btnId);
-            if (btn) btn.addEventListener('click', () => window.openModal?.());
+        // Кнопки "Запросить КП" - универсальный обработчик через data-modal-open
+        document.querySelectorAll('[data-modal-open="proposal"]').forEach(btn => {
+            btn.addEventListener('click', () => window.openModal?.());
         });
 
         // Email ссылка
