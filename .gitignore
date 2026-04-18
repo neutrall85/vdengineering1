@@ -13,66 +13,59 @@
 .vscode/
 .idea/
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-.coverage
-htmlcov/
-.coverage.*
-.pytest_cache/
-.mypy_cache/
-
 # Dependencies
 node_modules/
 venv/
 .venv/
-.env
-lib/
-share/
-bin/
-
-# Build outputs
-build/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
 dist/
-*.egg-info/
-.target/
+build/
 target/
+.gradle/
 
-# OS generated files
+# Compiled files
+*.pyc
+*.class
+*.o
+*.exe
+*.dll
+*.so
+*.a
+*.obj
+*.out
+
+# System files
 .DS_Store
 Thumbs.db
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Icon?
-desktop.ini
 
-# Compression
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Compressed files
 *.zip
-*.tar.gz
-*.tar.bz2
-*.tar.xz
 *.gz
-*.rar
-*.7z
+*.tar
+*.tgz
 *.bz2
 *.xz
-*.tgz
-*.tar
-*.Z
-*.lz
-*.lzo
+*.7z
+*.rar
+*.zst
 *.lz4
 *.lzh
 *.cab
 *.arj
 *.rpm
 *.deb
-*.zst
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
 ```

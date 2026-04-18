@@ -104,26 +104,8 @@
         // Кнопка "Наверх"
         document.getElementById('scrollToTop')?.addEventListener('click', () => window.scrollToTop?.());
 
-        // Клонирование формы в модальное окно
-        const originalForm = document.getElementById('commercial-offer');
-        const modalBody = document.getElementById('modalBodyContainer');
-        if (originalForm && modalBody) {
-            const formClone = originalForm.cloneNode(true);
-            formClone.removeAttribute('id');
-            modalBody.innerHTML = '';
-            modalBody.appendChild(formClone);
-            // Убираем дублирующиеся ID
-            modalBody.querySelectorAll('[id]').forEach(el => {
-                if (!['proposalForm', 'submitBtn', 'fileAttachment', 'fileDrop', 'fileList', 'phone'].includes(el.id)) {
-                    el.removeAttribute('id');
-                } else {
-                    if (el.id === 'phone') el.classList.add('modal-phone-input');
-                    if (el.id === 'fileDrop') el.classList.add('modal-file-drop');
-                }
-            });
-            modalBody.querySelector('.rate-limit-warning')?.classList.remove('show');
-            modalBody.querySelector('.success-message')?.classList.remove('show');
-        }
+        // Форма рендерится в модальном окне через ComponentLoader из единого шаблона (DRY)
+        // page-init.js больше не клонирует форму - это устраняет дублирование кода и потенциальные проблемы с ID
 
         // Автодобавление +7 к телефону
         const setupPhonePrefix = (input) => {

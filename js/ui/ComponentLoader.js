@@ -75,19 +75,8 @@ const ComponentLoader = {
   <svg viewBox="0 0 24 24"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg>
 </button>`,
 
-    // Модальное окно коммерческого предложения
-    proposalModal: `
-<!-- Commercial Proposal Modal -->
-<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal-container">
-    <button class="modal-close" id="modalCloseBtn" aria-label="Закрыть">
-      <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-    </button>
-    <div class="modal-header">
-      <h2 class="modal-title" id="modalTitle">Запрос коммерческого предложения</h2>
-      <p class="modal-subtitle">Заполните форму ниже, и мы свяжемся с вами в течение 24 часов</p>
-    </div>
-    <div class="modal-body">
+    // Шаблон формы коммерческого предложения (используется для рендеринга в модалке)
+    proposalFormTemplate: `
       <div class="rate-limit-warning" id="rateLimitWarning">
         <p>⚠️ Слишком много запросов. Пожалуйста, подождите 60 секунд перед следующей отправкой.</p>
       </div>
@@ -126,8 +115,8 @@ const ComponentLoader = {
         <div class="form-group">
           <label class="form-label">Телефон <span class="required">*</span></label>
           <div class="flex-gap10">
-            <input type="tel" class="form-input" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required minlength="10" maxlength="20" autocomplete="tel" class="flex-1">
-            <input type="text" class="form-input" id="extension" name="extension" placeholder="доб." maxlength="6" autocomplete="off" class="width-100px">
+            <input type="tel" class="form-input" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required minlength="10" maxlength="20" autocomplete="tel">
+            <input type="text" class="form-input" id="extension" name="extension" placeholder="доб." maxlength="6" autocomplete="off">
           </div>
           <p class="error-message" id="phoneError">Пожалуйста, введите корректный номер телефона</p>
         </div>
@@ -178,7 +167,22 @@ const ComponentLoader = {
           <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
           <span>Отправить запрос</span>
         </button>
-      </form>
+      </form>`,
+
+    // Модальное окно коммерческого предложения (пустой контейнер, форма рендерится динамически)
+    proposalModal: `
+<!-- Commercial Proposal Modal -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-container">
+    <button class="modal-close" id="modalCloseBtn" aria-label="Закрыть">
+      <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
+    <div class="modal-header">
+      <h2 class="modal-title" id="modalTitle">Запрос коммерческого предложения</h2>
+      <p class="modal-subtitle">Заполните форму ниже, и мы свяжемся с вами в течение 24 часов</p>
+    </div>
+    <div class="modal-body" id="modalBodyContainer">
+      <!-- Форма будет отрендерена здесь -->
     </div>
   </div>
 </div>`,
@@ -323,13 +327,33 @@ const ComponentLoader = {
             }
         }
 
-        // Загрузка модального окна
+        // Загрузка модального окна и рендеринг формы в контейнере на странице (DRY)
         if (loadModal) {
+            // Рендеринг формы в контейнере на странице из единого шаблона
+            const commercialOfferContainer = document.getElementById('commercial-offer');
+            if (commercialOfferContainer && !commercialOfferContainer.querySelector('form')) {
+                commercialOfferContainer.innerHTML = this.proposalFormTemplate.trim();
+                
+                // Инициализация автоподстановки +7 для поля телефона на странице
+                setTimeout(() => {
+                    const pagePhoneInput = document.querySelector('#commercial-offer #phone');
+                    if (pagePhoneInput) {
+                        Utils.PhoneUtils.setupAutoPrefix(pagePhoneInput);
+                    }
+                }, 0);
+            }
+            
             const existingModal = document.getElementById('modalOverlay');
             if (!existingModal) {
                 const modalContainer = document.createElement('div');
                 modalContainer.innerHTML = this.proposalModal.trim();
                 document.body.appendChild(modalContainer.firstElementChild);
+                
+                // Рендеринг формы в модальном окне из единого шаблона (DRY)
+                const modalBody = document.getElementById('modalBodyContainer');
+                if (modalBody) {
+                    modalBody.innerHTML = this.proposalFormTemplate.trim();
+                }
                 
                 // Инициализация автоподстановки +7 для поля телефона в модалке
                 setTimeout(() => {
