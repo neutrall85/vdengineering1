@@ -227,11 +227,10 @@ class Application {
 
   _initFloatingCTA() {
     const floatingBtn = document.querySelector('.floating-cta-btn');
-    if (!floatingBtn) return;
-
     const commercialOfferTitle = document.querySelector('#commercial-offer-title');
     const newsModalOverlay = document.getElementById('newsModalOverlay');
-    const isNewsPage = !commercialOfferTitle;
+
+    if (!floatingBtn) return;
 
     const toggleButton = () => {
       // Если модальное окно новостей открыто - показываем кнопку
@@ -240,16 +239,15 @@ class Application {
         return;
       }
 
-      // Логика для страницы новостей (нет заголовка): кнопка видна всегда
-      if (isNewsPage) {
+      // Если заголовка нет (страница новостей), кнопка видна всегда
+      if (!commercialOfferTitle) {
         floatingBtn.classList.add('visible');
         return;
       }
 
-      // Логика для главной страницы (есть заголовок)
       const scrollY = window.scrollY;
-
-      // Скрываем в верхней части страницы (до 350px)
+      
+      // Скрываем в верхней части страницы
       if (scrollY <= 350) {
         floatingBtn.classList.remove('visible');
         return;
@@ -264,14 +262,10 @@ class Application {
         return;
       }
 
-      // Во всех остальных случаях показываем
       floatingBtn.classList.add('visible');
     };
 
-    // Первоначальный вызов
     toggleButton();
-    
-    // Слушатель скролла
     window.addEventListener('scroll', toggleButton, { passive: true });
   }
 
