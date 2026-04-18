@@ -66,14 +66,9 @@ class Application {
         }
       }
       
+      this._initFloatingCTA();
       this._initImageLazyLoading();
       this._initPrefersReducedMotion();
-      
-      // Инициализация плавающей кнопки после полной загрузки DOM и компонентов
-      // Используем setTimeout для гарантии, что футер уже загружен
-      requestAnimationFrame(() => {
-        this._initFloatingCTA();
-      });
       
       this.initialized = true;
       
