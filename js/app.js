@@ -232,15 +232,15 @@ class Application {
 
     if (!floatingBtn) return;
 
+    // Если заголовка нет (страница новостей), кнопка видна всегда
+    if (!commercialOfferTitle) {
+      floatingBtn.classList.add('visible');
+      return;
+    }
+
     const toggleButton = () => {
       // Если модальное окно новостей открыто - показываем кнопку
       if (newsModalOverlay && newsModalOverlay.getAttribute('aria-modal') === 'true') {
-        floatingBtn.classList.add('visible');
-        return;
-      }
-
-      // Если заголовка нет (страница новостей), кнопка видна всегда
-      if (!commercialOfferTitle) {
         floatingBtn.classList.add('visible');
         return;
       }
