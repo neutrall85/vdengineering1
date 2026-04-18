@@ -94,6 +94,7 @@
 
   /* Базовый размер шрифта для пропорционального масштабирования */
   font-size: 16px;
+  scroll-padding-top: 100px;
 }
 
 body {
@@ -1083,6 +1084,7 @@ body.app-ready > footer {
 .contact {
   padding: clamp(40px, 8vh, 80px) 5%;
   background: white;
+  scroll-margin-top: 100px;
 }
 
 .contact-content {

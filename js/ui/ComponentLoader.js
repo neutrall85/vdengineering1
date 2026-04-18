@@ -30,7 +30,7 @@ const ComponentLoader = {
       <li><a href="docs.html">Документы</a></li>
       <li><a href="vacancies.html">Вакансии</a></li>
       <li><a href="index.html#partners">Партнёры</a></li>
-      <li><a href="index.html#contact">Контакты</a></li>
+      <li><a href="index.html#contact-info">Контакты</a></li>
     </ul>
     <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Меню">
       <span></span>
@@ -52,7 +52,7 @@ const ComponentLoader = {
   <a href="docs.html">Документы</a>
   <a href="vacancies.html">Вакансии</a>
   <a href="index.html#partners">Партнёры</a>
-  <a href="index.html#contact">Контакты</a>
+  <a href="index.html#contact-info">Контакты</a>
 </div>`,
 
     // Футер
