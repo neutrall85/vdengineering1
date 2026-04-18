@@ -1282,6 +1282,7 @@ body.app-ready > footer {
   z-index: var(--z-fixed);
   opacity: 0;
   visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .floating-cta-btn.visible {
