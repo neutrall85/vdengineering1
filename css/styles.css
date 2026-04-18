@@ -652,32 +652,19 @@ body.app-ready > footer {
   transform: translateX(5px);
 }
 
-.btn-secondary {
-  background: transparent;
-  color: var(--vd);
-  padding: clamp(0.7rem, 1.3vw, 0.9rem) clamp(1.3rem, 2.5vw, 1.8rem);
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: clamp(0.875rem, 1.2vw, 1rem);
-  border: 2px solid var(--vd);
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-smooth);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
+/* Плавающая кнопка - наследует стили .btn-primary, добавляет только позиционирование */
+.floating-cta-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: var(--z-fixed);
+  opacity: 0;
+  visibility: hidden;
 }
 
-.btn-secondary:hover {
-  border-color: var(--vd);
-  color: var(--vd-dark);
-  transform: translateY(-2px);
-}
-
-.btn-secondary svg {
-  width: 18px;
-  height: 18px;
-  fill: currentColor;
+.floating-cta-btn.visible {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* ==================== УСЛУГИ ==================== */
@@ -1279,20 +1266,22 @@ body.app-ready > footer {
   right: 2rem;
   background: var(--gradient-orange);
   color: white;
-  padding: clamp(0.8rem, 1.5vw, 1rem) clamp(1.2rem, 2vw, 1.5rem);
+  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(1.5rem, 3vw, 2rem);
   border-radius: var(--radius-full);
   border: none;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.75rem;
   font-weight: 600;
-  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
   box-shadow: var(--shadow-orange-sm);
   transition: var(--transition-base);
   z-index: var(--z-fixed);
   opacity: 0;
   visibility: hidden;
+  overflow: hidden;
+  text-decoration: none;
 }
 
 .floating-cta-btn.visible {
@@ -1301,14 +1290,21 @@ body.app-ready > footer {
 }
 
 .floating-cta-btn:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-primary-lg);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-orange-md);
+  background: var(--gradient-orange-reverse);
 }
 
 .floating-cta-btn svg {
   width: 20px;
   height: 20px;
   fill: white;
+  display: block;
+  transition: transform var(--duration-normal) var(--ease-elastic);
+}
+
+.floating-cta-btn:hover svg {
+  transform: translateX(5px);
 }
 
 /* ==================== FADE IN АНИМАЦИЯ ==================== */
