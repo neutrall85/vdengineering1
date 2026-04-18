@@ -233,11 +233,6 @@ class Application {
     const newsModalOverlay = document.getElementById('newsModalOverlay');
     const isNewsPage = !commercialOfferTitle;
 
-    // Принудительно скрываем кнопку при инициализации на главной странице
-    if (!isNewsPage) {
-      floatingBtn.classList.remove('visible');
-    }
-
     const toggleButton = () => {
       // Если модальное окно новостей открыто - показываем кнопку
       if (newsModalOverlay && newsModalOverlay.getAttribute('aria-modal') === 'true') {
