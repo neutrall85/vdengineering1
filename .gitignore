@@ -1,47 +1,62 @@
 ```
-# Compiled and build artifacts
-*.pyc
-__pycache__/
-*.o
-*.obj
-*.class
-*.dll
-*.so
-*.a
-*.exe
-*.out
+# Logs and temp files
+*.log
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
 
 # Dependencies
 node_modules/
-venv/
 .venv/
-.env
-.env.local
-.env.*
-
-# Build directories
-dist/
-build/
-target/
-coverage/
-htmlcov/
+venv/
+__pycache__/
 .mypy_cache/
 .pytest_cache/
-.gradle/
+pip-log.txt
+pip-selfcheck.json
 
-# Editors and IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# System files
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
-# Logs and temporary files
-*.log
-*.tmp
+# Python
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.coverage
+htmlcov/
+coverage/
+.pytest_cache/
+.tox/
+.coverage.*
+.nox/
+dist/
+build/
+*.egg-info/
+.eggs/
+.installed.cfg
+lib/
+lib64/
+parts/
+sdist/
+develop-eggs/
+bin/
+var/
+share/python-eggs/
+*.egg
 
 # Compressed files
 *.zip
@@ -66,4 +81,17 @@ Thumbs.db
 *.tar.bz2
 *.tar.xz
 *.tar.zst
+
+# IDE and editor specific
+*.swp
+*.swo
+*.tmp
+*~
+.project
+.well-known/
+.settings/
+.metadata/
+.classpath
+.factorypath
+.springBeans
 ```
