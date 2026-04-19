@@ -97,9 +97,6 @@
             if (confirm('Открыть почтовый клиент?')) location.href = emailLink.href;
         });
 
-        // Плавающая CTA кнопка
-        document.getElementById('floatingCtaBtn')?.addEventListener('click', () => window.openModal?.());
-
         // Кнопка "Наверх"
         document.getElementById('scrollToTop')?.addEventListener('click', () => window.scrollToTop?.());
 

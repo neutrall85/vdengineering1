@@ -271,6 +271,19 @@ class Application {
 
     if (!floatingBtn) return;
 
+    // Обработчик клика - открываем модальное окно через единый механизм
+    floatingBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Используем data-modal-open как единый способ открытия модалок (DRY)
+      if (typeof modalManager !== 'undefined') {
+        modalManager.open('proposal');
+      } else if (typeof window.openModal === 'function') {
+        window.openModal();
+      } else {
+        Logger.WARN('Modal manager not available for floating CTA');
+      }
+    });
+
     let hasPassedTitle = false;
 
     const toggleButton = () => {

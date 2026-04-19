@@ -17,7 +17,6 @@ class FormManager {
     try {
       this._initPhoneMask();
       this._initFormSubmit();
-      this._initFloatingButton();
       // Инициализируем загрузку файлов для основной формы на странице
       setTimeout(() => {
         const mainForm = document.getElementById('commercial-offer');
@@ -395,13 +394,6 @@ class FormManager {
     const form = Utils.DOM.getElement('proposalForm');
     if (form) {
       form.addEventListener('submit', (e) => this._handleSubmit(e));
-    }
-  }
-
-  _initFloatingButton() {
-    const btn = Utils.DOM.query('.floating-cta-btn');
-    if (btn) {
-      btn.addEventListener('click', () => this.openModal());
     }
   }
 
