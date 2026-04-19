@@ -163,10 +163,12 @@ class ModalManager {
 
     overlay.classList.remove('active');
     
-    // Восстанавливаем позицию скролла
+    // Сначала восстанавливаем позицию скролла, чтобы избежать прыжка
+    window.scrollTo(0, this.scrollPosition);
+    
+    // Затем убираем блокировку скролла и padding
     document.body.classList.remove('no-scroll');
     document.body.style.paddingRight = '';
-    window.scrollTo(0, this.scrollPosition);
     
     if (this.activeModal === key) {
       this.activeModal = null;
