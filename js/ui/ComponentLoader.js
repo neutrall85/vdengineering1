@@ -78,9 +78,9 @@ const ComponentLoader = {
     // Модальное окно коммерческого предложения
     proposalModal: `
 <!-- Commercial Proposal Modal -->
-<div class="modal-overlay modal-overlay-proposal" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div class="modal-overlay modal-overlay-proposal" id="proposalModalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-container modal-container-proposal">
-    <button class="modal-close" id="modalCloseBtn" aria-label="Закрыть">
+    <button class="modal-close" id="proposalModalCloseBtn" aria-label="Закрыть">
       <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
     </button>
     <div class="modal-header">
@@ -183,7 +183,7 @@ const ComponentLoader = {
     // Универсальное модальное окно для заявок (используется для кнопок "Откликнуться" и "Отправить заявку")
     universalApplicationModal: `
 <!-- Universal Application Modal -->
-<div class="modal-overlay" id="universalApplicationModalOverlay" role="dialog" aria-modal="true" aria-labelledby="universalApplicationModalTitle">
+<div class="modal-overlay modal-overlay-universal" id="universalApplicationModalOverlay" role="dialog" aria-modal="true" aria-labelledby="universalApplicationModalTitle">
   <div class="modal-container">
     <button class="modal-close" id="universalModalCloseBtn" aria-label="Закрыть">
       <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
