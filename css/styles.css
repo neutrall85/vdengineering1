@@ -2995,10 +2995,10 @@ body.app-ready > footer {
 @media (max-width: 768px) {
   .services-grid-container { grid-template-columns: 1fr; }
 }
-.service-card-box { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: all 0.3s ease; }
+.service-card-box { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: all 0.3s ease; display: flex; flex-direction: column; }
 .service-title-h3 { font-size: 1.3rem; color: var(--vd); margin-bottom: 1rem; }
-.service-desc-p { color: var(--metallic); line-height: 1.6; margin-bottom: 1.5rem; }
-.btn-secondary-sm { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
+.service-desc-p { color: var(--metallic); line-height: 1.6; margin-bottom: 1.5rem; flex-grow: 1; }
+.btn-secondary-sm { padding: 0.6rem 1.2rem; font-size: 0.9rem; align-self: flex-start; }
 
 .process-section-bg { padding: 60px 5%; background: var(--vd-light-gray); }
 .process-steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
