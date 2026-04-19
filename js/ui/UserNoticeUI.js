@@ -77,48 +77,10 @@ class UserNoticeUI {
               <button type="button" class="user-btn user-btn-secondary" id="user-reject-all">
                 Отклонить всё
               </button>
-              <button type="button" class="user-btn user-btn-outline" id="user-settings-btn">
-                Настроить
-              </button>
             </div>
-            <a href="#privacy-policy" class="user-privacy-link" target="_blank" rel="noopener noreferrer">
+            <a href="#" class="user-privacy-link" id="user-privacy-link">
               Политика конфиденциальности
             </a>
-          </div>
-
-          <!-- Уровень 2: Детальные настройки -->
-          <div class="user-notice-level-2" id="user-notice-level-2">
-            <button type="button" class="user-back-btn" id="user-back-btn">
-              ← Назад
-            </button>
-            <h3 class="user-settings-title">Настройки хранения данных</h3>
-            <p class="user-settings-subtitle">Выберите категории данных, которые вы разрешаете использовать:</p>
-            
-            <div class="user-categories" id="user-categories">
-              ${Object.values(categories).map(cat => `
-                <div class="user-category ${sanitizer.escapeHtml(cat.required ? 'user-category-required' : '')}">
-                  <div class="user-category-header">
-                    <div class="user-category-info">
-                      <span class="user-category-name">${sanitizer.escapeHtml(cat.name)}</span>
-                      <span class="user-category-desc">${sanitizer.escapeHtml(cat.description)}</span>
-                    </div>
-                    ${cat.required 
-                      ? '<span class="user-badge-required">Обязательно</span>'
-                      : `<label class="user-toggle">
-                          <input type="checkbox" data-category="${sanitizer.escapeHtml(cat.id)}">
-                          <span class="toggle-slider"></span>
-                        </label>`
-                    }
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-
-            <div class="user-notice-buttons">
-              <button type="button" class="user-btn user-btn-primary" id="user-save-settings">
-                Сохранить настройки
-              </button>
-            </div>
           </div>
         </div>
         
@@ -138,7 +100,7 @@ class UserNoticeUI {
   }
 
   _attachEvents() {
-    // Кнопки уровня 1
+    // Кнопки cookie баннера
     document.getElementById('user-accept-all')?.addEventListener('click', () => {
       this.preferencesService.saveConsent({
         functional: true,
@@ -155,24 +117,12 @@ class UserNoticeUI {
       });
     });
 
-    document.getElementById('user-settings-btn')?.addEventListener('click', () => {
-      this._showLevel2();
-    });
-
-    // Кнопки уровня 2
-    document.getElementById('user-back-btn')?.addEventListener('click', () => {
-      this._showLevel1();
-    });
-
-    document.getElementById('user-save-settings')?.addEventListener('click', () => {
-      const checkboxes = document.querySelectorAll('#user-categories input[type="checkbox"]');
-      const consent = { functional: true };
-      
-      checkboxes.forEach(cb => {
-        consent[cb.dataset.category] = cb.checked;
-      });
-
-      this.preferencesService.saveConsent(consent);
+    // Ссылка на политику конфиденциальности - открывает модальное окно
+    document.getElementById('user-privacy-link')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (typeof ComponentLoader !== 'undefined' && ComponentLoader.openPolicyModal) {
+        ComponentLoader.openPolicyModal('privacy');
+      }
     });
 
     // Кнопка отзыва согласия
@@ -183,23 +133,8 @@ class UserNoticeUI {
 
   _showLevel1() {
     const level1 = document.getElementById('user-notice-level-1');
-    const level2 = document.getElementById('user-notice-level-2');
     if (level1) {
       level1.classList.remove('hidden');
-    }
-    if (level2) {
-      level2.classList.remove('visible');
-    }
-  }
-
-  _showLevel2() {
-    const level1 = document.getElementById('user-notice-level-1');
-    const level2 = document.getElementById('user-notice-level-2');
-    if (level1) {
-      level1.classList.add('hidden');
-    }
-    if (level2) {
-      level2.classList.add('visible');
     }
   }
 }
