@@ -1,10 +1,11 @@
 /**
- * Сервис управления согласиями пользователя
- * Отвечает только за бизнес-логику согласий
+ * Сервис управления предпочтениями пользователя
+ * Отвечает только за бизнес-логику предпочтений
  * Использует маскировку для избежания блокировок
+ * DRY, KISS - единая ответственность
  */
 
-class CookieConsentService {
+class UserPreferencesService {
   constructor(storageService, eventBus) {
     this.storage = storageService;
     this.eventBus = eventBus;
@@ -38,7 +39,7 @@ class CookieConsentService {
   init() {
     const consent = this.getConsent();
     if (!consent) {
-      this.eventBus.emit('consent:required');
+      this.eventBus.emit('preferences:required');
     } else {
       this._applyConsent(consent.categories);
     }
@@ -56,12 +57,12 @@ class CookieConsentService {
     };
     this.storage.set(this.consentKey, consentData);
     this._applyConsent(consent);
-    this.eventBus.emit('consent:saved', consentData);
+    this.eventBus.emit('preferences:saved', consentData);
   }
 
   withdrawConsent() {
     this.storage.remove(this.consentKey);
-    this.eventBus.emit('consent:withdrawn');
+    this.eventBus.emit('preferences:withdrawn');
   }
 
   getCategories() {
@@ -77,7 +78,7 @@ class CookieConsentService {
       this.eventBus.emit('marketing:disabled');
     }
 
-    this.eventBus.emit('consent:applied', categories);
+    this.eventBus.emit('preferences:applied', categories);
   }
 
   _disableAnalytics() {
@@ -89,14 +90,14 @@ class CookieConsentService {
         window.ym(counterId, 'hit', window.location.href, {
           params: { analytics: 'disabled' }
         });
-        Logger.INFO('Yandex Metrica disabled by user');
+        console.log('[UserPreferences] Analytics disabled by user');
       }
     } catch (error) {
-      Logger.WARN('Error disabling Yandex Metrica:', error.message);
+      console.warn('[UserPreferences] Error disabling analytics:', error.message);
     }
   }
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { CookieConsentService };
+  module.exports = { UserPreferencesService };
 }

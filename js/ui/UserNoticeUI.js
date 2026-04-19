@@ -1,12 +1,13 @@
 /**
- * UI компонент для отображения уведомлений о согласиях
+ * UI компонент для отображения уведомлений о предпочтениях пользователя
  * Отвечает только за представление и взаимодействие с пользователем
  * Использует нейтральные названия классов для избежания блокировок
+ * DRY, KISS - единая ответственность за UI
  */
 
-class CookieConsentUI {
-  constructor(consentService, eventBus) {
-    this.consentService = consentService;
+class UserNoticeUI {
+  constructor(preferencesService, eventBus) {
+    this.preferencesService = preferencesService;
     this.eventBus = eventBus;
     this.banner = null;
     this.settingsIcon = null;
@@ -15,16 +16,16 @@ class CookieConsentUI {
   init() {
     this._subscribeToEvents();
     // Проверяем состояние согласия после подписки на события
-    const consent = this.consentService.getConsent();
+    const consent = this.preferencesService.getConsent();
     if (!consent) {
       this.show();
     }
   }
 
   _subscribeToEvents() {
-    this.eventBus.on('consent:required', () => this.show());
-    this.eventBus.on('consent:saved', () => this.hide());
-    this.eventBus.on('consent:withdrawn', () => this.show());
+    this.eventBus.on('preferences:required', () => this.show());
+    this.eventBus.on('preferences:saved', () => this.hide());
+    this.eventBus.on('preferences:withdrawn', () => this.show());
   }
 
   show() {
@@ -56,7 +57,7 @@ class CookieConsentUI {
   _render() {
     if (document.getElementById('user-notice-banner')) return;
 
-    const categories = this.consentService.getCategories();
+    const categories = this.preferencesService.getCategories();
     const sanitizer = Utils.Sanitizer || { escapeHtml: (str) => str };
     
     const bannerHTML = `
@@ -141,7 +142,7 @@ class CookieConsentUI {
   _attachEvents() {
     // Кнопки уровня 1
     document.getElementById('user-accept-all')?.addEventListener('click', () => {
-      this.consentService.saveConsent({
+      this.preferencesService.saveConsent({
         functional: true,
         analytics: true,
         marketing: true
@@ -149,7 +150,7 @@ class CookieConsentUI {
     });
 
     document.getElementById('user-reject-all')?.addEventListener('click', () => {
-      this.consentService.saveConsent({
+      this.preferencesService.saveConsent({
         functional: true,
         analytics: false,
         marketing: false
@@ -173,12 +174,12 @@ class CookieConsentUI {
         consent[cb.dataset.category] = cb.checked;
       });
 
-      this.consentService.saveConsent(consent);
+      this.preferencesService.saveConsent(consent);
     });
 
     // Кнопка отзыва согласия
     document.getElementById('user-settings-icon')?.addEventListener('click', () => {
-      this.consentService.withdrawConsent();
+      this.preferencesService.withdrawConsent();
     });
   }
 
@@ -198,5 +199,5 @@ class CookieConsentUI {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { CookieConsentUI };
+  module.exports = { UserNoticeUI };
 }

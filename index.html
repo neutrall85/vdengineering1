@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="no-js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,14 +27,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/cookie-consent.css">
+  <link rel="stylesheet" href="css/user-notice.css">
 
   <script src="js/config.js"></script>
   <script src="js/utils.js" defer></script>
   <script src="js/services/Logger.js" defer></script>
   <script src="js/services.js" defer></script>
-  <script src="js/services/CookieConsentService.js" defer></script>
-  <script src="js/ui/CookieConsentUI.js" defer></script>
+  <script src="js/modules/preferences.js" defer></script>
+  <script src="js/services/UserPreferencesService.js" defer></script>
+  <script src="js/ui/UserNoticeUI.js" defer></script>
   <script src="js/services/ConsentManager.js" defer></script>
   <script src="js/ui/ModalManager.js" defer></script>
   <script src="js/ui/NavigationManager.js" defer></script>
@@ -48,8 +49,19 @@
   <script src="js/data/newsData.js" defer></script>
   <script src="js/app.js"></script>
   <script src="js/page-init.js"></script>
+  <script>
+    // Удаляем класс no-js при загрузке JS
+    document.documentElement.classList.remove('no-js');
+  </script>
 </head>
 <body>
+
+<!-- Статический фолбэк без JS (требование безопасности) -->
+<noscript>
+  <div class="user-notice-fallback">
+    <p>Для улучшения работы сайта используются технологии хранения данных. <a href="#privacy-policy">Политика конфиденциальности</a></p>
+  </div>
+</noscript>
 
 <!-- Лоадер страницы - показывается до полной загрузки компонентов -->
 <div id="pageLoader" class="page-loader">
