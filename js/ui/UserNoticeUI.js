@@ -34,23 +34,21 @@ class UserNoticeUI {
     }
     
     if (this.banner) {
-      this.banner.classList.add('active');
-      this.banner.style.display = 'flex';
+      this.banner.classList.add('active', 'visible');
+      this.banner.classList.remove('hidden');
     }
   }
 
   hide() {
     if (this.banner) {
       this.banner.classList.remove('active');
-      setTimeout(() => {
-        if (this.banner) {
-          this.banner.style.display = 'none';
-        }
-      }, 300);
+      this.banner.classList.add('hidden');
+      this.banner.classList.remove('visible');
     }
     
     if (this.settingsIcon) {
-      this.settingsIcon.style.display = 'flex';
+      this.settingsIcon.classList.add('visible');
+      this.settingsIcon.classList.remove('hidden');
     }
   }
 
@@ -89,7 +87,7 @@ class UserNoticeUI {
           </div>
 
           <!-- Уровень 2: Детальные настройки -->
-          <div class="user-notice-level-2" id="user-notice-level-2" style="display: none;">
+          <div class="user-notice-level-2" id="user-notice-level-2">
             <button type="button" class="user-back-btn" id="user-back-btn">
               ← Назад
             </button>
@@ -125,7 +123,7 @@ class UserNoticeUI {
         </div>
         
         <!-- Кнопка отзыва согласия (видима после принятия) -->
-        <button type="button" class="user-settings-icon" id="user-settings-icon" title="Настройки" style="display: none;">
+        <button type="button" class="user-settings-icon" id="user-settings-icon" title="Настройки">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
           </svg>
@@ -186,15 +184,23 @@ class UserNoticeUI {
   _showLevel1() {
     const level1 = document.getElementById('user-notice-level-1');
     const level2 = document.getElementById('user-notice-level-2');
-    if (level1) level1.style.display = 'block';
-    if (level2) level2.style.display = 'none';
+    if (level1) {
+      level1.classList.remove('hidden');
+    }
+    if (level2) {
+      level2.classList.remove('visible');
+    }
   }
 
   _showLevel2() {
     const level1 = document.getElementById('user-notice-level-1');
     const level2 = document.getElementById('user-notice-level-2');
-    if (level1) level1.style.display = 'none';
-    if (level2) level2.style.display = 'block';
+    if (level1) {
+      level1.classList.add('hidden');
+    }
+    if (level2) {
+      level2.classList.add('visible');
+    }
   }
 }
 

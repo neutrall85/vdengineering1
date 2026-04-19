@@ -23,26 +23,15 @@ venv/
 dist/
 build/
 target/
-.coverage
-coverage/
-htmlcov/
+*.log
+*.tmp
+*.swp
 
-# Editors and IDEs
+# Editors
 .vscode/
 .idea/
-*.swp
-*.swo
-*.tmp
 
 # System files
 .DS_Store
 Thumbs.db
-
-# Logs
-*.log
-
-# Cache directories
-.mypy_cache/
-.pytest_cache/
-.gradle/
 ```

@@ -27,7 +27,7 @@
   <meta name="twitter:image" content="https://vdengineering.ru/assets/images/og-image.jpg">
   
   <!-- Security -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://yandex.ru https://mc.yandex.ru; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https://cdn.yandex.ru https://mc.yandex.ru https://api.volga-dnepr-engineering.ru; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.volga-dnepr-engineering.ru https://yandex.ru https://mc.yandex.ru; frame-src 'self' https://yandex.ru https://mc.yandex.ru; object-src 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://yandex.ru https://mc.yandex.ru; style-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https://cdn.yandex.ru https://mc.yandex.ru https://api.volga-dnepr-engineering.ru; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.volga-dnepr-engineering.ru https://yandex.ru https://mc.yandex.ru; frame-src 'self' https://yandex.ru https://mc.yandex.ru; object-src 'none'; base-uri 'self'; form-action 'self';">
   
   <link rel="canonical" href="https://vdengineering.ru/about.html">
   <link rel="icon" type="image/png" href="assets/images/tab.png">
@@ -57,6 +57,7 @@
   </script>
   <script src="js/config.js"></script>
   <script src="js/services.js"></script>
+  <script src="js/modules/init-nojs.js" defer></script>
   <script src="js/modules/preferences.js" defer></script>
   <script src="js/services/UserPreferencesService.js"></script>
   <script src="js/ui/UserNoticeUI.js"></script>
@@ -69,7 +70,7 @@
   <script src="js/ui/NavigationManager.js"></script>
   <script src="js/ui/AnimationManager.js"></script>
   <script src="js/ui/FormManager.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js" defer></script>
   <script>
     // Удаляем класс no-js при загрузке JS
     document.documentElement.classList.remove('no-js');
