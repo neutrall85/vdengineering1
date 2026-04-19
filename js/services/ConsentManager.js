@@ -1,17 +1,20 @@
 /**
  * Менеджер согласий пользователя
  * Координирует работу сервисов (KISS, DRY, событийная модель)
+ * Маскированная загрузка через /js/modules/preferences.js
  */
 
 class ConsentManager {
   constructor() {
-    this.consentService = null;
-    this.consentUI = null;
+    this.preferencesService = null;
+    this.userNoticeUI = null;
+    this.observer = null;
+    this.recoveryTimer = null;
   }
 
   init() {
     if (!window.Services?.eventBus) {
-      Logger.ERROR('EventBus not available for ConsentManager');
+      console.error('[ConsentManager] EventBus not available');
       return;
     }
 
@@ -19,16 +22,72 @@ class ConsentManager {
     const storage = window.Services.storage;
 
     // Инициализация сервисов (разделение ответственностей)
-    this.consentService = new CookieConsentService(storage, eventBus);
-    this.consentUI = new CookieConsentUI(this.consentService, eventBus);
+    this.preferencesService = new UserPreferencesService(storage, eventBus);
+    this.userNoticeUI = new UserNoticeUI(this.preferencesService, eventBus);
 
-    // Запуск сервисов с задержкой после загрузки основного контента
-    requestAnimationFrame(() => {
-      this.consentService.init();
-      this.consentUI.init();
+    // Запуск сервисов с задержкой после загрузки основного контента (отложенная инициализация)
+    setTimeout(() => {
+      this.preferencesService.init();
+      this.userNoticeUI.init();
+      this._setupMutationObserver();
+    }, 800 + Math.random() * 700); // 800-1500 мс случайной задержки
+
+    console.log('[ConsentManager] Initialized with event-driven architecture');
+  }
+
+  /**
+   * MutationObserver для восстановления баннера при удалении блокировщиком
+   */
+  _setupMutationObserver() {
+    const self = this;
+    const bannerId = 'user-notice-banner';
+
+    this.observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.removedNodes.forEach(function(node) {
+          if (node.nodeType === 1 && node.id === bannerId) {
+            console.log('[ConsentManager] Banner removed, scheduling recovery...');
+            self._scheduleRecovery();
+          }
+        });
+      });
     });
 
-    Logger.INFO('ConsentManager initialized with event-driven architecture');
+    this.observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  /**
+   * Планирование восстановления баннера через 2 секунды
+   */
+  _scheduleRecovery() {
+    if (this.recoveryTimer) {
+      clearTimeout(this.recoveryTimer);
+    }
+
+    this.recoveryTimer = setTimeout(() => {
+      const consent = this.preferencesService.getConsent();
+      if (!consent && !document.getElementById('user-notice-banner')) {
+        console.log('[ConsentManager] Recovering banner...');
+        this.userNoticeUI.show();
+      }
+    }, 2000);
+  }
+
+  /**
+   * Очистка ресурсов при уничтожении
+   */
+  destroy() {
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
+    if (this.recoveryTimer) {
+      clearTimeout(this.recoveryTimer);
+      this.recoveryTimer = null;
+    }
   }
 }
 

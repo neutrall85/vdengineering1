@@ -503,14 +503,14 @@ function initApp() {
     DocPreviewManager.init();
   }
   
-  // 5. Инициализация ConsentManager для обработки cookie-согласий
+  // 5. Инициализация ConsentManager для обработки предпочтений пользователя
   if (typeof ConsentManager !== 'undefined') {
     try {
       const consentManager = new ConsentManager(window.Services.storage);
       consentManager.init();
       window.consentManager = consentManager;
     } catch (err) {
-      Logger.ERROR('Failed to initialize ConsentManager:', err);
+      console.error('Failed to initialize ConsentManager:', err);
     }
   }
 

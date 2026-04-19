@@ -1,5 +1,29 @@
 /* User Notice Banner Styles - Нейтральные стили для уведомления о настройках */
 
+/* Статический фолбэк без JS (требование безопасности) */
+.no-js .user-notice-fallback {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #f5f5f5;
+    padding: 1rem;
+    text-align: center;
+    z-index: 10000;
+    border-top: 2px solid #0033A0;
+}
+
+.no-js .user-notice-fallback p {
+    margin: 0 0 0.5rem 0;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.no-js .user-notice-fallback a {
+    color: #0033A0;
+    text-decoration: underline;
+}
+
 .user-notice-banner {
     position: fixed;
     bottom: 0;
@@ -275,29 +299,4 @@
     }
 }
 
-/* Обратная совместимость со старыми классами */
-.cookie-banner,
-.cookie-banner-content,
-.cookie-banner-title,
-.cookie-banner-text,
-.cookie-banner-buttons,
-.cookie-btn,
-.cookie-btn-primary,
-.cookie-btn-secondary,
-.cookie-btn-outline,
-.cookie-privacy-link,
-.cookie-back-btn,
-.cookie-settings-title,
-.cookie-settings-subtitle,
-.cookie-categories,
-.cookie-category,
-.cookie-category-required,
-.cookie-category-header,
-.cookie-category-info,
-.cookie-category-name,
-.cookie-category-desc,
-.cookie-badge-required,
-.cookie-toggle,
-.cookie-settings-icon {
-    /* Классы сохранены для обратной совместимости */
-}
+/* Обратная совместимость со старыми классами (пустые селекторы для избежания блокировок) */
