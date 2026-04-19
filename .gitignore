@@ -1,1 +1,18 @@
-(js/app.js, js/page-init.js, js/ui/FormManager.js are source code files, so nothing needs to be ignored)
+```
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Editors
+.vscode/
+.idea/
+
+# Dependencies
+node_modules/
+```
