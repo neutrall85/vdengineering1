@@ -298,28 +298,6 @@ const ComponentLoader = {
             }
         }
         
-        // Отправляем событие о завершении загрузки компонентов (вне зависимости от loadNavbar)
-        document.dispatchEvent(new CustomEvent('components:loaded'));
-
-        // Загрузка футера - вставляем перед закрывающим тегом body
-        if (loadFooter) {
-            const existingFooter = document.querySelector('body > footer.footer');
-            if (!existingFooter) {
-                const footerContainer = document.createElement('div');
-                footerContainer.innerHTML = this.footer.trim();
-                document.body.appendChild(footerContainer.firstElementChild);
-                this.updateYear();
-                // Инициализируем обработчики ссылок политик после загрузки футера
-                this.initPolicyLinks();
-            } else {
-                // Если футер уже есть в HTML (для обратной совместимости), обновляем его
-                existingFooter.outerHTML = this.footer;
-                this.updateYear();
-                // Инициализируем обработчики ссылок политик после загрузки футера
-                this.initPolicyLinks();
-            }
-        }
-
         // Загрузка модального окна
         if (loadModal) {
             const existingModal = document.getElementById('modalOverlay');
@@ -350,6 +328,28 @@ const ComponentLoader = {
                 }, 100);
             }
         }
+
+        // Загрузка футера - вставляем перед закрывающим тегом body
+        if (loadFooter) {
+            const existingFooter = document.querySelector('body > footer.footer');
+            if (!existingFooter) {
+                const footerContainer = document.createElement('div');
+                footerContainer.innerHTML = this.footer.trim();
+                document.body.appendChild(footerContainer.firstElementChild);
+                this.updateYear();
+                // Инициализируем обработчики ссылок политик после загрузки футера
+                this.initPolicyLinks();
+            } else {
+                // Если футер уже есть в HTML (для обратной совместимости), обновляем его
+                existingFooter.outerHTML = this.footer;
+                this.updateYear();
+                // Инициализируем обработчики ссылок политик после загрузки футера
+                this.initPolicyLinks();
+            }
+        }
+
+        // Отправляем событие о завершении загрузки компонентов ПОСЛЕ загрузки всех модалок и футера
+        document.dispatchEvent(new CustomEvent('components:loaded'));
 
         // Подсветка активной ссылки
         if (activePage) {

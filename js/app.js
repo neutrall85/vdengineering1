@@ -46,6 +46,9 @@ class Application {
       this._initGlobalHelpers();
       this._setCurrentYear();
       
+      // Регистрация модальных окон ПОСЛЕ загрузки компонентов (KISS, DRY)
+      this._registerModals();
+      
       // Повторная регистрация модулей после загрузки компонентов
       this._registerModules();
       
@@ -92,6 +95,39 @@ class Application {
       typeof formManager !== 'undefined' ? formManager : null,
       typeof newsManager !== 'undefined' ? newsManager : null
     ].filter(m => m != null);
+  }
+
+  _registerModals() {
+    if (typeof modalManager === 'undefined') return;
+    
+    const modalsToRegister = [
+      { key: 'about', overlayId: 'aboutModalOverlay', required: false },
+      { key: 'details', overlayId: 'detailsModalOverlay', required: false },
+      { key: 'form', overlayId: 'modalOverlay', required: true },
+      { 
+        key: 'news', 
+        overlayId: 'newsModalOverlay',
+        required: false,
+        onClose: () => {
+          if (window.NewsNavigation) {
+            window.NewsNavigation.restoreBaseUrl();
+          }
+        }
+      },
+      { key: 'proposal', overlayId: 'proposalModalOverlay', required: false },
+      { key: 'universal', overlayId: 'universalApplicationModalOverlay', required: false },
+      { key: 'project', overlayId: 'projectModalOverlay', required: false },
+      { key: 'service', overlayId: 'serviceModalOverlay', required: false }
+    ];
+
+    modalsToRegister.forEach(({ key, overlayId, required, onClose }) => {
+      const overlay = document.getElementById(overlayId);
+      if (overlay) {
+        modalManager.register(key, { overlayId, onClose });
+      } else if (required) {
+        Logger.WARN(`Required modal "${key}" not found`);
+      }
+    });
   }
 
   _initGlobalHelpers() {
@@ -460,41 +496,7 @@ function initApp() {
     Logger.WARN('Required services or utils are not available for FormManager initialization');
   }
   
-  // 3. Регистрация модальных окон (после ComponentLoader и FormManager)
-  if (typeof modalManager !== 'undefined') {
-    const modalsToRegister = [
-      { key: 'about', overlayId: 'aboutModalOverlay', required: false },
-      { key: 'details', overlayId: 'detailsModalOverlay', required: false },
-      { key: 'form', overlayId: 'modalOverlay', required: true },
-      { 
-        key: 'news', 
-        overlayId: 'newsModalOverlay',
-        required: false,
-        onClose: () => {
-          // Восстанавливаем базовый URL при закрытии любым способом
-          if (window.NewsNavigation) {
-            window.NewsNavigation.restoreBaseUrl();
-          }
-        }
-      },
-      { key: 'proposal', overlayId: 'proposalModalOverlay', required: false },
-      { key: 'universal', overlayId: 'universalApplicationModalOverlay', required: false },
-      { key: 'project', overlayId: 'projectModalOverlay', required: false },
-      { key: 'service', overlayId: 'serviceModalOverlay', required: false },
-      { key: 'policy', overlayId: 'policyModalOverlay', required: false }
-    ];
-    
-    modalsToRegister.forEach(modal => {
-      if (!modalManager.modals.has(modal.key)) {
-        const overlay = document.getElementById(modal.overlayId);
-        if (overlay || modal.required !== false) {
-          modalManager.register(modal.key, { overlayId: modal.overlayId, onClose: modal.onClose });
-        }
-      }
-    });
-  } else {
-    Logger.WARN('modalManager is not defined, skipping modal registration');
-  }
+  // 3. Регистрация модальных окон удалена - теперь выполняется в Application._registerModals()
   
   // 4. Инициализация DocPreviewManager для страницы документов
   if (typeof DocPreviewManager !== 'undefined') {
