@@ -1,5 +1,5 @@
 /**
- * Менеджер cookie-согласий
+ * Менеджер согласий пользователя
  * Координирует работу сервисов (KISS, DRY, событийная модель)
  */
 
@@ -22,9 +22,11 @@ class ConsentManager {
     this.consentService = new CookieConsentService(storage, eventBus);
     this.consentUI = new CookieConsentUI(this.consentService, eventBus);
 
-    // Запуск сервисов
-    this.consentService.init();
-    this.consentUI.init();
+    // Запуск сервисов с задержкой после загрузки основного контента
+    requestAnimationFrame(() => {
+      this.consentService.init();
+      this.consentUI.init();
+    });
 
     Logger.INFO('ConsentManager initialized with event-driven architecture');
   }
