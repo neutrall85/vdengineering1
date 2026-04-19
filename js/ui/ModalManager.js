@@ -77,6 +77,7 @@ class ModalManager {
         'modalOverlay': 'form',
         'detailsModalOverlay': 'details',
         'newsModalOverlay': 'news',
+        'proposalModalOverlay': 'proposal',
         'universalApplicationModalOverlay': 'universal',
         'aboutModalOverlay': 'about',
         'projectModalOverlay': 'project',

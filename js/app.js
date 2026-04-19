@@ -473,6 +473,7 @@ function initApp() {
           }
         }
       },
+      { key: 'proposal', overlayId: 'proposalModalOverlay', required: false },
       { key: 'universal', overlayId: 'universalApplicationModalOverlay', required: false },
       { key: 'project', overlayId: 'projectModalOverlay', required: false },
       { key: 'service', overlayId: 'serviceModalOverlay', required: false },

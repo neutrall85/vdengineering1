@@ -1,3 +1,1 @@
-(css/styles.css, js/ui/ComponentLoader.js are source files, no build artifacts, dependencies, or temp files detected)
-
-Nothing to output - .gitignore remains empty.
+(js/app.js, js/ui/ComponentLoader.js, js/ui/ModalManager.js, projects.html, services.html are source files, so nothing to ignore)
