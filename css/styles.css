@@ -1345,6 +1345,11 @@ body.app-ready > footer {
   transition: transform var(--duration-slow) var(--ease-bounce);
 }
 
+/* Увеличенная ширина для модального окна коммерческого предложения */
+.modal-container-proposal {
+  max-width: 850px;
+}
+
 .modal-overlay.active .modal-container {
   transform: scale(1) translateY(0);
 }
