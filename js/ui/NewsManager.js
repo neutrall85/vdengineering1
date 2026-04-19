@@ -17,7 +17,13 @@ class NewsManager {
     this._initTabs();
     this._initModal();
     this._initCardClickHandler();
-    this._initLightbox();
+    
+    // Инициализация лайтбокса после полной загрузки DOM
+    if (document.readyState === 'complete') {
+      this._initLightbox();
+    } else {
+      window.addEventListener('load', () => this._initLightbox());
+    }
   }
 
   _initLightbox() {
