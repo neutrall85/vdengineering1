@@ -189,7 +189,11 @@ class Application {
       const modalTrigger = e.target.closest('[data-modal-open="proposal"]');
       if (modalTrigger) {
         e.preventDefault();
-        if (window.openModal) window.openModal();
+        if (typeof modalManager !== 'undefined') {
+          modalManager.open('proposal');
+        } else {
+          Logger.WARN('openProposalModal: ModalManager not available');
+        }
       }
       
       // Универсальный обработчик для открытия модалки "Отклик на вакансию" (DRY)
