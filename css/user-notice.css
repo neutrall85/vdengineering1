@@ -43,6 +43,14 @@
     animation: slideUp 0.3s ease-out;
 }
 
+.user-notice-banner.visible {
+    display: flex;
+}
+
+.user-notice-banner.hidden {
+    display: none;
+}
+
 @keyframes slideUp {
     from {
         transform: translateY(100%);
@@ -258,6 +266,14 @@
     z-index: 9999;
 }
 
+.user-settings-icon.visible {
+    display: flex;
+}
+
+.user-settings-icon.hidden {
+    display: none;
+}
+
 .user-settings-icon:hover {
     background: #002880;
     transform: scale(1.1);
@@ -297,6 +313,19 @@
         bottom: 1rem;
         right: 1rem;
     }
+}
+
+/* Стили для уровней переключения */
+.user-notice-level-2 {
+    display: none;
+}
+
+.user-notice-level-2.visible {
+    display: block;
+}
+
+.user-notice-level-1.hidden {
+    display: none;
 }
 
 /* Обратная совместимость со старыми классами (пустые селекторы для избежания блокировок) */

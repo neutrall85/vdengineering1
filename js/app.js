@@ -103,7 +103,7 @@ class Application {
     const modalsToRegister = [
       { key: 'about', overlayId: 'aboutModalOverlay', required: false },
       { key: 'details', overlayId: 'detailsModalOverlay', required: false },
-      { key: 'form', overlayId: 'modalOverlay', required: true },
+      { key: 'form', overlayId: 'proposalModalOverlay', required: false },
       { 
         key: 'news', 
         overlayId: 'newsModalOverlay',
