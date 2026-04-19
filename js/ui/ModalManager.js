@@ -7,8 +7,9 @@ class ModalManager {
   constructor() {
     this.modals = new Map();
     this.activeModal = null;
-    this.cleanupHandlers = null;
-    this.scrollPosition = 0;
+    this.cleanupHandlers = new Map(); // Хранилище для cleanup-функций по ключам
+    this._boundKeyHandler = null; // Сохраняем ссылку на обработчик Escape
+    this._boundClickHandler = null; // Сохраняем ссылку на обработчик кликов
     this._initGlobalHandlers();
   }
 
@@ -31,25 +32,28 @@ class ModalManager {
     
     const overlay = document.getElementById(config.overlayId);
     if (overlay && !overlay._clickHandlerAttached) {
-      overlay.addEventListener('click', (e) => {
+      const clickHandler = (e) => {
         if (e.target === overlay) {
           this.close(key);
         }
-      });
+      };
+      overlay.addEventListener('click', clickHandler);
       overlay._clickHandlerAttached = true;
+      
+      // Сохраняем handler для возможной очистки
+      overlay._clickHandler = clickHandler;
     }
   }
 
   _initGlobalHandlers() {
-    // Обработчик Escape для всех модальных окон
-    document.addEventListener('keydown', (e) => {
+    // Единый обработчик Escape для всех модальных окон
+    this._boundKeyHandler = (e) => {
       if (e.key === 'Escape' && this.activeModal) {
         this.close(this.activeModal);
+        return;
       }
-    });
-    
-    // Обработчик Escape для модального окна политик
-    document.addEventListener('keydown', (e) => {
+      
+      // Специальный случай для policy modal
       if (e.key === 'Escape') {
         const policyModal = document.getElementById('policyModalOverlay');
         if (policyModal && policyModal.classList.contains('active')) {
@@ -58,11 +62,11 @@ class ModalManager {
           }
         }
       }
-    });
+    };
+    document.addEventListener('keydown', this._boundKeyHandler);
     
     // Единый обработчик для всех кнопок закрытия модальных окон (DRY, KISS)
-    // Закрывает модальное окно напрямую через overlay ID, без зависимости от глобальных функций
-    document.addEventListener('click', (e) => {
+    this._boundClickHandler = (e) => {
       const closeBtn = e.target.closest('.modal-close, .details-modal-close');
       if (!closeBtn) return;
       
@@ -93,13 +97,21 @@ class ModalManager {
       } else if (overlayId === 'policyModalOverlay' && typeof ComponentLoader !== 'undefined') {
         // Специальный случай для policy modal
         ComponentLoader.closePolicyModal();
+      } else if (overlayId === 'universalApplicationModalOverlay' && typeof window.closeUniversalApplicationModal === 'function') {
+        // Специальный случай для universal application modal
+        window.closeUniversalApplicationModal();
       } else {
         // Fallback: просто убираем класс active
         overlay.classList.remove('active');
-        document.body.classList.remove('no-scroll');
-        document.body.style.paddingRight = '';
+        if (window.ScrollManager) {
+          ScrollManager.unlock();
+        } else {
+          document.body.classList.remove('no-scroll');
+          document.body.style.paddingRight = '';
+        }
       }
-    });
+    };
+    document.addEventListener('click', this._boundClickHandler);
   }
 
   open(key, options = {}) {
@@ -116,12 +128,15 @@ class ModalManager {
     const overlay = document.getElementById(config.overlayId);
     if (!overlay) return false;
 
-    // Сохраняем текущую позицию скролла
-    this.scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-    
-    // Блокируем скролл body с сохранением позиции через padding-right
-    document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
-    document.body.classList.add('no-scroll');
+    // Используем централизованный ScrollManager для блокировки скролла
+    if (window.ScrollManager) {
+      ScrollManager.lock();
+    } else {
+      // Fallback для обратной совместимости
+      const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
+      document.body.classList.add('no-scroll');
+    }
 
     // Небольшая задержка чтобы DOM обновился перед инициализацией
     setTimeout(() => {
@@ -163,12 +178,16 @@ class ModalManager {
 
     overlay.classList.remove('active');
     
-    // Сначала восстанавливаем позицию скролла, чтобы избежать прыжка
-    window.scrollTo(0, this.scrollPosition);
-    
-    // Затем убираем блокировку скролла и padding
-    document.body.classList.remove('no-scroll');
-    document.body.style.paddingRight = '';
+    // Используем централизованный ScrollManager для восстановления скролла
+    if (window.ScrollManager) {
+      ScrollManager.unlock();
+    } else {
+      // Fallback для обратной совместимости
+      const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+      window.scrollTo(0, scrollPosition);
+      document.body.classList.remove('no-scroll');
+      document.body.style.paddingRight = '';
+    }
     
     if (this.activeModal === key) {
       this.activeModal = null;

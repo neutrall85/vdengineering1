@@ -511,13 +511,18 @@ const ComponentLoader = {
           allowedAttributes: { 'a': ['href', 'target', 'rel'] }
         });
 
-        // Блокируем скролл с помощью CSS класса
-        const scrollbarWidth = this.getScrollbarWidth();
-        if (scrollbarWidth > 0) {
-            document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
-            document.body.classList.add('scroll-padding-fix');
+        // Используем централизованный ScrollManager для блокировки скролла
+        if (window.ScrollManager) {
+            ScrollManager.lock();
+        } else {
+            // Fallback для обратной совместимости
+            const scrollbarWidth = this.getScrollbarWidth();
+            if (scrollbarWidth > 0) {
+                document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+                document.body.classList.add('scroll-padding-fix');
+            }
+            document.body.classList.add('no-scroll');
         }
-        document.body.classList.add('no-scroll');
 
         // Показываем модальное окно
         setTimeout(() => {
@@ -535,9 +540,16 @@ const ComponentLoader = {
         if (!modalOverlay) return;
 
         modalOverlay.classList.remove('active');
-        document.body.classList.remove('no-scroll');
-        document.body.classList.remove('scroll-padding-fix');
-        document.body.style.removeProperty('--scrollbar-width');
+        
+        // Используем централизованный ScrollManager для восстановления скролла
+        if (window.ScrollManager) {
+            ScrollManager.unlock();
+        } else {
+            // Fallback для обратной совместимости
+            document.body.classList.remove('no-scroll');
+            document.body.classList.remove('scroll-padding-fix');
+            document.body.style.removeProperty('--scrollbar-width');
+        }
     },
 
     /**
@@ -577,16 +589,19 @@ const ComponentLoader = {
                 if (successTitle) successTitle.textContent = 'Отклик отправлен!';
             }
 
-            // Сохраняем текущую позицию скролла
-            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-            
-            // Блокируем скролл body с помощью CSS класса
-            const scrollbarWidth = ComponentLoader.getScrollbarWidth();
-            if (scrollbarWidth > 0) {
-                document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
-                document.body.classList.add('scroll-padding-fix');
+            // Используем централизованный ScrollManager для блокировки скролла
+            if (window.ScrollManager) {
+                ScrollManager.lock();
+            } else {
+                // Fallback для обратной совместимости
+                const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollbarWidth = ComponentLoader.getScrollbarWidth();
+                if (scrollbarWidth > 0) {
+                    document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+                    document.body.classList.add('scroll-padding-fix');
+                }
+                document.body.classList.add('no-scroll');
             }
-            document.body.classList.add('no-scroll');
 
             overlay.classList.add('active');
             
@@ -606,9 +621,16 @@ const ComponentLoader = {
                 modalManager.close('universal');
             } else {
                 overlay.classList.remove('active');
-                document.body.classList.remove('no-scroll');
-                document.body.classList.remove('scroll-padding-fix');
-                document.body.style.removeProperty('--scrollbar-width');
+                
+                // Используем централизованный ScrollManager для восстановления скролла
+                if (window.ScrollManager) {
+                    ScrollManager.unlock();
+                } else {
+                    // Fallback для обратной совместимости
+                    document.body.classList.remove('no-scroll');
+                    document.body.classList.remove('scroll-padding-fix');
+                    document.body.style.removeProperty('--scrollbar-width');
+                }
             }
         };
 
