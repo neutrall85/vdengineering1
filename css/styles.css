@@ -989,12 +989,12 @@ body.app-ready > footer {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  transition: gap var(--duration-normal) var(--ease-elastic);
+  transition: all var(--duration-normal) var(--ease-elastic);
 }
 
 .news-card-preview-link:hover {
   gap: 1rem;
-  color: var(--vd);
+  color: var(--vd-dark);
 }
 
 /* ==================== ПАРТНЕРЫ ==================== */
