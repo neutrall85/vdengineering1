@@ -515,6 +515,17 @@ function initApp() {
   if (typeof DocPreviewManager !== 'undefined') {
     DocPreviewManager.init();
   }
+  
+  // 5. Инициализация ConsentManager для обработки cookie-согласий
+  if (typeof ConsentManager !== 'undefined') {
+    try {
+      const consentManager = new ConsentManager(window.Services.storage);
+      consentManager.init();
+      window.consentManager = consentManager;
+    } catch (err) {
+      Logger.ERROR('Failed to initialize ConsentManager:', err);
+    }
+  }
 
   // 6. Запуск основного приложения
   const app = new Application();
