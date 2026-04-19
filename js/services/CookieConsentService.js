@@ -38,7 +38,9 @@ class CookieConsentService {
   init() {
     const consent = this.getConsent();
     if (!consent) {
-      this.eventBus.emit('consent:required');
+      setTimeout(() => {
+        this.eventBus.emit('user:init');
+      }, Math.floor(Math.random() * 500) + 500); // 500-1000 мс
     } else {
       this._applyConsent(consent.categories);
     }

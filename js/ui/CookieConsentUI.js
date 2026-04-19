@@ -22,7 +22,7 @@ class CookieConsentUI {
   }
 
   _subscribeToEvents() {
-    this.eventBus.on('consent:required', () => this.show());
+    this.eventBus.on('user:init', () => this.show());
     this.eventBus.on('consent:saved', () => this.hide());
     this.eventBus.on('consent:withdrawn', () => this.show());
   }
