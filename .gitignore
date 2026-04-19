@@ -1,62 +1,47 @@
 ```
-# Logs and temp files
-*.log
-
-# Environment
-.env
-.env.local
-*.env.*
-
-# Editors
-.vscode/
-.idea/
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
+*.class
+*.dll
+*.so
+*.a
+*.exe
+*.out
 
 # Dependencies
 node_modules/
-.venv/
 venv/
-__pycache__/
-.mypy_cache/
-.pytest_cache/
-pip-log.txt
-pip-selfcheck.json
+.venv/
+.env
+.env.local
+.env.*
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Python
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-.coverage
-htmlcov/
-coverage/
-.pytest_cache/
-.tox/
-.coverage.*
-.nox/
+# Build directories
 dist/
 build/
-*.egg-info/
-.eggs/
-.installed.cfg
-lib/
-lib64/
-parts/
-sdist/
-develop-eggs/
-bin/
-var/
-share/python-eggs/
-*.egg
+target/
+coverage/
+htmlcov/
+.mypy_cache/
+.pytest_cache/
+.gradle/
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
 
 # Compressed files
 *.zip
@@ -81,17 +66,4 @@ share/python-eggs/
 *.tar.bz2
 *.tar.xz
 *.tar.zst
-
-# IDE and editor specific
-*.swp
-*.swo
-*.tmp
-*~
-.project
-.well-known/
-.settings/
-.metadata/
-.classpath
-.factorypath
-.springBeans
 ```
