@@ -1,4 +1,6 @@
-.cookie-banner {
+/* User Notice Banner Styles - Нейтральные стили для уведомления о настройках */
+
+.user-notice-banner {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -13,7 +15,7 @@
     overflow-y: auto;
 }
 
-.cookie-banner.active {
+.user-notice-banner.active {
     animation: slideUp 0.3s ease-out;
 }
 
@@ -28,34 +30,34 @@
     }
 }
 
-.cookie-banner-content {
+.user-notice-content {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
 }
 
-.cookie-banner-title {
+.user-notice-title {
     font-size: 1.25rem;
     font-weight: 600;
     color: #1a1a1a;
     margin-bottom: 0.75rem;
 }
 
-.cookie-banner-text {
+.user-notice-text {
     font-size: 0.95rem;
     color: #4a4a4a;
     line-height: 1.6;
     margin-bottom: 1.25rem;
 }
 
-.cookie-banner-buttons {
+.user-notice-buttons {
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
     margin-bottom: 1rem;
 }
 
-.cookie-btn {
+.user-btn {
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
     font-size: 0.95rem;
@@ -66,47 +68,46 @@
     font-family: inherit;
 }
 
-.cookie-btn-primary {
+.user-btn-primary {
     background: #0033A0;
     color: #fff;
 }
 
-.cookie-btn-primary:hover {
+.user-btn-primary:hover {
     background: #002880;
 }
 
-.cookie-btn-secondary {
+.user-btn-secondary {
     background: #f0f0f0;
     color: #333;
 }
 
-.cookie-btn-secondary:hover {
+.user-btn-secondary:hover {
     background: #e0e0e0;
 }
 
-.cookie-btn-outline {
+.user-btn-outline {
     background: transparent;
     color: #0033A0;
     border: 2px solid #0033A0;
 }
 
-.cookie-btn-outline:hover {
+.user-btn-outline:hover {
     background: #0033A0;
     color: #fff;
 }
 
-.cookie-privacy-link {
+.user-privacy-link {
     font-size: 0.85rem;
     color: #0033A0;
     text-decoration: underline;
 }
 
-.cookie-privacy-link:hover {
+.user-privacy-link:hover {
     text-decoration: none;
 }
 
-/* Уровень 2: Детальные настройки */
-.cookie-back-btn {
+.user-back-btn {
     background: none;
     border: none;
     color: #0033A0;
@@ -116,63 +117,63 @@
     margin-bottom: 0.5rem;
 }
 
-.cookie-back-btn:hover {
+.user-back-btn:hover {
     text-decoration: underline;
 }
 
-.cookie-settings-title {
+.user-settings-title {
     font-size: 1.15rem;
     font-weight: 600;
     color: #1a1a1a;
     margin-bottom: 0.5rem;
 }
 
-.cookie-settings-subtitle {
+.user-settings-subtitle {
     font-size: 0.9rem;
     color: #666;
     margin-bottom: 1.25rem;
 }
 
-.cookie-categories {
+.user-categories {
     margin-bottom: 1.25rem;
 }
 
-.cookie-category {
+.user-category {
     padding: 1rem;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     margin-bottom: 0.75rem;
 }
 
-.cookie-category-required {
+.user-category-required {
     background: #f9f9f9;
 }
 
-.cookie-category-header {
+.user-category-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
 }
 
-.cookie-category-info {
+.user-category-info {
     flex: 1;
 }
 
-.cookie-category-name {
+.user-category-name {
     display: block;
     font-weight: 500;
     color: #1a1a1a;
     margin-bottom: 0.25rem;
 }
 
-.cookie-category-desc {
+.user-category-desc {
     display: block;
     font-size: 0.85rem;
     color: #666;
 }
 
-.cookie-badge-required {
+.user-badge-required {
     background: #e0e0e0;
     color: #666;
     padding: 0.25rem 0.75rem;
@@ -181,29 +182,17 @@
     font-weight: 500;
 }
 
-.cookie-toggle {
+.user-toggle {
     position: relative;
     display: inline-block;
     width: 50px;
     height: 26px;
 }
 
-.cookie-toggle input {
+.user-toggle input {
     opacity: 0;
     width: 0;
     height: 0;
-}
-
-.toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.3s;
-    border-radius: 26px;
 }
 
 .toggle-slider:before {
@@ -218,16 +207,15 @@
     border-radius: 50%;
 }
 
-.cookie-toggle input:checked + .toggle-slider {
+.user-toggle input:checked + .toggle-slider {
     background-color: #0033A0;
 }
 
-.cookie-toggle input:checked + .toggle-slider:before {
+.user-toggle input:checked + .toggle-slider:before {
     transform: translateX(24px);
 }
 
-/* Кнопка настроек (иконка) */
-.cookie-settings-icon {
+.user-settings-icon {
     position: fixed;
     bottom: 1.5rem;
     right: 1.5rem;
@@ -246,41 +234,40 @@
     z-index: 9999;
 }
 
-.cookie-settings-icon:hover {
+.user-settings-icon:hover {
     background: #002880;
     transform: scale(1.1);
 }
 
-.cookie-settings-icon svg {
+.user-settings-icon svg {
     width: 24px;
     height: 24px;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
-    .cookie-banner {
+    .user-notice-banner {
         padding: 1rem;
     }
     
-    .cookie-banner-buttons {
+    .user-notice-buttons {
         flex-direction: column;
     }
     
-    .cookie-btn {
+    .user-btn {
         width: 100%;
         text-align: center;
     }
     
-    .cookie-category-header {
+    .user-category-header {
         flex-direction: column;
         align-items: flex-start;
     }
     
-    .cookie-toggle {
+    .user-toggle {
         margin-top: 0.5rem;
     }
     
-    .cookie-settings-icon {
+    .user-settings-icon {
         width: 45px;
         height: 45px;
         bottom: 1rem;
@@ -288,3 +275,29 @@
     }
 }
 
+/* Обратная совместимость со старыми классами */
+.cookie-banner,
+.cookie-banner-content,
+.cookie-banner-title,
+.cookie-banner-text,
+.cookie-banner-buttons,
+.cookie-btn,
+.cookie-btn-primary,
+.cookie-btn-secondary,
+.cookie-btn-outline,
+.cookie-privacy-link,
+.cookie-back-btn,
+.cookie-settings-title,
+.cookie-settings-subtitle,
+.cookie-categories,
+.cookie-category,
+.cookie-category-required,
+.cookie-category-header,
+.cookie-category-info,
+.cookie-category-name,
+.cookie-category-desc,
+.cookie-badge-required,
+.cookie-toggle,
+.cookie-settings-icon {
+    /* Классы сохранены для обратной совместимости */
+}

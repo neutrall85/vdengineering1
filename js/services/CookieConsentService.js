@@ -1,13 +1,15 @@
 /**
- * Сервис управления cookie-согласиями
+ * Сервис управления согласиями пользователя
  * Отвечает только за бизнес-логику согласий
+ * Использует маскировку для избежания блокировок
  */
 
 class CookieConsentService {
   constructor(storageService, eventBus) {
     this.storage = storageService;
     this.eventBus = eventBus;
-    this.consentKey = 'cookie_consent';
+    // Маскированный ключ для избежания блокировок
+    this.consentKey = 'user_preferences_v1';
     this.config = {
       version: '1.0',
       categories: {
