@@ -78,9 +78,14 @@ class UserNoticeUI {
                 Отклонить всё
               </button>
             </div>
-            <a href="#" class="user-privacy-link" id="user-privacy-link">
-              Политика конфиденциальности
-            </a>
+            <div class="user-notice-links">
+              <a href="#" class="user-privacy-link" id="user-privacy-link">
+                Политика конфиденциальности
+              </a>
+              <a href="#" class="user-privacy-link" id="user-cookie-policy-link">
+                Политика в отношении файлов cookie
+              </a>
+            </div>
           </div>
         </div>
         
@@ -122,6 +127,14 @@ class UserNoticeUI {
       e.preventDefault();
       if (typeof ComponentLoader !== 'undefined' && ComponentLoader.openPolicyModal) {
         ComponentLoader.openPolicyModal('privacy');
+      }
+    });
+
+    // Ссылка на политику в отношении файлов cookie - открывает модальное окно
+    document.getElementById('user-cookie-policy-link')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (typeof ComponentLoader !== 'undefined' && ComponentLoader.openPolicyModal) {
+        ComponentLoader.openPolicyModal('cookie');
       }
     });
 
