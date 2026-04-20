@@ -41,7 +41,6 @@
   <script src="js/ui/NavigationManager.js" defer></script>
   <script src="js/ui/AnimationManager.js" defer></script>
   <script src="js/ui/FormManager.js" defer></script>
-  <script src="js/ui/MapManager.js" defer></script>
   <script src="js/ui/NewsRenderer.js" defer></script>
   <script src="js/ui/NewsManager.js" defer></script>
   <script src="js/data/policyDocuments.js" defer></script>
@@ -299,17 +298,19 @@
 
       <div class="map-section">
         <h3>Наше местоположение</h3>
-        <div id="mapContainer" class="map-container-inline">
-          <iframe
-            src="https://yandex.ru/map-widget/v1/?ll=37.41917%2C55.947444&z=17&pt=37.41917,55.947444,pm2rdm"
-            width="100%"
-            height="350"
-            frameborder="0"
-            class="iframe-borderless"
-            allowfullscreen="true"
-            loading="lazy">
-          </iframe>
-        </div>
+        <a href="https://yandex.ru/map-widget/v1/?ll=37.41917%2C55.947444&z=17&pt=37.41917,55.947444,pm2rdm" target="_blank" rel="noopener noreferrer" style="display: block; cursor: pointer;">
+          <div id="mapContainer" class="map-container-inline">
+            <iframe
+              src="https://yandex.ru/map-widget/v1/?ll=37.41917%2C55.947444&z=17&pt=37.41917,55.947444,pm2rdm"
+              width="100%"
+              height="350"
+              frameborder="0"
+              class="iframe-borderless"
+              allowfullscreen="true"
+              loading="lazy">
+            </iframe>
+          </div>
+        </a>
       </div>
     </div>
 
