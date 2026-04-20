@@ -262,12 +262,14 @@ body.app-ready > footer {
   }
   
   .modal-close {
-    top: 0.5rem;
+    top: calc(0.5rem + var(--header-height, 0px));
     right: 0.5rem;
     width: 36px;
     height: 36px;
     background: var(--vd-light-gray);
     box-shadow: none;
+    opacity: 0;
+    visibility: hidden;
   }
 
   .modal-close svg {
@@ -277,7 +279,6 @@ body.app-ready > footer {
 
   .modal-header {
     padding: 1rem 1rem 0.5rem;
-    padding-right: 48px;
   }
   
   .modal-title {
@@ -1379,7 +1380,6 @@ body.app-ready > footer {
   padding: 1.5rem 2rem 0.5rem;
   border-bottom: 1px solid var(--border-color);
   position: relative;
-  padding-right: 70px;
 }
 
 .modal-title {
@@ -1398,8 +1398,8 @@ body.app-ready > footer {
 }
 
 .modal-close {
-  position: absolute;
-  top: 1rem;
+  position: fixed;
+  top: calc(1rem + var(--header-height, 0px));
   right: 1rem;
   width: 45px;
   height: 45px;
@@ -1410,7 +1410,7 @@ body.app-ready > footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 1001;
   transition: background var(--duration-fast) var(--ease-smooth);
   outline: none;
   -webkit-tap-highlight-color: transparent;
@@ -2910,10 +2910,6 @@ body.app-ready > footer {
   .modal-header,
   .modal-body {
     padding: 1rem;
-  }
-
-  .modal-header {
-    padding-right: 48px;
   }
 
   .details-modal-body {
