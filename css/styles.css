@@ -266,8 +266,8 @@ body.app-ready > footer {
   }
   
   .modal-close {
-    top: calc(0.5rem + var(--header-height, 0px));
-    right: 1rem;
+    top: -40px;
+    right: 0;
     width: 36px;
     height: 36px;
   }
@@ -1360,8 +1360,8 @@ body.app-ready > footer {
 
 .modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: -50px;
+  right: 0;
   width: 45px;
   height: 45px;
   background: transparent;
@@ -1378,7 +1378,7 @@ body.app-ready > footer {
 }
 
 .modal-close:hover {
-  background: var(--vd);
+  background: white;
 }
 
 .modal-close svg {
@@ -1389,7 +1389,7 @@ body.app-ready > footer {
 }
 
 .modal-close:hover svg {
-  fill: white;
+  fill: black;
 }
 
 .modal-container {
@@ -1400,7 +1400,7 @@ body.app-ready > footer {
   max-height: none;
   overflow: visible;
   position: relative;
-  margin-top: 30px;
+  margin-top: 80px;
   transform: scale(0.9) translateY(20px);
   transition: transform var(--duration-slow) var(--ease-bounce);
 }
@@ -1413,7 +1413,8 @@ body.app-ready > footer {
 /* Кнопка закрытия для модального окна коммерческого предложения */
 .modal-overlay-proposal .modal-close,
 .modal-overlay:has(.modal-container-proposal) .modal-close {
-  right: 1rem;
+  top: -50px;
+  right: 0;
 }
 
 .modal-overlay.active .modal-container {
@@ -2066,7 +2067,8 @@ body.app-ready > footer {
 
 /* Кнопка закрытия для details-modal */
 .details-modal-overlay .modal-close {
-  right: 1rem;
+  top: -50px;
+  right: 0;
 }
 
 .details-modal-body {
