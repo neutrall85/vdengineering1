@@ -90,7 +90,7 @@ class NewsRenderer {
     dateSvg.appendChild(datePath);
     dateDiv.appendChild(dateSvg);
     
-    const dateText = document.createTextNode(` ${this._escapeHtml(news.date)}`);
+    const dateText = document.createTextNode(` ${Utils.Sanitizer.escapeHtml(news.date)}`);
     dateDiv.appendChild(dateText);
     
     const title = document.createElement('h3');
@@ -129,7 +129,7 @@ class NewsRenderer {
   _createNewsLink(news) {
     const { year, month } = Utils.SlugUtils ? Utils.SlugUtils.parseDate(news.date) : { year: '2023', month: '01' };
     const day = '01';
-    const shortSlug = Utils.SlugUtils ? Utils.SlugUtils.createShortSlug(news.title) : this._escapeHtml(news.title).toLowerCase().replace(/\s+/g, '-');
+    const shortSlug = Utils.SlugUtils ? Utils.SlugUtils.createShortSlug(news.title) : Utils.Sanitizer.escapeHtml(news.title).toLowerCase().replace(/\s+/g, '-');
     return `/${year}/${month}/${day}/${shortSlug}-${news.id}`;
   }
 
@@ -219,31 +219,7 @@ class NewsRenderer {
   _lazyLoadImages(container) {
     const images = container.querySelectorAll('.news-card-image img');
     
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          const src = img.getAttribute('data-src');
-          if (src && !img.src) {
-            img.src = src;
-            img.removeAttribute('data-src');
-            img.onload = () => {
-              img.classList.add('loaded');
-              const placeholder = img.parentElement?.querySelector('.image-placeholder');
-              if (placeholder) placeholder.style.display = 'none';
-            };
-            img.onerror = () => {
-              Logger.WARN('Failed to load image:', src);
-              img.src = 'assets/images/placeholder.jpg';
-              img.classList.add('loaded');
-            };
-          }
-          observer.unobserve(img);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '50px' });
-    
-    images.forEach(img => observer.observe(img));
+    LazyLoadObserver.observeImages(images);
   }
 
   _animateCards(container) {
@@ -255,15 +231,6 @@ class NewsRenderer {
     });
   }
 
-  _escapeHtml(str) {
-    if (!str) return '';
-    return str
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
 }
 
 window.NewsRenderer = NewsRenderer;

@@ -1,6 +1,8 @@
 /**
  * Управление формой
  * ООО "Волга-Днепр Инжиниринг"
+ * 
+ * Использует единые сервисы: FileUploadService, FormValidator
  */
 
 class FormManager {
@@ -8,9 +10,12 @@ class FormManager {
     this.apiClient = apiClient;
     this.rateLimiter = rateLimiter;
     this.validator = validator;
+    this.fileUploadService = window.FileUploadService || null;
+    this.formValidator = window.FormValidator || null;
     this.currentFiles = [];
     this.maxFiles = 10;
     this.maxFileSize = 10 * 1024 * 1024; // 10MB
+    this.dropZones = new Map(); // Хранилище инициализированных зон загрузки
   }
 
   init() {
@@ -19,14 +24,14 @@ class FormManager {
       this._initFormSubmit();
       this._initFloatingButton();
       // Инициализируем загрузку файлов для основной формы на странице
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         const mainForm = document.getElementById('commercial-offer');
         if (mainForm) {
           this._initFileUpload(mainForm);
         } else {
           this._initFileUpload();
         }
-      }, 50);
+      });
       Logger.INFO('FormManager initialized');
     } catch (error) {
       Logger.ERROR('FormManager init failed:', error);
@@ -38,7 +43,9 @@ class FormManager {
       const warning = Utils.DOM.getElement('rateLimitWarning');
       if (warning) {
         Utils.DOM.addClass(warning, 'show');
-        setTimeout(() => Utils.DOM.removeClass(warning, 'show'), 5000);
+        requestAnimationFrame(() => {
+          setTimeout(() => Utils.DOM.removeClass(warning, 'show'), 5000);
+        });
       }
       return;
     }
@@ -58,14 +65,14 @@ class FormManager {
    */
   initFileUploadOnModalOpen() {
     // Даем время на рендеринг модального окна перед инициализацией
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       const modalBody = document.getElementById('modalBodyContainer');
       if (modalBody) {
         this._initFileUpload(modalBody);
       } else {
         this._initFileUpload();
       }
-    }, 150);
+    });
   }
 
   _initFileUpload(container = null) {
@@ -75,44 +82,64 @@ class FormManager {
     const fileDrops = root.querySelectorAll('.form-file');
     
     fileDrops.forEach(fileDrop => {
-      const fileInput = fileDrop.querySelector('input[type="file"]');
-      if (!fileInput) return;
-
-      // Добавляем атрибут multiple для поддержки нескольких файлов
-      fileInput.setAttribute('multiple', 'multiple');
-      
-      // Проверяем, был ли уже добавлен обработчик change для этого input
-      if (fileInput._changeHandlerAttached) return;
-      
-      // Обработчик выбора файлов через input
-      fileInput.addEventListener('change', (e) => {
-        this._handleFileSelect(e.target.files, fileDrop);
-      });
-      fileInput._changeHandlerAttached = true;
-
-      // Проверяем, были ли уже добавлены drag & drop обработчики
-      if (fileDrop._dragDropHandlerAttached) return;
-      
-      // Drag & drop обработчики
-      fileDrop.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        fileDrop.style.borderColor = 'var(--vd-blue)';
-        fileDrop.style.background = 'rgba(0, 51, 160, 0.05)';
-      });
-
-      fileDrop.addEventListener('dragleave', () => {
-        fileDrop.style.borderColor = '';
-        fileDrop.style.background = '';
-      });
-
-      fileDrop.addEventListener('drop', (e) => {
-        e.preventDefault();
-        fileDrop.style.borderColor = '';
-        fileDrop.style.background = '';
-        this._handleFileSelect(e.dataTransfer.files, fileDrop);
-      });
-      fileDrop._dragDropHandlerAttached = true;
+      // Используем единый FileUploadService если доступен
+      if (this.fileUploadService) {
+        const dropZoneId = fileDrop.id || `dropzone-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        if (!fileDrop.id) fileDrop.id = dropZoneId;
+        
+        const api = this.fileUploadService.initDropZone(fileDrop, {
+          maxFiles: this.maxFiles,
+          maxFileSize: this.maxFileSize
+        });
+        this.dropZones.set(dropZoneId, api);
+      } else {
+        // Fallback на старую логику
+        this._initFileUploadLegacy(fileDrop);
+      }
     });
+  }
+
+  /**
+   * Legacy метод для обратной совместимости
+   */
+  _initFileUploadLegacy(fileDrop) {
+    const fileInput = fileDrop.querySelector('input[type="file"]');
+    if (!fileInput) return;
+
+    // Добавляем атрибут multiple для поддержки нескольких файлов
+    fileInput.setAttribute('multiple', 'multiple');
+    
+    // Проверяем, был ли уже добавлен обработчик change для этого input
+    if (fileInput._changeHandlerAttached) return;
+    
+    // Обработчик выбора файлов через input
+    fileInput.addEventListener('change', (e) => {
+      this._handleFileSelect(e.target.files, fileDrop);
+    });
+    fileInput._changeHandlerAttached = true;
+
+    // Проверяем, были ли уже добавлены drag & drop обработчики
+    if (fileDrop._dragDropHandlerAttached) return;
+    
+    // Drag & drop обработчики
+    fileDrop.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      fileDrop.style.borderColor = 'var(--vd-blue)';
+      fileDrop.style.background = 'rgba(0, 51, 160, 0.05)';
+    });
+
+    fileDrop.addEventListener('dragleave', () => {
+      fileDrop.style.borderColor = '';
+      fileDrop.style.background = '';
+    });
+
+    fileDrop.addEventListener('drop', (e) => {
+      e.preventDefault();
+      fileDrop.style.borderColor = '';
+      fileDrop.style.background = '';
+      this._handleFileSelect(e.dataTransfer.files, fileDrop);
+    });
+    fileDrop._dragDropHandlerAttached = true;
   }
 
   _handleFileSelect(files, fileDrop) {
@@ -273,11 +300,7 @@ class FormManager {
     }
   }
 
-  _escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
+  // _escapeHtml удалён - используется Utils.Sanitizer.escapeHtml()
 
   _formatFileSize(bytes) {
     if (bytes === 0) return '0 Bytes';
@@ -297,9 +320,11 @@ class FormManager {
       p.textContent = `⚠️ ${message}`;
       fileLimitWarning.appendChild(p);
       fileLimitWarning.classList.remove('form-file-limit-hidden');
-      setTimeout(() => {
-        fileLimitWarning.classList.add('form-file-limit-hidden');
-      }, 5000);
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          fileLimitWarning.classList.add('form-file-limit-hidden');
+        }, 5000);
+      });
       return;
     }
     
@@ -311,7 +336,9 @@ class FormManager {
       p.textContent = `⚠️ ${message}`;
       warning.appendChild(p);
       Utils.DOM.addClass(warning, 'show');
-      setTimeout(() => Utils.DOM.removeClass(warning, 'show'), 5000);
+      requestAnimationFrame(() => {
+        setTimeout(() => Utils.DOM.removeClass(warning, 'show'), 5000);
+      });
     } else {
       alert(message);
     }
@@ -350,9 +377,11 @@ class FormManager {
     }
     
     // Автоматически скрываем через 3 секунды
-    this.uploadWarningTimeout = setTimeout(() => {
-      warningContainer.classList.add('form-file-limit-hidden');
-    }, 3000);
+    this.uploadWarningTimeout = requestAnimationFrame(() => {
+      setTimeout(() => {
+        warningContainer.classList.add('form-file-limit-hidden');
+      }, 3000);
+    });
   }
 
   removeFile(index, fileDrop) {
@@ -506,12 +535,14 @@ class FormManager {
         if (form) Utils.DOM.addClass(form, 'form-element-hidden');
         if (successMessage) Utils.DOM.addClass(successMessage, 'show');
 
-        setTimeout(() => {
-          if (typeof modalManager !== 'undefined') {
-            modalManager.close('form');
-          }
-          this._resetForm();
-        }, window.CONFIG?.ANIMATION?.MODAL_CLOSE_DELAY_MS || 3000);
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            if (typeof modalManager !== 'undefined') {
+              modalManager.close('form');
+            }
+            this._resetForm();
+          }, window.CONFIG?.ANIMATION?.MODAL_CLOSE_DELAY_MS || 3000);
+        });
       } else {
         this._showError(result.error || 'Произошла ошибка при отправке');
       }

@@ -316,16 +316,7 @@
 }
 
 /* Стили для уровней переключения */
-.user-notice-level-2 {
-    display: none;
-}
-
-.user-notice-level-2.visible {
-    display: block;
-}
-
 .user-notice-level-1.hidden {
     display: none;
 }
-
 /* Обратная совместимость со старыми классами (пустые селекторы для избежания блокировок) */
