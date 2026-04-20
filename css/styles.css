@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 :root {
@@ -444,6 +445,8 @@ body.app-ready > footer {
   cursor: pointer;
   transition: all var(--duration-fast) var(--ease-smooth);
   border: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-menu-close:hover {
@@ -1409,6 +1412,8 @@ body.app-ready > footer {
   justify-content: center;
   z-index: 10;
   transition: background var(--duration-fast) var(--ease-smooth);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .modal-close:hover {
@@ -1891,6 +1896,8 @@ body.app-ready > footer {
   justify-content: center;
   z-index: 10;
   transition: background var(--duration-fast) var(--ease-smooth);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .modal-close:hover,
