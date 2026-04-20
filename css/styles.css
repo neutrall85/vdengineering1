@@ -392,12 +392,10 @@ body.app-ready > footer {
   position: fixed;
   top: 0;
   right: 0;
-  width: 140px;
+  width: 200px;
   max-width: 80%;
   height: 100dvh;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--gradient-primary);
   z-index: var(--z-modal);
   display: flex;
   flex-direction: column;
@@ -450,6 +448,7 @@ body.app-ready > footer {
   transition: all var(--duration-fast) var(--ease-smooth);
   display: block;
   border-radius: 50px;
+  padding-left: 1.5rem;
 }
 
 .mobile-menu a:hover {
