@@ -263,27 +263,14 @@ body.app-ready > footer {
   
   .modal-close {
     top: calc(0.5rem + var(--header-height, 0px));
-    right: calc(0.5rem + 650px / 2 + 15px);
+    right: 1rem;
     width: 36px;
     height: 36px;
-    background: transparent;
-    box-shadow: none;
-    opacity: 0;
-    visibility: hidden;
   }
 
   .modal-close svg {
     width: 16px;
     height: 16px;
-    fill: black;
-  }
-
-  .modal-close:hover {
-    background: var(--vd);
-  }
-
-  .modal-close:hover svg {
-    fill: white;
   }
 
   .modal-header {
@@ -1358,8 +1345,6 @@ body.app-ready > footer {
 }
 
 .modal-overlay.active .modal-close {
-  opacity: 1;
-  visibility: visible;
   transition-delay: 0.2s;
 }
 
@@ -1389,7 +1374,7 @@ body.app-ready > footer {
 /* Кнопка закрытия для модального окна коммерческого предложения */
 .modal-overlay-proposal .modal-close,
 .modal-overlay:has(.modal-container-proposal) .modal-close {
-  right: calc(1rem + 850px / 2 + 20px);
+  right: 1rem;
 }
 
 .modal-overlay.active .modal-container {
@@ -1420,7 +1405,7 @@ body.app-ready > footer {
 .modal-close {
   position: fixed;
   top: calc(1rem + var(--header-height, 0px));
-  right: calc(1rem + 650px / 2 + 20px);
+  right: 1rem;
   width: 45px;
   height: 45px;
   background: transparent;
@@ -1434,8 +1419,6 @@ body.app-ready > footer {
   transition: background var(--duration-fast) var(--ease-smooth);
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  opacity: 0;
-  visibility: hidden;
 }
 
 .modal-close:hover {
@@ -1910,7 +1893,7 @@ body.app-ready > footer {
 .modal-close {
   position: absolute;
   top: 1rem;
-  right: calc(1rem + 600px / 2 + 20px);
+  right: 1rem;
   width: 45px;
   height: 45px;
   background: transparent;
@@ -2113,7 +2096,7 @@ body.app-ready > footer {
 
 /* Кнопка закрытия для details-modal */
 .details-modal-overlay .modal-close {
-  right: calc(1rem + 600px / 2 + 20px);
+  right: 1rem;
 }
 
 .details-modal-body {
