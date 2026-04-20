@@ -1414,6 +1414,8 @@ body.app-ready > footer {
   transition: background var(--duration-fast) var(--ease-smooth);
   outline: none;
   -webkit-tap-highlight-color: transparent;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .modal-close:hover {
