@@ -982,8 +982,7 @@ body.app-ready > footer {
 }
 
 /* Общий стиль для кнопок "Подробнее" в карточках новостей */
-.news-card-link,
-.news-card-preview-link {
+.news-card-link {
   color: var(--vd);
   text-decoration: none;
   font-weight: 600;
@@ -1000,22 +999,19 @@ body.app-ready > footer {
   width: fit-content;
 }
 
-.news-card-link:hover,
-.news-card-preview-link:hover {
+.news-card-link:hover {
   gap: 1rem;
   color: var(--vd-dark);
 }
 
-.news-card-link svg,
-.news-card-preview-link svg {
+.news-card-link svg {
   width: 18px;
   height: 18px;
   fill: currentColor;
   transition: transform var(--duration-normal) var(--ease-elastic);
 }
 
-.news-card-link:hover svg,
-.news-card-preview-link:hover svg {
+.news-card-link:hover svg {
   transform: translateX(5px);
 }
 

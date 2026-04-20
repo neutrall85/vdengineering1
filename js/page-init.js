@@ -62,7 +62,7 @@
                     </div>
                     <h3>${escape(news.title)}</h3>
                     <p>${escape(news.excerpt)}</p>
-                    <a href="#" class="news-card-preview-link" data-news-id="${news.id}">Подробнее
+                    <a href="#" class="news-card-link" data-news-id="${news.id}">Подробнее
                         <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
                     </a>
                 </div>
@@ -75,7 +75,7 @@
 
         // Делегирование кликов
         container.addEventListener('click', (e) => {
-            const link = e.target.closest('.news-card-preview-link');
+            const link = e.target.closest('.news-card-link');
             if (link && link.dataset.newsId && window.newsManager) {
                 e.preventDefault();
                 window.newsManager.openNewsModal(parseInt(link.dataset.newsId, 10));
