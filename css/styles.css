@@ -395,7 +395,7 @@ body.app-ready > footer {
   width: 200px;
   max-width: 80%;
   height: 100dvh;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: var(--z-modal);
@@ -412,7 +412,7 @@ body.app-ready > footer {
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   border: none;
   border-radius: 50%;
   width: 44px;
@@ -426,7 +426,7 @@ body.app-ready > footer {
 }
 
 .mobile-menu-close:hover {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.25);
   transform: rotate(90deg);
 }
 
@@ -446,7 +446,7 @@ body.app-ready > footer {
   font-size: clamp(1rem, 4vw, 1.2rem);
   font-weight: 500;
   padding: 1rem 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   transition: all var(--duration-fast) var(--ease-smooth);
   display: block;
   border-radius: 50px;
@@ -454,7 +454,7 @@ body.app-ready > footer {
 }
 
 .mobile-menu a:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     padding-left: 1rem;
     padding-right: 1rem;
     margin-left: -1rem;
