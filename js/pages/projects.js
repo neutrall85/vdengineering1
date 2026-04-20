@@ -113,3 +113,49 @@ if (document.readyState === 'loading') {
 } else {
   initProjectsPage();
 }
+
+/**
+ * Анимация самолетика по синусоиде
+ */
+function initAirplaneSineAnimation() {
+  const airplane = document.getElementById('airplaneSine');
+  if (!airplane) return;
+
+  const container = airplane.parentElement;
+  const amplitude = 30; // Амплитуда синусоиды в пикселях
+  const frequency = 0.02; // Частота волны
+  const speed = 0.05; // Скорость движения
+  let startTime = null;
+
+  function animate(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const elapsed = timestamp - startTime;
+
+    const containerWidth = container.offsetWidth;
+    const planeWidth = airplane.offsetWidth;
+    const maxX = containerWidth - planeWidth;
+
+    // Позиция X движется слева направо
+    const progress = (elapsed * speed) % 1000 / 1000;
+    const x = progress * maxX;
+
+    // Синусоида для Y позиции
+    const y = Math.sin(x * frequency * 2 * Math.PI) * amplitude;
+
+    // Наклон самолетика по касательной к синусоиде
+    const angle = Math.cos(x * frequency * 2 * Math.PI) * frequency * 2 * Math.PI * amplitude * (180 / Math.PI);
+
+    airplane.style.transform = `translate(${x}px, ${y}px) rotate(${angle}deg)`;
+
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+}
+
+// Добавляем инициализацию анимации к основной функции
+const originalInit = initProjectsPage;
+initProjectsPage = function() {
+  originalInit();
+  initAirplaneSineAnimation();
+};
