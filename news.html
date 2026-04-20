@@ -49,6 +49,23 @@
   </div>
 </noscript>
 
+<!-- Лоадер страницы - показывается до полной загрузки компонентов -->
+<div id="pageLoader" class="page-loader">
+  <div class="loader-content">
+    <div class="orbit-container">
+      <div class="orbit-ring"></div>
+      <div class="plane-wrapper">
+        <div class="plane-icon">
+          <svg viewBox="0 0 24 24" fill="white">
+            <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <p class="loader-text">Загрузка...</p>
+  </div>
+</div>
+
 <div id="appError" class="hidden-display"></div>
 <nav class="navbar" id="navbar"></nav>
 <section class="page-header page-header-bg">
@@ -92,6 +109,21 @@
 </section>
 
 <!-- Футер и модальное окно загружаются через ComponentLoader -->
+<button class="scroll-to-top" id="scrollToTop" aria-label="Наверх"><svg viewBox="0 0 24 24"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg></button>
+
+<!-- News Modal (уникальный для страницы новостей) -->
+<div class="modal-overlay" id="newsModalOverlay" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle">
+  <div class="modal-container">
+    <button class="modal-close" id="newsModalCloseBtn" aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+    <img class="modal-image" id="newsModalImage" src="" alt="" loading="lazy">
+    <div class="modal-body">
+      <span class="modal-category" id="newsModalCategory"></span>
+      <div class="modal-date" id="newsModalDate"></div>
+      <h2 class="modal-title" id="newsModalTitle"></h2>
+      <div class="modal-content" id="newsModalContent"></div>
+    </div>
+  </div>
+</div>
 
 <!-- Лайтбокс для полноэкранного просмотра изображений -->
 <div class="lightbox-overlay" id="lightboxOverlay" role="dialog" aria-modal="true" aria-label="Просмотр изображения">

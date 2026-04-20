@@ -7,39 +7,6 @@
 // const POLICY_DOCUMENTS определяется в policyDocuments.js
 
 const ComponentLoader = {
-    /**
-     * Вспомогательный метод для блокировки скролла через единый ScrollManager
-     * @private
-     */
-    _lockScroll() {
-        if (window.ScrollManager) {
-            ScrollManager.lock();
-        } else {
-            // Fallback для обратной совместимости
-            const scrollbarWidth = this.getScrollbarWidth();
-            if (scrollbarWidth > 0) {
-                document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
-                document.body.classList.add('scroll-padding-fix');
-            }
-            document.body.classList.add('no-scroll');
-        }
-    },
-
-    /**
-     * Вспомогательный метод для разблокировки скролла через единый ScrollManager
-     * @private
-     */
-    _unlockScroll() {
-        if (window.ScrollManager) {
-            ScrollManager.unlock();
-        } else {
-            // Fallback для обратной совместимости
-            document.body.classList.remove('no-scroll');
-            document.body.classList.remove('scroll-padding-fix');
-            document.body.style.removeProperty('--scrollbar-width');
-        }
-    },
-
     // Вспомогательная функция для получения ширины скроллбара
     getScrollbarWidth() {
         return window.innerWidth - document.documentElement.clientWidth;
@@ -342,12 +309,12 @@ const ComponentLoader = {
                 document.body.appendChild(modalContainer.firstElementChild);
                 
                 // Инициализация автоподстановки +7 для поля телефона в модалке
-                requestAnimationFrame(() => {
+                setTimeout(() => {
                     const modalPhoneInput = document.querySelector('#modalOverlay #phone');
                     if (modalPhoneInput) {
                         Utils.PhoneUtils.setupAutoPrefix(modalPhoneInput);
                     }
-                });
+                }, 0);
             }
             
             // Загрузка универсального модального окна для заявок
@@ -358,9 +325,9 @@ const ComponentLoader = {
                 document.body.appendChild(universalModalContainer.firstElementChild);
                 
                 // Инициализация обработчиков для универсального модального окна
-                requestAnimationFrame(() => {
+                setTimeout(() => {
                     this.initUniversalApplicationModal();
-                });
+                }, 100);
             }
         }
 
@@ -546,15 +513,25 @@ const ComponentLoader = {
           allowedAttributes: { 'a': ['href', 'target', 'rel'] }
         });
 
-        // Блокировка скролла через единый метод
-        this._lockScroll();
+        // Используем централизованный ScrollManager для блокировки скролла
+        if (window.ScrollManager) {
+            ScrollManager.lock();
+        } else {
+            // Fallback для обратной совместимости
+            const scrollbarWidth = this.getScrollbarWidth();
+            if (scrollbarWidth > 0) {
+                document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+                document.body.classList.add('scroll-padding-fix');
+            }
+            document.body.classList.add('no-scroll');
+        }
 
         // Показываем модальное окно
-        requestAnimationFrame(() => {
+        setTimeout(() => {
             modalOverlay.classList.add('active');
             const closeBtn = modalOverlay.querySelector('.modal-close');
             if (closeBtn) closeBtn.focus();
-        });
+        }, 50);
     },
 
     /**
@@ -566,8 +543,15 @@ const ComponentLoader = {
 
         modalOverlay.classList.remove('active');
         
-        // Разблокировка скролла через единый метод
-        this._unlockScroll();
+        // Используем централизованный ScrollManager для восстановления скролла
+        if (window.ScrollManager) {
+            ScrollManager.unlock();
+        } else {
+            // Fallback для обратной совместимости
+            document.body.classList.remove('no-scroll');
+            document.body.classList.remove('scroll-padding-fix');
+            document.body.style.removeProperty('--scrollbar-width');
+        }
     },
 
     /**
@@ -607,16 +591,27 @@ const ComponentLoader = {
                 if (successTitle) successTitle.textContent = 'Отклик отправлен!';
             }
 
-            // Блокировка скролла через единый метод
-            this._lockScroll();
+            // Используем централизованный ScrollManager для блокировки скролла
+            if (window.ScrollManager) {
+                ScrollManager.lock();
+            } else {
+                // Fallback для обратной совместимости
+                const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollbarWidth = ComponentLoader.getScrollbarWidth();
+                if (scrollbarWidth > 0) {
+                    document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+                    document.body.classList.add('scroll-padding-fix');
+                }
+                document.body.classList.add('no-scroll');
+            }
 
             overlay.classList.add('active');
             
             // Фокус на первом поле
-            requestAnimationFrame(() => {
+            setTimeout(() => {
                 const firstInput = overlay.querySelector('input, textarea');
                 if (firstInput) firstInput.focus();
-            });
+            }, 100);
         };
 
         window.closeUniversalApplicationModal = () => {
@@ -629,8 +624,15 @@ const ComponentLoader = {
             } else {
                 overlay.classList.remove('active');
                 
-                // Разблокировка скролла через единый метод
-                this._unlockScroll();
+                // Используем централизованный ScrollManager для восстановления скролла
+                if (window.ScrollManager) {
+                    ScrollManager.unlock();
+                } else {
+                    // Fallback для обратной совместимости
+                    document.body.classList.remove('no-scroll');
+                    document.body.classList.remove('scroll-padding-fix');
+                    document.body.style.removeProperty('--scrollbar-width');
+                }
             }
         };
 
@@ -760,94 +762,8 @@ const ComponentLoader = {
             });
         }
 
-        // Инициализация загрузки файлов для универсального модального окна через единый FileUploadService
-        if (window.FileUploadService) {
-            requestAnimationFrame(() => {
-                const universalFileDrop = document.getElementById('universalFileDrop');
-                if (universalFileDrop) {
-                    FileUploadService.initDropZone(universalFileDrop, {
-                        multiple: true,
-                        maxFiles: 5,
-                        maxSizeMB: 10,
-                        acceptedTypes: ['.pdf', '.doc', '.docx', '.xls', '.xlsx'],
-                        onFilesSelected: (files) => {
-                            // Обновляем UI списка файлов
-                            const fileList = document.getElementById('universalFileList');
-                            const fileText = document.querySelector('#universalFileDrop .form-file-text');
-                            const warningEl = document.getElementById('universalFileLimitWarning');
-                            
-                            if (fileList) {
-                                fileList.innerHTML = '';
-                                files.forEach((file, index) => {
-                                    const fileItem = document.createElement('div');
-                                    fileItem.className = 'form-file-item';
-                                    fileItem.innerHTML = `
-                                        <span class="form-file-name">${Utils.Sanitizer.escapeHtml(file.name)}</span>
-                                        <button type="button" class="form-file-remove" data-index="${index}" aria-label="Удалить файл">
-                                            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                                        </button>
-                                    `;
-                                    fileList.appendChild(fileItem);
-                                });
-                            }
-                            
-                            if (fileText) {
-                                fileText.textContent = files.length > 0 ? `Файлов выбрано: ${files.length}` : 'Выбрать файл...';
-                            }
-                            
-                            // Проверка лимитов
-                            if (warningEl) {
-                                if (files.length > 5 || files.some(f => f.size > 10 * 1024 * 1024)) {
-                                    warningEl.classList.remove('form-file-limit-hidden');
-                                } else {
-                                    warningEl.classList.add('form-file-limit-hidden');
-                                }
-                            }
-                            
-                            // Перепроверка валидности формы
-                            checkFormValidity();
-                        }
-                    });
-                    
-                    // Обработчик удаления файлов
-                    const fileList = document.getElementById('universalFileList');
-                    if (fileList) {
-                        fileList.addEventListener('click', (e) => {
-                            const removeBtn = e.target.closest('.form-file-remove');
-                            if (removeBtn) {
-                                const index = parseInt(removeBtn.dataset.index, 10);
-                                FileUploadService.removeFile(index);
-                                // Перерисовка списка
-                                const files = FileUploadService.getFiles();
-                                const fileText = document.querySelector('#universalFileDrop .form-file-text');
-                                
-                                if (fileList) {
-                                    fileList.innerHTML = '';
-                                    files.forEach((file, idx) => {
-                                        const fileItem = document.createElement('div');
-                                        fileItem.className = 'form-file-item';
-                                        fileItem.innerHTML = `
-                                            <span class="form-file-name">${Utils.Sanitizer.escapeHtml(file.name)}</span>
-                                            <button type="button" class="form-file-remove" data-index="${idx}" aria-label="Удалить файл">
-                                                <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                                            </button>
-                                        `;
-                                        fileList.appendChild(fileItem);
-                                    });
-                                }
-                                
-                                if (fileText) {
-                                    fileText.textContent = files.length > 0 ? `Файлов выбрано: ${files.length}` : 'Выбрать файл...';
-                                }
-                                
-                                checkFormValidity();
-                            }
-                        });
-                    }
-                }
-            });
-        } else if (window.formManager) {
-            // Fallback на старый FormManager
+        // Инициализация загрузки файлов для универсального модального окна
+        if (window.formManager) {
             setTimeout(() => {
                 const universalFileDrop = document.getElementById('universalFileDrop');
                 if (universalFileDrop) {
