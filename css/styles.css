@@ -2030,36 +2030,28 @@ body.app-ready > footer {
 
 .lightbox-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 45px;
-  height: 45px;
-  background: transparent;
+  top: -50px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background: white;
   border: none;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
-  transition: background var(--duration-fast) var(--ease-smooth);
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease;
 }
 
 .lightbox-close:hover {
-  background: var(--vd);
+  background: #f0f0f0;
 }
 
 .lightbox-close svg {
-  width: 20px;
-  height: 20px;
-  fill: black;
-  transition: fill var(--duration-fast) var(--ease-smooth);
-}
-
-.lightbox-close:hover svg {
-  fill: white;
+  width: 24px;
+  height: 24px;
+  fill: #333;
 }
 
 /* Специфичные стили для details-modal (узкий контейнер) */
