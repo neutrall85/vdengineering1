@@ -1353,6 +1353,40 @@ body.app-ready > footer {
   visibility: visible;
 }
 
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 45px;
+  height: 45px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background var(--duration-fast) var(--ease-smooth);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.modal-close:hover {
+  background: var(--vd);
+}
+
+.modal-close svg {
+  width: 20px;
+  height: 20px;
+  fill: black;
+  transition: fill var(--duration-fast) var(--ease-smooth);
+}
+
+.modal-close:hover svg {
+  fill: white;
+}
+
 .modal-container {
   background: white;
   border-radius: 24px;
@@ -1400,40 +1434,6 @@ body.app-ready > footer {
   color: var(--metallic);
   font-size: clamp(0.8rem, 1.2vw, 0.9rem);
   line-height: 1.5;
-}
-
-.modal-close {
-  position: fixed;
-  top: calc(1rem + var(--header-height, 0px));
-  right: 1rem;
-  width: 45px;
-  height: 45px;
-  background: transparent;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1001;
-  transition: background var(--duration-fast) var(--ease-smooth);
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.modal-close:hover {
-  background: var(--vd);
-}
-
-.modal-close svg {
-  width: 20px;
-  height: 20px;
-  fill: black;
-  transition: fill var(--duration-fast) var(--ease-smooth);
-}
-
-.modal-close:hover svg {
-  fill: white;
 }
 
 .modal-body {
@@ -1887,41 +1887,6 @@ body.app-ready > footer {
   color: var(--error-color);
   font-size: 0.85rem;
   margin: 0;
-}
-
-/* Кнопка закрытия */
-.modal-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 45px;
-  height: 45px;
-  background: transparent;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  transition: background var(--duration-fast) var(--ease-smooth);
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.modal-close:hover {
-  background: var(--vd);
-}
-
-.modal-close svg {
-  width: 20px;
-  height: 20px;
-  fill: black;
-  transition: fill var(--duration-fast) var(--ease-smooth);
-}
-
-.modal-close:hover svg {
-  fill: white;
 }
 
 /* Тело модального окна */
