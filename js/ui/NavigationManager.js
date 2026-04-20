@@ -120,8 +120,6 @@ class NavigationManager {
   _initMobileMenu() {
     if (!this.mobileMenu) return;
     
-    const closeBtn = Utils.DOM.getElement('mobileMenuClose');
-    
     // Используем делегирование событий для кнопки меню (по ID)
     document.addEventListener('click', (e) => {
       if (e.target.closest('#mobileMenuBtn')) {
@@ -129,10 +127,6 @@ class NavigationManager {
         this.openMobileMenu();
       }
     });
-    
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => this.closeMobileMenu());
-    }
     
     if (this.mobileMenuOverlay) {
       this.mobileMenuOverlay.addEventListener('click', () => this.closeMobileMenu());

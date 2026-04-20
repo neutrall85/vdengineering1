@@ -67,11 +67,11 @@ class ModalManager {
     
     // Единый обработчик для всех кнопок закрытия модальных окон (DRY, KISS)
     this._boundClickHandler = (e) => {
-      const closeBtn = e.target.closest('.modal-close, .details-modal-close');
+      const closeBtn = e.target.closest('.modal-close');
       if (!closeBtn) return;
       
       // Определяем overlay по кнопке закрытия
-      const overlay = closeBtn.closest('.modal-overlay, .details-modal-overlay');
+      const overlay = closeBtn.closest('.modal-overlay');
       if (!overlay) return;
       
       const overlayId = overlay.id;

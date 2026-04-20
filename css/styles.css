@@ -432,35 +432,6 @@ body.app-ready > footer {
     border-bottom-color: transparent;
 }
 
-.mobile-menu-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 44px;
-  height: 44px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-smooth);
-  border: none;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.mobile-menu-close:hover {
-  background: var(--vd);
-  transform: rotate(90deg);
-}
-
-.mobile-menu-close svg {
-  width: 22px;
-  height: 22px;
-  fill: white;
-}
-
 .mobile-menu-overlay {
   position: fixed;
   top: 0;
@@ -1882,8 +1853,7 @@ body.app-ready > footer {
 }
 
 /* Кнопка закрытия */
-.modal-close,
-.details-modal-close {
+.modal-close {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -1902,13 +1872,11 @@ body.app-ready > footer {
   -webkit-tap-highlight-color: transparent;
 }
 
-.modal-close:hover,
-.details-modal-close:hover {
+.modal-close:hover {
   background: var(--vd-dark);
 }
 
-.modal-close svg,
-.details-modal-close svg {
+.modal-close svg {
   width: 20px;
   height: 20px;
   fill: white;
