@@ -261,22 +261,22 @@ body.app-ready > footer {
   }
   
   .modal-close {
-    top: 0.25rem;
-    right: 0.25rem;
-    width: 28px;
-    height: 28px;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 36px;
+    height: 36px;
     background: var(--vd-light-gray);
     box-shadow: none;
   }
 
   .modal-close svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
   }
 
   .modal-header {
     padding: 1rem 1rem 0.5rem;
-    padding-right: 38px;
+    padding-right: 48px;
   }
   
   .modal-title {
@@ -417,11 +417,11 @@ body.app-ready > footer {
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   transition: all var(--duration-fast) var(--ease-smooth);
   display: block;
+  border-radius: 50px;
 }
 
 .mobile-menu a:hover {
     background: rgba(255, 255, 255, 0.15);
-    border-radius: 50px;
     padding-left: 1rem;
     padding-right: 1rem;
     margin-left: -1rem;
@@ -1376,7 +1376,7 @@ body.app-ready > footer {
   padding: 1.5rem 2rem 0.5rem;
   border-bottom: 1px solid var(--border-color);
   position: relative;
-  padding-right: 60px;
+  padding-right: 70px;
 }
 
 .modal-title {
@@ -2901,6 +2901,10 @@ body.app-ready > footer {
   .modal-header,
   .modal-body {
     padding: 1rem;
+  }
+
+  .modal-header {
+    padding-right: 48px;
   }
 
   .details-modal-body {
