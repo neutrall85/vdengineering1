@@ -131,11 +131,11 @@ class NavigationManager {
         e.stopPropagation();
         this.closeMobileMenu();
       }
+      // Закрытие по клику вне области меню (на overlay)
+      if (e.target.id === 'mobileMenuOverlay') {
+        this.closeMobileMenu();
+      }
     });
-    
-    if (this.mobileMenuOverlay) {
-      this.mobileMenuOverlay.addEventListener('click', () => this.closeMobileMenu());
-    }
     
     // Закрытие по ESC
     document.addEventListener('keydown', (e) => {
