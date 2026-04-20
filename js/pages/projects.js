@@ -46,7 +46,7 @@ const projectsData = {
 // Экспортируем функцию инициализации для module режима
 export function initProjectsPage() {
   // Обработчики для кнопок "Подробнее"
-  const projectButtons = document.querySelectorAll('.project-details-btn');
+  const projectButtons = document.querySelectorAll('.news-card-link[data-project-id]');
   projectButtons.forEach(function(btn) {
     btn.addEventListener('click', function() {
       const projectId = this.getAttribute('data-project-id');
