@@ -1,8 +1,5 @@
 /**
- * UI компонент для отображения уведомлений о предпочтениях пользователя
- * Отвечает только за представление и взаимодействие с пользователем
- * Использует нейтральные названия классов для избежания блокировок
- * DRY, KISS - единая ответственность за UI
+ UI компонент для отображения уведомлений о предпочтениях пользователя
  */
 
 class UserNoticeUI {
@@ -65,10 +62,7 @@ class UserNoticeUI {
           <div class="user-notice-level-1" id="user-notice-level-1">
             <h3 id="user-notice-title" class="user-notice-title">Настройки сайта</h3>
             <p class="user-notice-text">
-              Для улучшения работы сайта используются технологии хранения данных:<br>
-              • Функциональные — для входа в личный кабинет<br>
-              • Аналитические — для сбора статистики посещений<br>
-              • Маркетинговые — для показа рекламы
+              Для улучшения работы сайта используются технологии хранения данных (cookie):<br>
             </p>
             <div class="user-notice-buttons">
               <button type="button" class="user-btn user-btn-primary" id="user-accept-all">
@@ -129,7 +123,7 @@ class UserNoticeUI {
     document.getElementById('user-cookie-policy-link')?.addEventListener('click', (e) => {
       e.preventDefault();
       if (typeof ComponentLoader !== 'undefined' && ComponentLoader.openPolicyModal) {
-        ComponentLoader.openPolicyModal('cookie');
+        ComponentLoader.openPolicyModal('cookies');
       }
     });
 
