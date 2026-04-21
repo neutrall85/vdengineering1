@@ -77,8 +77,12 @@ class NavigationManager {
     // Обработка кликов на ссылки в мобильном меню
     if (this.mobileMenu) {
       this.mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          setTimeout(() => this.closeMobileMenu(), 300);
+        link.addEventListener('click', (e) => {
+          // Закрываем меню только если это не якорная ссылка на текущей странице
+          const href = link.getAttribute('href');
+          if (href && (href.startsWith('#') || href.includes(window.location.pathname))) {
+            setTimeout(() => this.closeMobileMenu(), 300);
+          }
         });
       });
     }
