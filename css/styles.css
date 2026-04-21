@@ -124,8 +124,6 @@ body:has(.details-modal-overlay.active) {
 }
 
 /* ==================== НАВИГАЦИЯ ==================== */
-/* Предотвращение мигания контента до загрузки компонентов */
-/* Скрываем лоадер по умолчанию, показываем во время загрузки */
 body:not(.app-ready) .page-loader {
   display: flex;
 }
@@ -266,8 +264,8 @@ body.app-ready > footer {
   }
   
   .modal-close {
-    top: -40px;
-    right: 0;
+    top: -35px;
+    right: -35px;
     width: 36px;
     height: 36px;
   }
@@ -347,27 +345,46 @@ body.app-ready > footer {
   text-decoration: none;
   font-weight: 500;
   font-size: clamp(0.875rem, 1.2vw, 1rem);
-  transition: color var(--duration-normal) var(--ease-smooth);
+  padding: 0.5rem 0;
+  border-radius: 50px;
+  transition: color var(--duration-fast) var(--ease-smooth);
   position: relative;
+  display: inline-block;
 }
 
 .nav-links a:hover {
-  color: var(--vd-light-blue);
+  background: transparent;
+  color: white;
+  transform: translateY(-2px);
 }
 
 .nav-links a.active {
-  color: var(--vd-light-blue);
+  color: white;
 }
 
-.nav-links a.active::after {
+.nav-links a::after {
   content: '';
   position: absolute;
-  bottom: -5px;
+  bottom: 0;
   left: 0;
-  right: 0;
+  width: 100%;
   height: 2px;
-  background: var(--vd-light-blue);
-  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50% 50% 0 0;           /* ← Полуовал (закругление сверху) */
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--duration-normal) var(--ease-smooth);
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Полоса для активной ссылки */
+.nav-links a.active::after {
+  transform: scaleX(1);
+  background: rgba(255, 255, 255, 0.8);
+  height: 2px;
 }
 
 .mobile-menu-btn {
@@ -700,7 +717,7 @@ body.app-ready > footer {
 
 .section-header {
   text-align: center;
-  max-width: 700px;
+  max-width: 850px;
   margin: 0 auto 2rem;
 }
 
@@ -1407,7 +1424,7 @@ body.app-ready > footer {
 
 /* Увеличенная ширина для модального окна коммерческого предложения */
 .modal-container-proposal {
-  max-width: 850px;
+  max-width: 700px;
 }
 
 /* Кнопка закрытия для модального окна коммерческого предложения */
