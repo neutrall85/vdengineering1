@@ -3523,6 +3523,13 @@ body.app-ready > footer {
   }
   .hero-content {
     width: 100%;
+    text-align: center;
+  }
+  .hero-text {
+    margin: 0 auto;
+  }
+  .hero-buttons {
+    justify-content: center;
   }
   .hero-text h1 {
     margin-bottom: 0.6rem;
@@ -3548,16 +3555,17 @@ body.app-ready > footer {
     align-items: center;
     min-width: 90px;
     padding: 1rem 0.75rem;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 78, 150, 0.08);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 78, 150, 0.1);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   
   .stat-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 78, 150, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 78, 150, 0.15);
   }
   
   .stat-number {
