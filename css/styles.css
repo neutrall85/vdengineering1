@@ -3488,25 +3488,25 @@ body.scroll-padding-fix {
   
   /* Hero секция */
   .hero {
-    min-height: 60vh;
+    min-height: 50vh;
     padding: 0 4%;
   }
   .hero-content {
     width: 95%;
   }
   .hero-text h1 {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
   .hero-text p {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
   .hero-buttons {
-    gap: 0.75rem;
+    gap: 0.6rem;
   }
   .hero-stats {
-    gap: 1rem;
-    margin-top: 1.5rem;
-    padding-top: 1rem;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
   }
   
   /* Навигация */
@@ -3556,22 +3556,22 @@ body.scroll-padding-fix {
   .careers-intro-padding,
   .vacancies-section-padding,
   .open-application-padding {
-    padding: clamp(30px, 6vh, 50px) 4%;
+    padding: clamp(20px, 4vh, 35px) 4%;
   }
   
   /* Услуги */
   .services-grid {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1rem;
   }
   .service-card {
-    padding: 1.25rem;
+    padding: 1rem;
     border-radius: 16px;
   }
   .service-icon {
     width: 50px;
     height: 50px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     border-radius: 12px;
   }
   .service-icon svg {
@@ -3580,11 +3580,11 @@ body.scroll-padding-fix {
   }
   .service-card h3 {
     font-size: 1.1rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
   }
   .service-card p {
     font-size: 0.85rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
   .services-grid-container {
     grid-template-columns: 1fr;
@@ -3592,7 +3592,7 @@ body.scroll-padding-fix {
   
   /* Проекты */
   .projects-grid {
-    gap: 1.25rem;
+    gap: 1rem;
   }
   .projects-grid-container {
     grid-template-columns: 1fr;
@@ -3601,40 +3601,40 @@ body.scroll-padding-fix {
     border-radius: 16px;
   }
   .project-image {
-    height: 180px;
+    height: 160px;
   }
   .project-content {
-    padding: 1rem;
+    padding: 0.85rem;
   }
   .project-category {
-    padding: 0.25rem 0.75rem;
-    font-size: 0.65rem;
-    margin-bottom: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.6rem;
+    margin-bottom: 0.6rem;
   }
   .project-content h3 {
     font-size: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   .project-content p {
     font-size: 0.85rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
   }
   
   /* Новости */
   .preview-news-grid,
   .news-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.85rem;
   }
   .news-card {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
     border-radius: 14px;
   }
   .news-card-image {
-    height: 160px;
+    height: 150px;
   }
   .news-card-content {
-    padding: 0.85rem;
+    padding: 0.75rem;
   }
   .news-card-category {
     padding: 0.25rem 0.6rem;
@@ -3679,22 +3679,22 @@ body.scroll-padding-fix {
   /* Документы */
   .docs-grid {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1rem;
   }
   .doc-card {
     border-radius: 12px;
   }
   .doc-preview {
-    min-height: 200px;
+    min-height: 180px;
   }
   
   /* Вакансии */
   .vacancies-grid-container {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1rem;
   }
   .vacancy-header {
-    padding: 1.25rem;
+    padding: 1rem;
   }
   .vacancy-title {
     font-size: 1.1rem;
@@ -3704,10 +3704,10 @@ body.scroll-padding-fix {
     font-size: 0.8rem;
   }
   .vacancy-body {
-    padding: 1.25rem;
+    padding: 1rem;
   }
   .vacancy-footer {
-    padding: 1.25rem;
+    padding: 1rem;
   }
   .vacancy-requirements h4,
   .vacancy-responsibilities h4,
@@ -3725,12 +3725,12 @@ body.scroll-padding-fix {
   
   /* Преимущества */
   .benefit-card {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
   .benefit-icon {
     width: 50px;
     height: 50px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
   .benefit-icon svg {
     width: 24px;
@@ -3738,7 +3738,7 @@ body.scroll-padding-fix {
   }
   .benefit-card h3 {
     font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   .benefit-card p {
     font-size: 0.85rem;
@@ -3752,22 +3752,22 @@ body.scroll-padding-fix {
   .mission-content-grid,
   .values-content {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
   .about-content-inline {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
   .about-grid,
   .contact-content {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
     display: flex;
     flex-direction: column-reverse;
   }
   .about-image-placeholder,
   .values-image-block .about-image-placeholder {
-    height: 250px;
+    height: 220px;
   }
   .values-image-block {
     order: -1;
@@ -3775,12 +3775,12 @@ body.scroll-padding-fix {
   .directions-grid,
   .facts-container {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1rem;
   }
   .value-item {
     flex-direction: column;
     text-align: center;
-    padding: 1.25rem;
+    padding: 1rem;
   }
   .value-item:hover {
     transform: translateY(-4px);
@@ -3796,34 +3796,34 @@ body.scroll-padding-fix {
   }
   .value-text h3 {
     font-size: 1.05rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   .value-text p {
     font-size: 0.85rem;
   }
   .placeholder-icon {
-    width: 55px;
-    height: 55px;
-    margin-bottom: 0.75rem;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0.6rem;
   }
   .direction-card {
-    padding: 1.25rem;
+    padding: 1rem;
     border-radius: 14px;
   }
   .direction-card h3 {
     font-size: 1.05rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   .direction-card p {
     font-size: 0.85rem;
   }
   .fact-item {
-    padding: 1.25rem;
+    padding: 1rem;
     border-radius: 14px;
   }
   .fact-number {
     font-size: 1.8rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   .fact-label {
     font-size: 0.85rem;
@@ -3851,7 +3851,7 @@ body.scroll-padding-fix {
     gap: 0.75rem;
   }
   .footer {
-    padding: 30px 4%;
+    padding: 20px 4%;
   }
   
   /* Модальные окна */
@@ -3860,13 +3860,13 @@ body.scroll-padding-fix {
   }
   .modal-header,
   .modal-body {
-    padding: 1rem;
+    padding: 0.85rem;
   }
   .details-modal-body {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
   .contact-form-container {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
   
   /* Плавающие кнопки */
@@ -3897,11 +3897,11 @@ body.scroll-padding-fix {
   
   /* Hero секция */
   .hero {
-    min-height: 50vh;
+    min-height: 40vh;
     padding: 0 4%;
   }
   .page-header {
-    padding: 80px 4% 30px;
+    padding: 50px 4% 20px;
   }
   .page-header h1 {
     font-size: 1.5rem;
@@ -3919,7 +3919,7 @@ body.scroll-padding-fix {
   .projects-preview,
   .news-preview,
   .contact-cta {
-    padding: 25px 4%;
+    padding: 20px 4%;
   }
   
   /* Сетки - gap */
@@ -3928,7 +3928,7 @@ body.scroll-padding-fix {
   .news-grid,
   .docs-grid,
   .vacancies-grid-container {
-    gap: 1rem;
+    gap: 0.85rem;
   }
   
   /* Услуги */
@@ -4068,7 +4068,7 @@ body.scroll-padding-fix {
   
   /* Футер */
   .footer {
-    padding: 25px 4%;
+    padding: 18px 4%;
   }
   
   /* Кнопки */
