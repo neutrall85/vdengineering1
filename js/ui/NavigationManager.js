@@ -78,10 +78,15 @@ class NavigationManager {
     if (this.mobileMenu) {
       this.mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', (e) => {
-          // Закрываем меню только если это не якорная ссылка на текущей странице
           const href = link.getAttribute('href');
-          if (href && (href.startsWith('#') || href.includes(window.location.pathname))) {
-            setTimeout(() => this.closeMobileMenu(), 300);
+          // Закрываем меню только если это якорная ссылка (#...) или переход на другую страницу
+          if (href && href.startsWith('#')) {
+            e.preventDefault();
+            const target = Utils.DOM.query(href);
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            this.closeMobileMenu();
           }
         });
       });

@@ -305,7 +305,7 @@ body.app-ready > footer {
   top: 0;
   left: 0;
   right: 0;
-  z-index: calc(var(--z-fixed) + 20);
+  z-index: calc(var(--z-fixed) + 1);
   padding: 1rem 5%;
   background: var(--vd);
   transition: background-color var(--duration-normal) var(--ease-smooth),
@@ -394,7 +394,7 @@ body.app-ready > footer {
   background: none;
   border: none;
   cursor: pointer;
-  z-index: calc(var(--z-fixed) + 30);
+  z-index: calc(var(--z-fixed) + 2);
 }
 
 .mobile-menu-btn span {
@@ -416,7 +416,7 @@ body.app-ready > footer {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  z-index: calc(var(--z-fixed) + 10);
+  z-index: calc(var(--z-fixed) + 3);
   display: flex;
   flex-direction: column;
   padding-top: 80px;
@@ -465,7 +465,7 @@ body.app-ready > footer {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.3);
-  z-index: calc(var(--z-fixed) + 5);
+  z-index: calc(var(--z-fixed) + 1);
   opacity: 0;
   visibility: hidden;
   transition: all var(--duration-normal) var(--ease-smooth);
