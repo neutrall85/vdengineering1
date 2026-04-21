@@ -70,7 +70,9 @@ const ScrollManager = {
     
     // Восстанавливаем позицию только при последней разблокировке
     if (this.state.lockCount === 0) {
-      // Сначала убираем блокировку (снимаем position: fixed)
+      const scrollPosition = this.state.scrollPosition;
+      
+      // Сначала убираем блокировку
       document.body.classList.remove(this.config.noScrollClass);
       
       if (usePaddingFix) {
@@ -79,11 +81,11 @@ const ScrollManager = {
         document.body.style.paddingRight = '';
       }
       
-      // Затем восстанавливаем позицию скролла
-      // Небольшая задержка ensures that the position is restored after the class is removed
-      requestAnimationFrame(() => {
-        window.scrollTo(0, this.state.scrollPosition);
-      });
+      // Сбрасываем CSS-переменную после удаления класса
+      document.body.style.setProperty('--scroll-position', '0px');
+      
+      // Восстанавливаем позицию скролла
+      window.scrollTo(0, scrollPosition);
       
       this.state.isLocked = false;
       this.state.scrollPosition = 0;
