@@ -450,32 +450,8 @@ body.app-ready > footer {
   min-height: 70vh;
   padding: clamp(80px, 10vh, 120px) 5% 0;
   overflow: hidden;
-}
-
-.hero-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-.hero-bg-image {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
-
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(255,255,255,0.65) 0%, rgba(248,249,250,0.92) 100%);
-  z-index: 1;
+  background: var(--vd-light-blue);
+  color: #004E96;
 }
 
 .hero-content {
@@ -483,17 +459,6 @@ body.app-ready > footer {
   z-index: 2;
   max-width: 1400px;
   width: 100%;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 30% 50%, rgba(0,78,150,0.03) 0%, transparent 70%);
-  z-index: 0;
 }
 
 /* Hero wrapper для разделения контента и слайд-шоу */
