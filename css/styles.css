@@ -1947,8 +1947,8 @@ body.app-ready > footer {
 
 .lightbox-close {
   position: absolute;
-  top: -50px;
-  right: 0;
+  top: 20px;
+  right: 20px;
   width: 40px;
   height: 40px;
   background: white;
@@ -1959,6 +1959,7 @@ body.app-ready > footer {
   align-items: center;
   justify-content: center;
   transition: background 0.2s ease;
+  z-index: 10;
 }
 
 .lightbox-close:hover {
@@ -3907,7 +3908,7 @@ body.app-ready > footer {
     padding: 0 3%;
   }
   .page-header {
-    padding: 30px 3% 15px;
+    padding: 80px 3% 15px;
   }
   .page-header h1 {
     font-size: 1.4rem;
@@ -4160,6 +4161,7 @@ body.app-ready > footer {
     width: 36px;
     height: 36px;
     background: rgba(255, 255, 255, 0.9);
+    z-index: 10;
   }
   .lightbox-close svg {
     width: 18px;
