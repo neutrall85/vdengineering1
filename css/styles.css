@@ -235,70 +235,6 @@ body.app-ready > footer {
   opacity: 0.9;
 }
 
-@media (max-width: 550px) {
-  .orbit-container {
-    width: 60px;
-    height: 60px;
-  }
-  .plane-icon {
-    width: 18px;
-    height: 18px;
-    top: -8px;
-  }
-  .loader-text {
-    font-size: 0.85rem;
-    margin-top: 18px;
-  }
-
-  .modal-overlay {
-    overflow: auto;
-    align-items: flex-start;
-    padding: 1rem 0;
-  }
-  
-  .modal-container {
-    margin-top: 1rem;
-    max-width: calc(100% - 2rem);
-    max-height: calc(95vh - 2rem);
-    overflow-y: auto;
-  }
-  
-  .modal-close {
-    top: -35px;
-    right: -35px;
-    width: 36px;
-    height: 36px;
-  }
-
-  .modal-close svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .modal-header {
-    padding: 1rem 1rem 0.5rem;
-  }
-  
-  .modal-title {
-    font-size: 1.1rem;
-  }
-  
-  .modal-subtitle {
-    font-size: 0.8rem;
-  }
-  
-  .modal-body {
-    padding: 1rem;
-    max-height: none;
-  }
-  
-  .form-input,
-  .form-select,
-  .form-textarea {
-    font-size: 16px; /* Предотвращает зум на iOS */
-    padding: 0.7rem 0.9rem;
-  }
-}
 
 .navbar {
   position: fixed;
@@ -410,8 +346,8 @@ body.app-ready > footer {
   position: fixed;
   top: 0;
   right: 0;
-  width: 200px;
-  max-width: 80%;
+  width: 180px;
+  max-width: 75%;
   height: 100dvh;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -419,10 +355,10 @@ body.app-ready > footer {
   z-index: calc(var(--z-fixed) + 10);
   display: flex;
   flex-direction: column;
-  padding-top: 80px;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-bottom: 2rem;
+  padding-top: 70px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-bottom: 1.5rem;
   transform: translateX(100%);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-nav);
@@ -438,23 +374,23 @@ body.app-ready > footer {
 .mobile-menu a {
   color: black;
   text-decoration: none;
-  font-size: clamp(1rem, 4vw, 1.2rem);
+  font-size: clamp(0.95rem, 3.5vw, 1.1rem);
   font-weight: 500;
-  padding: 1rem 0;
+  padding: 0.85rem 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   transition: all var(--duration-fast) var(--ease-smooth);
   display: block;
   border-radius: 50px;
-  padding-left: 1.5rem;
+  padding-left: 1.25rem;
 }
 
 .mobile-menu a:hover {
     background: rgba(0, 78, 150, 0.1);
-    padding-left: 1rem;
-    padding-right: 1rem;
-    margin-left: -1rem;
-    margin-right: -1rem;
-    transform: translateX(8px);
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+    margin-left: -0.85rem;
+    margin-right: -0.85rem;
+    transform: translateX(6px);
     border-bottom-color: transparent;
 }
 
@@ -590,35 +526,8 @@ body.app-ready > footer {
   color: var(--metallic);
 }
 
-@media (max-width: 1048px) {
-  .hero {
-    text-align: left;
-  }
-  .hero-text {
-    max-width: 100%;
-    margin: 0;
-  }
-  .hero-text p {
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .hero-buttons,
-  .hero-stats {
-    justify-content: flex-start;
-  }
-}
 
-@media (max-width: 768px) {
-  .hero {
-    min-height: 60vh;
-  }
-}
 
-@media (max-width: 480px) {
-  .hero {
-    min-height: 50vh;
-  }
-}
 
 /* ==================== КНОПКИ ==================== */
 .btn-primary {
@@ -2016,12 +1925,6 @@ body.app-ready > footer {
 }
 
 /* Для мобильных устройств – чуть больше отступов */
-@media (max-width: 768px) {
-  .lightbox-image {
-    max-width: 98vw;
-    max-height: 90vh;
-  }
-}
 
 .lightbox-close {
   position: absolute;
@@ -2745,208 +2648,9 @@ body.app-ready > footer {
 }
 
 /* ==================== МЕДИА-ЗАПРОСЫ ==================== */
-@media (max-width: 1096px) {
-  .about-grid,
-  .contact-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    display: flex;
-    flex-direction: column-reverse;
-  }
 
-  .news-card {
-    grid-template-columns: 1fr;
-  }
 
-  .news-card-image {
-    min-height: 240px;
-  }
-}
 
-@media (max-width: 1048px) {
-  :root {
-    font-size: 15px;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .mobile-menu-btn {
-    display: flex;
-  }
-
-  .hero-content {
-    left: 0;
-    text-align: left;
-  }
-
-  .hero-text p {
-    max-width: 100%;
-  }
-
-  .hero-buttons {
-    justify-content: flex-start;
-  }
-
-  .hero-stats {
-    justify-content: flex-start;
-  }
-
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .preview-news-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .process-steps {
-    grid-template-columns: 1fr;
-  }
-
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .news-tabs {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .news-tab {
-    width: 100%;
-    max-width: 300px;
-    text-align: center;
-  }
-
-  .year-divider {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .year-divider-line {
-    width: 100%;
-  }
-
-  .floating-cta-btn {
-    bottom: 5rem;
-    right: 1rem;
-  }
-
-  .scroll-to-top {
-    bottom: 5rem;
-    left: 1rem;
-  }
-
-  .floating-cta-btn span {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  :root {
-    font-size: 14px;
-  }
-
-  .hero {
-    min-height: 60vh;
-  }
-
-  .hero-content {
-    width: 95%;
-  }
-
-  .page-header h1 {
-    font-size: 1.8rem;
-  }
-
-  .section-header h2 {
-    font-size: 1.6rem;
-  }
-
-  .footer-content {
-    grid-template-columns: 1fr 1fr;
-    text-align: center;
-  }
-
-  .footer-brand {
-    display: none;
-  }
-
-  .footer-legal ul {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .modal-container {
-    max-height: 95vh;
-  }
-
-  .modal-header,
-  .modal-body {
-    padding: 1rem;
-  }
-
-  .details-modal-body {
-    padding: 1.5rem;
-  }
-
-  .contact-form-container {
-    padding: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  :root {
-    font-size: 13px;
-  }
-
-  .hero {
-    min-height: 50vh;
-  }
-
-  .page-header {
-    padding: 100px 5% 40px;
-  }
-
-  .page-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .section-header h2 {
-    font-size: 1.3rem;
-  }
-
-  .contact-cta h2 {
-    font-size: 1.5rem;
-  }
-
-  .service-card {
-    padding: 1.5rem;
-  }
-
-  .project-content {
-    padding: 1.25rem;
-  }
-
-  .project-content h3 {
-    font-size: 1.1rem;
-  }
-
-  .news-card-content {
-    padding: 1rem;
-  }
-
-  .news-card-title {
-    font-size: 1rem;
-  }
-}
 /* ==================== УТИЛИТАРНЫЕ КЛАССЫ ДЛЯ СТРАНИЦ ==================== */
 .page-header-bg { background: var(--vd-light-blue); padding: 120px 5% 60px; text-align: center; color: #004E96; }
 .page-header-title { font-size: 2.5rem; margin-bottom: 1rem; }
@@ -2969,12 +2673,6 @@ body.app-ready > footer {
 
 .services-full-padding { padding: 60px 5%; }
 .services-grid-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-@media (max-width: 1200px) {
-  .services-grid-container { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 768px) {
-  .services-grid-container { grid-template-columns: 1fr; }
-}
 .service-card-box { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: all 0.3s ease; display: flex; flex-direction: column; }
 .service-title-h3 { font-size: 1.3rem; color: var(--vd); margin-bottom: 1rem; }
 .service-desc-p { color: var(--metallic); line-height: 1.6; margin-bottom: 1.5rem; flex-grow: 1; }
@@ -2989,12 +2687,6 @@ body.app-ready > footer {
 
 .projects-full-padding { padding: 60px 5%; }
 .projects-grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1400px; margin: 0 auto; }
-@media (max-width: 1200px) {
-  .projects-grid-container { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 768px) {
-  .projects-grid-container { grid-template-columns: 1fr; }
-}
 .project-card-box { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 .project-image-container { height: 250px; overflow: hidden; }
 .project-img-cover { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
@@ -3052,12 +2744,6 @@ body.app-ready > footer {
   max-width: 1200px;
   margin: 0 auto;
   align-items: stretch;
-}
-@media (max-width: 1024px) {
-  .docs-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 768px) {
-  .docs-grid { grid-template-columns: 1fr; }
 }
 
 .doc-card {
@@ -3243,15 +2929,6 @@ body.app-ready > footer {
 }
 
 /* Responsive styles for docs page */
-@media (max-width: 768px) {
-  .page-title {
-    font-size: 2rem;
-  }
-  
-  .doc-preview {
-    min-height: 200px;
-  }
-}
 
 /* ==================== ABOUT PAGE STYLES ==================== */
 /* Основная секция о компании */
@@ -3616,69 +3293,7 @@ body.app-ready > footer {
 }
 
 /* Адаптивность для страницы about */
-@media (max-width: 1096px) {
-  .about-content-grid,
-  .values-content {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-  
-  .values-image-block {
-    order: -1;
-  }
-  
-  .values-image-block .about-image-placeholder {
-    height: 350px;
-  }
-}
 
-@media (max-width: 768px) {
-  .about-main-section,
-  .directions-section,
-  .facts-section,
-  .mission-section,
-  .values-section {
-    padding: clamp(40px, 8vh, 60px) 5%;
-  }
-  
-  .about-content-grid,
-  .mission-content-grid,
-  .values-content {
-    gap: 2rem;
-  }
-  
-  .about-content-inline {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  
-  .about-image-placeholder,
-  .values-image-block .about-image-placeholder {
-    height: 300px;
-  }
-  
-  .directions-grid,
-  .facts-container {
-    grid-template-columns: 1fr;
-  }
-  
-  .mission-content-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .value-item {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .value-item:hover {
-    transform: translateY(-5px);
-  }
-  
-  .value-icon {
-    margin: 0 auto;
-  }
-}
 
 /* ==================== СТРАНИЦА ВАКАНСИИ ==================== */
 .careers-intro-padding { padding: 80px 5% 60px; background: white; }
@@ -3700,9 +3315,6 @@ body.app-ready > footer {
 /* Вакансии */
 .vacancies-section-padding { padding: 80px 5%; background: var(--vd-light-gray); }
 .vacancies-grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto; justify-items: stretch; }
-@media (max-width: 768px) {
-  .vacancies-grid-container { grid-template-columns: 1fr; }
-}
 
 .vacancy-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth); display: flex; flex-direction: column; }
 .vacancy-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 78, 150, 0.15); }
@@ -3729,14 +3341,6 @@ body.app-ready > footer {
 .open-application-content p { font-size: 1.1rem; color: var(--metallic); margin-bottom: 2rem; line-height: 1.7; }
 
 /* Адаптивность для страницы вакансий */
-@media (max-width: 768px) {
-  .careers-intro-padding, .vacancies-section-padding, .open-application-padding { padding: 60px 5%; }
-  .careers-title, .open-application-content h2 { font-size: 1.5rem; }
-  .careers-benefits-grid { grid-template-columns: 1fr; }
-  .vacancy-header { padding: 1.25rem; }
-  .vacancy-body { padding: 1.25rem; }
-  .vacancy-footer { padding: 1.25rem; }
-}
 
 /* Стили для чекбокса согласия в модальном окне вакансий */
 .form-agreement-checkbox {
@@ -3871,4 +3475,659 @@ body.scroll-padding-fix {
 /* Универсальный класс hidden */
 .hidden {
     display: none !important;
+}
+
+
+/* ==================== АДАПТИВНОСТЬ ==================== */
+
+/* ==================== @media (max-width: 768px) ==================== */
+@media (max-width: 768px) {
+  :root {
+    font-size: 14px;
+  }
+  
+  /* Hero секция */
+  .hero {
+    min-height: 60vh;
+    padding: 0 4%;
+  }
+  .hero-content {
+    width: 95%;
+  }
+  .hero-text h1 {
+    margin-bottom: 1rem;
+  }
+  .hero-text p {
+    margin-bottom: 1.5rem;
+  }
+  .hero-buttons {
+    gap: 0.75rem;
+  }
+  .hero-stats {
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+  
+  /* Навигация */
+  .nav-links {
+    display: none;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  /* Заголовки */
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+  .section-header h2 {
+    font-size: 1.6rem;
+  }
+  .section-tag {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+  .about-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .about-text {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  /* Секции - общие отступы */
+  .services,
+  .about-preview,
+  .projects-preview,
+  .news-preview,
+  .contact-cta,
+  .about-main-section,
+  .directions-section,
+  .facts-section,
+  .mission-section,
+  .values-section,
+  .careers-intro-padding,
+  .vacancies-section-padding,
+  .open-application-padding {
+    padding: clamp(30px, 6vh, 50px) 4%;
+  }
+  
+  /* Услуги */
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .service-card {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+  .service-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+  }
+  .service-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+  .service-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+  .service-card p {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+  .services-grid-container {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Проекты */
+  .projects-grid {
+    gap: 1.25rem;
+  }
+  .projects-grid-container {
+    grid-template-columns: 1fr;
+  }
+  .project-card {
+    border-radius: 16px;
+  }
+  .project-image {
+    height: 180px;
+  }
+  .project-content {
+    padding: 1rem;
+  }
+  .project-category {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.65rem;
+    margin-bottom: 0.75rem;
+  }
+  .project-content h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .project-content p {
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Новости */
+  .preview-news-grid,
+  .news-grid {
+    grid-template-columns: 1fr;
+  }
+  .news-card {
+    margin-bottom: 1rem;
+    border-radius: 16px;
+  }
+  .news-card-image {
+    height: 180px;
+  }
+  .news-card-content {
+    padding: 1rem;
+  }
+  .news-card-category {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.6rem;
+    top: 0.75rem;
+    left: 0.75rem;
+  }
+  .news-card-date {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+    gap: 0.4rem;
+  }
+  .news-card-date svg {
+    width: 14px;
+    height: 14px;
+  }
+  .news-card-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .news-card-excerpt {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  .news-tabs {
+    flex-direction: column;
+    align-items: center;
+  }
+  .news-tab {
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+  }
+  .year-divider {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .year-divider-line {
+    width: 100%;
+  }
+  
+  /* Документы */
+  .docs-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .doc-card {
+    border-radius: 12px;
+  }
+  .doc-preview {
+    min-height: 200px;
+  }
+  
+  /* Вакансии */
+  .vacancies-grid-container {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .vacancy-header {
+    padding: 1.25rem;
+  }
+  .vacancy-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+  .vacancy-department {
+    font-size: 0.8rem;
+  }
+  .vacancy-body {
+    padding: 1.25rem;
+  }
+  .vacancy-footer {
+    padding: 1.25rem;
+  }
+  .vacancy-requirements h4,
+  .vacancy-responsibilities h4,
+  .vacancy-conditions h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  .vacancy-requirements li,
+  .vacancy-responsibilities li,
+  .vacancy-conditions li {
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+    padding-left: 1.25rem;
+  }
+  
+  /* Преимущества */
+  .benefit-card {
+    padding: 1.5rem;
+  }
+  .benefit-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 1rem;
+  }
+  .benefit-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  .benefit-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .benefit-card p {
+    font-size: 0.85rem;
+  }
+  .careers-benefits-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* О компании */
+  .about-content-grid,
+  .mission-content-grid,
+  .values-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .about-content-inline {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .about-grid,
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .about-image-placeholder,
+  .values-image-block .about-image-placeholder {
+    height: 250px;
+  }
+  .values-image-block {
+    order: -1;
+  }
+  .directions-grid,
+  .facts-container {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .value-item {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.25rem;
+  }
+  .value-item:hover {
+    transform: translateY(-4px);
+  }
+  .value-icon {
+    margin: 0 auto;
+    width: 50px;
+    height: 50px;
+  }
+  .value-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+  .value-text h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+  }
+  .value-text p {
+    font-size: 0.85rem;
+  }
+  .placeholder-icon {
+    width: 55px;
+    height: 55px;
+    margin-bottom: 0.75rem;
+  }
+  .direction-card {
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+  .direction-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+  }
+  .direction-card p {
+    font-size: 0.85rem;
+  }
+  .fact-item {
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+  .fact-number {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  .fact-label {
+    font-size: 0.85rem;
+  }
+  
+  /* Процесс и фичи */
+  .process-steps {
+    grid-template-columns: 1fr;
+  }
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Контакты и футер */
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+  }
+  .footer-brand {
+    display: none;
+  }
+  .footer-legal ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .footer {
+    padding: 30px 4%;
+  }
+  
+  /* Модальные окна */
+  .modal-container {
+    max-height: 95vh;
+  }
+  .modal-header,
+  .modal-body {
+    padding: 1rem;
+  }
+  .details-modal-body {
+    padding: 1.5rem;
+  }
+  .contact-form-container {
+    padding: 1.5rem;
+  }
+  
+  /* Плавающие кнопки */
+  .floating-cta-btn {
+    bottom: 5rem;
+    right: 1rem;
+  }
+  .scroll-to-top {
+    bottom: 5rem;
+    left: 1rem;
+  }
+  .floating-cta-btn span {
+    display: none;
+  }
+  
+  /* Lightbox */
+  .lightbox-image {
+    max-width: 98vw;
+    max-height: 90vh;
+  }
+}
+
+/* ==================== @media (max-width: 480px) ==================== */
+@media (max-width: 480px) {
+  :root {
+    font-size: 13px;
+  }
+  
+  /* Hero секция */
+  .hero {
+    min-height: 50vh;
+    padding: 0 4%;
+  }
+  .page-header {
+    padding: 80px 4% 30px;
+  }
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+  .section-header h2 {
+    font-size: 1.3rem;
+  }
+  .contact-cta h2 {
+    font-size: 1.5rem;
+  }
+  
+  /* Секции - отступы */
+  .services,
+  .about-preview,
+  .projects-preview,
+  .news-preview,
+  .contact-cta {
+    padding: 25px 4%;
+  }
+  
+  /* Сетки - gap */
+  .services-grid,
+  .projects-grid,
+  .news-grid,
+  .docs-grid,
+  .vacancies-grid-container {
+    gap: 1rem;
+  }
+  
+  /* Услуги */
+  .service-card {
+    padding: 1rem;
+    border-radius: 14px;
+  }
+  .service-icon {
+    width: 45px;
+    height: 45px;
+    margin-bottom: 0.75rem;
+    border-radius: 10px;
+  }
+  .service-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .service-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.6rem;
+  }
+  .service-card p {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Проекты */
+  .project-image {
+    height: 160px;
+  }
+  .project-content {
+    padding: 0.9rem;
+  }
+  .project-category {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+  .project-content h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+  .project-content p {
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  /* Новости */
+  .news-card {
+    margin-bottom: 0.75rem;
+    border-radius: 14px;
+  }
+  .news-card-image {
+    height: 160px;
+  }
+  .news-card-content {
+    padding: 0.85rem;
+  }
+  .news-card-category {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.55rem;
+    top: 0.6rem;
+    left: 0.6rem;
+  }
+  .news-card-date {
+    font-size: 0.7rem;
+    margin-bottom: 0.4rem;
+    gap: 0.35rem;
+  }
+  .news-card-date svg {
+    width: 13px;
+    height: 13px;
+  }
+  .news-card-title {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+  .news-card-excerpt {
+    font-size: 0.75rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  /* Документы */
+  .doc-preview {
+    min-height: 180px;
+  }
+  
+  /* Вакансии */
+  .vacancy-header {
+    padding: 1rem;
+  }
+  .vacancy-title {
+    font-size: 1rem;
+  }
+  .vacancy-department {
+    font-size: 0.75rem;
+  }
+  .vacancy-body {
+    padding: 1rem;
+  }
+  .vacancy-requirements li,
+  .vacancy-responsibilities li,
+  .vacancy-conditions li {
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+    padding-left: 1.1rem;
+  }
+  .vacancy-footer {
+    padding: 1rem;
+  }
+  
+  /* Преимущества */
+  .benefit-card {
+    padding: 1.25rem;
+  }
+  .benefit-icon {
+    width: 45px;
+    height: 45px;
+    margin-bottom: 0.75rem;
+  }
+  .benefit-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .benefit-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+  }
+  .benefit-card p {
+    font-size: 0.8rem;
+  }
+  
+  /* Футер */
+  .footer {
+    padding: 25px 4%;
+  }
+  
+  /* Кнопки */
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.85rem;
+  }
+  
+  /* Loader */
+  .orbit-container {
+    width: 60px;
+    height: 60px;
+  }
+  .plane-icon {
+    width: 18px;
+    height: 18px;
+    top: -8px;
+  }
+  .loader-text {
+    font-size: 0.85rem;
+    margin-top: 18px;
+  }
+  
+  /* Модальные окна */
+  .modal-overlay {
+    overflow: auto;
+    align-items: flex-start;
+    padding: 1rem 0;
+  }
+  .modal-container {
+    margin-top: 1rem;
+    max-width: calc(100% - 2rem);
+    max-height: calc(95vh - 2rem);
+    overflow-y: auto;
+  }
+  .modal-close {
+    top: -35px;
+    right: -35px;
+    width: 36px;
+    height: 36px;
+  }
+  .modal-close svg {
+    width: 16px;
+    height: 16px;
+  }
+  .modal-header {
+    padding: 1rem 1rem 0.5rem;
+  }
+  .modal-title {
+    font-size: 1.1rem;
+  }
+  .modal-subtitle {
+    font-size: 0.8rem;
+  }
+  .modal-body {
+    padding: 1rem;
+    max-height: none;
+  }
+  
+  /* Формы */
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 16px;
+    padding: 0.7rem 0.9rem;
+  }
 }
