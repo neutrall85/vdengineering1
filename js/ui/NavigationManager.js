@@ -35,9 +35,13 @@ class NavigationManager {
           return;
         }
         
+        // Инициализируем scrollToTop, даже если кнопки ещё нет (она может появиться позже)
+        // Проверка наличия кнопки будет внутри _initScrollToTop()
+        
         this._initSmoothScroll();
         this._initScrollHandler();
         this._initMobileMenu();
+        this._initScrollToTop();
         this._handleScroll();
         
         Logger.INFO('NavigationManager initialized');
@@ -199,6 +203,15 @@ class NavigationManager {
         this.closeMobileMenu();
       }
     });
+  }
+
+  _initScrollToTop() {
+    if (this.scrollToTopBtn) {
+      this.scrollToTopBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.scrollToTop();
+      });
+    }
   }
 
   openMobileMenu() {
