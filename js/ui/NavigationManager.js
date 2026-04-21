@@ -154,6 +154,14 @@ class NavigationManager {
       this.touchCurrentX = 0;
     });
     
+    // Закрытие меню при возврате через историю браузера (кнопка "назад")
+    window.addEventListener('pageshow', (e) => {
+      // e.persisted === true означает, что страница загружена из bfcache
+      if (e.persisted || this.mobileMenu.classList.contains('active')) {
+        this.closeMobileMenu();
+      }
+    });
+    
     // Используем делегирование событий для кнопки меню (по ID)
     document.addEventListener('click', (e) => {
       if (e.target.closest('#mobileMenuBtn')) {
