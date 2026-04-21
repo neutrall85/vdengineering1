@@ -75,7 +75,13 @@ class NewsManager {
     this.lightboxImage.src = imageSrc;
     this.lightboxImage.alt = imageAlt || 'Изображение новости';
     this.lightboxOverlay.classList.add('active');
-    document.body.classList.add('no-scroll');
+    
+    // Используем централизованный ScrollManager для блокировки скролла
+    if (window.ScrollManager) {
+      ScrollManager.lock();
+    } else {
+      document.body.classList.add('no-scroll');
+    }
     
     // Добавляем закрытие по клику на изображение
     this.lightboxImage.onclick = () => this.closeLightbox();
@@ -93,7 +99,13 @@ class NewsManager {
     if (!this.lightboxOverlay) return;
 
     this.lightboxOverlay.classList.remove('active');
-    document.body.classList.remove('no-scroll');
+    
+    // Используем централизованный ScrollManager для восстановления скролла
+    if (window.ScrollManager) {
+      ScrollManager.unlock();
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
     
     // Сбрасываем обработчик клика
     if (this.lightboxImage) {

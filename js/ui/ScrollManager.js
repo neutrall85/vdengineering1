@@ -40,6 +40,9 @@ const ScrollManager = {
     if (this.state.lockCount === 0) {
       this.state.scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
       
+      // Устанавливаем CSS переменную для позиции скролла (используется в body.no-scroll)
+      document.body.style.setProperty('--scroll-position', `-${this.state.scrollPosition}px`);
+      
       // Фиксируем ширину скроллбара
       const scrollbarWidth = this.getScrollbarWidth();
       if (scrollbarWidth > 0 && usePaddingFix) {

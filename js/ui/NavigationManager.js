@@ -199,7 +199,13 @@ class NavigationManager {
     Utils.DOM.addClass(this.mobileMenu, 'active');
     if (this.mobileMenuOverlay) Utils.DOM.addClass(this.mobileMenuOverlay, 'active');
     if (this.mobileMenuBtn) Utils.DOM.addClass(this.mobileMenuBtn, 'active');
-    document.body.classList.add('no-scroll');
+    
+    // Используем централизованный ScrollManager для блокировки скролла
+    if (window.ScrollManager) {
+      ScrollManager.lock();
+    } else {
+      document.body.classList.add('no-scroll');
+    }
   }
 
   closeMobileMenu() {
@@ -208,7 +214,13 @@ class NavigationManager {
     Utils.DOM.removeClass(this.mobileMenu, 'active');
     if (this.mobileMenuOverlay) Utils.DOM.removeClass(this.mobileMenuOverlay, 'active');
     if (this.mobileMenuBtn) Utils.DOM.removeClass(this.mobileMenuBtn, 'active');
-    document.body.classList.remove('no-scroll');
+    
+    // Используем централизованный ScrollManager для восстановления скролла
+    if (window.ScrollManager) {
+      ScrollManager.unlock();
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
   }
 
   toggleMobileMenu() {

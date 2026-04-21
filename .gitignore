@@ -1,3 +1,10 @@
-(css/styles.css) is a source file, and there are no build artifacts, dependencies, or temporary files in the changes.
+```
+# Dependencies
+node_modules/
 
-Output: (nothing)
+# Editors
+.vscode/
+
+# Logs
+*.log
+```

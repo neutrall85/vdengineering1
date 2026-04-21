@@ -137,14 +137,9 @@ body {
 body.no-scroll {
   overflow: hidden;
   padding-right: var(--scrollbar-width, 0px);
-}
-
-/* Модальные окна новостей и деталей также блокируют скролл */
-.modal-overlay.active ~ body,
-.details-modal-overlay.active ~ body,
-body:has(.modal-overlay.active),
-body:has(.details-modal-overlay.active) {
-  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  top: var(--scroll-position, 0);
 }
 
 /* ==================== НАВИГАЦИЯ ==================== */
@@ -3471,16 +3466,6 @@ body.app-ready > footer {
     display: none !important;
 }
 
-/* Для управления скроллом (уже есть класс no-scroll, добавим padding) */
-body.no-scroll {
-    overflow: hidden;
-}
-
-/* Устаревший класс, теперь используется body.no-scroll */
-body.scroll-padding-fix {
-    padding-right: var(--scrollbar-width, 0px);
-}
-
 /* Анимация для плавного появления/исчезновения */
 .fade-transition {
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -4140,14 +4125,19 @@ body.scroll-padding-fix {
     overflow-y: auto;
   }
   .modal-close {
-    top: -30px;
-    right: -30px;
-    width: 32px;
-    height: 32px;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.9);
   }
   .modal-close svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
+    fill: #333;
+  }
+  .modal-close:hover svg {
+    fill: #000;
   }
   .modal-header {
     padding: 0.85rem 0.85rem 0.4rem;
@@ -4161,6 +4151,26 @@ body.scroll-padding-fix {
   .modal-body {
     padding: 0.85rem;
     max-height: none;
+  }
+  
+  /* Lightbox - кнопка закрытия внутри области просмотра */
+  .lightbox-close {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.9);
+  }
+  .lightbox-close svg {
+    width: 18px;
+    height: 18px;
+    fill: #333;
+  }
+  .lightbox-close:hover {
+    background: rgba(255, 255, 255, 1);
+  }
+  .lightbox-close:hover svg {
+    fill: #000;
   }
   
   /* Формы - компактнее */
