@@ -67,13 +67,21 @@ class NavigationManager {
           if (target) {
             e.preventDefault();
             target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            this.closeMobileMenu();
           }
         } catch (error) {
           Logger.WARN('Smooth scroll error:', error);
         }
       });
     });
+    
+    // Обработка кликов на ссылки в мобильном меню
+    if (this.mobileMenu) {
+      this.mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          setTimeout(() => this.closeMobileMenu(), 300);
+        });
+      });
+    }
   }
 
   _initScrollHandler() {
@@ -163,8 +171,16 @@ class NavigationManager {
     
     // Отдельный обработчик клика на overlay для гарантии закрытия
     if (this.mobileMenuOverlay) {
-      this.mobileMenuOverlay.addEventListener('click', () => this.closeMobileMenu());
+      this.mobileMenuOverlay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.closeMobileMenu();
+      });
     }
+    
+    // Предотвращаем всплытие кликов внутри мобильного меню, чтобы они не закрывали его
+    this.mobileMenu.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
     
     window.addEventListener('resize', () => {
       if (window.innerWidth > 1048 && this.mobileMenu.classList.contains('active')) {
