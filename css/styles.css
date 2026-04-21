@@ -142,6 +142,11 @@ body.no-scroll {
   top: var(--scroll-position, 0);
 }
 
+/* Фикс для корректного применения padding-right при блокировке скролла */
+body.scroll-padding-fix {
+  padding-right: var(--scrollbar-width, 0px) !important;
+}
+
 /* ==================== НАВИГАЦИЯ ==================== */
 body:not(.app-ready) .page-loader {
   display: flex;
