@@ -549,18 +549,10 @@ body.app-ready > footer {
   display: block;
 }
 
-/* Анимация покачивания вверх-вниз */
-@keyframes gentleRock {
-  0%, 100% {
-    transform: translateY(-15px);
-  }
-  50% {
-    transform: translateY(15px);
-  }
-}
+/* Анимация покачивания вверх-вниз - удалена по запросу */
 
 .hero-slideshow .slideshow-container {
-  animation: gentleRock 6s ease-in-out infinite;
+  /* animation: gentleRock 6s ease-in-out infinite; - анимация удалена */
 }
 
 .hero-text h1 {
@@ -3602,11 +3594,7 @@ body.app-ready > footer {
     max-width: 100%;
   }
   .hero-slideshow {
-    flex: 0 0 350px;
-    max-width: 350px;
-  }
-  .slideshow-container {
-    height: 250px;
+    display: none;
   }
   .hero-buttons {
     justify-content: center;
@@ -4058,11 +4046,7 @@ body.app-ready > footer {
     padding: clamp(60px, 7vh, 90px) 3% 0;
   }
   .hero-slideshow {
-    flex: 0 0 280px;
-    max-width: 280px;
-  }
-  .slideshow-container {
-    height: 200px;
+    display: none;
   }
   .page-header {
     padding: clamp(90px, 12vh, 130px) 3% 15px;
