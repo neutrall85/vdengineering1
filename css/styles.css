@@ -137,6 +137,9 @@ body {
 body.no-scroll {
   overflow: hidden;
   padding-right: var(--scrollbar-width, 0px);
+}
+
+body.no-scroll.no-scroll-position {
   position: fixed;
   width: 100%;
   top: var(--scroll-position, 0);
