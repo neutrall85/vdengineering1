@@ -1,5 +1,1 @@
-(css/styles.css, js/ui/ScrollManager.js are source files, no build artifacts, dependencies, or temp files detected)
-
-```
-
-```
+(css/styles.css, js/ui/ComponentLoader.js, js/ui/ModalManager.js, js/ui/ScrollManager.js)

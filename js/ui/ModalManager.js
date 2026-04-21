@@ -107,7 +107,7 @@ class ModalManager {
           ScrollManager.unlock();
         } else {
           document.body.classList.remove('no-scroll');
-          document.body.style.paddingRight = '';
+          document.body.style.removeProperty('--scrollbar-width');
         }
       }
     };
@@ -133,8 +133,10 @@ class ModalManager {
       ScrollManager.lock();
     } else {
       // Fallback для обратной совместимости
-      const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-      document.body.style.paddingRight = `${window.innerWidth - document.documentElement.clientWidth}px`;
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      if (scrollbarWidth > 0) {
+        document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+      }
       document.body.classList.add('no-scroll');
     }
 
@@ -184,9 +186,11 @@ class ModalManager {
     } else {
       // Fallback для обратной совместимости
       const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-      window.scrollTo(0, scrollPosition);
+      if (scrollPosition > 0) {
+        window.scrollTo(0, scrollPosition);
+      }
       document.body.classList.remove('no-scroll');
-      document.body.style.paddingRight = '';
+      document.body.style.removeProperty('--scrollbar-width');
     }
     
     if (this.activeModal === key) {

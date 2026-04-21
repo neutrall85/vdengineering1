@@ -139,15 +139,13 @@ body.no-scroll {
   padding-right: var(--scrollbar-width, 0px);
 }
 
-body.no-scroll.no-scroll-position {
+/* Фиксация позиции скролла с сохранением текущей прокрутки */
+body.no-scroll-fixed {
   position: fixed;
   width: 100%;
   top: var(--scroll-position, 0);
-}
-
-/* Фикс для корректного применения padding-right при блокировке скролла */
-body.scroll-padding-fix {
-  padding-right: var(--scrollbar-width, 0px) !important;
+  overflow: hidden;
+  padding-right: var(--scrollbar-width, 0px);
 }
 
 /* ==================== НАВИГАЦИЯ ==================== */

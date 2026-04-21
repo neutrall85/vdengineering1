@@ -518,7 +518,6 @@ const ComponentLoader = {
             const scrollbarWidth = this.getScrollbarWidth();
             if (scrollbarWidth > 0) {
                 document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
-                document.body.classList.add('scroll-padding-fix');
             }
             document.body.classList.add('no-scroll');
         }
@@ -546,7 +545,6 @@ const ComponentLoader = {
         } else {
             // Fallback для обратной совместимости
             document.body.classList.remove('no-scroll');
-            document.body.classList.remove('scroll-padding-fix');
             document.body.style.removeProperty('--scrollbar-width');
         }
     },
@@ -593,11 +591,9 @@ const ComponentLoader = {
                 ScrollManager.lock();
             } else {
                 // Fallback для обратной совместимости
-                const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
                 const scrollbarWidth = ComponentLoader.getScrollbarWidth();
                 if (scrollbarWidth > 0) {
                     document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
-                    document.body.classList.add('scroll-padding-fix');
                 }
                 document.body.classList.add('no-scroll');
             }
@@ -628,7 +624,6 @@ const ComponentLoader = {
                 } else {
                     // Fallback для обратной совместимости
                     document.body.classList.remove('no-scroll');
-                    document.body.classList.remove('scroll-padding-fix');
                     document.body.style.removeProperty('--scrollbar-width');
                 }
             }
