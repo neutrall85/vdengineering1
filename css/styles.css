@@ -3624,39 +3624,40 @@ body.scroll-padding-fix {
   .preview-news-grid,
   .news-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
   .news-card {
-    margin-bottom: 1rem;
-    border-radius: 16px;
+    margin-bottom: 0.75rem;
+    border-radius: 14px;
   }
   .news-card-image {
-    height: 180px;
+    height: 160px;
   }
   .news-card-content {
-    padding: 1rem;
+    padding: 0.85rem;
   }
   .news-card-category {
-    padding: 0.3rem 0.75rem;
-    font-size: 0.6rem;
-    top: 0.75rem;
-    left: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.55rem;
+    top: 0.6rem;
+    left: 0.6rem;
   }
   .news-card-date {
-    font-size: 0.75rem;
-    margin-bottom: 0.5rem;
-    gap: 0.4rem;
+    font-size: 0.7rem;
+    margin-bottom: 0.4rem;
+    gap: 0.35rem;
   }
   .news-card-date svg {
-    width: 14px;
-    height: 14px;
+    width: 13px;
+    height: 13px;
   }
   .news-card-title {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
   }
   .news-card-excerpt {
-    font-size: 0.8rem;
-    margin-bottom: 0.75rem;
+    font-size: 0.75rem;
+    margin-bottom: 0.6rem;
   }
   .news-tabs {
     flex-direction: column;
@@ -3975,39 +3976,44 @@ body.scroll-padding-fix {
     margin-bottom: 0.6rem;
   }
   
-  /* Новости */
+  /* Новости - ещё компактнее */
   .news-card {
-    margin-bottom: 0.75rem;
-    border-radius: 14px;
+    margin-bottom: 0.5rem;
+    border-radius: 12px;
   }
   .news-card-image {
-    height: 160px;
+    height: 140px;
   }
   .news-card-content {
-    padding: 0.85rem;
+    padding: 0.75rem;
   }
   .news-card-category {
-    padding: 0.25rem 0.6rem;
-    font-size: 0.55rem;
-    top: 0.6rem;
-    left: 0.6rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.5rem;
+    top: 0.5rem;
+    left: 0.5rem;
   }
   .news-card-date {
-    font-size: 0.7rem;
-    margin-bottom: 0.4rem;
-    gap: 0.35rem;
+    font-size: 0.65rem;
+    margin-bottom: 0.3rem;
+    gap: 0.3rem;
   }
   .news-card-date svg {
-    width: 13px;
-    height: 13px;
+    width: 12px;
+    height: 12px;
   }
   .news-card-title {
-    font-size: 0.95rem;
-    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.35rem;
+    line-height: 1.3;
   }
   .news-card-excerpt {
-    font-size: 0.75rem;
-    margin-bottom: 0.6rem;
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  .news-grid {
+    gap: 0.75rem;
   }
   
   /* Документы */
