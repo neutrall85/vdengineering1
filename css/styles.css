@@ -141,15 +141,6 @@ body.no-scroll {
   padding-right: var(--scrollbar-width, 0px);
 }
 
-/* Фиксация позиции скролла с сохранением текущей прокрутки */
-body.no-scroll-fixed {
-  position: fixed;
-  width: 100%;
-  top: var(--scroll-position, 0);
-  overflow: hidden;
-  padding-right: var(--scrollbar-width, 0px);
-}
-
 /* ==================== НАВИГАЦИЯ ==================== */
 body:not(.app-ready) .page-loader {
   display: flex;
