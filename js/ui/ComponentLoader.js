@@ -3,9 +3,6 @@
  * Устраняет дублирование HTML между страницами
  */
 
-// Импортируем документы политик из отдельного файла
-// const POLICY_DOCUMENTS определяется в policyDocuments.js
-
 const ComponentLoader = {
     // Вспомогательная функция для получения ширины скроллбара
     getScrollbarWidth() {
@@ -177,7 +174,7 @@ const ComponentLoader = {
   </div>
 </div>`,
 
-    // Универсальное модальное окно для заявок (используется для кнопок "Откликнуться" и "Отправить заявку")
+    // Универсальное модальное окно для заявок
     universalApplicationModal: `
 <!-- Universal Application Modal -->
 <div class="modal-overlay modal-overlay-universal" id="universalApplicationModalOverlay" role="dialog" aria-modal="true" aria-labelledby="universalApplicationModalTitle">
@@ -267,7 +264,7 @@ const ComponentLoader = {
             activePage = '' 
         } = options;
 
-        // Загрузка навигации - вставляем перед первым элементом body
+        // Загрузка навигации
         if (loadNavbar) {
             const existingNav = document.querySelector('body > nav.navbar');
             if (!existingNav) {
@@ -275,15 +272,12 @@ const ComponentLoader = {
                 navContainer.innerHTML = this.navbar.trim();
                 const firstBodyChild = document.body.firstChild;
                 document.body.insertBefore(navContainer.firstElementChild, firstBodyChild);
-                
                 this.setActiveLink(activePage);
             } else {
-                // Если навигация уже есть в HTML (для обратной совместимости), обновляем её
                 existingNav.outerHTML = this.navbar;
                 this.setActiveLink(activePage);
             }
             
-            // Гарантированно добавляем mobile-menu-overlay (один раз)
             if (!document.getElementById('mobileMenuOverlay')) {
                 const overlay = document.createElement('div');
                 overlay.className = 'mobile-menu-overlay';
@@ -291,21 +285,18 @@ const ComponentLoader = {
                 document.body.appendChild(overlay);
             }
             
-            // Вызываем callback после загрузки навигации
             if (callback) {
                 setTimeout(callback, 50);
             }
         }
         
-        // Загрузка модального окна
+        // Загрузка модальных окон
         if (loadModal) {
             const existingModal = document.getElementById('modalOverlay');
             if (!existingModal) {
                 const modalContainer = document.createElement('div');
                 modalContainer.innerHTML = this.proposalModal.trim();
                 document.body.appendChild(modalContainer.firstElementChild);
-                
-                // Инициализация автоподстановки +7 для поля телефона в модалке
                 setTimeout(() => {
                     const modalPhoneInput = document.querySelector('#modalOverlay #phone');
                     if (modalPhoneInput) {
@@ -314,21 +305,18 @@ const ComponentLoader = {
                 }, 0);
             }
             
-            // Загрузка универсального модального окна для заявок
             const existingUniversalModal = document.getElementById('universalApplicationModalOverlay');
             if (!existingUniversalModal) {
                 const universalModalContainer = document.createElement('div');
                 universalModalContainer.innerHTML = this.universalApplicationModal.trim();
                 document.body.appendChild(universalModalContainer.firstElementChild);
-                
-                // Инициализация обработчиков для универсального модального окна
                 setTimeout(() => {
                     this.initUniversalApplicationModal();
                 }, 100);
             }
         }
 
-        // Загрузка футера - вставляем перед закрывающим тегом body
+        // Загрузка футера
         if (loadFooter) {
             const existingFooter = document.querySelector('body > footer.footer');
             if (!existingFooter) {
@@ -336,76 +324,47 @@ const ComponentLoader = {
                 footerContainer.innerHTML = this.footer.trim();
                 document.body.appendChild(footerContainer.firstElementChild);
                 this.updateYear();
-                // Инициализируем обработчики ссылок политик после загрузки футера
                 this.initPolicyLinks();
             } else {
-                // Если футер уже есть в HTML (для обратной совместимости), обновляем его
                 existingFooter.outerHTML = this.footer;
                 this.updateYear();
-                // Инициализируем обработчики ссылок политик после загрузки футера
                 this.initPolicyLinks();
             }
         }
 
-        // Отправляем событие о завершении загрузки компонентов ПОСЛЕ загрузки всех модалок и футера
         document.dispatchEvent(new CustomEvent('components:loaded'));
 
-        // Подсветка активной ссылки
         if (activePage) {
             this.setActiveLink(activePage);
         }
     },
 
-    /**
-     * Установка активной ссылки в навигации
-     * @param {string} activePage - Имя активной страницы
-     */
     setActiveLink(activePage) {
-        // Скрываем ссылку "Главная" на главной странице (index.html)
         const isHomePage = activePage === '' || activePage === 'index';
-        
-        // Обрабатываем десктопное меню
         const homeLinkDesktop = document.querySelector('.nav-links .home-link');
         if (homeLinkDesktop) {
-            if (isHomePage) {
-                homeLinkDesktop.classList.add('hidden');
-            } else {
-                homeLinkDesktop.classList.remove('hidden');
-            }
+            if (isHomePage) homeLinkDesktop.classList.add('hidden');
+            else homeLinkDesktop.classList.remove('hidden');
         }
-        
-        // Обрабатываем мобильное меню
         const homeLinkMobile = document.querySelector('.mobile-menu .home-link-mobile');
         if (homeLinkMobile) {
-            if (isHomePage) {
-                homeLinkMobile.classList.add('hidden');
-            } else {
-                homeLinkMobile.classList.remove('hidden');
-            }
+            if (isHomePage) homeLinkMobile.classList.add('hidden');
+            else homeLinkMobile.classList.remove('hidden');
         }
-        
-        // Подсветка активной ссылки
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.classList.remove('active');
-            if (link.getAttribute('href') === activePage || 
-                link.getAttribute('href') === `${activePage}.html`) {
+            if (link.getAttribute('href') === activePage || link.getAttribute('href') === `${activePage}.html`) {
                 link.classList.add('active');
             }
         });
-        
-        // Также подсвечиваем активную ссылку в мобильном меню
         document.querySelectorAll('.mobile-menu a').forEach(link => {
             link.classList.remove('active');
-            if (link.getAttribute('href') === activePage || 
-                link.getAttribute('href') === `${activePage}.html`) {
+            if (link.getAttribute('href') === activePage || link.getAttribute('href') === `${activePage}.html`) {
                 link.classList.add('active');
             }
         });
     },
 
-    /**
-     * Обновление года в футере
-     */
     updateYear() {
         const yearElement = document.getElementById('currentYear');
         if (yearElement) {
@@ -413,11 +372,7 @@ const ComponentLoader = {
         }
     },
 
-    /**
-     * Инициализация обработчиков для ссылок политик в футере
-     */
     initPolicyLinks() {
-        // Делегирование событий для ссылок политик (DRY - один обработчик для всех)
         document.addEventListener('click', (e) => {
             const policyLink = e.target.closest('[data-policy]');
             if (policyLink) {
@@ -439,7 +394,6 @@ const ComponentLoader = {
             return;
         }
 
-        // Создаем модальное окно если его нет
         let modalOverlay = document.getElementById('policyModalOverlay');
         if (!modalOverlay) {
             modalOverlay = document.createElement('div');
@@ -448,13 +402,10 @@ const ComponentLoader = {
             modalOverlay.setAttribute('role', 'dialog');
             modalOverlay.setAttribute('aria-modal', 'true');
             
-            // Кнопка закрытия (размещается вне контейнера)
             const closeBtn = document.createElement('button');
             closeBtn.className = 'modal-close';
             closeBtn.id = 'policyModalCloseBtn';
             closeBtn.setAttribute('aria-label', 'Закрыть');
-            
-            // SVG иконка закрытия
             const svgNS = 'http://www.w3.org/2000/svg';
             const svgEl = document.createElementNS(svgNS, 'svg');
             svgEl.setAttribute('viewBox', '0 0 24 24');
@@ -463,46 +414,30 @@ const ComponentLoader = {
             svgEl.appendChild(pathEl);
             closeBtn.appendChild(svgEl);
             
-            // Создаем контейнер модального окна
             const modalContainer = document.createElement('div');
             modalContainer.className = 'modal-container';
-            
-            // Заголовок модального окна
             const modalHeader = document.createElement('div');
             modalHeader.className = 'modal-header';
             const modalTitle = document.createElement('h2');
             modalTitle.className = 'modal-title';
             modalTitle.id = 'policyModalTitle';
             modalHeader.appendChild(modalTitle);
-            
-            // Тело модального окна
             const modalBody = document.createElement('div');
             modalBody.className = 'modal-body';
             modalBody.id = 'policyModalContent';
             
-            // Собираем структуру: кнопка вне контейнера
-            modalOverlay.appendChild(closeBtn);
+            modalContainer.appendChild(closeBtn);
             modalContainer.appendChild(modalHeader);
             modalContainer.appendChild(modalBody);
             modalOverlay.appendChild(modalContainer);
             document.body.appendChild(modalOverlay);
-            
-            // Добавляем обработчик клика на кнопку закрытия
-            closeBtn.addEventListener('click', () => {
-              if (typeof window.closePolicyModal === 'function') {
-                window.closePolicyModal();
-              }
-            });
 
-            // Закрытие по клику на overlay
-            modalOverlay.addEventListener('click', (e) => {
-                if (e.target === modalOverlay) {
-                    this.closePolicyModal();
-                }
-            });
+            // Регистрация в ModalManager
+            if (typeof modalManager !== 'undefined') {
+                modalManager.register('policy', { overlayId: 'policyModalOverlay' });
+            }
         }
 
-        // Заполняем контент с санитизацией
         document.getElementById('policyModalTitle').textContent = policy.title;
         const sanitizer = Utils.Sanitizer || { sanitizeHtml: (html) => html };
         document.getElementById('policyModalContent').innerHTML = sanitizer.sanitizeHtml(policy.content, {
@@ -510,126 +445,88 @@ const ComponentLoader = {
           allowedAttributes: { 'a': ['href', 'target', 'rel'] }
         });
 
-        // Используем централизованный ScrollManager для блокировки скролла
-        if (window.ScrollManager) {
-            ScrollManager.lock();
+        // Открываем через ModalManager
+        if (typeof modalManager !== 'undefined') {
+            modalManager.open('policy');
         } else {
-            // Fallback для обратной совместимости
             const scrollbarWidth = this.getScrollbarWidth();
             if (scrollbarWidth > 0) {
                 document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
             }
             document.body.classList.add('no-scroll');
-        }
-
-        // Показываем модальное окно
-        setTimeout(() => {
             modalOverlay.classList.add('active');
-            const closeBtn = modalOverlay.querySelector('.modal-close');
-            if (closeBtn) closeBtn.focus();
-        }, 50);
+        }
     },
 
     /**
      * Закрытие модального окна политики
      */
     closePolicyModal() {
-        const modalOverlay = document.getElementById('policyModalOverlay');
-        if (!modalOverlay) return;
-
-        modalOverlay.classList.remove('active');
-        
-        // Используем централизованный ScrollManager для восстановления скролла
-        if (window.ScrollManager) {
-            ScrollManager.unlock();
+        if (typeof modalManager !== 'undefined') {
+            modalManager.close('policy');
         } else {
-            // Fallback для обратной совместимости
-            document.body.classList.remove('no-scroll');
-            document.body.style.removeProperty('--scrollbar-width');
+            const modalOverlay = document.getElementById('policyModalOverlay');
+            if (modalOverlay) {
+                modalOverlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+                document.body.style.removeProperty('--scrollbar-width');
+            }
         }
     },
 
     /**
      * Инициализация универсального модального окна заявок
-     * @param {string} mode - режим открытия ('vacancy' для кнопок "Откликнуться", 'application' для кнопки "Отправить заявку")
      */
     initUniversalApplicationModal() {
-        // Глобальная функция для открытия универсального модального окна с поддержкой передачи элемента-триггера
         window.openApplicationModal = (triggerElement) => {
             const overlay = document.getElementById('universalApplicationModalOverlay');
             if (!overlay) return;
 
-            // Определяем режим по атрибуту data-modal-open или data-vacancy-id
             let mode = 'vacancy';
             const vacancyId = triggerElement ? triggerElement.getAttribute('data-vacancy-id') : null;
-            
-            // Если есть ID вакансии - это отклик на конкретную вакансию
-            // Если нет - это общая заявка (кнопка "Оставить заявку")
-            if (!vacancyId) {
-                mode = 'application';
-            }
+            if (!vacancyId) mode = 'application';
 
-            // Динамическая настройка текстов в зависимости от режима
             const modalTitle = document.getElementById('universalApplicationModalTitle');
             const submitBtnText = document.getElementById('universalSubmitBtnText');
             const successTitle = document.getElementById('universalSuccessTitle');
             
             if (mode === 'application') {
-                // Режим для кнопки "Отправить заявку"
                 if (modalTitle) modalTitle.textContent = 'Отправить заявку';
                 if (submitBtnText) submitBtnText.textContent = 'Отправить информацию';
                 if (successTitle) successTitle.textContent = 'Данные отправлены!';
             } else {
-                // Режим для кнопок "Откликнуться"
                 if (modalTitle) modalTitle.textContent = 'Отклик на вакансию';
                 if (submitBtnText) submitBtnText.textContent = 'Отправить отклик';
                 if (successTitle) successTitle.textContent = 'Отклик отправлен!';
             }
 
-            // Используем централизованный ScrollManager для блокировки скролла
-            if (window.ScrollManager) {
-                ScrollManager.lock();
+            // Открываем через ModalManager
+            if (typeof modalManager !== 'undefined') {
+                modalManager.open('universal');
             } else {
-                // Fallback для обратной совместимости
                 const scrollbarWidth = ComponentLoader.getScrollbarWidth();
                 if (scrollbarWidth > 0) {
                     document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
                 }
                 document.body.classList.add('no-scroll');
+                overlay.classList.add('active');
             }
-
-            overlay.classList.add('active');
-            
-            // Фокус на первом поле (теперь обрабатывается через modalManager.focusSelector)
-            // Код оставлен для обратной совместимости при прямом вызове openApplicationModal
-            setTimeout(() => {
-                const focusTarget = overlay.querySelector('input[type="text"], input[type="email"], textarea');
-                if (focusTarget) focusTarget.focus();
-            }, 100);
         };
 
         window.closeUniversalApplicationModal = () => {
-            const overlay = document.getElementById('universalApplicationModalOverlay');
-            if (!overlay) return;
-
-            // Используем modalManager если доступен (для консистентности)
-            if (typeof modalManager !== 'undefined' && modalManager.modals.has('universal')) {
+            if (typeof modalManager !== 'undefined') {
                 modalManager.close('universal');
             } else {
-                overlay.classList.remove('active');
-                
-                // Используем централизованный ScrollManager для восстановления скролла
-                if (window.ScrollManager) {
-                    ScrollManager.unlock();
-                } else {
-                    // Fallback для обратной совместимости
+                const overlay = document.getElementById('universalApplicationModalOverlay');
+                if (overlay) {
+                    overlay.classList.remove('active');
                     document.body.classList.remove('no-scroll');
                     document.body.style.removeProperty('--scrollbar-width');
                 }
             }
         };
 
-        // Обработчик чекбокса согласия и валидации формы
+        // Обработка формы (без дублирования закрытия)
         const consentCheckbox = document.getElementById('universalConsent');
         const submitBtn = document.getElementById('universalSubmitBtn');
         const fullNameInput = document.getElementById('universalFullName');
@@ -638,7 +535,6 @@ const ComponentLoader = {
         const aboutInput = document.getElementById('universalAbout');
         const fileInput = document.getElementById('universalFileAttachment');
         
-        // Применяем автопрефикс +7 к полю телефона в универсальной модалке
         Utils.PhoneUtils.setupAutoPrefix(phoneInput);
         
         function checkFormValidity() {
@@ -646,13 +542,11 @@ const ComponentLoader = {
                 submitBtn.disabled = true;
                 return;
             }
-            
             const isFullNameValid = fullNameInput && fullNameInput.value.trim().length >= 2;
             const isPhoneValid = phoneInput && Utils.Validator.phone(phoneInput.value);
             const isEmailValid = emailInput && Utils.Validator.email(emailInput.value);
             const isAboutValid = aboutInput && aboutInput.value.trim().length >= 10;
             const isFileValid = fileInput && fileInput.files && fileInput.files.length > 0;
-            
             submitBtn.disabled = !(isFullNameValid && isPhoneValid && isEmailValid && isAboutValid && isFileValid);
         }
         
@@ -663,86 +557,64 @@ const ComponentLoader = {
             if (emailInput) emailInput.addEventListener('input', checkFormValidity);
             if (aboutInput) aboutInput.addEventListener('input', checkFormValidity);
             if (fileInput) fileInput.addEventListener('change', checkFormValidity);
-            
-            // Initial check
             checkFormValidity();
         }
 
-        // Обработчик отправки формы
         const universalForm = document.getElementById('universalApplicationForm');
         if (universalForm) {
             universalForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                
-                // Проверка чекбокса
                 if (!consentCheckbox || !consentCheckbox.checked) {
                     const consentError = document.getElementById('universalConsentError');
                     if (consentError) consentError.classList.add('show');
                     return;
                 }
                 
-                // Проверка обязательных полей
                 let isValid = true;
-                
                 if (!fullNameInput || fullNameInput.value.trim().length < 2) {
                     const error = document.getElementById('universalFullNameError');
                     if (error) error.classList.add('show');
                     isValid = false;
                 }
-                
                 if (!phoneInput || !Utils.Validator.phone(phoneInput.value)) {
                     const error = document.getElementById('universalPhoneError');
                     if (error) error.classList.add('show');
                     isValid = false;
                 }
-                
                 if (!emailInput || !Utils.Validator.email(emailInput.value)) {
                     const error = document.getElementById('universalEmailError');
                     if (error) error.classList.add('show');
                     isValid = false;
                 }
-                
                 if (!aboutInput || aboutInput.value.trim().length < 10) {
                     const error = document.getElementById('universalAboutError');
                     if (error) error.classList.add('show');
                     isValid = false;
                 }
-                
                 if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
                     const fileError = document.createElement('p');
                     fileError.className = 'error-message show';
                     fileError.id = 'universalFileError';
                     fileError.textContent = 'Пожалуйста, прикрепите резюме';
-                    
                     const existingError = document.getElementById('universalFileError');
                     if (!existingError && fileInput) {
                         fileInput.parentElement.appendChild(fileError);
                     }
                     isValid = false;
                 }
-                
                 if (!isValid) return;
 
-                // Здесь будет логика отправки формы
                 Logger.INFO('Отправка заявки...');
-                
-                // Показываем сообщение об успехе
                 const successMessage = document.getElementById('universalSuccessMessage');
                 const form = document.getElementById('universalApplicationForm');
-                
                 if (successMessage && form) {
                     form.classList.add('form-element-hidden');
                     successMessage.classList.add('show');
-                    
-                    // Закрываем модалку через 3 секунды
                     setTimeout(() => {
                         window.closeUniversalApplicationModal();
-                        // Сбрасываем форму
                         form.reset();
                         form.classList.remove('form-element-hidden');
                         successMessage.classList.remove('show');
-                        
-                        // Сбрасываем файлы
                         if (window.formManager) {
                             window.formManager.currentFiles = [];
                             const fileList = document.getElementById('universalFileList');
@@ -755,7 +627,6 @@ const ComponentLoader = {
             });
         }
 
-        // Инициализация загрузки файлов для универсального модального окна
         if (window.formManager) {
             setTimeout(() => {
                 const universalFileDrop = document.getElementById('universalFileDrop');
@@ -764,20 +635,9 @@ const ComponentLoader = {
                 }
             }, 150);
         }
-
-        // Обработчик закрытия по клику на оверлей
-        const overlay = document.getElementById('universalApplicationModalOverlay');
-        if (overlay) {
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    window.closeUniversalApplicationModal();
-                }
-            });
-        }
-    },
+    }
 };
 
-// Экспорт для использования в других модулях
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ComponentLoader;
 }

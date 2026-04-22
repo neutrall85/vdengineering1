@@ -12,57 +12,37 @@ class Application {
 
   async init() {
     try {
-      
-      // 1. Сначала инициализация ComponentLoader для загрузки общих компонентов
-      // Это критично, так как все модули зависят от наличия элементов в DOM
       if (typeof ComponentLoader !== 'undefined') {
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-        
-        // Подписываемся на событие components:loaded вместо использования setTimeout
         const componentsLoadedPromise = new Promise((resolve) => {
           const onComponentsLoaded = () => {
             document.removeEventListener('components:loaded', onComponentsLoaded);
             resolve();
           };
           document.addEventListener('components:loaded', onComponentsLoaded);
-          
-          // Инициализируем загрузчик
           ComponentLoader.init({ 
             loadNavbar: true, 
             loadFooter: true, 
             loadModal: true,
             activePage: currentPage === 'index' ? '' : currentPage
-          }, () => {
-            // Компоненты загружены, событие будет отправлено в ComponentLoader
           });
         });
-        
         await componentsLoadedPromise;
       }
       
-      // Скрываем лоадер и показываем контент после загрузки компонентов
       this._hidePageLoader();
-
       this._initGlobalHelpers();
       this._setCurrentYear();
-      
-      // Регистрация модальных окон ПОСЛЕ загрузки компонентов (KISS, DRY)
       this._registerModals();
-      
-      // Повторная регистрация модулей после загрузки компонентов
       this._registerModules();
       
-      // Инициализируем модули последовательно с обработкой ошибок
       for (const module of this.modules) {
         try {
           if (module && typeof module.init === 'function') {
             await module.init();
           }
         } catch (err) {
-          const errorMsg = `Module ${module.constructor?.name || 'unknown'} init failed: ${err.message}`;
-          this.errors.push(errorMsg);
-          
-          // Отправляем событие об ошибке
+          this.errors.push(`Module ${module.constructor?.name || 'unknown'} init failed: ${err.message}`);
           if (window.Services?.eventBus) {
             window.Services.eventBus.emit('module:error', { module: module.constructor?.name, error: err.message });
           }
@@ -74,11 +54,9 @@ class Application {
       this._initPrefersReducedMotion();
       
       this.initialized = true;
-      
       if (this.errors.length > 0) {
         Logger.WARN('Application initialized with errors:', this.errors);
       }
-      
       if (window.Services?.eventBus) {
         window.Services.eventBus.emit('app:ready');
       }
@@ -132,7 +110,9 @@ class Application {
         focusSelector: 'input[type="text"], input[type="email"], textarea'
       },
       { key: 'project', overlayId: 'projectModalOverlay', required: false },
-      { key: 'service', overlayId: 'serviceModalOverlay', required: false }
+      { key: 'service', overlayId: 'serviceModalOverlay', required: false },
+      // Добавлена регистрация модального окна политик
+      { key: 'policy', overlayId: 'policyModalOverlay', required: false }
     ];
 
     modalsToRegister.forEach(({ key, overlayId, required, onClose, onOpen, focusSelector }) => {
@@ -174,7 +154,6 @@ class Application {
         event.preventDefault();
       }
       if (formManager && typeof formManager.removeFile === 'function') {
-        // Передаем индекс файла для удаления конкретного файла
         formManager.removeFile(index);
       }
     };
@@ -199,9 +178,10 @@ class Application {
       }
     };
     
-    // Глобальные функции для модального окна политик
     window.closePolicyModal = () => {
-      if (typeof ComponentLoader !== 'undefined') {
+      if (typeof modalManager !== 'undefined') {
+        modalManager.close('policy');
+      } else if (typeof ComponentLoader !== 'undefined') {
         ComponentLoader.closePolicyModal();
       }
     };
@@ -221,7 +201,6 @@ class Application {
         const sanitizer = window.Utils?.Sanitizer;
         modalTitle.textContent = sanitizer ? sanitizer.escapeHtml(title) : title;
         
-        // Создаем список через DOM API вместо innerHTML для безопасности
         modalList.replaceChildren();
         const ul = document.createElement('ul');
         details.forEach(item => {
@@ -230,12 +209,10 @@ class Application {
           ul.appendChild(li);
         });
         modalList.appendChild(ul);
-        // Управление скроллом делегировано ModalManager
         if (typeof modalManager !== 'undefined') modalManager.open('details');
       }
     };
     
-    // Универсальный обработчик для открытия модалки "Запросить КП" (DRY)
     document.addEventListener('click', (e) => {
       const modalTrigger = e.target.closest('[data-modal-open="proposal"]');
       if (modalTrigger) {
@@ -247,7 +224,6 @@ class Application {
         }
       }
       
-      // Универсальный обработчик для открытия модалки "Отклик на вакансию" (DRY)
       const applicationTrigger = e.target.closest('[data-modal-open="application"]');
       if (applicationTrigger) {
         e.preventDefault();
@@ -259,13 +235,9 @@ class Application {
   _hidePageLoader() {
     const loader = document.getElementById('pageLoader');
     if (loader) {
-      // Добавляем класс app-ready на body для показа контента
       document.body.classList.add('app-ready');
-      
-      // Скрываем лоадер с небольшой задержкой для плавного перехода
       setTimeout(() => {
         loader.classList.add('hidden');
-        // Полностью удаляем лоадер из DOM после завершения анимации
         setTimeout(() => {
           loader.style.display = 'none';
         }, 300);
@@ -304,7 +276,7 @@ class Application {
 
       const rect = commercialOfferTitle.getBoundingClientRect();
       const isTitleVisible = rect.top < window.innerHeight && rect.bottom > 0;
-      const isTitleAbove = rect.bottom <= 0; // Заголовок ушел выше экрана
+      const isTitleAbove = rect.bottom <= 0;
 
       if (isTitleVisible) {
         floatingBtn.classList.remove('visible');
@@ -314,7 +286,7 @@ class Application {
 
       if (isTitleAbove) {
         hasPassedTitle = true;
-        floatingBtn.classList.remove('visible'); // Не показываем кнопку после заголовка
+        floatingBtn.classList.remove('visible');
         return;
       }
 
@@ -330,7 +302,6 @@ class Application {
   }
 
   _initImageLazyLoading() {
-    // Lazy loading для всех изображений с атрибутом data-src
     const lazyImages = document.querySelectorAll('img[data-src]');
     
     if ('IntersectionObserver' in window) {
@@ -351,7 +322,6 @@ class Application {
       
       lazyImages.forEach(img => imageObserver.observe(img));
     } else {
-      // Fallback для старых браузеров
       lazyImages.forEach(img => {
         const src = img.getAttribute('data-src');
         if (src) {
@@ -363,14 +333,10 @@ class Application {
   }
 
   _initPrefersReducedMotion() {
-    // Проверяем, не хочет ли пользователь отключить анимацию
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     
     if (prefersReducedMotion.matches) {
-      // Добавляем класс на body для отключения анимаций
       document.body.classList.add('reduced-motion');
-      
-      // Отключаем все анимации через CSS класс
       const style = document.createElement('style');
       style.textContent = `
         .reduced-motion *,
@@ -385,7 +351,6 @@ class Application {
       document.head.appendChild(style);
     }
     
-    // Следим за изменением настроек
     prefersReducedMotion.addEventListener('change', (e) => {
       if (e.matches) {
         document.body.classList.add('reduced-motion');
@@ -399,8 +364,6 @@ class Application {
     const errorContainer = document.getElementById('appError');
     if (errorContainer) {
       errorContainer.style.display = 'block';
-      
-      // Создаем элементы через DOM API вместо innerHTML для безопасности
       errorContainer.replaceChildren();
       const errorDiv = document.createElement('div');
       errorDiv.className = 'error-message';
@@ -442,7 +405,6 @@ class Application {
   }
 }
 
-// Функция для экранирования HTML (добавляем в Utils, если нет)
 if (typeof Utils !== 'undefined' && Utils.DOM && !Utils.DOM.escapeHtml) {
   Utils.DOM.escapeHtml = function(str) {
     if (!str) return '';
@@ -455,13 +417,9 @@ if (typeof Utils !== 'undefined' && Utils.DOM && !Utils.DOM.escapeHtml) {
   };
 }
 
-// Создание экземпляров глобальных объектов
 let newsRenderer, newsManager, formManager;
 
-// Функция инициализации после загрузки всех скриптов
 function initApp() {
-  
-  // Проверяем наличие глобальных объектов
   const hasConfig = typeof window.CONFIG !== 'undefined';
   const hasServices = typeof window.Services !== 'undefined';
   const hasUtils = typeof window.Utils !== 'undefined';
@@ -471,7 +429,6 @@ function initApp() {
     return;
   }
   
-  // 1. Инициализация менеджеров новостей
   if (typeof NEWS_DATA !== 'undefined') {
     try {
       if (typeof NewsRenderer !== 'undefined' && typeof NewsManager !== 'undefined') {
@@ -480,7 +437,6 @@ function initApp() {
         newsManager.init();
         window.newsManager = newsManager;
         
-        // Инициализация роутинга новостей если доступен
         if (typeof NewsNavigation !== 'undefined') {
           NewsNavigation.init(newsManager);
         }
@@ -492,7 +448,6 @@ function initApp() {
     }
   }
   
-  // 2. Инициализация FormManager (после ComponentLoader!)
   if (hasServices && hasUtils) {
     try {
       const formRateLimiter = new Utils.RateLimiter(window.Services.storage);
@@ -511,14 +466,10 @@ function initApp() {
     Logger.WARN('Required services or utils are not available for FormManager initialization');
   }
   
-  // 3. Регистрация модальных окон удалена - теперь выполняется в Application._registerModals()
-  
-  // 4. Инициализация DocPreviewManager для страницы документов
   if (typeof DocPreviewManager !== 'undefined') {
     DocPreviewManager.init();
   }
   
-  // 5. Инициализация ConsentManager для обработки предпочтений пользователя
   if (typeof ConsentManager !== 'undefined') {
     try {
       const consentManager = new ConsentManager(window.Services.storage);
@@ -529,19 +480,16 @@ function initApp() {
     }
   }
 
-  // 6. Запуск основного приложения
   const app = new Application();
   app.init();
 }
 
-// Запуск после загрузки DOM
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initApp);
 } else {
   initApp();
 }
 
-// Авторасширение textarea
 document.addEventListener('input', function(e) {
   if (e.target.tagName === 'TEXTAREA' && e.target.classList.contains('form-textarea')) {
     e.target.style.height = 'auto';
