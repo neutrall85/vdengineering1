@@ -20,27 +20,61 @@ class ModalManager {
       onClose: config.onClose || null,
       focusSelector: config.focusSelector || null
     });
-    this._setupOverlayClick(key);
     return this;
   }
 
-  _setupOverlayClick(key) {
-    const config = this.modals.get(key);
-    if (!config) return;
-    const overlay = document.getElementById(config.overlayId);
-    if (overlay && !overlay._clickHandlerAttached) {
-      const clickHandler = (e) => {
-        if (e.target === overlay) {
-          this.close(key);
-        }
-      };
-      overlay.addEventListener('click', clickHandler);
-      overlay._clickHandlerAttached = true;
-      overlay._clickHandler = clickHandler;
+  _getModalKeyByOverlayId(overlayId) {
+    const modalKeyMap = {
+      'modalOverlay': 'form',
+      'detailsModalOverlay': 'details',
+      'newsModalOverlay': 'news',
+      'proposalModalOverlay': 'proposal',
+      'universalApplicationModalOverlay': 'universal',
+      'aboutModalOverlay': 'about',
+      'projectModalOverlay': 'project',
+      'serviceModalOverlay': 'service',
+      'policyModalOverlay': 'policy'
+    };
+    return modalKeyMap[overlayId];
+  }
+
+  _closeModalByOverlayId(overlayId) {
+    const modalKey = this._getModalKeyByOverlayId(overlayId);
+    if (modalKey && this.modals.has(modalKey)) {
+      this.close(modalKey);
+      return true;
+    } else if (overlayId === 'policyModalOverlay' && typeof ComponentLoader !== 'undefined') {
+      ComponentLoader.closePolicyModal();
+      return true;
+    } else if (overlayId === 'universalApplicationModalOverlay' && typeof window.closeUniversalApplicationModal === 'function') {
+      window.closeUniversalApplicationModal();
+      return true;
     }
+    return false;
   }
 
   _initGlobalHandlers() {
+    // Обработчик закрытия по клику на overlay и кнопке закрытия
+    this._boundClickHandler = (e) => {
+      const closeBtn = e.target.closest('.modal-close');
+      const isCloseBtnClick = !!closeBtn;
+      
+      if (!isCloseBtnClick && e.target.classList.contains('modal-overlay')) {
+        // Клик вне модалки (на overlay)
+        this._closeModalByOverlayId(e.target.id);
+        return;
+      }
+      
+      if (isCloseBtnClick) {
+        // Клик на кнопку закрытия
+        const overlay = closeBtn.closest('.modal-overlay');
+        if (!overlay) return;
+        this._closeModalByOverlayId(overlay.id);
+      }
+    };
+    document.addEventListener('click', this._boundClickHandler);
+
+    // Обработчик закрытия по ESC
     this._boundKeyHandler = (e) => {
       if (e.key === 'Escape' && this.activeModal) {
         this.close(this.activeModal);
@@ -54,37 +88,6 @@ class ModalManager {
       }
     };
     document.addEventListener('keydown', this._boundKeyHandler);
-
-    this._boundClickHandler = (e) => {
-      const closeBtn = e.target.closest('.modal-close');
-      if (!closeBtn) return;
-      const overlay = closeBtn.closest('.modal-overlay');
-      if (!overlay) return;
-      const overlayId = overlay.id;
-      const modalKeyMap = {
-        'modalOverlay': 'form',
-        'detailsModalOverlay': 'details',
-        'newsModalOverlay': 'news',
-        'proposalModalOverlay': 'proposal',
-        'universalApplicationModalOverlay': 'universal',
-        'aboutModalOverlay': 'about',
-        'projectModalOverlay': 'project',
-        'serviceModalOverlay': 'service',
-        'policyModalOverlay': 'policy'
-      };
-      const modalKey = modalKeyMap[overlayId];
-      if (modalKey && this.modals.has(modalKey)) {
-        this.close(modalKey);
-      } else if (overlayId === 'policyModalOverlay' && typeof ComponentLoader !== 'undefined') {
-        ComponentLoader.closePolicyModal();
-      } else if (overlayId === 'universalApplicationModalOverlay' && typeof window.closeUniversalApplicationModal === 'function') {
-        window.closeUniversalApplicationModal();
-      } else {
-        overlay.classList.remove('active');
-        ScrollManager.unlock(); // ✅ используем ScrollManager напрямую
-      }
-    };
-    document.addEventListener('click', this._boundClickHandler);
   }
 
   open(key, options = {}) {

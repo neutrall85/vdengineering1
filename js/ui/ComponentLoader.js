@@ -73,10 +73,10 @@ const ComponentLoader = {
     proposalModal: `
 <!-- Commercial Proposal Modal -->
 <div class="modal-overlay modal-overlay-proposal" id="proposalModalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <button class="modal-close" id="proposalModalCloseBtn" aria-label="Закрыть">
-    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-  </button>
   <div class="modal-container modal-container-proposal">
+    <button class="modal-close" id="proposalModalCloseBtn" aria-label="Закрыть">
+      <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
     <div class="modal-header">
       <h2 class="modal-title" id="modalTitle">Запрос коммерческого предложения</h2>
       <p class="modal-subtitle">Заполните форму ниже, и мы свяжемся с вами в течение 24 часов</p>
@@ -178,10 +178,10 @@ const ComponentLoader = {
     universalApplicationModal: `
 <!-- Universal Application Modal -->
 <div class="modal-overlay modal-overlay-universal" id="universalApplicationModalOverlay" role="dialog" aria-modal="true" aria-labelledby="universalApplicationModalTitle">
-  <button class="modal-close" id="universalModalCloseBtn" aria-label="Закрыть">
-    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-  </button>
   <div class="modal-container">
+    <button class="modal-close" id="universalModalCloseBtn" aria-label="Закрыть">
+      <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
     <div class="modal-header">
       <h2 class="modal-title" id="universalApplicationModalTitle">Отклик на вакансию</h2>
       <p class="modal-subtitle" id="universalApplicationModalSubtitle">Заполните форму ниже, и мы рассмотрим вашу кандидатуру</p>
