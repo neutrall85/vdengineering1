@@ -141,8 +141,8 @@ class NewsNavigation {
 
     this.currentNewsId = id;
     
-    // Открываем модальное окно
-    this.newsManager.openNewsModal(id, false);
+    // URL обновлён, модальное окно уже открыто в NewsManager.openNewsModal
+    // Не вызываем openNewsModal повторно чтобы избежать двойной блокировки скролла
     
     Logger.INFO(`Открыта новость: ${url}`);
   }

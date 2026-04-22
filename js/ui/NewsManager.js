@@ -195,10 +195,8 @@ class NewsManager {
       }
     });
     
-    // Инициализация навигации через NewsNavigation (DRY)
-    if (window.NewsNavigation) {
-      window.NewsNavigation.init(this);
-    }
+    // Инициализация навигации через NewsNavigation выполняется в app.js
+    // чтобы избежать двойной инициализации (DRY)
   }
 
   openNewsModal(id, updateUrl = true) {
