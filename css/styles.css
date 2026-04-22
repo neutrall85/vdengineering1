@@ -1321,7 +1321,8 @@ body.app-ready > footer {
   visibility: hidden;
   transition: all var(--duration-normal) var(--ease-smooth);
   backdrop-filter: blur(5px);
-  overflow: visible;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .modal-overlay.active .modal-close {
@@ -1372,8 +1373,10 @@ body.app-ready > footer {
   border-radius: 24px;
   width: 100%;
   max-width: 650px;
-  max-height: none;
-  overflow: visible;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   position: relative;
   margin-top: 80px;
   transform: scale(0.9) translateY(20px);
@@ -1383,6 +1386,7 @@ body.app-ready > footer {
 /* Увеличенная ширина для модального окна коммерческого предложения */
 .modal-container-proposal {
   max-width: 700px;
+  max-height: 90vh;
 }
 
 /* Кнопка закрытия для модального окна коммерческого предложения */
@@ -1400,6 +1404,7 @@ body.app-ready > footer {
   padding: 1.5rem 2rem 0.5rem;
   border-bottom: 1px solid var(--border-color);
   position: relative;
+  flex-shrink: 0;
 }
 
 .modal-title {
@@ -1419,9 +1424,9 @@ body.app-ready > footer {
 
 .modal-body {
   padding: 1.5rem;
-  max-height: calc(90vh - 100px);
+  max-height: calc(90vh - 200px);
   overflow-y: auto;
-  border-radius: 0 0 24px 24px;
+  flex: 1;
 }
 
 /* Стилизация скроллбара для модальных окон */
@@ -1874,6 +1879,7 @@ body.app-ready > footer {
 .modal-body,
 .details-modal-body {
   padding: clamp(1rem, 3vw, 2rem);
+  overflow-y: auto;
 }
 
 /* Элементы контента */
@@ -1942,12 +1948,12 @@ body.app-ready > footer {
 .modal-image {
   width: 100%;
   height: clamp(200px, 30vh, 300px);
-  object-fit: contain;
+  object-fit: cover;
   display: block;
   background-color: #f5f5f5;
   cursor: zoom-in;
   transition: opacity 0.2s ease;
-  border-radius: 24px 24px 0 0;
+  flex-shrink: 0;
 }
 
 .modal-image:hover {
@@ -4020,6 +4026,7 @@ body.app-ready > footer {
   /* Модальные окна */
   .modal-container {
     max-height: 95vh;
+    margin-top: 40px;
   }
   .modal-header,
   .modal-body {
@@ -4030,6 +4037,9 @@ body.app-ready > footer {
   }
   .modal-subtitle {
     font-size: 0.85rem;
+  }
+  .modal-image {
+    height: clamp(150px, 25vh, 250px);
   }
   .details-modal-body {
     padding: 1.25rem;
