@@ -1363,10 +1363,15 @@ body.app-ready > footer {
   opacity: 0.9;
 }
 
-/* Увеличенная ширина для модального окна коммерческого предложения */
+/* Увеличенная ширина и высота для модального окна коммерческого предложения */
 .modal-container-proposal {
   max-width: 700px;
-  max-height: 90vh;
+  max-height: 95vh;
+}
+
+/* Увеличенная высота для модального окна отклика на вакансию */
+.modal-overlay-universal .modal-container {
+  max-height: 95vh;
 }
 
 .modal-overlay.active .modal-container {
@@ -1383,10 +1388,15 @@ body.app-ready > footer {
 
 .modal-body {
   padding: 1.5rem;
-  max-height: calc(90vh - 320px);
+  max-height: calc(95vh - 320px);
   overflow-y: auto;
   flex: 1;
   order: 2;
+}
+
+/* Увеличенная высота body для модального окна отклика на вакансию */
+.modal-overlay-universal .modal-body {
+  max-height: calc(95vh - 280px);
 }
 
 /* Изображение новости внизу модального окна */
@@ -2023,10 +2033,20 @@ body.app-ready > footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
   z-index: 10;
   padding: 0;
   flex-shrink: 0;
+}
+
+.modal-overlay:not(.active) .modal-close {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modal-overlay.active .modal-close {
+  opacity: 1;
+  visibility: visible;
 }
 
 .modal-close:hover {
