@@ -43,9 +43,14 @@ const ScrollManager = {
         document.body.style.setProperty(this.config.scrollbarWidthVar, `${scrollbarWidth}px`);
       }
       
-      // Блокируем скролл простым способом без position: fixed
-      // Это предотвращает сброс позиции скролла при открытии модального окна
-      document.body.classList.add(this.config.noScrollClass);
+      // Если есть прокрутка, фиксируем позицию
+      if (this.state.scrollPosition > 0) {
+        document.body.style.setProperty('--scroll-position', `-${this.state.scrollPosition}px`);
+        document.body.classList.add('no-scroll-fixed');
+      } else {
+        // Если мы вверху страницы, просто блокируем скролл
+        document.body.classList.add(this.config.noScrollClass);
+      }
       
       this.state.isLocked = true;
     }
@@ -66,15 +71,16 @@ const ScrollManager = {
     if (this.state.lockCount === 0) {
       const scrollPosition = this.state.scrollPosition;
       
-      // Сначала убираем классы блокировки и стили
+      // Сначала убираем классы блокировки
       document.body.classList.remove(this.config.noScrollClass);
+      document.body.classList.remove('no-scroll-fixed');
       document.body.style.removeProperty(this.config.scrollbarWidthVar);
+      document.body.style.setProperty('--scroll-position', '');
       
-      // Восстанавливаем позицию скролла сразу после удаления класса
-      // Используем requestAnimationFrame для гарантированного применения стилей
-      requestAnimationFrame(() => {
+      // Восстанавливаем позицию скролла
+      if (scrollPosition > 0) {
         window.scrollTo(0, scrollPosition);
-      });
+      }
       
       this.state.isLocked = false;
       this.state.scrollPosition = 0;
@@ -106,7 +112,9 @@ const ScrollManager = {
     this.state.scrollPosition = 0;
     
     document.body.classList.remove(this.config.noScrollClass);
+    document.body.classList.remove('no-scroll-fixed');
     document.body.style.removeProperty(this.config.scrollbarWidthVar);
+    document.body.style.setProperty('--scroll-position', '');
   }
 };
 
