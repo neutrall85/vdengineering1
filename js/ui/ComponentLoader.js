@@ -24,7 +24,7 @@ const ComponentLoader = {
     <ul class="nav-links">
       <li class="home-link"><a href="index.html">Главная</a></li>
       <li><a href="about.html">О нас</a></li>
-      <li><a href="services.html">Услуги</a></li>
+      <li><a href="services.html">Компетенции</a></li>
       <li><a href="news.html">Новости</a></li>
       <li><a href="projects.html">Проекты</a></li>
       <li><a href="docs.html">Документы</a></li>
@@ -43,7 +43,7 @@ const ComponentLoader = {
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.html" class="home-link-mobile">Главная</a>
   <a href="about.html">О нас</a>
-  <a href="services.html">Услуги</a>
+  <a href="services.html">Компетенции</a>
   <a href="news.html">Новости</a>
   <a href="projects.html">Проекты</a>
   <a href="docs.html">Документы</a>
