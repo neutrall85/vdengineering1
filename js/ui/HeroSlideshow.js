@@ -1,10 +1,10 @@
 /**
- * HeroSlideshow - фоновое слайд-шоу для hero секции
+ * HeroSlideshow - покачивающееся слайд-шоу для hero секции
  * Автоматическое переключение слайдов с плавным переходом
  */
 class HeroSlideshow {
   constructor() {
-    this.container = document.querySelector('.hero-slideshow-bg .slideshow-container');
+    this.container = document.querySelector('.slideshow-container');
     if (!this.container) return;
     
     this.slides = this.container.querySelectorAll('.slideshow-slide');
@@ -20,12 +20,9 @@ class HeroSlideshow {
     
     this.startAutoPlay();
     
-    // Пауза при наведении на hero секцию
-    const heroSection = document.querySelector('.hero');
-    if (heroSection) {
-      heroSection.addEventListener('mouseenter', () => this.pause());
-      heroSection.addEventListener('mouseleave', () => this.resume());
-    }
+    // Пауза при наведении
+    this.container.addEventListener('mouseenter', () => this.pause());
+    this.container.addEventListener('mouseleave', () => this.resume());
   }
   
   startAutoPlay() {
