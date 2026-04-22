@@ -7,21 +7,19 @@ class ModalManager {
   constructor() {
     this.modals = new Map();
     this.activeModal = null;
-    this.cleanupHandlers = new Map(); // Хранилище для cleanup-функций по ключам
-    this._boundKeyHandler = null; // Сохраняем ссылку на обработчик Escape
-    this._boundClickHandler = null; // Сохраняем ссылку на обработчик кликов
+    this.cleanupHandlers = new Map();
+    this._boundKeyHandler = null;
+    this._boundClickHandler = null;
     this._initGlobalHandlers();
   }
 
   register(key, config) {
-    // Просто перезаписываем без предупреждения
     this.modals.set(key, {
       overlayId: config.overlayId,
       onOpen: config.onOpen || null,
       onClose: config.onClose || null,
       focusSelector: config.focusSelector || null
     });
-    
     this._setupOverlayClick(key);
     return this;
   }
@@ -29,7 +27,6 @@ class ModalManager {
   _setupOverlayClick(key) {
     const config = this.modals.get(key);
     if (!config) return;
-    
     const overlay = document.getElementById(config.overlayId);
     if (overlay && !overlay._clickHandlerAttached) {
       const clickHandler = (e) => {
@@ -39,44 +36,31 @@ class ModalManager {
       };
       overlay.addEventListener('click', clickHandler);
       overlay._clickHandlerAttached = true;
-      
-      // Сохраняем handler для возможной очистки
       overlay._clickHandler = clickHandler;
     }
   }
 
   _initGlobalHandlers() {
-    // Единый обработчик Escape для всех модальных окон
     this._boundKeyHandler = (e) => {
       if (e.key === 'Escape' && this.activeModal) {
         this.close(this.activeModal);
         return;
       }
-      
-      // Специальный случай для policy modal
-      if (e.key === 'Escape') {
-        const policyModal = document.getElementById('policyModalOverlay');
-        if (policyModal && policyModal.classList.contains('active')) {
-          if (typeof ComponentLoader !== 'undefined') {
-            ComponentLoader.closePolicyModal();
-          }
+      const policyModal = document.getElementById('policyModalOverlay');
+      if (e.key === 'Escape' && policyModal && policyModal.classList.contains('active')) {
+        if (typeof ComponentLoader !== 'undefined') {
+          ComponentLoader.closePolicyModal();
         }
       }
     };
     document.addEventListener('keydown', this._boundKeyHandler);
-    
-    // Единый обработчик для всех кнопок закрытия модальных окон (DRY, KISS)
+
     this._boundClickHandler = (e) => {
       const closeBtn = e.target.closest('.modal-close');
       if (!closeBtn) return;
-      
-      // Определяем overlay по кнопке закрытия
       const overlay = closeBtn.closest('.modal-overlay');
       if (!overlay) return;
-      
       const overlayId = overlay.id;
-      
-      // Сопоставление overlay ID с ключами модальных окон в modalManager
       const modalKeyMap = {
         'modalOverlay': 'form',
         'detailsModalOverlay': 'details',
@@ -88,27 +72,16 @@ class ModalManager {
         'serviceModalOverlay': 'service',
         'policyModalOverlay': 'policy'
       };
-      
       const modalKey = modalKeyMap[overlayId];
-      
       if (modalKey && this.modals.has(modalKey)) {
-        // Закрываем через modalManager (предпочтительный способ)
         this.close(modalKey);
       } else if (overlayId === 'policyModalOverlay' && typeof ComponentLoader !== 'undefined') {
-        // Специальный случай для policy modal
         ComponentLoader.closePolicyModal();
       } else if (overlayId === 'universalApplicationModalOverlay' && typeof window.closeUniversalApplicationModal === 'function') {
-        // Специальный случай для universal application modal
         window.closeUniversalApplicationModal();
       } else {
-        // Fallback: просто убираем класс active
         overlay.classList.remove('active');
-        if (window.ScrollManager) {
-          ScrollManager.unlock();
-        } else {
-          document.body.classList.remove('no-scroll');
-          document.body.style.removeProperty('--scrollbar-width');
-        }
+        ScrollManager.unlock(); // ✅ используем ScrollManager напрямую
       }
     };
     document.addEventListener('click', this._boundClickHandler);
@@ -121,6 +94,11 @@ class ModalManager {
       return false;
     }
 
+    // Синхронная проверка – предотвращает повторные вызовы
+    if (this.activeModal === key) {
+      return true;
+    }
+
     if (this.activeModal && this.activeModal !== key) {
       this.close(this.activeModal);
     }
@@ -128,24 +106,15 @@ class ModalManager {
     const overlay = document.getElementById(config.overlayId);
     if (!overlay) return false;
 
-    // Используем централизованный ScrollManager для блокировки скролла
-    if (window.ScrollManager) {
-      ScrollManager.lock();
-    } else {
-      // Fallback для обратной совместимости
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      if (scrollbarWidth > 0) {
-        document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
-      }
-      document.body.classList.add('no-scroll');
-    }
+    // ✅ Устанавливаем активное окно синхронно
+    this.activeModal = key;
 
-    // Небольшая задержка чтобы DOM обновился перед инициализацией
+    // Блокируем скролл через централизованный ScrollManager
+    ScrollManager.lock();
+
     setTimeout(() => {
       overlay.classList.add('active');
-      this.activeModal = key;
 
-      // Если это модальное окно формы, инициализируем загрузку файлов
       if (key === 'form' && window.formManager) {
         window.formManager.initFileUploadOnModalOpen();
       }
@@ -175,27 +144,17 @@ class ModalManager {
     const config = this.modals.get(key);
     if (!config) return false;
 
+    if (this.activeModal !== key) return false;
+
     const overlay = document.getElementById(config.overlayId);
     if (!overlay) return false;
 
     overlay.classList.remove('active');
     
-    // Используем централизованный ScrollManager для восстановления скролла
-    if (window.ScrollManager) {
-      ScrollManager.unlock();
-    } else {
-      // Fallback для обратной совместимости
-      const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-      if (scrollPosition > 0) {
-        window.scrollTo(0, scrollPosition);
-      }
-      document.body.classList.remove('no-scroll');
-      document.body.style.removeProperty('--scrollbar-width');
-    }
+    // Разблокируем скролл через ScrollManager
+    ScrollManager.unlock();
     
-    if (this.activeModal === key) {
-      this.activeModal = null;
-    }
+    this.activeModal = null;
 
     if (config.onClose) config.onClose(overlay);
     if (window.Services?.eventBus) {
@@ -218,10 +177,8 @@ class ModalManager {
   }
 }
 
-// Создаём глобальный экземпляр
 const modalManager = new ModalManager();
 
-// Экспортируем в window.UI для совместимости
 window.UI = window.UI || {};
 window.UI.modalManager = modalManager;
 
