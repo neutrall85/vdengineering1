@@ -539,6 +539,7 @@ body.app-ready > footer {
   color: var(--metallic);
   line-height: 1.7;
   margin-bottom: 2.5rem;
+  max-width: 650px;
 }
 
 .hero-buttons {
