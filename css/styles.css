@@ -1323,6 +1323,7 @@ body.app-ready > footer {
   backdrop-filter: blur(5px);
   overflow-y: auto;
   overflow-x: hidden;
+  position: relative;
 }
 
 .modal-overlay.active .modal-close {
@@ -1335,20 +1336,20 @@ body.app-ready > footer {
 }
 
 .modal-close {
-  position: absolute;
-  top: -35px;
-  right: -35px;
+  position: fixed;
+  top: 20px;
+  right: calc(50% - 345px);
   width: 45px;
   height: 45px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.9);
   border: none;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
-  transition: background var(--duration-fast) var(--ease-smooth);
+  z-index: 1002;
+  transition: background var(--duration-fast) var(--ease-smooth), right var(--duration-normal) var(--ease-smooth);
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -1373,12 +1374,12 @@ body.app-ready > footer {
   border-radius: 24px;
   width: 100%;
   max-width: 650px;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-top: 80px;
+  margin: auto;
   transform: scale(0.9) translateY(20px);
   transition: transform var(--duration-slow) var(--ease-bounce);
 }
@@ -1387,8 +1388,8 @@ body.app-ready > footer {
 .modal-container .modal-image {
   order: 3;
   width: 100%;
-  height: clamp(200px, 30vh, 300px);
-  object-fit: cover;
+  max-height: 40vh;
+  object-fit: contain;
   display: block;
   background-color: #f5f5f5;
   cursor: zoom-in;
@@ -1403,15 +1404,14 @@ body.app-ready > footer {
 
 /* Увеличенная ширина для модального окна коммерческого предложения */
 .modal-container-proposal {
-  max-width: 700px;
-  max-height: 90vh;
+  max-width: 900px;
+  max-height: 85vh;
 }
 
 /* Кнопка закрытия для модального окна коммерческого предложения */
 .modal-overlay-proposal .modal-close,
 .modal-overlay:has(.modal-container-proposal) .modal-close {
-  top: -35px;
-  right: -35px;
+  right: calc(50% - 470px);
 }
 
 .modal-overlay.active .modal-container {
@@ -1428,28 +1428,10 @@ body.app-ready > footer {
 
 .modal-body {
   padding: 1.5rem;
-  max-height: calc(90vh - 320px);
+  max-height: calc(90vh - 280px);
   overflow-y: auto;
   flex: 1;
   order: 2;
-}
-
-/* Изображение новости внизу модального окна */
-.modal-container .modal-image {
-  order: 3;
-  width: 100%;
-  height: clamp(200px, 30vh, 300px);
-  object-fit: cover;
-  display: block;
-  background-color: #f5f5f5;
-  cursor: zoom-in;
-  transition: opacity 0.2s ease;
-  flex-shrink: 0;
-  border-radius: 0 0 24px 24px;
-}
-
-.modal-container .modal-image:hover {
-  opacity: 0.9;
 }
 
 /* Стилизация скроллбара для модальных окон */
@@ -1970,8 +1952,8 @@ body.app-ready > footer {
 
 .modal-image {
   width: 100%;
-  height: clamp(200px, 30vh, 300px);
-  object-fit: cover;
+  max-height: 40vh;
+  object-fit: contain;
   display: block;
   background-color: #f5f5f5;
   cursor: zoom-in;
@@ -2071,8 +2053,7 @@ body.app-ready > footer {
 
 /* Кнопка закрытия для details-modal */
 .details-modal-overlay .modal-close {
-  top: -50px;
-  right: 0;
+  right: calc(50% - 320px);
 }
 
 .details-modal-body {
