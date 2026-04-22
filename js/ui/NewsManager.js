@@ -76,8 +76,10 @@ class NewsManager {
     this.lightboxImage.alt = imageAlt || 'Изображение новости';
     this.lightboxOverlay.classList.add('active');
     
-    // Блокируем скролл для лайтбокса
-    if (window.ScrollManager) {
+    // Не блокируем скролл повторно, если он уже заблокирован (например, модальным окном новости)
+    // ScrollManager использует счётчик блокировок, поэтому дополнительный lock() не нужен
+    // Если лайтбокс открыт самостоятельно (не из модалки), то блокируем скролл
+    if (window.ScrollManager && !window.ScrollManager.isLocked()) {
       ScrollManager.lock();
     }
     
@@ -98,10 +100,11 @@ class NewsManager {
 
     this.lightboxOverlay.classList.remove('active');
     
-    // Разблокируем скролл (ScrollManager использует счётчик,
-    // поэтому вызов unlock() корректно обработает вложенные состояния)
+    // Используем централизованный ScrollManager для восстановления скролла
     if (window.ScrollManager) {
       ScrollManager.unlock();
+    } else {
+      document.body.classList.remove('no-scroll');
     }
     
     // Сбрасываем обработчик клика
