@@ -463,22 +463,21 @@ body.app-ready > footer {
 
 /* Hero wrapper для разделения контента и слайд-шоу */
 .hero-wrapper {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  justify-content: space-between;
   gap: clamp(2rem, 5vw, 4rem);
   width: 100%;
 }
 
 /* Текстовый блок */
 .hero-text {
-  flex: 1;
-  max-width: 600px;
+  width: 100%;
 }
 
 /* Слайд-шоу в hero */
 .hero-slideshow {
-  flex: 1;
+  width: 100%;
   max-width: none;
   position: relative;
   height: 100%;
@@ -558,7 +557,7 @@ body.app-ready > footer {
   margin-top: clamp(2rem, 4vh, 3rem);
   padding-top: clamp(1rem, 2vh, 2rem);
   border-top: 1px solid rgba(0, 78, 150, 0.15);
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 .stat-number {
@@ -576,6 +575,7 @@ body.app-ready > footer {
 }
 
 .stat-item {
+  flex: 0 0 auto;
   transition: transform 0.3s ease;
 }
 
@@ -3553,8 +3553,8 @@ body.app-ready > footer {
     text-align: center;
   }
   .hero-wrapper {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
   .hero-text {
     margin: 0 auto;
