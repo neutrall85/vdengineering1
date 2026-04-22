@@ -2056,26 +2056,53 @@ body.app-ready > footer {
 
 /* Специфичные стили для details-modal (узкий контейнер) */
 .details-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 78, 150, 0.95);
   z-index: 3500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--duration-normal) var(--ease-smooth);
+  backdrop-filter: blur(5px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.details-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 .details-modal-container {
+  background: white;
+  border-radius: 24px;
+  width: 100%;
   max-width: 600px;
   max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-top: 80px;
+  transform: scale(0.9) translateY(20px);
+  transition: transform var(--duration-slow) var(--ease-bounce);
+}
+
+.details-modal-overlay.active .details-modal-container {
+  transform: scale(1) translateY(0);
 }
 
 /* Кнопка закрытия для details-modal */
 .details-modal-overlay .modal-close {
   top: -50px;
-  right: 0;
-}
-
-.details-modal-body {
-  padding: clamp(1.5rem, 4vw, 2rem);
-}
-
-.details-modal-title {
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  right: -50px;
 }
 
 /* ==================== СТРАНИЦА УСЛУГ ==================== */
@@ -4049,6 +4076,9 @@ body.app-ready > footer {
   /* Модальные окна */
   .modal-container {
     max-height: 95vh;
+    margin-top: 40px;
+  }
+  .details-modal-container {
     margin-top: 40px;
   }
   .modal-header,
