@@ -139,7 +139,7 @@ class NewsNavigation {
     this.currentNewsId = id;
     
     // Открываем модальное окно
-    this.newsManager.openNewsModal(id, false);
+    this.newsManager.openModal(id, false);
     
     Logger.INFO(`Открыта новость: ${url}`);
   }
@@ -151,7 +151,7 @@ class NewsNavigation {
   _openNewsFromState(id) {
     if (this.newsManager) {
       this.currentNewsId = id;
-      this.newsManager.openNewsModal(id, false);
+      this.newsManager.openModal(id, false);
       Logger.INFO(`Восстановлено состояние новости: ${id}`);
     }
   }
@@ -161,7 +161,7 @@ class NewsNavigation {
    */
   _closeNewsModal() {
     if (this.newsManager) {
-      this.newsManager.closeNewsModal();
+      this.newsManager.closeModal();
       this.currentNewsId = null;
       Logger.INFO('Модальное окно новости закрыто');
     }
