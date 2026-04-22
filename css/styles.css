@@ -2046,7 +2046,7 @@ body.app-ready > footer {
 /* ==================== СТРАНИЦА УСЛУГ ==================== */
 .page-header {
   background: var(--vd-light-blue);
-  padding: clamp(80px, 12vh, 140px) 5% clamp(40px, 6vh, 70px);
+  padding: 120px 5% 60px;
   text-align: center;
   color: #004E96;
 }
@@ -2782,7 +2782,7 @@ body.app-ready > footer {
 
 .page-header {
   background: var(--vd-light-blue);
-  padding: clamp(80px, 12vh, 140px) 5% clamp(40px, 6vh, 70px);
+  padding: 120px 5% 60px;
   text-align: center;
   color: #004E96;
 }
@@ -4016,7 +4016,7 @@ body.app-ready > footer {
     display: none;
   }
   .page-header {
-    padding: clamp(60px, 10vh, 100px) 3% clamp(30px, 5vh, 50px);
+    padding: clamp(90px, 12vh, 130px) 3% 15px;
   }
   .page-header h1 {
     font-size: 1.4rem;
