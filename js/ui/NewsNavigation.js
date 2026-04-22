@@ -71,9 +71,10 @@ class NewsNavigation {
     }
 
     // Пытаемся найти по slug в URL
-    const newsList = this.newsManager.newsData;
+    // newsData - это объект с годами, поэтому нужно получить все новости через Object.values().flat()
+    const allNews = Object.values(this.newsManager.newsData).flat();
     
-    for (const news of newsList) {
+    for (const news of allNews) {
       // Проверяем дату новости
       const newsDate = new Date(news.date);
       const newsYear = newsDate.getFullYear().toString();
@@ -116,7 +117,9 @@ class NewsNavigation {
       return;
     }
 
-    const newsItem = this.newsManager.newsData.find(n => n.id === id);
+    // newsData - это объект с годами, поэтому нужно получить все новости через Object.values().flat()
+    const allNews = Object.values(this.newsManager.newsData).flat();
+    const newsItem = allNews.find(n => n.id === id);
     if (!newsItem) {
       Logger.ERROR(`Новость с ID ${id} не найдена`);
       return;
@@ -139,7 +142,7 @@ class NewsNavigation {
     this.currentNewsId = id;
     
     // Открываем модальное окно
-    this.newsManager.openModal(id, false);
+    this.newsManager.openNewsModal(id, false);
     
     Logger.INFO(`Открыта новость: ${url}`);
   }
@@ -151,7 +154,7 @@ class NewsNavigation {
   _openNewsFromState(id) {
     if (this.newsManager) {
       this.currentNewsId = id;
-      this.newsManager.openModal(id, false);
+      this.newsManager.openNewsModal(id, false);
       Logger.INFO(`Восстановлено состояние новости: ${id}`);
     }
   }
@@ -161,7 +164,7 @@ class NewsNavigation {
    */
   _closeNewsModal() {
     if (this.newsManager) {
-      this.newsManager.closeModal();
+      this.newsManager.closeNewsModal();
       this.currentNewsId = null;
       Logger.INFO('Модальное окно новости закрыто');
     }
