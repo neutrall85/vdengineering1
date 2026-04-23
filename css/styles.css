@@ -4058,6 +4058,18 @@ body.app-ready > footer {
   .details-modal-body {
     padding: 1.25rem;
   }
+  /* Кнопка закрытия модалки - адаптируем для мобильных */
+  .modal-close {
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    border-width: 1.5px;
+  }
+  .modal-close svg {
+    width: 18px;
+    height: 18px;
+  }
   .contact-form-container {
     padding: 1.25rem;
   }
@@ -4460,6 +4472,18 @@ body.app-ready > footer {
     font-size: 0.85rem;
   }
   
+  /* Кнопка закрытия модалки - адаптируем для маленьких экранов */
+  .modal-close {
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    border-width: 1.5px;
+  }
+  .modal-close svg {
+    width: 16px;
+    height: 16px;
+  }
   /* Lightbox - кнопка закрытия внутри области просмотра */
   .lightbox-close {
     top: 10px;

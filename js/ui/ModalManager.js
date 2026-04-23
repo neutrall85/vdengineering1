@@ -66,7 +66,7 @@ class ModalManager {
    * DRY: единая точка создания кнопки для всех модалок
    */
   _ensureCloseButton(overlay) {
-    const container = overlay.querySelector('.modal-container, .details-modal-container');
+    const container = overlay.querySelector('.modal-container, .modal-container-proposal, .details-modal-container');
     if (!container) return;
     
     // Проверяем, есть ли уже кнопка
