@@ -1343,6 +1343,7 @@ body.app-ready > footer {
   margin-top: 80px;
   transform: scale(0.9) translateY(20px);
   transition: transform var(--duration-slow) var(--ease-bounce);
+  padding-top: 2rem;
 }
 
 /* Изображение новости внизу модального окна */
@@ -1379,6 +1380,7 @@ body.app-ready > footer {
   position: relative;
   flex-shrink: 0;
   order: 1;
+  padding-right: 4.5rem;
 }
 
 .modal-body {
@@ -2012,30 +2014,35 @@ body.app-ready > footer {
 /* Кнопка закрытия модального окна */
 .modal-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: -20px;
+  right: -20px;
   width: 40px;
   height: 40px;
-  background: white;
+  background: transparent;
   border: none;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
   z-index: 10;
   padding: 0;
   flex-shrink: 0;
 }
 
 .modal-close:hover {
-  background: #f0f0f0;
+  background: white;
 }
 
 .modal-close svg {
   width: 24px;
   height: 24px;
+  fill: white;
+  transition: fill 0.2s ease;
+}
+
+.modal-close:hover svg {
   fill: #333;
 }
 
@@ -2047,14 +2054,17 @@ body.app-ready > footer {
 .details-modal-container {
   max-width: 600px;
   max-height: 80vh;
+  position: relative;
 }
 
 .details-modal-body {
   padding: clamp(1.5rem, 4vw, 2rem);
+  position: relative;
 }
 
 .details-modal-title {
   font-size: clamp(1.2rem, 3vw, 1.5rem);
+  padding-right: 3rem;
 }
 
 /* ==================== СТРАНИЦА УСЛУГ ==================== */

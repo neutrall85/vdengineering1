@@ -9,7 +9,7 @@ class ModalManager {
     this.activeModal = null;
     this.cleanupHandlers = new Map();
     this._boundKeyHandler = null;
-    this._boundClickHandler = null;
+    this._boundOverlayClickHandler = null;
     this._initGlobalHandlers();
   }
 
@@ -41,11 +41,13 @@ class ModalManager {
   }
 
   _initGlobalHandlers() {
+    // Обработчик клавиши ESC - закрывает активное модальное окно
     this._boundKeyHandler = (e) => {
       if (e.key === 'Escape' && this.activeModal) {
         this.close(this.activeModal);
         return;
       }
+      // Специальная обработка для policy modal
       const policyModal = document.getElementById('policyModalOverlay');
       if (e.key === 'Escape' && policyModal && policyModal.classList.contains('active')) {
         if (typeof ComponentLoader !== 'undefined') {
@@ -55,36 +57,52 @@ class ModalManager {
     };
     document.addEventListener('keydown', this._boundKeyHandler);
 
-    this._boundClickHandler = (e) => {
+    // Обработчик клика по кнопке закрытия (.modal-close)
+    this._boundOverlayClickHandler = (e) => {
       const closeBtn = e.target.closest('.modal-close');
       if (!closeBtn) return;
+      
       const overlay = closeBtn.closest('.modal-overlay');
       if (!overlay) return;
-      const overlayId = overlay.id;
-      const modalKeyMap = {
-        'modalOverlay': 'form',
-        'detailsModalOverlay': 'details',
-        'newsModalOverlay': 'news',
-        'proposalModalOverlay': 'proposal',
-        'universalApplicationModalOverlay': 'universal',
-        'aboutModalOverlay': 'about',
-        'projectModalOverlay': 'project',
-        'serviceModalOverlay': 'service',
-        'policyModalOverlay': 'policy'
-      };
-      const modalKey = modalKeyMap[overlayId];
-      if (modalKey && this.modals.has(modalKey)) {
-        this.close(modalKey);
-      } else if (overlayId === 'policyModalOverlay' && typeof ComponentLoader !== 'undefined') {
-        ComponentLoader.closePolicyModal();
-      } else if (overlayId === 'universalApplicationModalOverlay' && typeof window.closeUniversalApplicationModal === 'function') {
-        window.closeUniversalApplicationModal();
-      } else {
-        overlay.classList.remove('active');
-        ScrollManager.unlock(); // ✅ используем ScrollManager напрямую
-      }
+      
+      this._closeByOverlayId(overlay.id);
     };
-    document.addEventListener('click', this._boundClickHandler);
+    document.addEventListener('click', this._boundOverlayClickHandler);
+  }
+
+  /**
+   * Унифицированный метод закрытия по ID оверлея
+   * @param {string} overlayId - ID оверлея модального окна
+   */
+  _closeByOverlayId(overlayId) {
+    const modalKeyMap = {
+      'modalOverlay': 'form',
+      'detailsModalOverlay': 'details',
+      'newsModalOverlay': 'news',
+      'proposalModalOverlay': 'proposal',
+      'universalApplicationModalOverlay': 'universal',
+      'aboutModalOverlay': 'about',
+      'projectModalOverlay': 'project',
+      'serviceModalOverlay': 'service',
+      'policyModalOverlay': 'policy'
+    };
+    
+    const modalKey = modalKeyMap[overlayId];
+    
+    if (modalKey && this.modals.has(modalKey)) {
+      this.close(modalKey);
+    } else if (overlayId === 'policyModalOverlay' && typeof ComponentLoader !== 'undefined') {
+      ComponentLoader.closePolicyModal();
+    } else if (overlayId === 'universalApplicationModalOverlay' && typeof window.closeUniversalApplicationModal === 'function') {
+      window.closeUniversalApplicationModal();
+    } else {
+      // Fallback для незарегистрированных модалок
+      const overlay = document.getElementById(overlayId);
+      if (overlay) {
+        overlay.classList.remove('active');
+        ScrollManager.unlock();
+      }
+    }
   }
 
   open(key, options = {}) {
@@ -174,6 +192,28 @@ class ModalManager {
     this.modals.forEach((_, key) => {
       this.close(key);
     });
+  }
+  
+  /**
+   * Очистка обработчиков событий при уничтожении
+   */
+  destroy() {
+    if (this._boundKeyHandler) {
+      document.removeEventListener('keydown', this._boundKeyHandler);
+    }
+    if (this._boundOverlayClickHandler) {
+      document.removeEventListener('click', this._boundOverlayClickHandler);
+    }
+    this.modals.forEach((config, key) => {
+      const overlay = document.getElementById(config.overlayId);
+      if (overlay && overlay._clickHandler) {
+        overlay.removeEventListener('click', overlay._clickHandler);
+        delete overlay._clickHandler;
+        delete overlay._clickHandlerAttached;
+      }
+    });
+    this.modals.clear();
+    this.activeModal = null;
   }
 }
 
