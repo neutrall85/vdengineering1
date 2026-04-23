@@ -1313,51 +1313,7 @@ body.app-ready > footer {
   order: 3;
   width: 100%;
   height: clamp(200px, 30vh, 300px);
-  object-fit: cover;
-  display: block;
-  background-color: #f5f5f5;
-  cursor: zoom-in;
-  transition: opacity 0.2s ease;
-  flex-shrink: 0;
-  border-radius: 0 0 24px 24px;
-}
-
-.modal-container .modal-image:hover {
-  opacity: 0.9;
-}
-
-/* Увеличенная ширина для модального окна коммерческого предложения */
-.modal-overlay-proposal .modal-container-proposal {
-  max-width: 700px;
-  max-height: 90vh;
-}
-
-.modal-overlay.active .modal-container {
-  transform: scale(1) translateY(0);
-}
-
-.modal-header {
-  padding: 1rem 1.5rem 0.5rem;
-  border-bottom: 1px solid var(--border-color);
-  position: relative;
-  flex-shrink: 0;
-  order: 1;
-}
-
-.modal-body {
-  padding: 1rem 1.5rem;
-  max-height: none;
-  overflow-y: auto;
-  flex: 1;
-  order: 2;
-}
-
-/* Изображение новости внизу модального окна */
-.modal-container .modal-image {
-  order: 3;
-  width: 100%;
-  height: clamp(200px, 30vh, 300px);
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   background-color: #f5f5f5;
   cursor: zoom-in;
@@ -1889,7 +1845,7 @@ body.app-ready > footer {
 .modal-image {
   width: 100%;
   height: clamp(200px, 30vh, 300px);
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   background-color: #f5f5f5;
   cursor: zoom-in;
