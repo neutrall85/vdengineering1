@@ -26,8 +26,8 @@ const ComponentLoader = {
       <li><a href="projects.html">Проекты</a></li>
       <li><a href="docs.html">Документы</a></li>
       <li><a href="vacancies.html">Вакансии</a></li>
-      <li><a href="#partners">Партнёры</a></li>
-      <li><a href="#contact-details">Контакты</a></li>
+      <li><a href="index.html#partners">Партнёры</a></li>
+      <li><a href="index.html#contact-details">Контакты</a></li>
     </ul>
     <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Меню">
       <span></span>
@@ -45,8 +45,8 @@ const ComponentLoader = {
   <a href="projects.html">Проекты</a>
   <a href="docs.html">Документы</a>
   <a href="vacancies.html">Вакансии</a>
-  <a href="#partners">Партнёры</a>
-  <a href="#contact-details">Контакты</a>
+  <a href="index.html#partners">Партнёры</a>
+  <a href="index.html#contact-details">Контакты</a>
 </div>`,
 
     // Футер
