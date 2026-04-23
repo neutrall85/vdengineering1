@@ -2253,7 +2253,6 @@ body.app-ready > footer {
   opacity: 0;
   transform: translateX(-30px);
   height: 280px; /* Фиксированная высота для одинакового размера всех карточек */
-  width: 1200px; /* Фиксированная ширина для десктопа */
 }
 
 .news-card.loaded {
@@ -2715,8 +2714,13 @@ body.app-ready > footer {
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  max-width: 1400px; 
+  max-width: 1200px; 
   margin: 0 auto; 
+}
+
+.news-grid-auto .news-card {
+  width: 100%;
+  max-width: 1200px;
 }
 
 .modal-list-ul { padding-left: 1.5rem; margin-top: 1rem; }
