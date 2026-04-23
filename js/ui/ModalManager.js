@@ -31,12 +31,16 @@ class ModalManager {
   /**
    * Настраивает клик по overlay для закрытия модалки
    * Клик обрабатывается только если цель - сам overlay (а не контент внутри)
+   * Также добавляет кнопку закрытия в модалку если её нет
    */
   _setupOverlayClick(key) {
     const config = this.modals.get(key);
     if (!config) return;
     const overlay = document.getElementById(config.overlayId);
     if (overlay && !overlay._clickHandlerAttached) {
+      // Добавляем кнопку закрытия если её ещё нет
+      this._ensureCloseButton(overlay);
+      
       const clickHandler = (e) => {
         if (e.target === overlay) {
           this.close(key);
@@ -46,6 +50,27 @@ class ModalManager {
       overlay._clickHandlerAttached = true;
       overlay._clickHandler = clickHandler;
     }
+  }
+
+  /**
+   * Добавляет кнопку закрытия в модалку если она отсутствует
+   * DRY: единая точка создания кнопки для всех модалок
+   */
+  _ensureCloseButton(overlay) {
+    const container = overlay.querySelector('.modal-container, .details-modal-container');
+    if (!container) return;
+    
+    // Проверяем, есть ли уже кнопка
+    if (container.querySelector('.modal-close')) return;
+    
+    // Создаём кнопку закрытия
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close';
+    closeBtn.setAttribute('aria-label', 'Закрыть');
+    closeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+    
+    // Вставляем кнопку в начало контейнера
+    container.insertBefore(closeBtn, container.firstChild);
   }
 
   /**

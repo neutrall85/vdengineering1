@@ -1330,20 +1330,42 @@ body.app-ready > footer {
   visibility: visible;
 }
 
-.modal-container {
+/* Контейнер модального окна - позиционируется относительно overlay */
+.modal-container,
+.details-modal-container {
   background: white;
   border-radius: 24px;
   width: 100%;
   max-width: 650px;
   max-height: 90vh;
-  /* overflow: hidden; */
   display: flex;
   flex-direction: column;
   position: relative;
   margin-top: 80px;
   transform: scale(0.9) translateY(20px);
   transition: transform var(--duration-slow) var(--ease-bounce);
-  padding: 16px;
+  padding: 40px 24px 24px;
+}
+
+/* Кнопка закрытия модального окна (рядом с правым верхним углом по диагонали) */
+.modal-close {
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 2px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--duration-fast) var(--ease-smooth);
+  padding: 0;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 10;
 }
 
 /* Изображение новости внизу модального окна */
@@ -2010,27 +2032,7 @@ body.app-ready > footer {
   fill: #333;
 }
 
-/* Кнопка закрытия модального окна (рядом с правым верхним углом по диагонали) */
-.modal-close {
-  position: absolute;
-  top: -18px; /* Половина высоты кнопки для центрирования на границе */
-  right: -18px;
-  width: 36px;
-  height: 36px;
-  background: transparent;
-  border: 2px solid white;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all var(--duration-fast) var(--ease-smooth);
-  z-index: 10;
-  padding: 0;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
+/* Кнопка закрытия модального окна - стили для SVG иконки */
 .modal-close svg {
   width: 20px;
   height: 20px;
@@ -2056,6 +2058,7 @@ body.app-ready > footer {
   max-width: 600px;
   max-height: 80vh;
   padding: 16px;
+  position: relative;
 }
 
 .details-modal-body {
