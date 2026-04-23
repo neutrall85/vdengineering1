@@ -37,19 +37,28 @@ class ModalManager {
     const config = this.modals.get(key);
     if (!config) return;
     const overlay = document.getElementById(config.overlayId);
-    if (overlay && !overlay._clickHandlerAttached) {
-      // Добавляем кнопку закрытия если её ещё нет
-      this._ensureCloseButton(overlay);
+    if (!overlay) return;
+    
+    // Добавляем кнопку закрытия если её ещё нет
+    this._ensureCloseButton(overlay);
+    
+    // Проверяем, не был ли уже добавлен обработчик
+    if (overlay._clickHandlerAttached) return;
+    
+    const clickHandler = (e) => {
+      // Защита от XSS: проверяем что e.target существует и является элементом
+      if (!e.target || !e.target.nodeType) return;
       
-      const clickHandler = (e) => {
-        if (e.target === overlay) {
-          this.close(key);
-        }
-      };
-      overlay.addEventListener('click', clickHandler);
-      overlay._clickHandlerAttached = true;
-      overlay._clickHandler = clickHandler;
-    }
+      // Закрываем только если клик был по самому overlay (не по контенту)
+      if (e.target === overlay) {
+        this.close(key);
+      }
+    };
+    
+    // Используем capture phase для более надёжного перехвата события
+    overlay.addEventListener('click', clickHandler, { capture: false });
+    overlay._clickHandlerAttached = true;
+    overlay._clickHandler = clickHandler;
   }
 
   /**
@@ -135,7 +144,7 @@ class ModalManager {
         ScrollManager.unlock();
       }
     };
-    document.addEventListener('click', this._boundClickHandler);
+    document.addEventListener('click', this._boundClickHandler, { capture: false });
   }
 
   open(key, options = {}) {

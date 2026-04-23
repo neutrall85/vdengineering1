@@ -33,8 +33,23 @@ class Application {
       this._hidePageLoader();
       this._initGlobalHelpers();
       this._setCurrentYear();
-      this._registerModals();
       this._registerModules();
+      
+      // Регистрация модальных окон после загрузки компонентов
+      // Это необходимо т.к. некоторые модалки (proposal, universal) загружаются динамически через ComponentLoader
+      const registerModalsOnce = () => {
+        if (!this._modalsRegistered) {
+          this._registerModals();
+        }
+      };
+      
+      document.addEventListener('components:loaded', registerModalsOnce, { once: true });
+      
+      // Fallback: если компоненты уже загружены (например, при кэшировании или повторной инициализации)
+      // Проверяем наличие основных модалок
+      setTimeout(() => {
+        registerModalsOnce();
+      }, 100);
       
       for (const module of this.modules) {
         try {
@@ -77,6 +92,9 @@ class Application {
 
   _registerModals() {
     if (typeof modalManager === 'undefined') return;
+    
+    // Защита от повторной регистрации
+    if (this._modalsRegistered) return;
     
     const modalsToRegister = [
       { key: 'about', overlayId: 'aboutModalOverlay', required: false },
@@ -123,6 +141,8 @@ class Application {
         Logger.WARN(`Required modal "${key}" not found`);
       }
     });
+    
+    this._modalsRegistered = true;
   }
 
   _initGlobalHelpers() {
