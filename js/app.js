@@ -274,6 +274,15 @@ class Application {
 
     let hasPassedTitle = false;
 
+    // Обработчик клика по плавающей кнопке
+    floatingBtn.addEventListener('click', () => {
+      if (typeof modalManager !== 'undefined') {
+        modalManager.open('proposal');
+      } else if (typeof window.openModal === 'function') {
+        window.openModal();
+      }
+    }, { passive: true });
+
     const toggleButton = () => {
       const scrollY = window.scrollY;
 
