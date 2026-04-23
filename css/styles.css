@@ -2252,7 +2252,7 @@ body.app-ready > footer {
   transition: all var(--duration-normal) var(--ease-smooth);
   opacity: 0;
   transform: translateX(-30px);
-  height: 280px; /* Фиксированная высота для одинакового размера всех карточек */
+  height: auto; /* Адаптивная высота */
 }
 
 .news-card.loaded {
