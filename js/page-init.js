@@ -74,7 +74,9 @@
         placeholder.classList.add('image-placeholder');
         
         const img = document.createElement('img');
-        img.setAttribute('data-src', Utils.Sanitizer.escapeHtml(news.image || 'assets/images/placeholder.jpg'));
+        // Используем реальное изображение из новости или placeholder по умолчанию
+        const imageUrl = news.image && news.image.trim() !== '' ? news.image : 'assets/images/placeholder.jpg';
+        img.setAttribute('data-src', Utils.Sanitizer.escapeHtml(imageUrl));
         img.setAttribute('alt', Utils.Sanitizer.escapeHtml(news.title));
         img.setAttribute('loading', 'lazy');
         img.addEventListener('error', function() { this.src = 'assets/images/placeholder.jpg'; });
