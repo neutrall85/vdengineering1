@@ -880,7 +880,7 @@ body.app-ready > footer {
 
 .news-grid-inline .news-card-image {
   width: 100%;
-  height: 250px;
+  height: 200px;
 }
 
 .news-grid-inline .news-card-content {
@@ -3717,9 +3717,13 @@ body.app-ready > footer {
   
   /* Новости */
   .preview-news-grid,
-  .news-grid {
+  .news-grid,
+  .news-grid-inline {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+  .news-grid-inline .news-card-image {
+    height: 180px;
   }
   .news-card {
     margin-bottom: 0.6rem;
@@ -4085,6 +4089,9 @@ body.app-ready > footer {
   }
   .news-card-excerpt {
     font-size: 0.8rem;
+  }
+  .news-card-image {
+    height: 180px;
   }
   
   .about-text p {
