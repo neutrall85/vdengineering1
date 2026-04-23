@@ -2296,6 +2296,7 @@ body.app-ready > footer {
   transition: all var(--duration-normal) var(--ease-smooth);
   opacity: 0;
   transform: translateX(-30px);
+  height: 280px; /* Фиксированная высота для одинакового размера всех карточек */
 }
 
 .news-card.loaded {
@@ -2358,6 +2359,7 @@ body.app-ready > footer {
   display: flex;
   flex-direction: column;
   background: white;
+  overflow: hidden; /* Скрываем выходящий контент */
 }
 
 .news-card-date {
@@ -2368,6 +2370,7 @@ body.app-ready > footer {
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
+  flex-shrink: 0; /* Фиксируем размер даты */
 }
 
 .news-card-date svg {
@@ -2382,6 +2385,11 @@ body.app-ready > footer {
   margin-bottom: 0.75rem;
   line-height: 1.4;
   color: var(--vd);
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Ограничиваем заголовок 2 строками */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex-shrink: 0; /* Фиксируем размер заголовка */
 }
 
 .news-card-excerpt {
@@ -2389,6 +2397,10 @@ body.app-ready > footer {
   line-height: 1.6;
   font-size: clamp(0.8rem, 1.2vw, 0.9rem);
   margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Ограничиваем текст 3 строками */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .news-card.hidden-news {
@@ -3750,6 +3762,8 @@ body.app-ready > footer {
     margin-bottom: 0.6rem;
     border-radius: 14px;
     grid-template-columns: 1fr;
+    height: auto; /* На мобильных убираем фиксированную высоту */
+    min-height: 280px; /* Минимальная высота как на десктопе */
   }
   .news-card-image {
     height: 200px;
@@ -4243,6 +4257,8 @@ body.app-ready > footer {
   .news-card {
     margin-bottom: 0.5rem;
     border-radius: 10px;
+    height: auto; /* На очень маленьких экранах убираем фиксированную высоту */
+    min-height: 260px; /* Чуть меньше минимальная высота */
   }
   .news-card-image {
     height: 180px;
