@@ -1,1 +1,1 @@
-(js/page-init.js is just a source file, no build artifacts, dependencies, or temp files in the changes)
+(js/app.js, js/ui/NewsManager.js, js/ui/NewsNavigation.js, news.html are source files, so no need to ignore)

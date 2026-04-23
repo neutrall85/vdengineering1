@@ -211,9 +211,9 @@ class NewsManager {
     if (manager) {
       manager.open('news');
       
-      // Обновляем URL только если нужно и есть NewsNavigation
-      if (updateUrl && window.NewsNavigation) {
-        window.NewsNavigation.openNewsUrl(id, news.title);
+      // Обновляем URL только если нужно и есть newsNavigationInstance
+      if (updateUrl && window.newsNavigationInstance) {
+        window.newsNavigationInstance.openNewsUrl(id, news.title);
       }
     } else {
       Logger.WARN('ModalManager not available');

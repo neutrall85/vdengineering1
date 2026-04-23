@@ -104,8 +104,8 @@ class Application {
         overlayId: 'newsModalOverlay',
         required: false,
         onClose: () => {
-          if (window.NewsNavigation) {
-            window.NewsNavigation.restoreBaseUrl();
+          if (window.newsNavigationInstance) {
+            window.newsNavigationInstance.restoreBaseUrl();
           }
         }
       },
@@ -459,9 +459,12 @@ function initApp() {
         newsManager = new NewsManager(NEWS_DATA, newsRenderer);
         newsManager.init();
         window.newsManager = newsManager;
+        window.newsRenderer = newsRenderer;
         
         if (typeof NewsNavigation !== 'undefined') {
-          NewsNavigation.init(newsManager);
+          const newsNavigation = new NewsNavigation();
+          newsNavigation.init(newsManager);
+          window.newsNavigationInstance = newsNavigation;
         }
       } else {
         Logger.ERROR('NewsRenderer или NewsManager не определен');

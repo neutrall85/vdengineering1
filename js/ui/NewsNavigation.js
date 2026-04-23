@@ -192,8 +192,8 @@ class NewsNavigation {
   }
 }
 
-// Экспортируем глобально
-window.NewsNavigation = new NewsNavigation();
+// Экспортируем класс глобально
+window.NewsNavigation = NewsNavigation;
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { NewsNavigation };
