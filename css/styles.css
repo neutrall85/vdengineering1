@@ -2026,7 +2026,7 @@ body.app-ready > footer {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  z-index: 10;
+  z-index: 100;
   padding: 0;
   flex-shrink: 0;
 }
@@ -2048,13 +2048,44 @@ body.app-ready > footer {
 
 /* Специфичные стили для details-modal (узкий контейнер) */
 .details-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 78, 150, 0.95);
   z-index: 3500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--duration-normal) var(--ease-smooth);
+  backdrop-filter: blur(5px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.details-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 .details-modal-container {
   max-width: 600px;
   max-height: 80vh;
   position: relative;
+  background: white;
+  border-radius: 24px;
+  width: 100%;
+  padding-top: 2rem;
+  transform: scale(0.9) translateY(20px);
+  transition: transform var(--duration-slow) var(--ease-bounce);
+}
+
+.details-modal-overlay.active .details-modal-container {
+  transform: scale(1) translateY(0);
 }
 
 .details-modal-body {
