@@ -2297,6 +2297,7 @@ body.app-ready > footer {
   opacity: 0;
   transform: translateX(-30px);
   height: 280px; /* Фиксированная высота для одинакового размера всех карточек */
+  width: 600px; /* Фиксированная ширина для десктопа */
 }
 
 .news-card.loaded {
@@ -3764,6 +3765,7 @@ body.app-ready > footer {
     grid-template-columns: 1fr;
     height: auto; /* На мобильных убираем фиксированную высоту */
     min-height: 280px; /* Минимальная высота как на десктопе */
+    width: 100%; /* На мобильных ширина 100% */
   }
   .news-card-image {
     height: 200px;
@@ -4259,6 +4261,7 @@ body.app-ready > footer {
     border-radius: 10px;
     height: auto; /* На очень маленьких экранах убираем фиксированную высоту */
     min-height: 260px; /* Чуть меньше минимальная высота */
+    width: 100%; /* На очень маленьких экранах ширина 100% */
   }
   .news-card-image {
     height: 180px;
