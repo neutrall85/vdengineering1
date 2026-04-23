@@ -1344,14 +1344,14 @@ body.app-ready > footer {
   margin-top: 80px;
   transform: scale(0.9) translateY(20px);
   transition: transform var(--duration-slow) var(--ease-bounce);
-  padding: 40px 24px 24px;
+  padding: 0;
 }
 
 /* Кнопка закрытия модального окна (рядом с правым верхним углом по диагонали) */
 .modal-close {
   position: absolute;
-  top: -18px;
-  right: -18px;
+  top: -28px;
+  right: -28px;
   width: 36px;
   height: 36px;
   background: transparent;
@@ -1387,7 +1387,7 @@ body.app-ready > footer {
 }
 
 /* Увеличенная ширина для модального окна коммерческого предложения */
-.modal-container-proposal {
+.modal-overlay-proposal .modal-container-proposal {
   max-width: 700px;
   max-height: 90vh;
 }
@@ -1406,7 +1406,7 @@ body.app-ready > footer {
 
 .modal-body {
   padding: 1rem 1.5rem;
-  max-height: calc(90vh - 320px);
+  max-height: none;
   overflow-y: auto;
   flex: 1;
   order: 2;
