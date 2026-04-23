@@ -49,19 +49,25 @@ class NavigationManager {
     }
   }
 
-  /**
-   * Обработка якоря при загрузке страницы удалена - используется стандартное поведение браузера
-   */
-
   _initSmoothScroll() {
-    // Плавная прокрутка отключена - используется стандартное поведение браузера
-    if (this.mobileMenu) {
-      this.mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          setTimeout(() => this.closeMobileMenu(), 300);
-        });
-      });
-    }
+    // Обработчик клика на якорные ссылки для плавной прокрутки
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href^="#"]');
+      if (!link || !link.hash) return;
+
+      const targetId = link.hash.substring(1);
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        e.preventDefault();
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+
+        // Закрываем мобильное меню, если оно открыто
+        if (this.mobileMenu && this.mobileMenu.classList.contains('active')) {
+          this.closeMobileMenu();
+        }
+      }
+    });
   }
 
   _initScrollHandler() {
