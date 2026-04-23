@@ -89,25 +89,7 @@ class NavigationManager {
   }
 
   _initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"], a[href*="#"]').forEach(anchor => {
-      anchor.addEventListener('click', (e) => {
-        const href = anchor.getAttribute('href');
-        if (href === '#') return;
-
-        const hashIndex = href.indexOf('#');
-        if (hashIndex === -1) return;
-
-        const id = href.substring(hashIndex + 1);
-        if (!id) return;
-
-        if (document.getElementById(id)) {
-          e.preventDefault();
-          e.stopPropagation();
-          this.scrollToId(id);
-        }
-      });
-    });
-
+    // Плавная прокрутка отключена - используется стандартное поведение браузера
     if (this.mobileMenu) {
       this.mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
