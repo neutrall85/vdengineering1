@@ -44,7 +44,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Февраль 2023",
-      image: "",
+      image: "assets/images/docs/placeholder.jpg",
       content: "<p>Полное описание новости</p>"
     },
     {
@@ -53,7 +53,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Март 2023",
-      image: "",
+      image: "assets/images/docs/placeholder.jpg",
       content: "<p>Полное описание новости</p>"
     },
     {
@@ -62,7 +62,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Апрель 2023",
-      image: "",
+      image: "assets/images/docs/placeholder.jpg",
       content: "<p>Полное описание новости</p>"
     },
     {
@@ -71,7 +71,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Май 2023",
-      image: "",
+      image: "assets/images/docs/placeholder.jpg",
       content: "<p>Полное описание новости</p>"
     },
     {
@@ -80,7 +80,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Июнь 2023",
-      image: "",
+      image: "assets/images/docs/placeholder.jpg",
       content: "<p>Полное описание новости</p>"
     }
   ],
@@ -91,7 +91,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Январь 2024",
-      image: "",
+      image: "assets/images/docs/placeholder.jpg",
       content: "<p>Полное описание новости</p>"
     }
   ],
@@ -102,7 +102,7 @@ const NEWS_DATA = {
       excerpt: "Краткое описание.",
       category: "Категория",
       date: "Январь 2025",
-      image: "",
+      image: "assets/images/docs/placeholder.jpg",
       content: "<p>Полное описание новости</p>"
     }
   ],
