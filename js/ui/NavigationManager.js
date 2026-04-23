@@ -39,7 +39,6 @@ class NavigationManager {
         this._initMobileMenu();
         this._initScrollToTop();
         this._handleScroll();
-        this._handleInitialHash();
 
         Logger.INFO('NavigationManager initialized');
       };
@@ -51,42 +50,8 @@ class NavigationManager {
   }
 
   /**
-   * Единый метод прокрутки к элементу по ID
-   * @param {string} id - ID элемента (без #)
-   * @param {number} extraOffset - дополнительный отступ (по умолчанию 0)
+   * Обработка якоря при загрузке страницы удалена - используется стандартное поведение браузера
    */
-  scrollToId(id, extraOffset = 0) {
-    const target = document.getElementById(id);
-    if (!target) {
-      Logger.WARN(`Element with id "${id}" not found`);
-      return;
-    }
-    const navbarHeight = this.navbar ? this.navbar.offsetHeight : 70;
-    const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
-    window.scrollTo({ top: elementPosition - navbarHeight - extraOffset, behavior: 'smooth' });
-  }
-
-  /**
-   * Обработка якоря при загрузке страницы
-   */
-  _handleInitialHash() {
-    const hash = window.location.hash;
-    if (!hash || hash === '#') return;
-
-    const id = hash.startsWith('#') ? hash.slice(1) : hash;
-
-    const doScroll = () => {
-      this.scrollToId(id);
-    };
-
-    if (document.readyState === 'complete') {
-      setTimeout(doScroll, 100);
-    } else {
-      window.addEventListener('load', () => setTimeout(doScroll, 100));
-    }
-
-    document.addEventListener('components:loaded', doScroll);
-  }
 
   _initSmoothScroll() {
     // Плавная прокрутка отключена - используется стандартное поведение браузера
