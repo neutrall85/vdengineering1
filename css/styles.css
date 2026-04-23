@@ -853,15 +853,10 @@ body.app-ready > footer {
   background: var(--vd-light-gray);
 }
 
-.preview-news-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.news-grid-inline {
+.preview-news-grid,
+.news-grid-inline,
+.news-grid,
+.news-grid-auto {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
@@ -903,20 +898,25 @@ body.app-ready > footer {
   transform: translateY(0);
 }
 
-.news-card-preview-image {
+.news-card-preview-image,
+.news-card-image {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: var(--vd-light-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.news-card-preview-image img {
+.news-card-preview-image img,
+.news-card-image img {
   position: relative;
   z-index: 2;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   transition: transform var(--duration-slower) var(--ease-smooth);
   opacity: 0;
@@ -924,16 +924,25 @@ body.app-ready > footer {
 
 .news-card-preview-image img.loaded,
 .news-card-preview-image img[src],
-.news-card-preview-image img[data-src] {
+.news-card-preview-image img[data-src],
+.news-card-image img.loaded {
   opacity: 1;
 }
 
-.news-card-preview:hover .news-card-preview-image img {
+.news-card-preview:hover .news-card-preview-image img,
+.news-card:hover .news-card-image img {
   transform: scale(1.08);
 }
 
-.news-card-preview-content {
+.news-card-preview-content,
+.news-card-content {
   padding: clamp(1rem, 2vw, 1.5rem);
+}
+
+.news-card-content {
+  display: flex;
+  flex-direction: column;
+  background: white;
 }
 
 .news-card-preview-category {
@@ -2318,10 +2327,7 @@ body.app-ready > footer {
   font-weight: 500;
 }
 
-.news-grid {
-  max-width: 1400px;
-  margin: 0 auto;
-}
+/* Удалено: дублирующие стили для .news-grid теперь в общем блоке (строки 856-865) */
 
 .news-card {
   background: white;
@@ -2347,33 +2353,7 @@ body.app-ready > footer {
   transform: translateY(-4px);
 }
 
-.news-card-image {
-  position: relative;
-  width: 100%;
-  height: 250px; /* Фиксированная высота для ровной сетки */
-  overflow: hidden;
-  background: var(--vd-light-gray);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.news-card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  transition: transform var(--duration-slower) var(--ease-smooth);
-  opacity: 0;
-}
-
-.news-card-image img.loaded {
-  opacity: 1;
-}
-
-.news-card:hover .news-card-image img {
-  transform: scale(1.08);
-}
+/* Удалено: дублирующие стили для .news-card-image теперь в общем блоке с .news-card-preview-image (строки 906-940) */
 
 .news-card-category {
   position: absolute;
@@ -2386,13 +2366,6 @@ body.app-ready > footer {
   font-size: clamp(0.65rem, 1vw, 0.7rem);
   font-weight: 600;
   z-index: 10;
-}
-
-.news-card-content {
-  padding: clamp(1rem, 2vw, 1.5rem);
-  display: flex;
-  flex-direction: column;
-  background: white;
 }
 
 .news-card-date {
@@ -2491,12 +2464,15 @@ body.app-ready > footer {
   z-index: 1;
 }
 
-.news-card-preview-image .image-placeholder {
+.news-card-preview-image .image-placeholder,
+.news-card-image .image-placeholder {
   display: none;
 }
 
 .news-card-preview-image img:not([src]):not([data-src]) + .image-placeholder,
-.news-card-preview-image img.loading + .image-placeholder {
+.news-card-preview-image img.loading + .image-placeholder,
+.news-card-image img:not([src]):not([data-src]) + .image-placeholder,
+.news-card-image img.loading + .image-placeholder {
   display: block;
 }
 
@@ -2773,7 +2749,6 @@ body.app-ready > footer {
 
 .news-full-padding { padding: 60px 5%; }
 .news-tabs-container { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
-.news-grid-auto { max-width: 1400px; margin: 0 auto; }
 
 .modal-list-ul { padding-left: 1.5rem; margin-top: 1rem; }
 .modal-list-li { margin-bottom: 0.5rem; }
@@ -3765,7 +3740,9 @@ body.app-ready > footer {
   
   /* Новости */
   .preview-news-grid,
-  .news-grid {
+  .news-grid-inline,
+  .news-grid,
+  .news-grid-auto {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
@@ -3775,7 +3752,7 @@ body.app-ready > footer {
     grid-template-columns: 1fr;
   }
   .news-card-image {
-    height: 200px;
+    aspect-ratio: 16 / 9;
   }
   .news-card-content {
     padding: 1rem;
@@ -4265,7 +4242,7 @@ body.app-ready > footer {
     border-radius: 10px;
   }
   .news-card-image {
-    height: 180px;
+    aspect-ratio: 16 / 9;
   }
   .news-card-content {
     padding: 0.85rem;

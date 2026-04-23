@@ -1,42 +1,41 @@
 ```
-# Dependencies
-node_modules/
-
-# Build outputs
-dist/
-build/
-target/
-
-# Python
-__pycache__/
+# Compiled and build artifacts
 *.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
+__pycache__/
+*.o
+*.obj
+*.class
+*.exe
+*.dll
+*.so
+*.a
+*.out
+
+# Dependencies
 .venv/
-.ENV
-.python-version
-.pytest_cache/
+venv/
+node_modules/
 .mypy_cache/
+.pytest_cache/
+target/
+.gradle/
 
-# Logs
+# Logs and temp files
 *.log
+*.tmp
+*.swp
+*.swo
 
-# Environment variables
+# Environment
 .env
 .env.local
 .env.*
 
-# Editor
+# Editors
 .vscode/
 .idea/
-*.swp
-*.swo
-*.tmp
 
-# OS
+# System files
 .DS_Store
 Thumbs.db
 
