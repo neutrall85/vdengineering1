@@ -71,6 +71,7 @@ class Application {
       }
       
       // Инициализация специфичных страниц через глобальные функции
+      // Вызываем ПОСЛЕ регистрации модалок чтобы modalManager был доступен
       const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
       const pageInitMap = {
         'projects': 'initProjectsPage',
@@ -78,10 +79,19 @@ class Application {
         'vacancies': 'initVacanciesPage'
       };
       
-      if (pageInitMap[currentPage]) {
-        const initFn = window[pageInitMap[currentPage]];
+      // Сохраняем функцию инициализации для вызова после регистрации модалок
+      const pendingPageInit = pageInitMap[currentPage];
+      
+      if (pendingPageInit) {
+        const initFn = window[pendingPageInit];
         if (typeof initFn === 'function') {
-          initFn();
+          // Вызываем сразу если модалки уже зарегистрированы
+          if (this._modalsRegistered) {
+            initFn();
+          } else {
+            // Ждём регистрации модалок
+            document.addEventListener('modals:registered', () => initFn(), { once: true });
+          }
         }
       }
       
@@ -176,6 +186,9 @@ class Application {
     });
     
     this._modalsRegistered = true;
+    
+    // Отправляем событие о регистрации модальных окон
+    document.dispatchEvent(new CustomEvent('modals:registered'));
   }
 
   _initGlobalHelpers() {
