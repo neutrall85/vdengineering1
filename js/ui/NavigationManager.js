@@ -190,6 +190,11 @@ class NavigationManager {
     if (this.mobileMenuOverlay) Utils.DOM.addClass(this.mobileMenuOverlay, 'active');
     if (this.mobileMenuBtn) Utils.DOM.addClass(this.mobileMenuBtn, 'active');
 
+    // Обновляем состояние через AppState
+    if (window.AppState) {
+      AppState.setState('navigation.isMobileMenuOpen', true);
+    }
+
     // Используем только ScrollManager для блокировки скролла
     if (window.ScrollManager) {
       ScrollManager.lock();
@@ -204,6 +209,11 @@ class NavigationManager {
     Utils.DOM.removeClass(this.mobileMenu, 'active');
     if (this.mobileMenuOverlay) Utils.DOM.removeClass(this.mobileMenuOverlay, 'active');
     if (this.mobileMenuBtn) Utils.DOM.removeClass(this.mobileMenuBtn, 'active');
+
+    // Обновляем состояние через AppState
+    if (window.AppState) {
+      AppState.setState('navigation.isMobileMenuOpen', false);
+    }
 
     // Используем только ScrollManager для разблокировки скролла
     if (window.ScrollManager) {
