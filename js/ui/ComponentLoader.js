@@ -1,249 +1,20 @@
 /**
  * ComponentLoader - загрузчик общих компонентов (header, footer)
  * Устраняет дублирование HTML между страницами
+ * 
+ * Зависимости:
+ * - templates/ComponentTemplates.js - HTML-шаблоны компонентов
+ * - templates/ModalTemplates.js - HTML-шаблоны модальных окон
+ * - managers/PolicyModalManager.js - управление модальными окнами политик
+ * - managers/UniversalApplicationModalManager.js - управление модальным окном заявок
  */
 
 const ComponentLoader = {
-    // Вспомогательная функция для получения ширины скроллбара
-    getScrollbarWidth() {
-        return window.innerWidth - document.documentElement.clientWidth;
-    },
-    
-    // Навигация (ссылка "Главная" добавляется динамически)
-    navbar: `
-<nav class="navbar" id="navbar">
-  <div class="navbar-content">
-    <div class="logo">
-      <a href="index.html">
-        <img src="assets/images/logo.svg" alt="Волга-Днепр Инжиниринг" class="logo-image">
-      </a>
-    </div>
-    <ul class="nav-links">
-      <li class="home-link"><a href="index.html">Главная</a></li>
-      <li><a href="about.html">О нас</a></li>
-      <li><a href="services.html">Компетенции</a></li>
-      <li><a href="news.html">Новости</a></li>
-      <li><a href="projects.html">Проекты</a></li>
-      <li><a href="docs.html">Документы</a></li>
-      <li><a href="vacancies.html">Вакансии</a></li>
-      <li><a href="index.html#partners">Партнёры</a></li>
-      <li><a href="index.html#contact-details">Контакты</a></li>
-    </ul>
-    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Меню">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </div>
-</nav>
-
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html" class="home-link-mobile">Главная</a>
-  <a href="about.html">О нас</a>
-  <a href="services.html">Компетенции</a>
-  <a href="news.html">Новости</a>
-  <a href="projects.html">Проекты</a>
-  <a href="docs.html">Документы</a>
-  <a href="vacancies.html">Вакансии</a>
-  <a href="index.html#partners">Партнёры</a>
-  <a href="index.html#contact-details">Контакты</a>
-</div>`,
-
-    // Футер
-    footer: `
-<footer class="footer">
-  <div class="footer-legal">
-    <ul>
-      <li><a href="#" data-policy="terms">Условия обслуживания</a></li>
-      <li><a href="#" data-policy="privacy">Политика конфиденциальности</a></li>
-      <li><a href="#" data-policy="personal-data">Политика обработки персональных данных</a></li>
-      <li><a href="#" data-policy="cookies">Политика в отношении файлов cookie</a></li>
-    </ul>
-  </div>
-  <div class="footer-bottom">
-    <p>© <span id="currentYear"></span> ООО "Волга-Днепр Инжиниринг". Все права защищены.</p>
-  </div>
-</footer>
-
-<button class="scroll-to-top" id="scrollToTop" aria-label="Наверх">
-  <svg viewBox="0 0 24 24"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg>
-</button>`,
-
-    // Модальное окно коммерческого предложения
-    proposalModal: `
-<!-- Commercial Proposal Modal -->
-<div class="modal-overlay modal-overlay-proposal" id="proposalModalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal-container modal-container-proposal">
-    <div class="modal-header">
-      <h2 class="modal-title" id="modalTitle">Запрос коммерческого предложения</h2>
-      <p class="modal-subtitle">Заполните форму ниже, и мы свяжемся с вами в течение 24 часов</p>
-    </div>
-    <div class="modal-body">
-      <div class="rate-limit-warning" id="rateLimitWarning">
-        <p>⚠️ Слишком много запросов. Пожалуйста, подождите 60 секунд перед следующей отправкой.</p>
-      </div>
-
-      <div class="success-message" id="successMessage">
-        <div class="success-icon">
-          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-        </div>
-        <h3 class="success-title">Заявка отправлена!</h3>
-        <p class="success-text">Спасибо за ваш запрос. Наш специалист свяжется с вами в течение 24 часов.</p>
-      </div>
-
-      <input type="hidden" id="csrfToken" name="csrf_token" value="">
-
-      <div class="hp-field">
-        <label for="hp_website">Website</label>
-        <input type="text" id="hp_website" name="website" tabindex="-1" autocomplete="off">
-      </div>
-
-      <form id="proposalForm" novalidate>
-        <div class="form-group">
-          <label class="form-label" for="companyName">Название компании <span class="required">*</span></label>
-          <input type="text" class="form-input" id="companyName" name="companyName" placeholder="Введите название компании" required minlength="2" maxlength="200" autocomplete="organization">
-          <p class="error-message" id="companyNameError">Пожалуйста, введите корректное название компании</p>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="contactPerson">Контактное лицо <span class="required">*</span></label>
-          <input type="text" class="form-input" id="contactPerson" name="contactPerson" placeholder="Ваше полное имя" required minlength="2" maxlength="100" autocomplete="name">
-          <p class="error-message" id="contactPersonError">Пожалуйста, введите ваше имя</p>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="email">Электронная почта <span class="required">*</span></label>
-          <input type="email" class="form-input" id="email" name="email" placeholder="ваш.email@company.com" required maxlength="255" autocomplete="email">
-          <p class="error-message" id="emailError">Пожалуйста, введите корректный email</p>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Телефон <span class="required">*</span></label>
-          <div class="form-phone-group">
-            <input type="tel" class="form-input" id="phone" name="phone" placeholder="+7 (999) 000-00-00" required minlength="10" maxlength="20" autocomplete="tel" class="form-input-phone">
-            <input type="text" class="form-input" id="extension" name="extension" placeholder="доб." maxlength="6" autocomplete="off" class="form-input-extension">
-          </div>
-          <p class="error-message" id="phoneError">Пожалуйста, введите корректный номер телефона</p>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="aircraftType">Тип воздушного судна <span class="required">*</span></label>
-          <input type="text" class="form-input" id="aircraftType" name="aircraftType" placeholder="Введите тип воздушного судна (например, Boeing 777)" required minlength="2" maxlength="100" autocomplete="off">
-          <p class="error-message" id="aircraftTypeError">Пожалуйста, введите тип воздушного судна</p>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="serviceType">Требуемая услуга <span class="required">*</span></label>
-          <select class="form-select" id="serviceType" name="serviceType" required>
-            <option value="">Выберите тип услуги</option>
-            <option value="design">Проектирование модификаций</option>
-            <option value="repair">Разработка ремонтной КД</option>
-            <option value="other">Другое</option>
-          </select>
-          <p class="error-message" id="serviceTypeError">Пожалуйста, выберите тип услуги</p>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="taskDescription">Краткое описание задачи <span class="required">*</span></label>
-          <textarea class="form-textarea" id="taskDescription" name="taskDescription" placeholder="Пожалуйста, опишите требования к модификации, сроки и любые конкретные детали..." required minlength="10" maxlength="2000"></textarea>
-          <p class="error-message" id="taskDescriptionError">Пожалуйста, опишите вашу задачу (минимум 10 символов)</p>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Вложение (опционально)</label>
-          <div class="form-file" id="fileDrop">
-            <input type="file" id="fileAttachment" name="fileAttachment" accept=".pdf,.doc,.docx,.xls,.xlsx" aria-label="Загрузить файл" multiple>
-            <div class="form-file-icon">
-              <svg viewBox="0 0 24 24"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>
-            </div>
-            <p class="form-file-text">Выбрать файл...</p>
-            <p class="form-file-hint">PDF, DOC, DOCX, XLS, XLSX (Max 10MB)</p>
-            <div class="form-file-list" id="fileList"></div>
-          </div>
-        </div>
-        <div class="form-agreement">
-          <p class="form-agreement-text">
-            Отправляя эту форму, вы соглашаетесь с нашей
-            <a href="#" target="_blank" rel="noopener noreferrer">Политикой конфиденциальности</a>,
-            <a href="#" target="_blank" rel="noopener noreferrer">Политикой обработки персональных данных</a> и
-            <a href="#" target="_blank" rel="noopener noreferrer">Условиями обслуживания</a>.
-          </p>
-        </div>
-        <button type="submit" class="form-submit" id="submitBtn">
-          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-          <span>Отправить запрос</span>
-        </button>
-      </form>
-    </div>
-  </div>
-</div>`,
-
-    // Универсальное модальное окно для заявок
-    universalApplicationModal: `
-<!-- Universal Application Modal -->
-<div class="modal-overlay modal-overlay-universal" id="universalApplicationModalOverlay" role="dialog" aria-modal="true" aria-labelledby="universalApplicationModalTitle">
-  <div class="modal-container">
-    <div class="modal-header">
-      <h2 class="modal-title" id="universalApplicationModalTitle">Отклик на вакансию</h2>
-      <p class="modal-subtitle" id="universalApplicationModalSubtitle">Заполните форму ниже, и мы рассмотрим вашу кандидатуру</p>
-    </div>
-    <div class="modal-body">
-      <div class="rate-limit-warning" id="universalRateLimitWarning">
-        <p>⚠️ Слишком много запросов. Пожалуйста, подождите 60 секунд перед следующей отправкой.</p>
-      </div>
-
-      <div class="success-message" id="universalSuccessMessage">
-        <div class="success-icon">
-          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-        </div>
-        <h3 class="success-title" id="universalSuccessTitle">Отклик отправлен!</h3>
-        <p class="success-text">Спасибо за ваш интерес. Мы рассмотрим резюме и свяжемся с вами в ближайшее время.</p>
-      </div>
-
-      <form id="universalApplicationForm" novalidate>
-        <div class="form-group">
-          <label class="form-label" for="universalFullName">ФИО <span class="required">*</span></label>
-          <input type="text" class="form-input" id="universalFullName" name="fullName" placeholder="Введите ваши ФИО полностью" required minlength="2" maxlength="200" autocomplete="name">
-          <p class="error-message" id="universalFullNameError">Пожалуйста, введите корректное ФИО</p>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="universalPhone">Номер телефона <span class="required">*</span></label>
-          <input type="tel" class="form-input" id="universalPhone" name="phone" placeholder="+7 (999) 000-00-00" required minlength="10" maxlength="20" autocomplete="tel">
-          <p class="error-message" id="universalPhoneError">Пожалуйста, введите корректный номер телефона</p>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="universalEmail">Адрес e-mail <span class="required">*</span></label>
-          <input type="email" class="form-input" id="universalEmail" name="email" placeholder="ваш.email@example.com" required maxlength="255" autocomplete="email">
-          <p class="error-message" id="universalEmailError">Пожалуйста, введите корректный email</p>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="universalAbout">Расскажите о себе <span class="required">*</span></label>
-          <textarea class="form-textarea" id="universalAbout" name="about" placeholder="Расскажите о вашем опыте, навыках и почему вы хотите работать у нас..." required minlength="10" maxlength="2000"></textarea>
-          <p class="error-message" id="universalAboutError">Пожалуйста, расскажите о себе (минимум 10 символов)</p>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Резюме (файл) <span class="required">*</span></label>
-          <div class="form-file" id="universalFileDrop">
-            <input type="file" id="universalFileAttachment" name="fileAttachment" accept=".pdf,.doc,.docx,.xls,.xlsx" aria-label="Загрузить резюме" required multiple>
-            <div class="form-file-icon">
-              <svg viewBox="0 0 24 24"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>
-            </div>
-            <p class="form-file-text">Выбрать файл...</p>
-            <p class="form-file-hint">PDF, DOC, DOCX, XLS, XLSX (Max 10MB)</p>
-            <div class="form-file-list" id="universalFileList"></div>
-            <div class="form-file-limit-warning form-file-limit-hidden" id="universalFileLimitWarning">
-              <p>⚠️ Превышен лимит: максимум 5 файлов или 10MB на файл</p>
-            </div>
-          </div>
-        </div>
-        <div class="form-agreement form-agreement-checkbox">
-          <label class="checkbox-label">
-            <input type="checkbox" id="universalConsent" name="consent" required>
-            <span class="checkbox-text">Я согласен с <a href="#" data-policy="personal-data" target="_blank" rel="noopener noreferrer">Условиями обработки персональных данных</a> <span class="required">*</span></span>
-          </label>
-          <p class="error-message" id="universalConsentError">Необходимо подтвердить согласие</p>
-        </div>
-        <button type="submit" class="form-submit" id="universalSubmitBtn" disabled>
-          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-          <span id="universalSubmitBtnText">Отправить отклик</span>
-        </button>
-      </form>
-    </div>
-  </div>
-</div>`,
+    // Импортируем шаблоны из внешних файлов (должны быть подключены перед этим скриптом)
+    navbar: typeof ComponentTemplates !== 'undefined' ? ComponentTemplates.navbar : '',
+    footer: typeof ComponentTemplates !== 'undefined' ? ComponentTemplates.footer : '',
+    proposalModal: typeof ModalTemplates !== 'undefined' ? ModalTemplates.proposalModal : '',
+    universalApplicationModal: typeof ModalTemplates !== 'undefined' ? ModalTemplates.universalApplicationModal : '',
 
     /**
      * Инициализация компонентов на странице
@@ -305,7 +76,12 @@ const ComponentLoader = {
                 universalModalContainer.innerHTML = this.universalApplicationModal.trim();
                 document.body.appendChild(universalModalContainer.firstElementChild);
                 setTimeout(() => {
-                    this.initUniversalApplicationModal();
+                    // Используем UniversalApplicationModalManager если доступен
+                    if (typeof UniversalApplicationModalManager !== 'undefined') {
+                        UniversalApplicationModalManager.init();
+                    } else {
+                        this.initUniversalApplicationModal();
+                    }
                 }, 100);
             }
         }
@@ -318,11 +94,20 @@ const ComponentLoader = {
                 footerContainer.innerHTML = this.footer.trim();
                 document.body.appendChild(footerContainer.firstElementChild);
                 this.updateYear();
-                this.initPolicyLinks();
+                // Используем PolicyModalManager если доступен
+                if (typeof PolicyModalManager !== 'undefined') {
+                    PolicyModalManager.init();
+                } else {
+                    this.initPolicyLinks();
+                }
             } else {
                 existingFooter.outerHTML = this.footer;
                 this.updateYear();
-                this.initPolicyLinks();
+                if (typeof PolicyModalManager !== 'undefined') {
+                    PolicyModalManager.init();
+                } else {
+                    this.initPolicyLinks();
+                }
             }
         }
 
@@ -366,6 +151,10 @@ const ComponentLoader = {
         }
     },
 
+    /**
+     * Инициализация обработчиков для ссылок на политики (устаревший метод)
+     * Рекомендуется использовать PolicyModalManager.init()
+     */
     initPolicyLinks() {
         document.addEventListener('click', (e) => {
             const policyLink = e.target.closest('[data-policy]');
@@ -378,10 +167,18 @@ const ComponentLoader = {
     },
 
     /**
-     * Открытие модального окна с текстом политики
+     * Открытие модального окна с текстом политики (устаревший метод)
+     * Рекомендуется использовать PolicyModalManager.openPolicyModal()
      * @param {string} policyKey - ключ политики (terms, privacy, personal-data, cookies)
      */
     openPolicyModal(policyKey) {
+        // Делегируем вызов PolicyModalManager если доступен
+        if (typeof PolicyModalManager !== 'undefined') {
+            PolicyModalManager.openPolicyModal(policyKey);
+            return;
+        }
+        
+        // Fallback для обратной совместимости
         const policy = POLICY_DOCUMENTS[policyKey];
         if (!policy) {
             Logger.WARN(`Policy "${policyKey}" not found`);
@@ -390,46 +187,7 @@ const ComponentLoader = {
 
         let modalOverlay = document.getElementById('policyModalOverlay');
         if (!modalOverlay) {
-            modalOverlay = document.createElement('div');
-            modalOverlay.id = 'policyModalOverlay';
-            modalOverlay.className = 'modal-overlay';
-            modalOverlay.setAttribute('role', 'dialog');
-            modalOverlay.setAttribute('aria-modal', 'true');
-            
-            const closeBtn = document.createElement('button');
-            closeBtn.className = 'modal-close';
-            closeBtn.id = 'policyModalCloseBtn';
-            closeBtn.setAttribute('aria-label', 'Закрыть');
-            const svgNS = 'http://www.w3.org/2000/svg';
-            const svgEl = document.createElementNS(svgNS, 'svg');
-            svgEl.setAttribute('viewBox', '0 0 24 24');
-            const pathEl = document.createElementNS(svgNS, 'path');
-            pathEl.setAttribute('d', 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z');
-            svgEl.appendChild(pathEl);
-            closeBtn.appendChild(svgEl);
-            
-            const modalContainer = document.createElement('div');
-            modalContainer.className = 'modal-container';
-            const modalHeader = document.createElement('div');
-            modalHeader.className = 'modal-header';
-            const modalTitle = document.createElement('h2');
-            modalTitle.className = 'modal-title';
-            modalTitle.id = 'policyModalTitle';
-            modalHeader.appendChild(modalTitle);
-            const modalBody = document.createElement('div');
-            modalBody.className = 'modal-body';
-            modalBody.id = 'policyModalContent';
-            
-            modalContainer.appendChild(closeBtn);
-            modalContainer.appendChild(modalHeader);
-            modalContainer.appendChild(modalBody);
-            modalOverlay.appendChild(modalContainer);
-            document.body.appendChild(modalOverlay);
-
-            // Регистрация в ModalManager
-            if (typeof modalManager !== 'undefined') {
-                modalManager.register('policy', { overlayId: 'policyModalOverlay' });
-            }
+            modalOverlay = this._createPolicyModalDOM();
         }
 
         document.getElementById('policyModalTitle').textContent = policy.title;
@@ -439,7 +197,6 @@ const ComponentLoader = {
           allowedAttributes: { 'a': ['href', 'target', 'rel'] }
         });
 
-        // Открываем через ModalManager - все манипуляции со скроллом только через ScrollManager
         if (typeof modalManager !== 'undefined') {
             modalManager.open('policy');
         } else {
@@ -448,10 +205,13 @@ const ComponentLoader = {
     },
 
     /**
-     * Закрытие модального окна политики
+     * Закрытие модального окна политики (устаревший метод)
+     * Рекомендуется использовать PolicyModalManager.closePolicyModal()
      */
     closePolicyModal() {
-        if (typeof modalManager !== 'undefined') {
+        if (typeof PolicyModalManager !== 'undefined') {
+            PolicyModalManager.closePolicyModal();
+        } else if (typeof modalManager !== 'undefined') {
             modalManager.close('policy');
         } else {
             Logger.WARN('ModalManager not available for policy modal close');
@@ -459,10 +219,65 @@ const ComponentLoader = {
     },
 
     /**
-     * Инициализация универсального модального окна заявок
-     * Использует единый модуль FormValidation для валидации
+     * Создание DOM-структуры модального окна политики (вспомогательный метод)
+     * @returns {HTMLElement} overlay элемент модального окна
+     */
+    _createPolicyModalDOM() {
+        const modalOverlay = document.createElement('div');
+        modalOverlay.id = 'policyModalOverlay';
+        modalOverlay.className = 'modal-overlay';
+        modalOverlay.setAttribute('role', 'dialog');
+        modalOverlay.setAttribute('aria-modal', 'true');
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'modal-close';
+        closeBtn.id = 'policyModalCloseBtn';
+        closeBtn.setAttribute('aria-label', 'Закрыть');
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const svgEl = document.createElementNS(svgNS, 'svg');
+        svgEl.setAttribute('viewBox', '0 0 24 24');
+        const pathEl = document.createElementNS(svgNS, 'path');
+        pathEl.setAttribute('d', 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z');
+        svgEl.appendChild(pathEl);
+        closeBtn.appendChild(svgEl);
+        
+        const modalContainer = document.createElement('div');
+        modalContainer.className = 'modal-container';
+        const modalHeader = document.createElement('div');
+        modalHeader.className = 'modal-header';
+        const modalTitle = document.createElement('h2');
+        modalTitle.className = 'modal-title';
+        modalTitle.id = 'policyModalTitle';
+        modalHeader.appendChild(modalTitle);
+        const modalBody = document.createElement('div');
+        modalBody.className = 'modal-body';
+        modalBody.id = 'policyModalContent';
+        
+        modalContainer.appendChild(closeBtn);
+        modalContainer.appendChild(modalHeader);
+        modalContainer.appendChild(modalBody);
+        modalOverlay.appendChild(modalContainer);
+        document.body.appendChild(modalOverlay);
+
+        if (typeof modalManager !== 'undefined') {
+            modalManager.register('policy', { overlayId: 'policyModalOverlay' });
+        }
+        
+        return modalOverlay;
+    },
+
+    /**
+     * Инициализация универсального модального окна заявок (устаревший метод)
+     * Рекомендуется использовать UniversalApplicationModalManager.init()
      */
     initUniversalApplicationModal() {
+        // Делегируем вызов UniversalApplicationModalManager если доступен
+        if (typeof UniversalApplicationModalManager !== 'undefined') {
+            UniversalApplicationModalManager.init();
+            return;
+        }
+        
+        // Fallback для обратной совместимости
         window.openApplicationModal = (triggerElement) => {
             const overlay = document.getElementById('universalApplicationModalOverlay');
             if (!overlay) return;
@@ -485,7 +300,6 @@ const ComponentLoader = {
                 if (successTitle) successTitle.textContent = 'Отклик отправлен!';
             }
 
-            // Открываем через ModalManager - все манипуляции со скроллом только через ScrollManager
             if (typeof modalManager !== 'undefined') {
                 modalManager.open('universal');
             } else {
@@ -501,7 +315,6 @@ const ComponentLoader = {
             }
         };
 
-        // Инициализация валидации формы через единый модуль FormValidation
         const universalForm = document.getElementById('universalApplicationForm');
         let formValidator = null;
         
@@ -519,7 +332,6 @@ const ComponentLoader = {
             });
         }
 
-        // Обработчик успешной валидации
         if (universalForm) {
             universalForm.addEventListener('form:valid', (e) => {
                 Logger.INFO('Форма валидна, отправка заявки...');
@@ -544,18 +356,17 @@ const ComponentLoader = {
                             if (fileText) fileText.textContent = 'Выбрать файл...';
                         }
                         
-                        // Сброс валидатора
                         if (formValidator) formValidator.reset();
                     }, 3000);
                 }
             });
         }
 
-        // Настройка автопрефикса для телефона
         const phoneInput = document.getElementById('universalPhone');
-        Utils.PhoneUtils.setupAutoPrefix(phoneInput);
+        if (phoneInput && Utils.PhoneUtils) {
+            Utils.PhoneUtils.setupAutoPrefix(phoneInput);
+        }
 
-        // Инициализация загрузки файлов
         if (window.formManager) {
             setTimeout(() => {
                 const universalFileDrop = document.getElementById('universalFileDrop');
