@@ -457,6 +457,8 @@ class FormManager {
   async _handleSubmit(e) {
     e.preventDefault();
 
+    const form = document.getElementById('proposalForm');
+    
     if (!this._validateForm()) return;
 
     if (!this.rateLimiter.canProceed()) {

@@ -2759,9 +2759,7 @@ body.app-ready > footer {
 .certificate-widgets-container { max-width: 900px; margin: 0 auto; }
 
 .features-grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
-.feature-card-box { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 3px 12px rgba(0,0,0,0.06); text-align: center; }
-.feature-icon-circle { width: 60px; height: 60px; background: linear-gradient(135deg, var(--vd), var(--vd-light-blue)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
-.feature-icon-svg { width: 30px; height: 30px; fill: white; }
+/* feature-card-box и feature-icon-circle удалены как дублирующие .feature-card и .feature-icon */
 .feature-title { color: var(--vd); margin-bottom: 0.75rem; font-size: clamp(1.05rem, 1.8vw, 1.2rem); }
 .feature-desc { color: var(--metallic); line-height: 1.55; font-size: clamp(0.8rem, 1.1vw, 0.9rem); }
 

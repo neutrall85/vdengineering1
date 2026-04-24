@@ -8,8 +8,29 @@
 
 // Экспортируем функцию инициализации для module режима
 window.initVacanciesPage = function() {
-  // Дополнительная логика может быть добавлена здесь при необходимости
-  // Например, передача данных о вакансии в модальное окно
+  // Логика для передачи данных о вакансии в модальное окно
+  const applicationButtons = document.querySelectorAll('[data-modal-open="application"]');
+  
+  applicationButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      const vacancyCard = button.closest('.vacancy-card');
+      if (!vacancyCard) return;
+      
+      const vacancyTitle = vacancyCard.querySelector('.vacancy-title')?.textContent || '';
+      const vacancyDepartment = vacancyCard.querySelector('.vacancy-department')?.textContent || '';
+      
+      // Обновляем заголовок модального окна
+      const modalTitle = document.getElementById('universalApplicationModalTitle');
+      const modalSubtitle = document.getElementById('universalApplicationModalSubtitle');
+      
+      if (modalTitle) {
+        modalTitle.textContent = `Отклик на вакансию: ${vacancyTitle}`;
+      }
+      if (modalSubtitle) {
+        modalSubtitle.textContent = vacancyDepartment ? `${vacancyDepartment} — Заполните форму ниже, и мы рассмотрим вашу кандидатуру` : 'Заполните форму ниже, и мы рассмотрим вашу кандидатуру';
+      }
+    }, { passive: true });
+  });
   
   console.log('Страница вакансий инициализирована');
 };

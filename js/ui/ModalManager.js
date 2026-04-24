@@ -98,12 +98,11 @@ class ModalManager {
         return;
       }
       
-      // Fallback для policy modal (если не зарегистрирована в ModalManager)
+      // Fallback для policy modal
       const policyModal = document.getElementById('policyModalOverlay');
       if (policyModal && policyModal.classList.contains('active')) {
-        if (typeof ComponentLoader !== 'undefined') {
-          ComponentLoader.closePolicyModal();
-        }
+        policyModal.classList.remove('active');
+        ScrollManager.unlock();
       }
     };
     document.addEventListener('keydown', this._boundKeyHandler);
@@ -134,8 +133,6 @@ class ModalManager {
       // Закрываем через ModalManager если модалка зарегистрирована
       if (modalKey && this.modals.has(modalKey)) {
         this.close(modalKey);
-      } else if (overlayId === 'policyModalOverlay' && typeof ComponentLoader !== 'undefined') {
-        ComponentLoader.closePolicyModal();
       } else if (overlayId === 'universalApplicationModalOverlay' && typeof window.closeUniversalApplicationModal === 'function') {
         window.closeUniversalApplicationModal();
       } else {

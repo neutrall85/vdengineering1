@@ -93,9 +93,9 @@ const ModalTemplates = {
         <div class="form-agreement">
           <p class="form-agreement-text">
             Отправляя эту форму, вы соглашаетесь с нашей
-            <a href="#" target="_blank" rel="noopener noreferrer">Политикой конфиденциальности</a>,
-            <a href="#" target="_blank" rel="noopener noreferrer">Политикой обработки персональных данных</a> и
-            <a href="#" target="_blank" rel="noopener noreferrer">Условиями обслуживания</a>.
+            <a href="#" data-policy="privacy" target="_blank" rel="noopener noreferrer">Политикой конфиденциальности</a>,
+            <a href="#" data-policy="personal-data" target="_blank" rel="noopener noreferrer">Политикой обработки персональных данных</a> и
+            <a href="#" data-policy="terms" target="_blank" rel="noopener noreferrer">Условиями обслуживания</a>.
           </p>
         </div>
         <button type="submit" class="form-submit" id="submitBtn">

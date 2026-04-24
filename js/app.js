@@ -184,15 +184,7 @@ class Application {
       if (navigationManager) navigationManager.toggleMobileMenu();
     };
     
-    window.openModal = () => {
-      if (formManager && typeof formManager.openModal === 'function') {
-        formManager.openModal();
-      } else if (typeof modalManager !== 'undefined') {
-        modalManager.open('form');
-      } else {
-        Logger.WARN('openModal: Neither formManager nor modalManager is available');
-      }
-    };
+    // window.openModal будет определён в initFormManager() после инициализации formManager
     
     window.closeModal = () => {
       if (typeof modalManager !== 'undefined') modalManager.close('form');
@@ -231,8 +223,6 @@ class Application {
     window.closePolicyModal = () => {
       if (typeof modalManager !== 'undefined') {
         modalManager.close('policy');
-      } else if (typeof ComponentLoader !== 'undefined') {
-        ComponentLoader.closePolicyModal();
       }
     };
     
@@ -566,8 +556,8 @@ function initApp() {
     Logger.WARN('Required services or utils are not available for FormManager initialization');
   }
   
-  // Инициализация ленивой загрузки PDF превью
-  if (typeof initDocPreviews !== 'undefined') {
+  // Инициализация ленивой загрузки PDF превью (только если функция существует)
+  if (typeof initDocPreviews === 'function') {
     initDocPreviews();
   }
   
