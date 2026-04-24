@@ -122,10 +122,7 @@ class Application {
       this.services.newsManager = newsManager;
       modulesToRegister.push(newsManager);
     }
-    // DocPreviewManager регистрируется отдельно в initApp()
-    if (typeof DocPreviewManager !== 'undefined') {
-      this.services.docPreviewManager = DocPreviewManager;
-    }
+    // initDocPreviews вызывается напрямую в initApp(), не требует регистрации в services
     // ModalManager регистрируется для доступа через app.services
     if (typeof modalManager !== 'undefined') {
       this.services.modalManager = modalManager;
@@ -569,10 +566,9 @@ function initApp() {
     Logger.WARN('Required services or utils are not available for FormManager initialization');
   }
   
-  // DocPreviewManager инициализируется до создания Application,
-  // регистрация в services произойдет внутри Application._registerModules()
-  if (typeof DocPreviewManager !== 'undefined') {
-    DocPreviewManager.init();
+  // Инициализация ленивой загрузки PDF превью
+  if (typeof initDocPreviews !== 'undefined') {
+    initDocPreviews();
   }
   
   const app = new Application();
