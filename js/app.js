@@ -14,12 +14,25 @@ class Application {
     try {
       if (typeof ComponentLoader !== 'undefined') {
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-        const componentsLoadedPromise = new Promise((resolve) => {
+        const componentsLoadedPromise = new Promise((resolve, reject) => {
+          let resolved = false;
+          
           const onComponentsLoaded = () => {
+            resolved = true;
             document.removeEventListener('components:loaded', onComponentsLoaded);
             resolve();
           };
+          
           document.addEventListener('components:loaded', onComponentsLoaded);
+          
+          // Таймаут на случай если событие не сработает (например, при кэшировании или ошибке загрузки)
+          setTimeout(() => {
+            if (!resolved) {
+              Logger.WARN('Timeout waiting for components:loaded event, continuing anyway');
+              resolve();
+            }
+          }, 3000);
+          
           ComponentLoader.init({ 
             loadNavbar: true, 
             loadFooter: true, 

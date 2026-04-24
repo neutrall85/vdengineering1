@@ -10,11 +10,11 @@
  */
 
 const ComponentLoader = {
-    // Импортируем шаблоны из внешних файлов (должны быть подключены перед этим скриптом)
-    navbar: typeof ComponentTemplates !== 'undefined' ? ComponentTemplates.navbar : '',
-    footer: typeof ComponentTemplates !== 'undefined' ? ComponentTemplates.footer : '',
-    proposalModal: typeof ModalTemplates !== 'undefined' ? ModalTemplates.proposalModal : '',
-    universalApplicationModal: typeof ModalTemplates !== 'undefined' ? ModalTemplates.universalApplicationModal : '',
+    // Шаблоны будут загружены в методе init()
+    navbar: '',
+    footer: '',
+    proposalModal: '',
+    universalApplicationModal: '',
 
     /**
      * Инициализация компонентов на странице
@@ -28,6 +28,12 @@ const ComponentLoader = {
             loadModal = true,
             activePage = '' 
         } = options;
+
+        // Чтение шаблонов при инициализации (а не при загрузке модуля)
+        this.navbar = typeof ComponentTemplates !== 'undefined' ? ComponentTemplates.navbar : '';
+        this.footer = typeof ComponentTemplates !== 'undefined' ? ComponentTemplates.footer : '';
+        this.proposalModal = typeof ModalTemplates !== 'undefined' ? ModalTemplates.proposalModal : '';
+        this.universalApplicationModal = typeof ModalTemplates !== 'undefined' ? ModalTemplates.universalApplicationModal : '';
 
         // Загрузка навигации
         if (loadNavbar) {
