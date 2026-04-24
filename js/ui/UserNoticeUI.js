@@ -1,10 +1,10 @@
 /**
- UI компонент для отображения уведомлений о предпочтениях пользователя
+ * UI компонент для отображения уведомлений о предпочтениях пользователя
  */
 
 class UserNoticeUI {
-  constructor(preferencesService, eventBus) {
-    this.preferencesService = preferencesService;
+  constructor(consentManager, eventBus) {
+    this.consentManager = consentManager;
     this.eventBus = eventBus;
     this.banner = null;
     this.settingsIcon = null;
@@ -13,7 +13,8 @@ class UserNoticeUI {
   init() {
     this._subscribeToEvents();
     // Проверяем состояние согласия после подписки на события
-    const consent = this.preferencesService.getConsent();
+    const storage = window.Services.storage;
+    const consent = this.consentManager.getConsent(storage);
     if (!consent) {
       this.show();
     }
@@ -52,7 +53,7 @@ class UserNoticeUI {
   _render() {
     if (document.getElementById('user-notice-banner')) return;
 
-    const categories = this.preferencesService.getCategories();
+    const categories = this.consentManager.getCategories();
     const sanitizer = Utils.Sanitizer || { escapeHtml: (str) => str };
     
     const bannerHTML = `
@@ -73,7 +74,7 @@ class UserNoticeUI {
               </button>
             </div>
             <div class="user-notice-links">
-             <a href="#" class="user-privacy-link" id="user-privacy-link">Политика конфиденциальности</a> <a href="#" class="user-privacy-link" id="user-cookie-policy-link">Политика в отношении файлов cookie</a>
+             <a href="#" class="user-privacy-link" id="user-privacy-link">Политика конфиденциальности</a> <a href="#" class="user-cookie-policy-link" id="user-cookie-policy-link">Политика в отношении файлов cookie</a>
             </div>
           </div>
         </div>
@@ -94,42 +95,48 @@ class UserNoticeUI {
   }
 
   _attachEvents() {
+    const storage = window.Services.storage;
+    
     // Кнопки cookie баннера
     document.getElementById('user-accept-all')?.addEventListener('click', () => {
-      this.preferencesService.saveConsent({
+      this.consentManager.saveConsent({
         functional: true,
         analytics: true,
         marketing: true
-      });
+      }, storage, this.eventBus);
     });
 
     document.getElementById('user-reject-all')?.addEventListener('click', () => {
-      this.preferencesService.saveConsent({
+      this.consentManager.saveConsent({
         functional: true,
         analytics: false,
         marketing: false
-      });
+      }, storage, this.eventBus);
     });
 
-    // Ссылка на политику конфиденциальности - открывает модальное окно
+    // Ссылка на политику конфиденциальности - открывает модальное окно через PolicyModalManager
     document.getElementById('user-privacy-link')?.addEventListener('click', (e) => {
       e.preventDefault();
-      if (typeof ComponentLoader !== 'undefined' && ComponentLoader.openPolicyModal) {
-        ComponentLoader.openPolicyModal('privacy');
+      if (typeof PolicyModalManager !== 'undefined') {
+        PolicyModalManager.openPolicyModal('privacy');
+      } else {
+        Logger.WARN('PolicyModalManager not available for privacy link');
       }
     });
 
-    // Ссылка на политику в отношении файлов cookie - открывает модальное окно
+    // Ссылка на политику в отношении файлов cookie - открывает модальное окно через PolicyModalManager
     document.getElementById('user-cookie-policy-link')?.addEventListener('click', (e) => {
       e.preventDefault();
-      if (typeof ComponentLoader !== 'undefined' && ComponentLoader.openPolicyModal) {
-        ComponentLoader.openPolicyModal('cookies');
+      if (typeof PolicyModalManager !== 'undefined') {
+        PolicyModalManager.openPolicyModal('cookies');
+      } else {
+        Logger.WARN('PolicyModalManager not available for cookies link');
       }
     });
 
     // Кнопка отзыва согласия
     document.getElementById('user-settings-icon')?.addEventListener('click', () => {
-      this.preferencesService.withdrawConsent();
+      this.consentManager.withdrawConsent(storage, this.eventBus);
     });
   }
 

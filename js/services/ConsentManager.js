@@ -1,112 +1,46 @@
 /**
  * Менеджер согласий пользователя
- * Координирует работу сервисов (KISS, DRY, событийная модель)
- * Единая точка входа для работы с cookie-баннером
- * Включает в себя функциональность UserPreferencesService
+ * Координирует работу с cookie-баннером и предпочтениями пользователя
+ * Единая точка входа для работы с согласиями
  */
 
-// Встроенный класс UserPreferencesService (бывший js/services/UserPreferencesService.js)
-class UserPreferencesService {
-  constructor(storageService, eventBus) {
-    this.storage = storageService;
-    this.eventBus = eventBus;
-    // Маскированный ключ для избежания блокировок
-    this.consentKey = 'user_preferences_v1';
-    this.config = {
-      version: '1.0',
-      categories: {
-        functional: {
-          id: 'functional',
-          name: 'Функциональные',
-          description: 'Для входа в личный кабинет и работы основных функций',
-          required: true
-        },
-        analytics: {
-          id: 'analytics',
-          name: 'Аналитические',
-          description: 'Для сбора статистики посещений и улучшения сайта',
-          required: false
-        },
-        marketing: {
-          id: 'marketing',
-          name: 'Маркетинговые',
-          description: 'Для показа релевантной рекламы',
-          required: false
-        }
+const ConsentManager = {
+  // Конфигурация категорий согласий
+  config: {
+    version: '1.0',
+    categories: {
+      functional: {
+        id: 'functional',
+        name: 'Функциональные',
+        description: 'Для входа в личный кабинет и работы основных функций',
+        required: true
+      },
+      analytics: {
+        id: 'analytics',
+        name: 'Аналитические',
+        description: 'Для сбора статистики посещений и улучшения сайта',
+        required: false
+      },
+      marketing: {
+        id: 'marketing',
+        name: 'Маркетинговые',
+        description: 'Для показа релевантной рекламы',
+        required: false
       }
-    };
-  }
-
-  init() {
-    const consent = this.getConsent();
-    if (!consent) {
-      this.eventBus.emit('preferences:required');
-    } else {
-      this._applyConsent(consent.categories);
     }
-  }
+  },
 
-  getConsent() {
-    return this.storage.get(this.consentKey, null);
-  }
+  // Состояние
+  state: {
+    preferencesService: null,
+    userNoticeUI: null,
+    observer: null,
+    recoveryTimer: null
+  },
 
-  saveConsent(consent) {
-    const consentData = {
-      timestamp: new Date().toISOString(),
-      version: this.config.version,
-      categories: consent
-    };
-    this.storage.set(this.consentKey, consentData);
-    this._applyConsent(consent);
-    this.eventBus.emit('preferences:saved', consentData);
-  }
-
-  withdrawConsent() {
-    this.storage.remove(this.consentKey);
-    this.eventBus.emit('preferences:withdrawn');
-  }
-
-  getCategories() {
-    return this.config.categories;
-  }
-
-  _applyConsent(categories) {
-    if (categories && !categories.analytics) {
-      this._disableAnalytics();
-    }
-    
-    if (categories && !categories.marketing) {
-      this.eventBus.emit('marketing:disabled');
-    }
-
-    this.eventBus.emit('preferences:applied', categories);
-  }
-
-  _disableAnalytics() {
-    try {
-      const counterId = window.CONFIG?.YANDEX?.METRIKA_COUNTER_ID || '108333042';
-      
-      if (typeof window.ym !== 'undefined') {
-        window.ym(counterId, 'userParams', { analytics_enabled: false });
-        window.ym(counterId, 'hit', window.location.href, {
-          params: { analytics: 'disabled' }
-        });
-        console.log('[UserPreferences] Analytics disabled by user');
-      }
-    } catch (error) {
-      console.warn('[UserPreferences] Error disabling analytics:', error.message);
-    }
-  }
-}
-
-class ConsentManager {
-  constructor() {
-    this.preferencesService = null;
-    this.userNoticeUI = null;
-    this.observer = null;
-    this.recoveryTimer = null;
-  }
-
+  /**
+   * Инициализация менеджера согласий
+   */
   init() {
     if (!window.Services?.eventBus) {
       console.error('[ConsentManager] EventBus not available');
@@ -116,17 +50,99 @@ class ConsentManager {
     const eventBus = window.Services.eventBus;
     const storage = window.Services.storage;
 
-    // Инициализация сервисов (разделение ответственностей)
-    this.preferencesService = new UserPreferencesService(storage, eventBus);
-    this.userNoticeUI = new UserNoticeUI(this.preferencesService, eventBus);
+    // Инициализация UI компонента
+    this.state.userNoticeUI = new UserNoticeUI(this, eventBus);
 
-    // Запуск сервисов — теперь вызывается из Application.init() без задержки
-    this.preferencesService.init();
-    this.userNoticeUI.init();
+    // Проверка существующих согласий
+    const consent = this.getConsent(storage);
+    if (!consent) {
+      eventBus.emit('preferences:required');
+    } else {
+      this._applyConsent(consent.categories, eventBus);
+    }
+
+    // Запуск UI
+    this.state.userNoticeUI.init();
+    
+    // Настройка наблюдения за удалением баннера
     this._setupMutationObserver();
 
     console.log('[ConsentManager] Initialized with event-driven architecture');
-  }
+  },
+
+  /**
+   * Получить сохранённые согласия
+   */
+  getConsent(storage) {
+    const consentKey = 'user_preferences_v1';
+    return storage.get(consentKey, null);
+  },
+
+  /**
+   * Сохранить согласия пользователя
+   */
+  saveConsent(consent, storage, eventBus) {
+    const consentKey = 'user_preferences_v1';
+    const consentData = {
+      timestamp: new Date().toISOString(),
+      version: this.config.version,
+      categories: consent
+    };
+    
+    storage.set(consentKey, consentData);
+    this._applyConsent(consent, eventBus);
+    eventBus.emit('preferences:saved', consentData);
+  },
+
+  /**
+   * Отозвать согласие
+   */
+  withdrawConsent(storage, eventBus) {
+    const consentKey = 'user_preferences_v1';
+    storage.remove(consentKey);
+    eventBus.emit('preferences:withdrawn');
+  },
+
+  /**
+   * Получить категории согласий
+   */
+  getCategories() {
+    return this.config.categories;
+  },
+
+  /**
+   * Применить настройки согласий
+   */
+  _applyConsent(categories, eventBus) {
+    if (categories && !categories.analytics) {
+      this._disableAnalytics();
+    }
+    
+    if (categories && !categories.marketing) {
+      eventBus.emit('marketing:disabled');
+    }
+
+    eventBus.emit('preferences:applied', categories);
+  },
+
+  /**
+   * Отключить аналитику
+   */
+  _disableAnalytics() {
+    try {
+      const counterId = window.CONFIG?.YANDEX?.METRIKA_COUNTER_ID || '108333042';
+      
+      if (typeof window.ym !== 'undefined') {
+        window.ym(counterId, 'userParams', { analytics_enabled: false });
+        window.ym(counterId, 'hit', window.location.href, {
+          params: { analytics: 'disabled' }
+        });
+        console.log('[ConsentManager] Analytics disabled by user');
+      }
+    } catch (error) {
+      console.warn('[ConsentManager] Error disabling analytics:', error.message);
+    }
+  },
 
   /**
    * MutationObserver для восстановления баннера при удалении блокировщиком
@@ -135,7 +151,7 @@ class ConsentManager {
     const self = this;
     const bannerId = 'user-notice-banner';
 
-    this.observer = new MutationObserver(function(mutations) {
+    this.state.observer = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
         mutation.removedNodes.forEach(function(node) {
           if (node.nodeType === 1 && node.id === bannerId) {
@@ -146,46 +162,47 @@ class ConsentManager {
       });
     });
 
-    this.observer.observe(document.body, {
+    this.state.observer.observe(document.body, {
       childList: true,
       subtree: true
     });
-  }
+  },
 
   /**
    * Планирование восстановления баннера через 2 секунды
    */
   _scheduleRecovery() {
-    if (this.recoveryTimer) {
-      clearTimeout(this.recoveryTimer);
+    if (this.state.recoveryTimer) {
+      clearTimeout(this.state.recoveryTimer);
     }
 
-    this.recoveryTimer = setTimeout(() => {
-      const consent = this.preferencesService.getConsent();
+    const storage = window.Services.storage;
+    
+    this.state.recoveryTimer = setTimeout(() => {
+      const consent = this.getConsent(storage);
       if (!consent && !document.getElementById('user-notice-banner')) {
         console.log('[ConsentManager] Recovering banner...');
-        this.userNoticeUI.show();
+        this.state.userNoticeUI.show();
       }
     }, 2000);
-  }
+  },
 
   /**
    * Очистка ресурсов при уничтожении
    */
   destroy() {
-    if (this.observer) {
-      this.observer.disconnect();
-      this.observer = null;
+    if (this.state.observer) {
+      this.state.observer.disconnect();
+      this.state.observer = null;
     }
-    if (this.recoveryTimer) {
-      clearTimeout(this.recoveryTimer);
-      this.recoveryTimer = null;
+    if (this.state.recoveryTimer) {
+      clearTimeout(this.state.recoveryTimer);
+      this.state.recoveryTimer = null;
     }
   }
-}
+};
 
-// Экспорт удален - регистрация происходит через Application.services
-
+// Экспорт для модулей
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { ConsentManager };
 }
