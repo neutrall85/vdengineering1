@@ -65,7 +65,7 @@ class NewsRenderer {
     const img = document.createElement('img');
     img.setAttribute('data-src', Utils.Sanitizer.escapeHtml(news.image));
     img.setAttribute('alt', Utils.Sanitizer.escapeHtml(news.title));
-    img.setAttribute('loading', 'lazy');
+    // Атрибут loading="lazy" удалён – ленивая загрузка реализована через IntersectionObserver
     img.addEventListener('error', function() { this.src = 'assets/images/placeholder.jpg'; });
     
     const category = document.createElement('span');
@@ -248,7 +248,7 @@ class NewsRenderer {
           observer.unobserve(img);
         }
       });
-    }, { threshold: 0.1, rootMargin: '50px' });
+    }, { threshold: 0.1, rootMargin: '100px' });
     
     images.forEach(img => observer.observe(img));
   }
