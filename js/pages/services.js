@@ -165,8 +165,9 @@ function openServiceModal(title, details, category) {
     });
     modalContent.appendChild(ul);
 
-    if (typeof modalManager !== 'undefined') {
-      modalManager.open('service');
+    const mgr = window.UI?.modalManager || window.modalManager;
+    if (mgr) {
+      mgr.open('service');
     } else {
       console.warn('ModalManager not available');
     }
@@ -174,8 +175,9 @@ function openServiceModal(title, details, category) {
 }
 
 function closeServiceModal() {
-  if (typeof modalManager !== 'undefined') {
-    modalManager.close('service');
+  const mgr = window.UI?.modalManager || window.modalManager;
+  if (mgr) {
+    mgr.close('service');
   }
 }
 

@@ -268,6 +268,8 @@ class ModalManager {
 
 const modalManager = new ModalManager();
 
+// Экспорт в глобальную область для обратной совместимости
+window.modalManager = modalManager;
 window.UI = window.UI || {};
 window.UI.modalManager = modalManager;
 
