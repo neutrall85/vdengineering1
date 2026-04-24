@@ -4075,6 +4075,7 @@ body.app-ready > footer {
   }
   .modal-image {
     height: clamp(150px, 25vh, 250px);
+    position: relative;
   }
   
   /* Modal image placeholder styles for mobile */
