@@ -961,13 +961,12 @@ body.app-ready > footer {
 .partners {
   padding: clamp(40px, 8vh, 80px) 5%;
   background: linear-gradient(135deg, var(--vd-light-gray) 0%, white 100%);
-  overflow: hidden;
 }
 
 .partners-header {
   text-align: center;
   max-width: 900px;
-  margin: 0 auto 2rem;
+  margin: 0 auto 3rem;
 }
 
 .partners-header h2 {
@@ -982,62 +981,104 @@ body.app-ready > footer {
   font-size: clamp(0.875rem, 1.2vw, 1rem);
 }
 
-.partners-slider {
-  position: relative;
-  width: 100%;
+.partners-collage {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-auto-rows: 120px;
+  gap: 1.5rem;
   max-width: 1400px;
   margin: 0 auto;
-  overflow: hidden;
-  padding: 2rem 0;
+  grid-auto-flow: dense;
 }
 
-.partners-track {
-  display: flex;
-  gap: 2rem;
-  animation: scroll 30s linear infinite;
-  width: max-content;
-}
-
-.partners-track:hover {
-  animation-play-state: paused;
-}
-
-@keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-50%)); }
-}
-
-.partner-card {
+.collage-item {
   background: white;
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 1.5rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   transition: all var(--duration-normal) var(--ease-smooth);
-  min-width: 200px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
 }
 
-.partner-card:hover {
+.collage-item.item-large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.collage-item.item-medium {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.collage-item.item-small {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.collage-item:hover {
   border-color: var(--vd);
   transform: translateY(-5px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
-.partner-logo svg {
-  max-width: 140px;
+.collage-item .partner-logo svg {
+  max-width: 100%;
+  max-height: 50px;
+  width: auto;
+  height: auto;
+}
+
+.item-large .partner-logo svg {
+  max-height: 80px;
+}
+
+.item-medium .partner-logo svg {
   max-height: 60px;
 }
 
-.partner-name {
+.collage-item .partner-name {
   color: var(--text-dark);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   text-align: center;
+  line-height: 1.3;
+}
+
+.item-large .partner-name {
+  font-size: 1rem;
+}
+
+.item-medium .partner-name {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .partners-collage {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-auto-rows: 100px;
+    gap: 1rem;
+  }
+  
+  .collage-item.item-large,
+  .collage-item.item-medium {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  
+  .item-large .partner-logo svg,
+  .item-medium .partner-logo svg {
+    max-height: 40px;
+  }
+  
+  .item-large .partner-name,
+  .item-medium .partner-name {
+    font-size: 0.8rem;
+  }
 }
 
 /* ==================== КОНТАКТЫ ==================== */
