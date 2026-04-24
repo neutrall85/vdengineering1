@@ -1,6 +1,7 @@
 /**
  * ComponentLoader - загрузчик общих компонентов (header, footer)
- * Устраняет дублирование HTML между страницами
+ * Отвечает ТОЛЬКО за подстановку HTML-шаблонов в DOM.
+ * Вся логика поведения (модалки, политики, формы) делегируется специализированным менеджерам.
  * 
  * Зависимости:
  * - templates/ComponentTemplates.js - HTML-шаблоны компонентов
@@ -34,9 +35,6 @@ const ComponentLoader = {
         // Загрузка навигации
         if (loadNavbar) {
             this._loadNavbar(activePage);
-            if (callback) {
-                setTimeout(callback, 50);
-            }
         }
         
         // Загрузка модальных окон
@@ -49,10 +47,12 @@ const ComponentLoader = {
             this._loadFooter(activePage);
         }
 
+        // Уведомляем о завершении загрузки компонентов
         document.dispatchEvent(new CustomEvent('components:loaded'));
 
-        if (activePage) {
-            this.setActiveLink(activePage);
+        // Вызываем callback после полной загрузки
+        if (callback) {
+            setTimeout(callback, 50);
         }
     },
 

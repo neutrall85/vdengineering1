@@ -1,6 +1,8 @@
 /**
  * Управление формой
  * ООО "Волга-Днепр Инжиниринг"
+ * 
+ * Использует централизованный модуль FormValidation для валидации
  */
 
 class FormManager {
@@ -11,6 +13,7 @@ class FormManager {
     this.currentFiles = [];
     this.maxFiles = 10;
     this.maxFileSize = 10 * 1024 * 1024; // 10MB
+    this.formValidator = null;
   }
 
   init() {
@@ -27,6 +30,8 @@ class FormManager {
           this._initFileUpload();
         }
       }, 50);
+      // Инициализируем валидатор для основной формы
+      this._initFormValidator();
       Logger.INFO('FormManager initialized');
     } catch (error) {
       Logger.ERROR('FormManager init failed:', error);
@@ -391,6 +396,25 @@ class FormManager {
     // Никакие обработчики не добавляются
   }
 
+  /**
+   * Инициализация валидатора формы через FormValidation
+   */
+  _initFormValidator() {
+    const form = document.getElementById('proposalForm');
+    if (!form || typeof FormValidation === 'undefined') return;
+
+    this.formValidator = FormValidation.createValidator(form, {
+      validateOnInput: true,
+      messages: {
+        required: 'Это поле обязательно для заполнения',
+        email: 'Введите корректный email адрес',
+        phone: 'Введите корректный номер телефона',
+        minLength: (min) => `Минимальная длина — ${min} символов`,
+        consent: 'Необходимо согласие на обработку данных'
+      }
+    });
+  }
+
   _initFormSubmit() {
     const form = document.getElementById('proposalForm');
     if (form) {
@@ -419,8 +443,15 @@ class FormManager {
       return false;
     }
 
-    const validator = FormValidation.createValidator(form);
-    return validator.validate();
+    // Используем инициализированный валидатор или создаём временный
+    if (this.formValidator) {
+      return this.formValidator.validate();
+    } else if (typeof FormValidation !== 'undefined') {
+      const validator = FormValidation.createValidator(form);
+      return validator.validate();
+    }
+    
+    return false;
   }
 
   async _handleSubmit(e) {

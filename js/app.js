@@ -575,12 +575,11 @@ function initApp() {
   window.App = app;
   
   // Инициализация ConsentManager через единую точку Application
-  // UserPreferencesService теперь встроен в ConsentManager
+  // UI баннера теперь встроен непосредственно в ConsentManager
   if (typeof ConsentManager !== 'undefined') {
     try {
-      const consentManager = new ConsentManager();
-      consentManager.init();
-      app.services.consentManager = consentManager;
+      ConsentManager.init();
+      app.services.consentManager = ConsentManager;
     } catch (err) {
       console.error('Failed to initialize ConsentManager:', err);
     }
