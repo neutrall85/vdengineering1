@@ -190,10 +190,11 @@ class NavigationManager {
     if (this.mobileMenuOverlay) Utils.DOM.addClass(this.mobileMenuOverlay, 'active');
     if (this.mobileMenuBtn) Utils.DOM.addClass(this.mobileMenuBtn, 'active');
 
+    // Используем только ScrollManager для блокировки скролла
     if (window.ScrollManager) {
       ScrollManager.lock();
     } else {
-      document.body.classList.add('no-scroll');
+      Logger.WARN('ScrollManager not available for mobile menu');
     }
   }
 
@@ -204,10 +205,11 @@ class NavigationManager {
     if (this.mobileMenuOverlay) Utils.DOM.removeClass(this.mobileMenuOverlay, 'active');
     if (this.mobileMenuBtn) Utils.DOM.removeClass(this.mobileMenuBtn, 'active');
 
+    // Используем только ScrollManager для разблокировки скролла
     if (window.ScrollManager) {
       ScrollManager.unlock();
     } else {
-      document.body.classList.remove('no-scroll');
+      Logger.WARN('ScrollManager not available for mobile menu close');
     }
   }
 

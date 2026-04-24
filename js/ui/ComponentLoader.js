@@ -439,16 +439,11 @@ const ComponentLoader = {
           allowedAttributes: { 'a': ['href', 'target', 'rel'] }
         });
 
-        // Открываем через ModalManager
+        // Открываем через ModalManager - все манипуляции со скроллом только через ScrollManager
         if (typeof modalManager !== 'undefined') {
             modalManager.open('policy');
         } else {
-            const scrollbarWidth = this.getScrollbarWidth();
-            if (scrollbarWidth > 0) {
-                document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
-            }
-            document.body.classList.add('no-scroll');
-            modalOverlay.classList.add('active');
+            Logger.WARN('ModalManager not available for policy modal');
         }
     },
 
@@ -459,12 +454,7 @@ const ComponentLoader = {
         if (typeof modalManager !== 'undefined') {
             modalManager.close('policy');
         } else {
-            const modalOverlay = document.getElementById('policyModalOverlay');
-            if (modalOverlay) {
-                modalOverlay.classList.remove('active');
-                document.body.classList.remove('no-scroll');
-                document.body.style.removeProperty('--scrollbar-width');
-            }
+            Logger.WARN('ModalManager not available for policy modal close');
         }
     },
 
@@ -494,16 +484,11 @@ const ComponentLoader = {
                 if (successTitle) successTitle.textContent = 'Отклик отправлен!';
             }
 
-            // Открываем через ModalManager
+            // Открываем через ModalManager - все манипуляции со скроллом только через ScrollManager
             if (typeof modalManager !== 'undefined') {
                 modalManager.open('universal');
             } else {
-                const scrollbarWidth = ComponentLoader.getScrollbarWidth();
-                if (scrollbarWidth > 0) {
-                    document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
-                }
-                document.body.classList.add('no-scroll');
-                overlay.classList.add('active');
+                Logger.WARN('ModalManager not available for universal application modal');
             }
         };
 
@@ -511,12 +496,7 @@ const ComponentLoader = {
             if (typeof modalManager !== 'undefined') {
                 modalManager.close('universal');
             } else {
-                const overlay = document.getElementById('universalApplicationModalOverlay');
-                if (overlay) {
-                    overlay.classList.remove('active');
-                    document.body.classList.remove('no-scroll');
-                    document.body.style.removeProperty('--scrollbar-width');
-                }
+                Logger.WARN('ModalManager not available for universal application modal close');
             }
         };
 
