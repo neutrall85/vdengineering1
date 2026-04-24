@@ -84,7 +84,6 @@ class Application {
     this.modules = [
       typeof navigationManager !== 'undefined' ? navigationManager : null,
       typeof animationManager !== 'undefined' ? animationManager : null,
-      typeof mapManager !== 'undefined' ? mapManager : null,
       typeof formManager !== 'undefined' ? formManager : null,
       typeof newsManager !== 'undefined' ? newsManager : null
     ].filter(m => m != null);
