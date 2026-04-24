@@ -412,78 +412,41 @@ const Utils = (function() {
     },
 
     /**
-     * Генерирует полную ссылку на новость в формате:
-     * news.html/YYYY/MM/DD/slug
-     * @param {Object} news - объект новости с полями title, id, date
-     * @param {string} baseUrl - базовый URL (по умолчанию news.html)
-     * @returns {string} полная ссылка на новость
+     * Генерирует полную ссылку на новость (заглушка для совместимости)
+     * @param {Object} news - объект новости
+     * @param {string} baseUrl - базовый URL
+     * @returns {string} '#'
      */
     generateNewsLink(news, baseUrl = 'news.html') {
-      if (!news || !news.title) return baseUrl;
-      
-      const { year, month } = this.parseDate(news.date);
-      const slug = this.createShortSlug(news.title);
-      
-      // Используем первый день месяца как день публикации
-      const day = '01';
-      
-      return `${baseUrl}/${year}/${month}/${day}/${slug}`;
+      return '#';
     },
 
     /**
-     * Создаёт slug для новости с ID для использования в хеше
-     * Формат: slug-id (например: poluchenie-sertifikata-2022001)
+     * Создаёт slug для новости с ID для использования в хеше (заглушка)
      * @param {string} title - заголовок новости
      * @param {number} id - ID новости
-     * @returns {string} slug с ID
+     * @returns {string} пустая строка
      */
     createNewsSlug(title, id) {
-      const shortSlug = this.createShortSlug(title);
-      return `${shortSlug}-${id}`;
+      return '';
     },
 
     /**
-     * Извлекает ID новости из slug
-     * @param {string} slug - slug в формате slug-id
-     * @returns {number|null} ID новости или null если не найдено
+     * Извлекает ID новости из slug (заглушка)
+     * @param {string} slug - slug
+     * @returns {null} null
      */
     extractNewsIdFromSlug(slug) {
-      if (!slug) return null;
-      const lastDashIndex = slug.lastIndexOf('-');
-      if (lastDashIndex === -1) return null;
-      
-      const idStr = slug.substring(lastDashIndex + 1);
-      const newsId = parseInt(idStr, 10);
-      
-      return isNaN(newsId) ? null : newsId;
+      return null;
     },
 
     /**
-     * Парсит путь вида /YYYY/MM/DD/slug и возвращает данные
-     * @param {string} path - путь относительно текущего домена
-     * @returns {{year: string, month: string, day: string, slug: string}|null}
+     * Парсит путь вида /YYYY/MM/DD/slug (заглушка)
+     * @param {string} path - путь
+     * @returns {null} null
      */
     parseNewsPath(path) {
-      if (!path || path.length < 2) return null;
-      
-      // Убираем ведущий слэш и базовый путь (news.html)
-      let cleanPath = path.replace(/^\/+/, '');
-      if (cleanPath.startsWith('news.html/')) {
-        cleanPath = cleanPath.replace('news.html/', '');
-      }
-      
-      const parts = cleanPath.split('/');
-      if (parts.length < 4) return null;
-      
-      const [year, month, day, ...slugParts] = parts;
-      const slug = slugParts.join('/');
-      
-      // Проверяем что год, месяц и день - числа
-      if (!/^\d{4}$/.test(year) || !/^\d{2}$/.test(month) || !/^\d{2}$/.test(day)) {
-        return null;
-      }
-      
-      return { year, month, day, slug };
+      return null;
     }
   };
 

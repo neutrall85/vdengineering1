@@ -187,33 +187,17 @@ class NewsManager {
     document.addEventListener('click', (e) => {
       const link = e.target.closest('.news-card-link');
       if (link) {
-        const href = link.getAttribute('href');
         const newsId = parseInt(link.dataset.newsId, 10);
         
-        // Если это hash-ссылка вида #/news/YYYY/MM/slug
-        if (href && href.startsWith('#/news/')) {
-          e.preventDefault();
-          
-          // Обновляем URL через history.pushState
-          history.pushState({ type: 'news', newsId: newsId }, '', window.location.pathname + href);
-          
-          // Открываем модальное окно
-          if (newsId) {
-            this.openNewsModal(newsId, false); // updateUrl = false, так как URL уже обновлён
-          }
-        } else if (newsId) {
-          // Fallback для обычных ссылок
+        if (newsId) {
           e.preventDefault();
           this.openNewsModal(newsId);
         }
       }
     });
-    
-    // Инициализация навигации через NewsNavigation выполняется в app.js
-    // чтобы избежать двойной инициализации (DRY)
   }
 
-  openNewsModal(id, updateUrl = true) {
+  openNewsModal(id) {
     const allNews = Object.values(this.newsData).flat();
     const news = allNews.find(n => n.id === id);
     
@@ -224,11 +208,6 @@ class NewsManager {
     const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.UI?.modalManager);
     if (manager) {
       manager.open('news');
-      
-      // Обновляем URL только если нужно и есть newsNavigationInstance
-      if (updateUrl && window.newsNavigationInstance) {
-        window.newsNavigationInstance.openNewsUrl(id, news.title);
-      }
     } else {
       Logger.WARN('ModalManager not available');
     }

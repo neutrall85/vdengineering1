@@ -102,12 +102,7 @@ class Application {
       { 
         key: 'news', 
         overlayId: 'newsModalOverlay',
-        required: false,
-        onClose: () => {
-          if (window.newsNavigationInstance) {
-            window.newsNavigationInstance.restoreBaseUrl();
-          }
-        }
+        required: false
       },
       { 
         key: 'proposal', 
@@ -460,12 +455,6 @@ function initApp() {
         newsManager.init();
         window.newsManager = newsManager;
         window.newsRenderer = newsRenderer;
-        
-        if (typeof NewsNavigation !== 'undefined') {
-          const newsNavigation = new NewsNavigation();
-          newsNavigation.init(newsManager);
-          window.newsNavigationInstance = newsNavigation;
-        }
       } else {
         Logger.ERROR('NewsRenderer или NewsManager не определен');
       }
