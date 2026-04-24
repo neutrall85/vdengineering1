@@ -3948,7 +3948,7 @@ body.app-ready > footer {
     grid-template-columns: 1fr;
     gap: 1.5rem;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
   .about-image-placeholder,
   .values-image-block .about-image-placeholder {
