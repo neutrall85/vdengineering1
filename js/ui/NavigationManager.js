@@ -162,6 +162,40 @@ class NavigationManager {
       e.stopPropagation();
     });
 
+    // Обработка кликов по ссылкам мобильного меню (закрытие меню + корректный якорь)
+    this.mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        // Закрываем меню (синхронно)
+        this.closeMobileMenu();
+
+        // Создаём URL относительно текущей страницы
+        let url;
+        try {
+          url = new URL(href, window.location.href);
+        } catch (err) {
+          return; // некорректная ссылка
+        }
+
+        const isSamePage = url.pathname === window.location.pathname;
+        const hasHash = url.hash && url.hash.length > 1;
+
+        if (isSamePage && hasHash) {
+          // Якорь на текущей странице – отменяем переход и скроллим
+          e.preventDefault();
+          const targetId = url.hash.substring(1);
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+        // Если ссылка на другую страницу – ничего не делаем, браузер выполнит переход
+        // (меню уже закрыто, скролл разблокирован)
+      });
+    });
+
     window.addEventListener('resize', () => {
       if (window.innerWidth > 1048 && this.mobileMenu.classList.contains('active')) {
         this.closeMobileMenu();
