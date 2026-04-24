@@ -465,8 +465,6 @@ body.app-ready > footer {
   opacity: 0;
   visibility: hidden;
   transition: all var(--duration-normal) var(--ease-smooth);
-  /* backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px); */
   pointer-events: none;
 }
 
@@ -811,20 +809,6 @@ body.app-ready > footer {
   line-height: 1.6;
   font-size: clamp(0.85rem, 1.2vw, 0.95rem);
   margin-bottom: 1.5rem;
-}
-
-/* Aliases for consistent naming */
-.service-card-title {
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
-  color: var(--vd);
-  margin-bottom: 1rem;
-}
-
-.service-card-desc {
-  color: var(--metallic);
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  flex-grow: 1;
 }
 
 /* ==================== О НАС PREVIEW ==================== */
@@ -2889,16 +2873,6 @@ body.app-ready > footer {
 
 
 /* ==================== УТИЛИТАРНЫЕ КЛАССЫ ДЛЯ СТРАНИЦ ==================== */
-.page-header-title {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.page-header-desc {
-  font-size: 1.1rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
 
 .certificate-section-bg { padding: 60px 5%; background: var(--vd-light-gray); }
 .certificate-widgets-container { max-width: 900px; margin: 0 auto; }
@@ -2909,9 +2883,6 @@ body.app-ready > footer {
 .feature-icon-svg { width: 30px; height: 30px; fill: white; }
 .feature-title { color: var(--vd); margin-bottom: 0.75rem; font-size: clamp(1.05rem, 1.8vw, 1.2rem); }
 .feature-desc { color: var(--metallic); line-height: 1.55; font-size: clamp(0.8rem, 1.1vw, 0.9rem); }
-
-.contact-cta-title { font-size: 2rem; margin-bottom: 1rem; }
-.contact-cta-desc { margin-bottom: 2rem; font-size: 1.1rem; }
 
 .services-full-padding { padding: clamp(40px, 8vh, 60px) 5%; }
 .services-grid-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
@@ -2929,8 +2900,6 @@ body.app-ready > footer {
 .project-img-cover { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .project-content-padding { padding: 1.5rem; }
 .project-category-badge { display: inline-block; background: var(--vd-light-blue); color: var(--vd); padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.8rem; margin-bottom: 1rem; }
-.project-card-title { font-size: 1.3rem; color: var(--vd); margin-bottom: 0.75rem; }
-.project-card-desc { color: var(--metallic); line-height: 1.6; margin-bottom: 1rem; }
 
 .news-full-padding { padding: 60px 5%; }
 .news-tabs-container { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
@@ -2950,9 +2919,6 @@ body.app-ready > footer {
 
 .modal-list-ul { padding-left: 1.5rem; margin-top: 1rem; }
 .modal-list-li { margin-bottom: 0.5rem; }
-
-.project-img-cover { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-.hidden { display: none !important; }
 
 /* Docs Page Styles */
 .docs-page {
@@ -3699,11 +3665,6 @@ body.app-ready > footer {
 .element-hidden {
     opacity: 0;
     visibility: hidden;
-}
-
-/* Универсальный класс hidden */
-.hidden {
-    display: none !important;
 }
 
 
