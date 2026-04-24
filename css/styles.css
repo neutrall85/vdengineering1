@@ -7,7 +7,7 @@
 
 /* Доступность - стили фокуса для клавиатурной навигации */
 *:focus-visible {
-  outline: 3px solid var(--vd-orange);
+  outline: 3px solid var(--vd);
   outline-offset: 2px;
 }
 
@@ -17,9 +17,9 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid var(--vd-orange);
+  outline: 3px solid var(--vd);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(255, 102, 0, 0.3);
+  box-shadow: 0 0 0 4px rgba(0, 78, 150, 0.3);
 }
 
 /* Убираем стандартный outline для форм, так как уже есть кастомный */
