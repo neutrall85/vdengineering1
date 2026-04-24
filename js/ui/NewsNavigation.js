@@ -36,13 +36,10 @@ class NewsNavigation {
    * Обработка прямой ссылки при загрузке страницы
    */
   _handleDirectLink() {
-    const path = window.location.pathname;
-    // Проверяем, что мы на странице новостей (news.html)
-    if (!path.includes('news.html') && !path.match(/^\/news\//)) {
-      return;
-    }
+    const hash = window.location.hash;
     
-    const newsMatch = path.match(/^\/news\/(\d{4})\/(\d{2})\/(.+)$/);
+    // Проверяем наличие hash-роута вида #/news/YYYY/MM/slug
+    const newsMatch = hash.match(/^#\/news\/(\d{4})\/(\d{2})\/(.+)$/);
     
     if (newsMatch) {
       const [, year, month, slug] = newsMatch;
@@ -166,13 +163,14 @@ class NewsNavigation {
     const { year, month } = Utils.SlugUtils ? Utils.SlugUtils.parseDate(newsItem.date) : this._parseDateFallback(newsItem.date);
     const slug = this._generateSlug(title);
 
-    const url = `/news/${year}/${month}/${slug}`;
+    // Используем hash-based роутинг для работы на статических серверах (LiveServer, nginx без SPA config)
+    const url = `#/news/${year}/${month}/${slug}`;
     
     // Добавляем запись в историю браузера
     history.pushState(
       { type: 'news', newsId: id },
       newsItem.title,
-      url
+      window.location.pathname + url
     );
 
     this.currentNewsId = id;
@@ -220,10 +218,10 @@ class NewsNavigation {
    */
   restoreBaseUrl() {
     if (this.currentNewsId) {
-      // Очищаем состояние истории
-      history.replaceState({}, '', '/news.html');
+      // Очищаем состояние истории, возвращаясь к базовому URL без hash
+      history.replaceState({}, '', window.location.pathname);
       this.currentNewsId = null;
-      Logger.INFO('URL восстановлен к /news.html');
+      Logger.INFO('URL восстановлен к базовому пути');
     }
   }
 }

@@ -130,7 +130,8 @@ class NewsRenderer {
     // Используем централизованную утилиту Utils.SlugUtils для соблюдения DRY
     const { year, month } = Utils.SlugUtils ? Utils.SlugUtils.parseDate(news.date) : this._parseDateFallback(news.date);
     const slug = Utils.SlugUtils ? Utils.SlugUtils.createShortSlug(news.title) : this._fallbackGenerateSlug(news.title);
-    return `/news/${year}/${month}/${slug}`;
+    // Используем hash-based роутинг для работы на статических серверах (LiveServer)
+    return `#/news/${year}/${month}/${slug}`;
   }
   
   /**
