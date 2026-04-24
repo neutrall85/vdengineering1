@@ -217,7 +217,7 @@ class NewsManager {
     
     this._populateModal(news);
     
-    const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.UI?.modalManager);
+    const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.App?.services?.modalManager);
     if (manager) {
       manager.open('news');
     } else {
@@ -226,7 +226,7 @@ class NewsManager {
   }
 
   closeNewsModal() {
-    const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.UI?.modalManager);
+    const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.App?.services?.modalManager);
     if (manager) {
       manager.close('news');
     }

@@ -118,13 +118,10 @@ const ScrollManager = {
   }
 };
 
-// Экспортируем в глобальную область
+// Экспортируем в глобальную область для обратной совместимости
+// Основной доступ через window.App.services.scrollManager
 if (typeof window !== 'undefined') {
   window.ScrollManager = ScrollManager;
-  
-  // Также экспортируем в window.UI для совместимости
-  window.UI = window.UI || {};
-  window.UI.ScrollManager = ScrollManager;
 }
 
 // Экспорт для модулей

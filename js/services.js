@@ -134,8 +134,6 @@ const Services = (function() {
   return { EventBus, StorageService, ApiClient, eventBus, storage, apiClient };
 })();
 
-// Экспортируем в глобальную область
+// Экспортируем только основной объект Services
+// Доступ к отдельным сервисам через window.Services.eventBus, window.Services.storage, window.Services.apiClient
 window.Services = Services;
-window.eventBus = Services.eventBus;
-window.storage = Services.storage;
-window.apiClient = Services.apiClient;
