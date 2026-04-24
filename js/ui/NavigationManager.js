@@ -225,11 +225,6 @@ class NavigationManager {
     // Обновляем доступность: делаем ссылки мобильного меню доступными для Tab
     this._updateMobileMenuAccessibility(true);
 
-    // Обновляем состояние через AppState
-    if (window.AppState) {
-      AppState.setState('navigation.isMobileMenuOpen', true);
-    }
-
     // Используем только ScrollManager для блокировки скролла
     if (window.ScrollManager) {
       ScrollManager.lock();
@@ -247,11 +242,6 @@ class NavigationManager {
 
     // Обновляем доступность: делаем ссылки мобильного меню недоступными для Tab
     this._updateMobileMenuAccessibility(false);
-
-    // Обновляем состояние через AppState
-    if (window.AppState) {
-      AppState.setState('navigation.isMobileMenuOpen', false);
-    }
 
     // Используем только ScrollManager для разблокировки скролла
     if (window.ScrollManager) {

@@ -453,12 +453,6 @@ class FormManager {
     }
 
     this.rateLimiter.record();
-    
-    // Обновляем состояние формы через AppState
-    if (window.AppState) {
-      AppState.setState('forms.submissionCount', (AppState.getState('forms.submissionCount', 0) + 1));
-      AppState.setState('forms.lastSubmissionTime', Date.now());
-    }
 
     const submitBtn = document.getElementById('submitBtn');
     
@@ -520,16 +514,10 @@ class FormManager {
         }, window.CONFIG?.ANIMATION?.MODAL_CLOSE_DELAY_MS || 3000);
       } else {
         this._showError(result.error || 'Произошла ошибка при отправке');
-        if (window.AppState) {
-          AppState.setState('forms.hasErrors', true);
-        }
       }
     } catch (error) {
       Logger.ERROR('Form submission error:', error);
       this._showError('Произошла ошибка при отправке. Пожалуйста, попробуйте позже.');
-      if (window.AppState) {
-        AppState.setState('forms.hasErrors', true);
-      }
     } finally {
       submitBtn.disabled = false;
       // Восстанавливаем оригинальное содержимое кнопки

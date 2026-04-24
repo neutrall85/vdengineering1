@@ -169,11 +169,6 @@ class ModalManager {
     // ✅ Устанавливаем активное окно синхронно
     this.activeModal = key;
 
-    // Обновляем состояние через AppState
-    if (window.AppState) {
-      AppState.setState('ui.modalOpen', key);
-    }
-
     // Блокируем скролл через централизованный ScrollManager
     ScrollManager.lock();
 
@@ -215,11 +210,6 @@ class ModalManager {
     if (!overlay) return false;
 
     overlay.classList.remove('active');
-    
-    // Обновляем состояние через AppState
-    if (window.AppState) {
-      AppState.setState('ui.modalOpen', null);
-    }
     
     // Разблокируем скролл через ScrollManager
     ScrollManager.unlock();

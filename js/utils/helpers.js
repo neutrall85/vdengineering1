@@ -25,7 +25,9 @@ function initDocPreviews() {
         const src = frame.getAttribute('data-src');
         
         if (src && !frame.src) {
-          Logger.INFO(`Ленивая загрузка PDF: ${src}`);
+          if (window.Logger) {
+            Logger.INFO(`Ленивая загрузка PDF: ${src}`);
+          }
           frame.src = src;
           
           frame.addEventListener('load', () => {
@@ -35,7 +37,9 @@ function initDocPreviews() {
           // Принудительно показываем placeholder если iframe не загрузился за 3 секунды
           setTimeout(() => {
             if (!frame.classList.contains('loaded')) {
-              Logger.WARN(`PDF превью не загрузилось за 3с: ${src}`);
+              if (window.Logger) {
+                Logger.WARN(`PDF превью не загрузилось за 3с: ${src}`);
+              }
             }
           }, 3000);
           
@@ -49,7 +53,9 @@ function initDocPreviews() {
     observer.observe(frame);
   });
   
-  Logger.INFO('initDocPreviews: lazy loading initialized for', frames.length, 'frames');
+  if (window.Logger) {
+    Logger.INFO('initDocPreviews: lazy loading initialized for', frames.length, 'frames');
+  }
 }
 
 // Экспорт в глобальную область
