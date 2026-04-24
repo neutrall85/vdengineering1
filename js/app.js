@@ -88,6 +88,7 @@ class Application {
       this._initFloatingCTA();
       this._initImageLazyLoading();
       this._initPrefersReducedMotion();
+      this._handleHashScroll();
       
       this.initialized = true;
       if (this.errors.length > 0) {
@@ -431,6 +432,41 @@ class Application {
         document.body.classList.remove('reduced-motion');
       }
     });
+  }
+
+  _handleHashScroll() {
+    // Работаем только на главной странице
+    const isHomePage = window.location.pathname === '/' || window.location.pathname.endsWith('index.html');
+    if (!isHomePage) return;
+
+    const hash = window.location.hash;
+    if (!hash || hash === '#') return;
+
+    const targetId = hash.substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (!targetElement) return;
+
+    const scrollToTarget = () => {
+      // Даём время на завершение всех асинхронных рендеров (новости, партнёры)
+      setTimeout(() => {
+        const offset = 80; // высота фиксированной шапки
+        const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+      }, 400);
+    };
+
+    // Если компоненты уже загружены – скроллим, иначе ждём события
+    const onComponentsLoaded = () => {
+      document.removeEventListener('components:loaded', onComponentsLoaded);
+      scrollToTarget();
+    };
+
+    document.addEventListener('components:loaded', onComponentsLoaded);
+    // Fallback, если событие уже произошло или никогда не случится
+    setTimeout(() => {
+      document.removeEventListener('components:loaded', onComponentsLoaded);
+      scrollToTarget();
+    }, 800);
   }
 
   _showError(error) {
