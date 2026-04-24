@@ -187,8 +187,22 @@ class NewsManager {
     document.addEventListener('click', (e) => {
       const link = e.target.closest('.news-card-link');
       if (link) {
+        const href = link.getAttribute('href');
         const newsId = parseInt(link.dataset.newsId, 10);
-        if (newsId) {
+        
+        // Если это hash-ссылка вида #/news/YYYY/MM/slug
+        if (href && href.startsWith('#/news/')) {
+          e.preventDefault();
+          
+          // Обновляем URL через history.pushState
+          history.pushState({ type: 'news', newsId: newsId }, '', window.location.pathname + href);
+          
+          // Открываем модальное окно
+          if (newsId) {
+            this.openNewsModal(newsId, false); // updateUrl = false, так как URL уже обновлён
+          }
+        } else if (newsId) {
+          // Fallback для обычных ссылок
           e.preventDefault();
           this.openNewsModal(newsId);
         }

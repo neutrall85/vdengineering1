@@ -1,6 +1,6 @@
 /**
  * NewsNavigation - Роутинг новостей через History API
- * Обработка прямых ссылок вида /news/2023/09/article-slug
+ * Обработка прямых ссылок вида #/news/2023/09/article-slug
  * Следует принципам DRY и KISS
  */
 
@@ -16,7 +16,7 @@ class NewsNavigation {
    */
   init(newsManager) {
     this.newsManager = newsManager;
-    
+
     // Обработка кнопки "Назад" в браузере
     window.addEventListener('popstate', (event) => {
       if (event.state && event.state.type === 'news') {
@@ -37,14 +37,14 @@ class NewsNavigation {
    */
   _handleDirectLink() {
     const hash = window.location.hash;
-    
+
     // Проверяем наличие hash-роута вида #/news/YYYY/MM/slug
     const newsMatch = hash.match(/^#\/news\/(\d{4})\/(\d{2})\/(.+)$/);
-    
+
     if (newsMatch) {
       const [, year, month, slug] = newsMatch;
       Logger.INFO(`Прямая ссылка на новость: ${year}/${month}/${slug}`);
-      
+
       // Находим новость по slug или дате
       if (this.newsManager && this.newsManager.newsData) {
         const newsItem = this._findNewsBySlug(year, month, slug);
@@ -52,10 +52,18 @@ class NewsNavigation {
           // Небольшая задержка чтобы убедиться что DOM готов
           setTimeout(() => {
             this.openNewsUrl(newsItem.id, newsItem.title);
+            // Открываем модальное окно вручную, так как openNewsUrl только обновляет URL
+            if (this.newsManager) {
+              this.newsManager.openNewsModal(newsItem.id, false);
+            }
           }, 100);
         } else {
           Logger.WARN(`Новость не найдена: ${year}/${month}/${slug}`);
         }
+      } else {
+        // Данные ещё не загружены, пробуем позже
+        Logger.INFO('Данные новостей ещё не загружены, повторяем попытку...');
+        setTimeout(() => this._handleDirectLink(), 200);
       }
     }
   }
@@ -142,6 +150,7 @@ class NewsNavigation {
 
   /**
    * Открытие новости с обновлением URL
+   * Вызывается из NewsManager.openNewsModal при updateUrl = true
    * @param {number|string} id - ID новости
    * @param {string} title - Заголовок новости для slug
    */
@@ -174,9 +183,6 @@ class NewsNavigation {
     );
 
     this.currentNewsId = id;
-    
-    // URL обновлён, модальное окно уже открыто в NewsManager.openNewsModal
-    // Не вызываем openNewsModal повторно чтобы избежать двойной блокировки скролла
     
     Logger.INFO(`Открыта новость: ${url}`);
   }
