@@ -485,7 +485,9 @@ function initApp() {
     DocPreviewManager.init();
   }
   
-  if (typeof ConsentManager !== 'undefined') {
+  // Инициализация ConsentManager и UserPreferencesModule через единую точку Application
+  // Модуль preferences.js больше не вызывает init() самостоятельно
+  if (typeof ConsentManager !== 'undefined' && typeof window.UserPreferencesModule !== 'undefined') {
     try {
       const consentManager = new ConsentManager(window.Services.storage);
       consentManager.init();

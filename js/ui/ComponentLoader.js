@@ -460,6 +460,7 @@ const ComponentLoader = {
 
     /**
      * Инициализация универсального модального окна заявок
+     * Использует единый модуль FormValidation для валидации
      */
     initUniversalApplicationModal() {
         window.openApplicationModal = (triggerElement) => {
@@ -500,95 +501,41 @@ const ComponentLoader = {
             }
         };
 
-        // Обработка формы (без дублирования закрытия)
-        const consentCheckbox = document.getElementById('universalConsent');
-        const submitBtn = document.getElementById('universalSubmitBtn');
-        const fullNameInput = document.getElementById('universalFullName');
-        const phoneInput = document.getElementById('universalPhone');
-        const emailInput = document.getElementById('universalEmail');
-        const aboutInput = document.getElementById('universalAbout');
-        const fileInput = document.getElementById('universalFileAttachment');
-        
-        Utils.PhoneUtils.setupAutoPrefix(phoneInput);
-        
-        function checkFormValidity() {
-            if (!consentCheckbox || !consentCheckbox.checked) {
-                submitBtn.disabled = true;
-                return;
-            }
-            const isFullNameValid = fullNameInput && fullNameInput.value.trim().length >= 2;
-            const isPhoneValid = phoneInput && Utils.Validator.phone(phoneInput.value);
-            const isEmailValid = emailInput && Utils.Validator.email(emailInput.value);
-            const isAboutValid = aboutInput && aboutInput.value.trim().length >= 10;
-            const isFileValid = fileInput && fileInput.files && fileInput.files.length > 0;
-            submitBtn.disabled = !(isFullNameValid && isPhoneValid && isEmailValid && isAboutValid && isFileValid);
-        }
-        
-        if (consentCheckbox && submitBtn) {
-            consentCheckbox.addEventListener('change', checkFormValidity);
-            if (fullNameInput) fullNameInput.addEventListener('input', checkFormValidity);
-            if (phoneInput) phoneInput.addEventListener('input', checkFormValidity);
-            if (emailInput) emailInput.addEventListener('input', checkFormValidity);
-            if (aboutInput) aboutInput.addEventListener('input', checkFormValidity);
-            if (fileInput) fileInput.addEventListener('change', checkFormValidity);
-            checkFormValidity();
-        }
-
+        // Инициализация валидации формы через единый модуль FormValidation
         const universalForm = document.getElementById('universalApplicationForm');
-        if (universalForm) {
-            universalForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (!consentCheckbox || !consentCheckbox.checked) {
-                    const consentError = document.getElementById('universalConsentError');
-                    if (consentError) consentError.classList.add('show');
-                    return;
+        let formValidator = null;
+        
+        if (universalForm && typeof FormValidation !== 'undefined') {
+            formValidator = FormValidation.createValidator(universalForm, {
+                validateOnInput: true,
+                messages: {
+                    required: 'Это поле обязательно для заполнения',
+                    email: 'Введите корректный email адрес',
+                    phone: 'Введите корректный номер телефона',
+                    minLength: (min) => `Минимальная длина — ${min} символов`,
+                    consent: 'Необходимо согласие на обработку данных',
+                    fileRequired: 'Пожалуйста, прикрепите резюме'
                 }
-                
-                let isValid = true;
-                if (!fullNameInput || fullNameInput.value.trim().length < 2) {
-                    const error = document.getElementById('universalFullNameError');
-                    if (error) error.classList.add('show');
-                    isValid = false;
-                }
-                if (!phoneInput || !Utils.Validator.phone(phoneInput.value)) {
-                    const error = document.getElementById('universalPhoneError');
-                    if (error) error.classList.add('show');
-                    isValid = false;
-                }
-                if (!emailInput || !Utils.Validator.email(emailInput.value)) {
-                    const error = document.getElementById('universalEmailError');
-                    if (error) error.classList.add('show');
-                    isValid = false;
-                }
-                if (!aboutInput || aboutInput.value.trim().length < 10) {
-                    const error = document.getElementById('universalAboutError');
-                    if (error) error.classList.add('show');
-                    isValid = false;
-                }
-                if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
-                    const fileError = document.createElement('p');
-                    fileError.className = 'error-message show';
-                    fileError.id = 'universalFileError';
-                    fileError.textContent = 'Пожалуйста, прикрепите резюме';
-                    const existingError = document.getElementById('universalFileError');
-                    if (!existingError && fileInput) {
-                        fileInput.parentElement.appendChild(fileError);
-                    }
-                    isValid = false;
-                }
-                if (!isValid) return;
+            });
+        }
 
-                Logger.INFO('Отправка заявки...');
+        // Обработчик успешной валидации
+        if (universalForm) {
+            universalForm.addEventListener('form:valid', (e) => {
+                Logger.INFO('Форма валидна, отправка заявки...');
                 const successMessage = document.getElementById('universalSuccessMessage');
                 const form = document.getElementById('universalApplicationForm');
+                
                 if (successMessage && form) {
                     form.classList.add('form-element-hidden');
                     successMessage.classList.add('show');
+                    
                     setTimeout(() => {
                         window.closeUniversalApplicationModal();
                         form.reset();
                         form.classList.remove('form-element-hidden');
                         successMessage.classList.remove('show');
+                        
                         if (window.formManager) {
                             window.formManager.currentFiles = [];
                             const fileList = document.getElementById('universalFileList');
@@ -596,11 +543,19 @@ const ComponentLoader = {
                             const fileText = document.querySelector('#universalFileDrop .form-file-text');
                             if (fileText) fileText.textContent = 'Выбрать файл...';
                         }
+                        
+                        // Сброс валидатора
+                        if (formValidator) formValidator.reset();
                     }, 3000);
                 }
             });
         }
 
+        // Настройка автопрефикса для телефона
+        const phoneInput = document.getElementById('universalPhone');
+        Utils.PhoneUtils.setupAutoPrefix(phoneInput);
+
+        // Инициализация загрузки файлов
         if (window.formManager) {
             setTimeout(() => {
                 const universalFileDrop = document.getElementById('universalFileDrop');

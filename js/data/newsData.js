@@ -37,74 +37,17 @@ const NEWS_DATA = {
       date: "Сентябрь 2023",
       image: "/assets/images/docs/certificate-preview.webp",
       content: "<p>22 сентября 2023 года область действия сертификата разработчика расширена на самолеты транспортной категории, газотурбинные двигатели и компоненты II и III классов.</p>"
-    },
-    {
-      id: 2023002,
-      title: "Новость",
-      excerpt: "Краткое описание.",
-      category: "Категория",
-      date: "Февраль 2023",
-      image: "/assets/images/placeholder.jpg",
-      content: "<p>Полное описание новости</p>"
-    },
-    {
-      id: 2023003,
-      title: "Новость",
-      excerpt: "Краткое описание.",
-      category: "Категория",
-      date: "Март 2023",
-      image: "/assets/images/placeholder.jpg",
-      content: "<p>Полное описание новости</p>"
-    },
-    {
-      id: 2023004,
-      title: "Новость",
-      excerpt: "Краткое описание.",
-      category: "Категория",
-      date: "Апрель 2023",
-      image: "/assets/images/placeholder.jpg",
-      content: "<p>Полное описание новости</p>"
-    },
-    {
-      id: 2023005,
-      title: "Новость",
-      excerpt: "Краткое описание.",
-      category: "Категория",
-      date: "Май 2023",
-      image: "/assets/images/placeholder.jpg",
-      content: "<p>Полное описание новости</p>"
-    },
-    {
-      id: 2023006,
-      title: "Новость",
-      excerpt: "Краткое описание.",
-      category: "Категория",
-      date: "Июнь 2023",
-      image: "/assets/images/placeholder.jpg",
-      content: "<p>Полное описание новости</p>"
     }
+    // Placeholder для будущих новостей 2023 года
+    // Для добавления реальных новостей используйте API или обновите данные вручную
   ],
   "2024": [
-    {
-      id: 2024001,
-      title: "Новость",
-      excerpt: "Краткое описание.",
-      category: "Категория",
-      date: "Январь 2024",
-      image: "/assets/images/placeholder.jpg",
-      content: "<p>Полное описание новости</p>"
-    }
+    // Placeholder для новостей 2024 года
+    // Загрузка новостей производится через API
   ],
   "2025": [
-    {
-      id: 2025001,
-      title: "Новость",
-      excerpt: "Краткое описание.",
-      category: "Категория",
-      date: "Январь 2025",
-      image: "/assets/images/placeholder.jpg",
-      content: "<p>Полное описание новости</p>"
-    }
+    // Placeholder для новостей 2025 года
+    // Загрузка новостей производится через API
   ],
   "2026": [
     {

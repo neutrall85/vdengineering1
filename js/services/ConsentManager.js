@@ -25,12 +25,10 @@ class ConsentManager {
     this.preferencesService = new UserPreferencesService(storage, eventBus);
     this.userNoticeUI = new UserNoticeUI(this.preferencesService, eventBus);
 
-    // Запуск сервисов с задержкой после загрузки основного контента (отложенная инициализация)
-    setTimeout(() => {
-      this.preferencesService.init();
-      this.userNoticeUI.init();
-      this._setupMutationObserver();
-    }, 800 + Math.random() * 700); // 800-1500 мс случайной задержки
+    // Запуск сервисов — теперь вызывается из Application.init() без задержки
+    this.preferencesService.init();
+    this.userNoticeUI.init();
+    this._setupMutationObserver();
 
     console.log('[ConsentManager] Initialized with event-driven architecture');
   }
