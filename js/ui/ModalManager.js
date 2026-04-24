@@ -98,11 +98,10 @@ class ModalManager {
         return;
       }
       
-      // Fallback для policy modal
+      // Fallback для policy modal - используем централизованное закрытие
       const policyModal = document.getElementById('policyModalOverlay');
       if (policyModal && policyModal.classList.contains('active')) {
-        policyModal.classList.remove('active');
-        ScrollManager.unlock();
+        this.close('policy');
       }
     };
     document.addEventListener('keydown', this._boundKeyHandler);

@@ -10,6 +10,43 @@ class NewsRenderer {
     this.cardStaggerMs = window.CONFIG?.ANIMATION?.CARD_STAGGER_MS || 50;
   }
 
+  renderPreview(container, count = 3) {
+    if (!container) return;
+
+    // Функция для парсинга даты из строки вида "Месяц YYYY"
+    const parseDate = (dateStr) => {
+      const months = {
+        'январь': 0, 'февраль': 1, 'март': 2, 'апрель': 3, 'май': 4, 'июнь': 5,
+        'июль': 6, 'август': 7, 'сентябрь': 8, 'октябрь': 9, 'ноябрь': 10, 'декабрь': 11
+      };
+      const parts = dateStr.toLowerCase().split(' ');
+      const month = months[parts[0]];
+      const year = parseInt(parts[1], 10);
+      if (isNaN(year) || month === undefined) return new Date(0);
+      return new Date(year, month);
+    };
+
+    const allNews = Object.values(this.newsData).flat();
+    const latestNews = allNews.sort((a, b) => parseDate(b.date) - parseDate(a.date)).slice(0, count);
+
+    if (latestNews.length === 0) {
+      container.innerHTML = '<p class="no-news">Нет новостей</p>';
+      return;
+    }
+
+    container.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+    
+    latestNews.forEach((news, index) => {
+      const card = this._createNewsCard(news, index);
+      fragment.appendChild(card);
+    });
+    
+    container.appendChild(fragment);
+    this._lazyLoadImages(container);
+    this._animateCards(container);
+  }
+
   render(year, container, options = {}) {
     if (!container) {
       Logger.WARN('Container not found for year:', year);
