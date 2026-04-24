@@ -277,7 +277,6 @@ class Application {
 
   _initFloatingCTA() {
     const floatingBtn = document.querySelector('.floating-cta-btn');
-    const footer = document.querySelector('footer');
 
     if (!floatingBtn) return;
 
@@ -297,15 +296,6 @@ class Application {
       if (scrollY <= 350) {
         floatingBtn.classList.remove('visible');
         return;
-      }
-
-      // Скрываем кнопку, когда виден футер
-      if (footer) {
-        const footerRect = footer.getBoundingClientRect();
-        if (footerRect.top < window.innerHeight) {
-          floatingBtn.classList.remove('visible');
-          return;
-        }
       }
 
       // Показываем кнопку во всех остальных случаях
