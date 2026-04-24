@@ -856,6 +856,28 @@ body.app-ready > footer {
   background: var(--vd-dark);
 }
 
+/* ==================== NEWS CTA ==================== */
+.news-cta {
+  text-align: center;
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+
+.news-cta-inline {
+  text-align: center;
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+
+.news-cta .btn-primary,
+.news-cta-inline .btn-primary {
+  background: var(--vd);
+  color: white;
+}
+
+.news-cta .btn-primary:hover,
+.news-cta-inline .btn-primary:hover {
+  background: var(--vd-dark);
+}
+
 /* ==================== НОВОСТИ PREVIEW ==================== */
 .news-preview {
   padding: clamp(40px, 8vh, 80px) 5%;
