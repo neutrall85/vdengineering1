@@ -901,20 +901,6 @@ body.app-ready > footer {
   flex: 1;
 }
 
-.text-center-mt2 {
-  text-align: center;
-  margin-top: 2.5rem;
-}
-
-.text-center-mt2 .btn-primary {
-  background: var(--vd);
-  color: white;
-}
-
-.text-center-mt2 .btn-primary:hover {
-  background: var(--vd-dark);
-}
-
 /* Общий стиль для кнопок "Подробнее" в карточках новостей */
 .news-card-link {
   color: var(--vd);
@@ -2787,8 +2773,6 @@ body.app-ready > footer {
 .modal-list-ul { padding-left: 1.5rem; margin-top: 1rem; }
 .modal-list-li { margin-bottom: 0.5rem; }
 
-.section-padding-lg { padding: 60px 5%; }
-.flex-gap-wrap { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .img-cover-full { width: 100%; height: 100%; object-fit: cover; }
 .img-cover-transition { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .hidden-display { display: none; }
