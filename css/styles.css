@@ -867,47 +867,18 @@ body.app-ready > footer {
   font-size: clamp(0.875rem, 1.2vw, 1rem);
 }
 
-/* ==================== SERVICES CTA ==================== */
-.services-cta {
+/* ==================== CTA BLOCKS (SERVICES, NEWS, CONTACTS) ==================== */
+.cta-block {
   text-align: center;
   margin-top: clamp(1.5rem, 3vh, 2.5rem);
 }
 
-.services-cta-inline {
-  text-align: center;
-  margin-top: clamp(1.5rem, 3vh, 2.5rem);
-}
-
-.services-cta .btn-primary,
-.services-cta-inline .btn-primary {
+.cta-block .btn-primary {
   background: var(--vd);
   color: white;
 }
 
-.services-cta .btn-primary:hover,
-.services-cta-inline .btn-primary:hover {
-  background: var(--vd-dark);
-}
-
-/* ==================== NEWS CTA ==================== */
-.news-cta {
-  text-align: center;
-  margin-top: clamp(1.5rem, 3vh, 2.5rem);
-}
-
-.news-cta-inline {
-  text-align: center;
-  margin-top: clamp(1.5rem, 3vh, 2.5rem);
-}
-
-.news-cta .btn-primary,
-.news-cta-inline .btn-primary {
-  background: var(--vd);
-  color: white;
-}
-
-.news-cta .btn-primary:hover,
-.news-cta-inline .btn-primary:hover {
+.cta-block .btn-primary:hover {
   background: var(--vd-dark);
 }
 
@@ -2918,25 +2889,6 @@ body.app-ready > footer {
 
 
 /* ==================== УТИЛИТАРНЫЕ КЛАССЫ ДЛЯ СТРАНИЦ ==================== */
-.page-header {
-  background: var(--vd-light-blue);
-  padding: 120px 5% 60px;
-  text-align: center;
-  color: #004E96;
-}
-
-.page-header h1 {
-  font-size: clamp(1.8rem, 5vw, 2.5rem);
-  margin-bottom: 1rem;
-}
-
-.page-header p {
-  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-  max-width: 800px;
-  margin: 0 auto;
-  opacity: 0.9;
-}
-
 .page-header-title {
   font-size: 2.5rem;
   margin-bottom: 1rem;
@@ -2951,7 +2903,6 @@ body.app-ready > footer {
 .certificate-section-bg { padding: 60px 5%; background: var(--vd-light-gray); }
 .certificate-widgets-container { max-width: 900px; margin: 0 auto; }
 
-.features-section-padding { padding: 60px 5%; }
 .features-grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
 .feature-card-box { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 3px 12px rgba(0,0,0,0.06); text-align: center; }
 .feature-icon-circle { width: 60px; height: 60px; background: linear-gradient(135deg, var(--vd), var(--vd-light-blue)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
@@ -2959,7 +2910,6 @@ body.app-ready > footer {
 .feature-title { color: var(--vd); margin-bottom: 0.75rem; font-size: clamp(1.05rem, 1.8vw, 1.2rem); }
 .feature-desc { color: var(--metallic); line-height: 1.55; font-size: clamp(0.8rem, 1.1vw, 0.9rem); }
 
-.contact-cta-bg { background: var(--vd-light-blue); padding: 60px 5%; text-align: center; color: #004E96; }
 .contact-cta-title { font-size: 2rem; margin-bottom: 1rem; }
 .contact-cta-desc { margin-bottom: 2rem; font-size: 1.1rem; }
 
@@ -3001,20 +2951,12 @@ body.app-ready > footer {
 .modal-list-ul { padding-left: 1.5rem; margin-top: 1rem; }
 .modal-list-li { margin-bottom: 0.5rem; }
 
-.img-cover-full { width: 100%; height: 100%; object-fit: cover; }
-.img-cover-transition { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-.hidden-display { display: none; }
+.project-img-cover { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.hidden { display: none !important; }
 
 /* Docs Page Styles */
 .docs-page {
   min-height: 100vh;
-}
-
-.page-header {
-  background: var(--vd-light-blue);
-  padding: 120px 5% 60px;
-  text-align: center;
-  color: #004E96;
 }
 
 .page-title {
