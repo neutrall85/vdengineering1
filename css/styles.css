@@ -116,7 +116,7 @@ textarea:focus-visible,
   --z-toast: 1200;
   --z-tooltip: 1300;
   --z-loader: 9999;
-  
+
   /* Ширина скроллбара для компенсации при блокировке скролла */
   --scrollbar-width: 17px;
 
@@ -159,10 +159,10 @@ body.app-ready .page-loader {
   display: none;
 }
 
-body.app-ready > main,
-body.app-ready > section,
-body.app-ready > nav,
-body.app-ready > footer {
+body.app-ready>main,
+body.app-ready>section,
+body.app-ready>nav,
+body.app-ready>footer {
   visibility: visible;
   opacity: 1;
 }
@@ -246,6 +246,7 @@ body.app-ready > footer {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -272,8 +273,8 @@ body.app-ready > footer {
   padding: clamp(0.75rem, 1.5vh, 1rem) 5%;
   background: var(--vd);
   transition: background-color var(--duration-normal) var(--ease-smooth),
-              box-shadow var(--duration-normal) var(--ease-smooth),
-              padding var(--duration-normal) var(--ease-smooth);
+    box-shadow var(--duration-normal) var(--ease-smooth),
+    padding var(--duration-normal) var(--ease-smooth);
 }
 
 .navbar-content {
@@ -311,7 +312,7 @@ body.app-ready > footer {
   padding: 0.5rem 0;
   border-radius: 50px;
   transition: color var(--duration-fast) var(--ease-smooth),
-              transform var(--duration-fast) var(--ease-smooth);
+    transform var(--duration-fast) var(--ease-smooth);
   position: relative;
   display: inline-block;
 }
@@ -345,7 +346,8 @@ body.app-ready > footer {
   width: 100%;
   height: 2px;
   background: rgba(255, 255, 255, 0.6);
-  border-radius: 50% 50% 0 0;           /* ← Полуовал (закругление сверху) */
+  border-radius: 50% 50% 0 0;
+  /* ← Полуовал (закругление сверху) */
   transform: scaleX(0);
   transform-origin: center;
   transition: transform var(--duration-normal) var(--ease-smooth);
@@ -441,17 +443,17 @@ body.app-ready > footer {
 }
 
 .mobile-menu a:hover {
-    background: rgba(0, 78, 150, 0.1);
-    padding-left: 0.85rem;
-    padding-right: 0.85rem;
-    margin-left: -0.85rem;
-    margin-right: -0.85rem;
-    transform: translateX(6px);
-    border-bottom-color: transparent;
+  background: rgba(0, 78, 150, 0.1);
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+  margin-left: -0.85rem;
+  margin-right: -0.85rem;
+  transform: translateX(6px);
+  border-bottom-color: transparent;
 }
 
 .mobile-menu a:focus-visible:hover {
-    transform: none;
+  transform: none;
 }
 
 .mobile-menu-overlay {
@@ -483,6 +485,9 @@ body.app-ready > footer {
   padding: calc(var(--navbar-height) + 2rem) 3% 3rem;
   overflow: hidden;
   background: var(--vd-light-blue);
+  /* background: 
+    linear-gradient(rgba(230, 240, 250, 0.7), rgba(230, 240, 250, 0.7)),
+    url('../assets/images/hero.webp') center / cover no-repeat; */
   color: #004E96;
 }
 
@@ -742,7 +747,7 @@ body.app-ready > footer {
   border-radius: 20px;
   padding: clamp(1.5rem, 3vw, 2rem);
   transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-              box-shadow 0.4s ease;
+    box-shadow 0.4s ease;
   border: 1px solid rgba(0, 0, 0, 0.05);
   position: relative;
   overflow: hidden;
@@ -1051,18 +1056,18 @@ body.app-ready > footer {
     grid-auto-rows: 100px;
     gap: 1rem;
   }
-  
+
   .collage-item.item-large,
   .collage-item.item-medium {
     grid-column: span 1;
     grid-row: span 1;
   }
-  
+
   .item-large .partner-logo svg,
   .item-medium .partner-logo svg {
     max-height: 40px;
   }
-  
+
   .item-large .partner-name,
   .item-medium .partner-name {
     font-size: 0.8rem;
@@ -1096,7 +1101,7 @@ body.app-ready > footer {
   color: var(--vd);
 }
 
-.contact-info > p {
+.contact-info>p {
   color: var(--metallic);
   line-height: 1.6;
   margin-bottom: 2rem;
@@ -1375,7 +1380,7 @@ body.app-ready > footer {
   transition: all var(--duration-fast) var(--ease-smooth);
   padding: 0;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   z-index: 10;
 }
 
@@ -1671,6 +1676,7 @@ body.app-ready > footer {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -2139,9 +2145,12 @@ body.app-ready > footer {
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -2342,7 +2351,8 @@ body.app-ready > footer {
   transition: all var(--duration-normal) var(--ease-smooth);
   opacity: 0;
   transform: translateX(-30px);
-  height: auto; /* Адаптивная высота */
+  height: auto;
+  /* Адаптивная высота */
 }
 
 .news-card.loaded {
@@ -2358,7 +2368,8 @@ body.app-ready > footer {
 .news-card-image {
   position: relative;
   width: 100%;
-  height: 250px; /* Фиксированная высота для ровной сетки */
+  height: 250px;
+  /* Фиксированная высота для ровной сетки */
   overflow: hidden;
   background: var(--vd-light-gray);
   display: flex;
@@ -2405,7 +2416,8 @@ body.app-ready > footer {
   display: flex;
   flex-direction: column;
   background: white;
-  overflow: hidden; /* Скрываем выходящий контент */
+  overflow: hidden;
+  /* Скрываем выходящий контент */
 }
 
 .news-card-date {
@@ -2416,7 +2428,8 @@ body.app-ready > footer {
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
-  flex-shrink: 0; /* Фиксируем размер даты */
+  flex-shrink: 0;
+  /* Фиксируем размер даты */
 }
 
 .news-card-date svg {
@@ -2433,10 +2446,12 @@ body.app-ready > footer {
   color: var(--vd);
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  line-clamp: 2; /* Ограничиваем заголовок 2 строками */
+  line-clamp: 2;
+  /* Ограничиваем заголовок 2 строками */
   -webkit-box-orient: vertical;
   overflow: hidden;
-  flex-shrink: 0; /* Фиксируем размер заголовка */
+  flex-shrink: 0;
+  /* Фиксируем размер заголовка */
 }
 
 .news-card-excerpt {
@@ -2446,7 +2461,8 @@ body.app-ready > footer {
   margin-bottom: 1rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
-  line-clamp: 3; /* Ограничиваем текст 3 строками */
+  line-clamp: 3;
+  /* Ограничиваем текст 3 строками */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -2542,22 +2558,29 @@ body.app-ready > footer {
   display: none;
 }
 
-.news-card-image img:not([src]):not([data-src]) + .image-placeholder,
-.news-card-image img.loading + .image-placeholder,
-.modal-container .modal-image img:not([src]):not([data-src]) + .image-placeholder,
-.modal-container .modal-image img.loading + .image-placeholder,
-.modal-image img:not([src]):not([data-src]) + .image-placeholder,
-.modal-image img.loading + .image-placeholder {
+.news-card-image img:not([src]):not([data-src])+.image-placeholder,
+.news-card-image img.loading+.image-placeholder,
+.modal-container .modal-image img:not([src]):not([data-src])+.image-placeholder,
+.modal-container .modal-image img.loading+.image-placeholder,
+.modal-image img:not([src]):not([data-src])+.image-placeholder,
+.modal-image img.loading+.image-placeholder {
   display: block;
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ==================== СТРАНИЦА О НАС ==================== */
@@ -2691,11 +2714,25 @@ body.app-ready > footer {
   animation: slideIn 0.3s ease forwards;
 }
 
-.widget-content li:nth-child(1) { animation-delay: 0.05s; }
-.widget-content li:nth-child(2) { animation-delay: 0.1s; }
-.widget-content li:nth-child(3) { animation-delay: 0.15s; }
-.widget-content li:nth-child(4) { animation-delay: 0.2s; }
-.widget-content li:nth-child(5) { animation-delay: 0.25s; }
+.widget-content li:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.widget-content li:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.widget-content li:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.widget-content li:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.widget-content li:nth-child(5) {
+  animation-delay: 0.25s;
+}
 
 @keyframes slideIn {
   to {
@@ -2780,40 +2817,148 @@ body.app-ready > footer {
 
 /* ==================== УТИЛИТАРНЫЕ КЛАССЫ ДЛЯ СТРАНИЦ ==================== */
 
-.certificate-section-bg { padding: 60px 5%; background: var(--vd-light-gray); }
-.certificate-widgets-container { max-width: 900px; margin: 0 auto; }
+.certificate-section-bg {
+  padding: 60px 5%;
+  background: var(--vd-light-gray);
+}
 
-.features-grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+.certificate-widgets-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.features-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 /* feature-card-box и feature-icon-circle удалены как дублирующие .feature-card и .feature-icon */
-.feature-title { color: var(--vd); margin-bottom: 0.75rem; font-size: clamp(1.05rem, 1.8vw, 1.2rem); }
-.feature-desc { color: var(--metallic); line-height: 1.55; font-size: clamp(0.8rem, 1.1vw, 0.9rem); }
+.feature-title {
+  color: var(--vd);
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+}
 
-.services-full-padding { padding: clamp(40px, 8vh, 60px) 5%; }
-.services-grid-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-.btn-secondary-sm { padding: 0.6rem 1.2rem; font-size: 0.9rem; align-self: flex-start; }
+.feature-desc {
+  color: var(--metallic);
+  line-height: 1.55;
+  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
+}
 
-.process-section-bg { padding: 60px 5%; background: var(--vd-light-gray); }
-.process-steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
-.step-box { text-align: center; }
-.step-number-circle { width: 80px; height: 80px; background: var(--vd); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 2rem; font-weight: bold; }
-.step-title { color: var(--vd); margin-bottom: 0.5rem; }
-.step-desc { color: var(--metallic); }
+.services-full-padding {
+  padding: clamp(40px, 8vh, 60px) 5%;
+}
 
-.projects-grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1400px; margin: 0 auto; }
-.project-image-container { height: 250px; overflow: hidden; }
-.project-img-cover { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-.project-content-padding { padding: 1.5rem; }
-.project-category-badge { display: inline-block; background: var(--vd-light-blue); color: var(--vd); padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.8rem; margin-bottom: 1rem; }
+.services-grid-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
 
-.news-full-padding { padding: 60px 5%; }
-.news-tabs-container { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
-.news-grid-auto { 
+.btn-secondary-sm {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  align-self: flex-start;
+}
+
+.process-section-bg {
+  padding: 60px 5%;
+  background: var(--vd-light-gray);
+}
+
+.process-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.step-box {
+  text-align: center;
+}
+
+.step-number-circle {
+  width: 80px;
+  height: 80px;
+  background: var(--vd);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.step-title {
+  color: var(--vd);
+  margin-bottom: 0.5rem;
+}
+
+.step-desc {
+  color: var(--metallic);
+}
+
+.projects-grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.project-image-container {
+  height: 250px;
+  overflow: hidden;
+}
+
+.project-img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.project-content-padding {
+  padding: 1.5rem;
+}
+
+.project-category-badge {
+  display: inline-block;
+  background: var(--vd-light-blue);
+  color: var(--vd);
+  padding: 0.3rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.news-full-padding {
+  padding: 60px 5%;
+}
+
+.news-tabs-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.news-grid-auto {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  max-width: 1200px; 
-  margin: 0 auto; 
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .news-grid-auto .news-card {
@@ -2821,8 +2966,14 @@ body.app-ready > footer {
   max-width: 1200px;
 }
 
-.modal-list-ul { padding-left: 1.5rem; margin-top: 1rem; }
-.modal-list-li { margin-bottom: 0.5rem; }
+.modal-list-ul {
+  padding-left: 1.5rem;
+  margin-top: 1rem;
+}
+
+.modal-list-li {
+  margin-bottom: 0.5rem;
+}
 
 /* Docs Page Styles */
 .docs-page {
@@ -2917,7 +3068,7 @@ body.app-ready > footer {
   transition: opacity 0.3s ease;
 }
 
-.pdf-frame.loaded + .pdf-preview-placeholder {
+.pdf-frame.loaded+.pdf-preview-placeholder {
   opacity: 0;
 }
 
@@ -3388,49 +3539,217 @@ body.app-ready > footer {
 
 
 /* ==================== СТРАНИЦА ВАКАНСИИ ==================== */
-.careers-intro-padding { padding: 80px 5% 60px; background: white; }
-.careers-content-center { max-width: 1200px; margin: 0 auto; }
-.careers-title { font-size: 2rem; color: var(--vd); margin-bottom: 1.5rem; text-align: center; }
-.careers-text-highlight { font-size: 1.1rem; color: var(--text-dark); text-align: center; max-width: 900px; margin: 0 auto 3rem; line-height: 1.7; }
+.careers-intro-padding {
+  padding: 80px 5% 60px;
+  background: white;
+}
 
-.careers-benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem; }
+.careers-content-center {
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-.benefit-card { background: var(--vd-light-gray); padding: 2rem; border-radius: 12px; text-align: center; transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth); }
-.benefit-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 78, 150, 0.15); }
+.careers-title {
+  font-size: 2rem;
+  color: var(--vd);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
 
-.benefit-icon { width: 60px; height: 60px; background: var(--vd); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
-.benefit-icon svg { width: 30px; height: 30px; fill: white; }
+.careers-text-highlight {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 3rem;
+  line-height: 1.7;
+}
 
-.benefit-card h3 { font-size: 1.2rem; color: var(--vd); margin-bottom: 0.75rem; font-weight: 600; }
-.benefit-card p { color: var(--metallic); font-size: 0.95rem; line-height: 1.6; }
+.careers-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.benefit-card {
+  background: var(--vd-light-gray);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth);
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 78, 150, 0.15);
+}
+
+.benefit-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--vd);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.benefit-icon svg {
+  width: 30px;
+  height: 30px;
+  fill: white;
+}
+
+.benefit-card h3 {
+  font-size: 1.2rem;
+  color: var(--vd);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.benefit-card p {
+  color: var(--metallic);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
 
 /* Вакансии */
-.vacancies-section-padding { padding: 80px 5%; background: var(--vd-light-gray); }
-.vacancies-grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto; justify-items: stretch; }
+.vacancies-section-padding {
+  padding: 80px 5%;
+  background: var(--vd-light-gray);
+}
 
-.vacancy-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth); display: flex; flex-direction: column; }
-.vacancy-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 78, 150, 0.15); }
-.vacancy-card-open { border-left: 4px solid var(--vd-orange); }
+.vacancies-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  justify-items: stretch;
+}
 
-.vacancy-header { background: linear-gradient(135deg, var(--vd) 0%, var(--vd-dark) 100%); color: white; padding: 1.5rem; }
-.vacancy-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; }
-.vacancy-department { font-size: 0.9rem; opacity: 0.9; display: block; }
+.vacancy-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth);
+  display: flex;
+  flex-direction: column;
+}
 
-.vacancy-body { padding: 1.5rem; flex: 1; }
-.vacancy-requirements, .vacancy-responsibilities, .vacancy-conditions { margin-bottom: 1.5rem; }
-.vacancy-requirements h4, .vacancy-responsibilities h4, .vacancy-conditions h4 { font-size: 1rem; color: var(--vd); margin-bottom: 0.75rem; font-weight: 600; }
-.vacancy-requirements ul, .vacancy-responsibilities ul, .vacancy-conditions ul { list-style: none; padding: 0; }
-.vacancy-requirements li, .vacancy-responsibilities li, .vacancy-conditions li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; color: var(--text-dark); font-size: 0.95rem; line-height: 1.6; }
-.vacancy-requirements li::before, .vacancy-responsibilities li::before, .vacancy-conditions li::before { content: "•"; color: var(--vd-blue); position: absolute; left: 0; font-weight: bold; }
+.vacancy-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 78, 150, 0.15);
+}
 
-.vacancy-footer { padding: 1.5rem; border-top: 1px solid var(--border-color); background: var(--vd-light-gray); }
-.btn-apply { width: 100%; justify-content: center; }
+.vacancy-card-open {
+  border-left: 4px solid var(--vd-orange);
+}
+
+.vacancy-header {
+  background: linear-gradient(135deg, var(--vd) 0%, var(--vd-dark) 100%);
+  color: white;
+  padding: 1.5rem;
+}
+
+.vacancy-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.vacancy-department {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  display: block;
+}
+
+.vacancy-body {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.vacancy-requirements,
+.vacancy-responsibilities,
+.vacancy-conditions {
+  margin-bottom: 1.5rem;
+}
+
+.vacancy-requirements h4,
+.vacancy-responsibilities h4,
+.vacancy-conditions h4 {
+  font-size: 1rem;
+  color: var(--vd);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.vacancy-requirements ul,
+.vacancy-responsibilities ul,
+.vacancy-conditions ul {
+  list-style: none;
+  padding: 0;
+}
+
+.vacancy-requirements li,
+.vacancy-responsibilities li,
+.vacancy-conditions li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.vacancy-requirements li::before,
+.vacancy-responsibilities li::before,
+.vacancy-conditions li::before {
+  content: "•";
+  color: var(--vd-blue);
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.vacancy-footer {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  background: var(--vd-light-gray);
+}
+
+.btn-apply {
+  width: 100%;
+  justify-content: center;
+}
 
 /* Открытая заявка */
-.open-application-padding { padding: 80px 5%; background: white; }
-.open-application-content { max-width: 800px; margin: 0 auto; text-align: center; }
-.open-application-content h2 { font-size: 2rem; color: var(--vd); margin-bottom: 1rem; }
-.open-application-content p { font-size: 1.1rem; color: var(--metallic); margin-bottom: 2rem; line-height: 1.7; }
+.open-application-padding {
+  padding: 80px 5%;
+  background: white;
+}
+
+.open-application-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.open-application-content h2 {
+  font-size: 2rem;
+  color: var(--vd);
+  margin-bottom: 1rem;
+}
+
+.open-application-content p {
+  font-size: 1.1rem;
+  color: var(--metallic);
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
 
 /* Адаптивность для страницы вакансий */
 
@@ -3522,17 +3841,17 @@ body.app-ready > footer {
 /* Для управления видимостью ссылок в навигации */
 .nav-link-home-desktop,
 .nav-link-home-mobile {
-    display: block;
+  display: block;
 }
 
 .nav-link-home-desktop.hidden,
 .nav-link-home-mobile.hidden {
-    display: none;
+  display: none;
 }
 
 /* Для управления видимостью форм */
 .hidden-form {
-    display: none !important;
+  display: none !important;
 }
 
 /* ==================== АДАПТИВНОСТЬ ==================== */
@@ -3543,9 +3862,10 @@ body.app-ready > footer {
     /* УВЕЛИЧИВАЕМ базовый размер шрифта для мобильных */
     font-size: 18px;
   }
-  
+
   body {
-    font-size: 1rem; /* 15px */
+    font-size: 1rem;
+    /* 15px */
     line-height: 1.5;
   }
 
@@ -3557,7 +3877,7 @@ body.app-ready > footer {
     font-size: 0.95rem;
     line-height: 1.5;
   }
-  
+
   /* Заголовки секций - делаем крупнее */
   .section-header h2 {
     font-size: 1.6rem;
@@ -3580,36 +3900,44 @@ body.app-ready > footer {
     min-height: 40vh;
     padding: calc(var(--navbar-height) + 0.1rem) 3% 1rem;
   }
+
   .hero-content {
     width: 100%;
     text-align: center;
   }
+
   .hero-wrapper {
     flex-direction: column;
     align-items: center;
   }
+
   .hero-text {
     margin: 0 auto;
     max-width: 100%;
   }
+
   .hero-slideshow {
     display: none;
   }
+
   .hero-buttons {
     justify-content: center;
   }
+
   .hero-text h1 {
     font-size: 2rem;
     margin-bottom: 0.75rem;
   }
+
   .hero-text p {
     font-size: 1rem;
     margin-bottom: 1.25rem;
   }
+
   .hero-buttons {
     gap: 0.75rem;
   }
-  
+
   /* ✅ ИСПРАВЛЕНО: Статистика на планшетах - как на десктопе */
   .hero-stats {
     display: flex;
@@ -3621,23 +3949,30 @@ body.app-ready > footer {
     border-top: 1px solid rgba(0, 78, 150, 0.15);
     flex-wrap: nowrap;
   }
-  
+
   .stat-item {
-    flex: 1 1 auto; /* Позволяем элементам сжиматься и расти */
-    min-width: 80px; /* Минимальная ширина */
-    max-width: calc(25% - 0.75rem); /* Максимум 4 элемента в ряд */
+    flex: 1 1 auto;
+    /* Позволяем элементам сжиматься и расти */
+    min-width: 80px;
+    /* Минимальная ширина */
+    max-width: calc(25% - 0.75rem);
+    /* Максимум 4 элемента в ряд */
     padding: 0.5rem 0.25rem;
-    word-wrap: break-word; /* Перенос длинных слов */
-    word-break: break-word; /* Перенос слов при необходимости */
-    white-space: normal; /* Разрешаем перенос текста */
+    word-wrap: break-word;
+    /* Перенос длинных слов */
+    word-break: break-word;
+    /* Перенос слов при необходимости */
+    white-space: normal;
+    /* Разрешаем перенос текста */
   }
-  
+
   .stat-number {
     font-size: 1.2rem;
     margin-bottom: 0.25rem;
-    white-space: nowrap; /* Цифры не переносим */
+    white-space: nowrap;
+    /* Цифры не переносим */
   }
-  
+
   .stat-label {
     font-size: 0.7rem;
     line-height: 1.3;
@@ -3646,36 +3981,40 @@ body.app-ready > footer {
     white-space: normal;
     display: block;
   }
-  
+
   /* Навигация */
   .nav-links {
     display: none;
   }
+
   .mobile-menu-btn {
     display: flex;
   }
-  
+
   /* Заголовки страниц */
   .page-header h1 {
     font-size: 1.8rem;
   }
+
   .page-header p {
     font-size: 1rem;
   }
-  
+
   .about-title {
     font-size: 1.5rem;
     margin-bottom: 0.85rem;
   }
+
   .about-text {
     font-size: 0.95rem;
     margin-bottom: 0.85rem;
     line-height: 1.6;
   }
+
   .page-title {
     font-size: 2rem;
   }
-  
+
   /* Секции - уменьшенные отступы */
   .services,
   .about-preview,
@@ -3692,68 +4031,81 @@ body.app-ready > footer {
   .open-application-padding {
     padding: 32px 3%;
   }
-  
+
   /* Услуги - компактнее */
   .services-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
+
   .service-card {
     padding: 1.25rem;
     border-radius: 14px;
   }
+
   .service-icon {
     width: 50px;
     height: 50px;
     margin-bottom: 0.85rem;
     border-radius: 10px;
   }
+
   .service-icon svg {
     width: 28px;
     height: 28px;
   }
+
   .service-card h3 {
     font-size: 1.2rem;
     margin-bottom: 0.65rem;
   }
+
   .service-card p {
     font-size: 0.9rem;
     margin-bottom: 0.85rem;
   }
+
   .services-grid-container {
     grid-template-columns: 1fr;
   }
-  
+
   /* Проекты - компактнее */
   .projects-grid {
     gap: 1rem;
   }
+
   .projects-grid-container {
     grid-template-columns: 1fr;
   }
+
   .project-card {
     border-radius: 16px;
   }
+
   .project-image {
     height: 200px;
   }
+
   .project-content {
     padding: 1rem;
   }
+
   .project-category {
     padding: 0.25rem 0.8rem;
     font-size: 0.7rem;
     margin-bottom: 0.75rem;
   }
+
   .project-content h3 {
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
   }
+
   .project-content p {
     font-size: 0.9rem;
     margin-bottom: 0.75rem;
   }
-  
+
   /* Новости */
   .preview-news-grid,
   .news-grid,
@@ -3761,17 +4113,23 @@ body.app-ready > footer {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
+
   .news-grid-inline .news-card-image {
     height: 180px;
   }
+
   .news-card {
     margin-bottom: 0.6rem;
     border-radius: 14px;
     grid-template-columns: 1fr;
-    height: auto; /* На мобильных убираем фиксированную высоту */
-    min-height: 280px; /* Минимальная высота как на десктопе */
-    width: 100%; /* На мобильных ширина 100% */
+    height: auto;
+    /* На мобильных убираем фиксированную высоту */
+    min-height: 280px;
+    /* Минимальная высота как на десктопе */
+    width: 100%;
+    /* На мобильных ширина 100% */
   }
+
   .news-card-image {
     height: 200px;
     position: relative;
@@ -3782,6 +4140,7 @@ body.app-ready > footer {
     align-items: center;
     justify-content: center;
   }
+
   .news-card-image img {
     position: relative;
     z-index: 2;
@@ -3792,41 +4151,50 @@ body.app-ready > footer {
     transition: transform var(--duration-slower) var(--ease-smooth);
     opacity: 0;
   }
+
   .news-card-image img.loaded,
   .news-card-image img[src],
   .news-card-image img[data-src] {
     opacity: 1;
   }
+
   .news-card-content {
     padding: 1rem;
   }
+
   .news-card-category {
     padding: 0.3rem 0.8rem;
     font-size: 0.65rem;
     top: 0.75rem;
     left: 0.75rem;
   }
+
   .news-card-date {
     font-size: 0.8rem;
     margin-bottom: 0.5rem;
     gap: 0.35rem;
   }
+
   .news-card-date svg {
     width: 14px;
     height: 14px;
   }
+
   .news-card-title {
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
   }
+
   .news-card-excerpt {
     font-size: 0.85rem;
     margin-bottom: 0.75rem;
   }
+
   .news-tabs {
     flex-direction: column;
     align-items: center;
   }
+
   .news-tab {
     width: 100%;
     max-width: 300px;
@@ -3834,65 +4202,80 @@ body.app-ready > footer {
     font-size: 0.95rem;
     padding: 0.65rem 1.5rem;
   }
+
   .year-divider {
     flex-direction: column;
     gap: 0.5rem;
   }
+
   .year-divider-line {
     width: 100%;
   }
+
   .year-divider-year {
     font-size: 1.8rem;
   }
+
   .year-divider-label {
     font-size: 0.8rem;
   }
-  
+
   /* Документы */
   .docs-grid {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
+
   .doc-card {
     border-radius: 12px;
   }
+
   .doc-preview {
     min-height: 200px;
   }
+
   .doc-title {
     font-size: 1rem;
   }
+
   .doc-description {
     font-size: 0.85rem;
   }
-  
+
   /* Вакансии */
   .vacancies-grid-container {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
+
   .vacancy-header {
     padding: 1.25rem;
   }
+
   .vacancy-title {
     font-size: 1.2rem;
     margin-bottom: 0.4rem;
   }
+
   .vacancy-department {
     font-size: 0.85rem;
   }
+
   .vacancy-body {
     padding: 1.25rem;
   }
+
   .vacancy-footer {
     padding: 1.25rem;
   }
+
   .vacancy-requirements h4,
   .vacancy-responsibilities h4,
   .vacancy-conditions h4 {
     font-size: 1rem;
     margin-bottom: 0.65rem;
   }
+
   .vacancy-requirements li,
   .vacancy-responsibilities li,
   .vacancy-conditions li {
@@ -3900,37 +4283,44 @@ body.app-ready > footer {
     margin-bottom: 0.5rem;
     padding-left: 1.25rem;
   }
-  
+
   /* Преимущества */
   .benefit-card {
     padding: 1.5rem;
   }
+
   .benefit-icon {
     width: 55px;
     height: 55px;
     margin-bottom: 1rem;
   }
+
   .benefit-icon svg {
     width: 28px;
     height: 28px;
   }
+
   .benefit-card h3 {
     font-size: 1.15rem;
     margin-bottom: 0.5rem;
   }
+
   .benefit-card p {
     font-size: 0.9rem;
   }
+
   .careers-benefits-grid {
     grid-template-columns: 1fr;
   }
+
   .careers-title {
     font-size: 1.6rem;
   }
+
   .careers-text-highlight {
     font-size: 1rem;
   }
-  
+
   /* О компании */
   .about-content-grid,
   .mission-content-grid,
@@ -3938,10 +4328,12 @@ body.app-ready > footer {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
+
   .about-content-inline {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
+
   .about-grid,
   .contact-content {
     grid-template-columns: 1fr;
@@ -3949,125 +4341,154 @@ body.app-ready > footer {
     display: flex;
     flex-direction: column;
   }
+
   .values-image-block {
     order: -1;
   }
+
   .directions-grid,
   .facts-container {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
+
   .value-item {
     flex-direction: column;
     text-align: center;
     padding: 1.25rem;
   }
+
   .value-item:hover {
     transform: translateY(-4px);
   }
+
   .value-icon {
     margin: 0 auto;
     width: 55px;
     height: 55px;
   }
+
   .value-icon svg {
     width: 28px;
     height: 28px;
   }
+
   .value-heading {
     font-size: 1.15rem;
     margin-bottom: 0.5rem;
   }
+
   .value-description {
     font-size: 0.9rem;
   }
+
   .placeholder-icon {
     width: 60px;
     height: 60px;
     margin-bottom: 0.75rem;
   }
+
   .direction-card {
     padding: 1.25rem;
     border-radius: 14px;
   }
+
   .direction-title {
     font-size: 1.15rem;
     margin-bottom: 0.5rem;
   }
+
   .direction-text {
     font-size: 0.9rem;
   }
+
   .fact-item {
     padding: 1.25rem;
     border-radius: 14px;
   }
+
   .fact-number {
     font-size: 2rem;
     margin-bottom: 0.5rem;
   }
+
   .fact-label {
     font-size: 0.95rem;
   }
+
   .mission-title {
     font-size: 1.6rem;
   }
+
   .mission-text-highlight {
     font-size: 1rem;
     padding: 1.5rem;
   }
-  
+
   /* Процесс и фичи */
   .process-steps {
     grid-template-columns: 1fr;
   }
+
   .features-grid {
     grid-template-columns: 1fr;
   }
+
   .feature-card {
     padding: 1.25rem;
   }
+
   .feature-title {
     font-size: 1.15rem;
   }
+
   .feature-desc {
     font-size: 0.9rem;
   }
-  
+
   /* Контакты и футер */
   .footer-content {
     grid-template-columns: 1fr 1fr;
     text-align: center;
   }
+
   .footer-brand {
     display: none;
   }
+
   .footer-legal ul {
     flex-direction: column;
     align-items: center;
     gap: 0.75rem;
   }
+
   .footer-legal a {
     font-size: 0.8rem;
   }
+
   .footer {
     padding: 24px 4%;
   }
-  
+
   /* Модальные окна */
   .modal-container {
     max-height: 95vh;
     margin-top: 10px;
   }
+
   .modal-header,
   .modal-body {
     padding: 1rem;
   }
+
   .modal-title {
     font-size: 1.3rem;
   }
+
   .modal-subtitle {
     font-size: 0.85rem;
   }
+
   .modal-image {
     height: clamp(150px, 25vh, 250px);
     position: relative;
@@ -4077,7 +4498,7 @@ body.app-ready > footer {
     background-color: #f5f5f5;
     flex-shrink: 0;
   }
-  
+
   .modal-image img {
     width: 100%;
     height: 100%;
@@ -4085,15 +4506,16 @@ body.app-ready > footer {
     opacity: 0;
     transition: opacity 0.2s ease;
   }
-  
+
   .modal-image img.loaded,
   .modal-image img[src] {
     opacity: 1;
   }
-  
+
   .details-modal-body {
     padding: 1.25rem;
   }
+
   /* Кнопка закрытия модалки - адаптируем для мобильных */
   .modal-close {
     top: 10px;
@@ -4102,28 +4524,32 @@ body.app-ready > footer {
     height: 32px;
     border-width: 1.5px;
   }
+
   .modal-close svg {
     width: 18px;
     height: 18px;
     fill: #000;
   }
+
   .contact-form-container {
     padding: 1.25rem;
   }
-  
+
   /* Плавающие кнопки */
   .floating-cta-btn {
     bottom: 5rem;
     right: 1rem;
   }
+
   .scroll-to-top {
     bottom: 5rem;
     left: 1rem;
   }
+
   .floating-cta-btn span {
     display: none;
   }
-  
+
   /* Lightbox */
   .lightbox-image {
     max-width: 98vw;
@@ -4137,108 +4563,122 @@ body.app-ready > footer {
     /* ЕЩЕ БОЛЬШЕ увеличиваем базовый размер для маленьких экранов */
     font-size: 18px;
   }
-  
+
   body {
-    font-size: 1rem; /* 16px */
+    font-size: 1rem;
+    /* 16px */
   }
 
   /* Ключевые текстовые блоки */
   .hero-text h1 {
     font-size: 2rem;
   }
+
   .hero-text p {
     font-size: 0.95rem;
   }
-  
+
   .section-header h2 {
     font-size: 1.6rem;
   }
+
   .section-header p {
     font-size: 0.85rem;
   }
-  
+
   .service-card h3 {
     font-size: 1.1rem;
   }
+
   .service-card p {
     font-size: 0.85rem;
   }
-  
+
   .news-card-title {
     font-size: 1rem;
   }
+
   .news-card-excerpt {
     font-size: 0.8rem;
   }
+
   .news-card-image {
     height: 180px;
   }
-  
+
   .about-text p {
     font-size: 0.85rem;
   }
-  
+
   .contact-item-text p,
   .contact-item-text a {
     font-size: 0.85rem;
   }
-  
+
   .vacancy-title {
     font-size: 1.1rem;
   }
+
   .vacancy-requirements li,
   .vacancy-responsibilities li,
   .vacancy-conditions li {
     font-size: 0.85rem;
   }
-  
+
   /* Hero секция - уплотняем отступы */
   .hero {
     min-height: 35vh;
     padding: calc(var(--navbar-height) + 0.1rem) 3% 1rem;
   }
+
   .hero-slideshow {
     display: none;
   }
+
   .page-header {
     padding: clamp(90px, 12vh, 130px) 3% 15px;
   }
+
   .page-header h1 {
     font-size: 1.6rem;
   }
+
   .contact-cta h2 {
     font-size: 1.4rem;
   }
-  
+
   .hero-stats {
     display: flex;
-    justify-content: space-between; /* Равномерное распределение */
+    justify-content: space-between;
+    /* Равномерное распределение */
     align-items: center;
     gap: 0.5rem;
     margin-top: 1.5rem;
     padding-top: 1rem;
     border-top: 1px solid rgba(0, 78, 150, 0.15);
-    flex-wrap: nowrap; /* Жёстко запрещаем перенос */
-    overflow-x: auto;  /* Скролл если не хватает места */
+    flex-wrap: nowrap;
+    /* Жёстко запрещаем перенос */
+    overflow-x: auto;
+    /* Скролл если не хватает места */
     -webkit-overflow-scrolling: touch;
   }
-  
+
   .stat-item {
     flex: 1;
     min-width: 70px;
     padding: 0.5rem 0.25rem;
   }
-  
+
   .stat-number {
     font-size: 1.2rem;
     margin-bottom: 0.25rem;
   }
-  
+
   .stat-label {
     font-size: 0.65rem;
     line-height: 1.2;
   }
-  
+
   /* Секции - значительно уменьшаем отступы между секциями */
   .services,
   .about-preview,
@@ -4250,7 +4690,7 @@ body.app-ready > footer {
   .vacancies {
     padding: 24px 3%;
   }
-  
+
   /* Сетки - gap ещё меньше */
   .services-grid,
   .projects-grid,
@@ -4260,123 +4700,149 @@ body.app-ready > footer {
   .benefits-grid {
     gap: 0.85rem;
   }
-  
+
   /* Услуги - уплотняем */
   .service-card {
     padding: 1rem;
     border-radius: 12px;
   }
+
   .service-icon {
     width: 45px;
     height: 45px;
     margin-bottom: 0.75rem;
     border-radius: 8px;
   }
+
   .service-icon svg {
     width: 24px;
     height: 24px;
   }
-  
+
   /* Проекты - уплотняем */
   .project-image {
     height: 180px;
   }
+
   .project-content {
     padding: 0.85rem;
   }
+
   .project-category {
     padding: 0.2rem 0.6rem;
     font-size: 0.6rem;
     margin-bottom: 0.5rem;
   }
+
   .project-content h3 {
     font-size: 1rem;
     margin-bottom: 0.4rem;
   }
+
   .project-content p {
     font-size: 0.8rem;
     margin-bottom: 0.6rem;
   }
-  
+
   /* Новости - ещё компактнее */
   .news-card {
     margin-bottom: 0.5rem;
     border-radius: 10px;
-    height: auto; /* На очень маленьких экранах убираем фиксированную высоту */
-    min-height: 260px; /* Чуть меньше минимальная высота */
-    width: 100%; /* На очень маленьких экранах ширина 100% */
+    height: auto;
+    /* На очень маленьких экранах убираем фиксированную высоту */
+    min-height: 260px;
+    /* Чуть меньше минимальная высота */
+    width: 100%;
+    /* На очень маленьких экранах ширина 100% */
   }
+
   .news-card-image {
     height: 180px;
   }
+
   .news-card-content {
     padding: 0.85rem;
   }
+
   .news-card-category {
     padding: 0.2rem 0.6rem;
     font-size: 0.55rem;
     top: 0.5rem;
     left: 0.5rem;
   }
+
   .news-card-date {
     font-size: 0.7rem;
     margin-bottom: 0.35rem;
     gap: 0.25rem;
   }
+
   .news-card-date svg {
     width: 12px;
     height: 12px;
   }
+
   .news-card-title {
     font-size: 0.95rem;
     margin-bottom: 0.35rem;
     line-height: 1.3;
   }
+
   .news-card-excerpt {
     font-size: 0.75rem;
     margin-bottom: 0.5rem;
     line-height: 1.4;
   }
+
   .news-grid {
     gap: 0.85rem;
   }
+
   .news-tab {
     font-size: 0.85rem;
     padding: 0.5rem 1.25rem;
   }
-  
+
   /* Документы - уплотняем */
   .doc-card {
     padding: 0.85rem;
   }
+
   .doc-preview {
     min-height: 160px;
   }
+
   .doc-title {
     font-size: 0.9rem;
   }
+
   .doc-description {
     font-size: 0.8rem;
   }
-  
+
   /* Вакансии - уплотняем */
   .vacancy-header {
     padding: 0.85rem;
   }
+
   .vacancy-title {
     font-size: 1rem;
   }
+
   .vacancy-department {
     font-size: 0.75rem;
   }
+
   .vacancy-body {
     padding: 0.85rem;
   }
+
   .vacancy-requirements h4,
   .vacancy-responsibilities h4,
   .vacancy-conditions h4 {
     font-size: 0.9rem;
   }
+
   .vacancy-requirements li,
   .vacancy-responsibilities li,
   .vacancy-conditions li {
@@ -4384,137 +4850,163 @@ body.app-ready > footer {
     margin-bottom: 0.35rem;
     padding-left: 1rem;
   }
+
   .vacancy-footer {
     padding: 0.85rem;
   }
-  
+
   /* Преимущества - уплотняем */
   .benefit-card {
     padding: 1rem;
   }
+
   .benefit-icon {
     width: 45px;
     height: 45px;
     margin-bottom: 0.75rem;
   }
+
   .benefit-icon svg {
     width: 24px;
     height: 24px;
   }
+
   .benefit-card h3 {
     font-size: 1rem;
     margin-bottom: 0.4rem;
   }
+
   .benefit-card p {
     font-size: 0.8rem;
   }
+
   .careers-title {
     font-size: 1.4rem;
   }
+
   .careers-text-highlight {
     font-size: 0.9rem;
   }
-  
+
   /* О компании */
   .about-title {
     font-size: 1.3rem;
   }
+
   .direction-title {
     font-size: 1rem;
   }
+
   .direction-text {
     font-size: 0.8rem;
   }
+
   .fact-number {
     font-size: 1.8rem;
   }
+
   .fact-label {
     font-size: 0.85rem;
   }
+
   .mission-title {
     font-size: 1.4rem;
   }
+
   .mission-text-highlight {
     font-size: 0.9rem;
     padding: 1rem;
   }
+
   .value-heading {
     font-size: 1rem;
   }
+
   .value-description {
     font-size: 0.8rem;
   }
+
   .feature-title {
     font-size: 1rem;
   }
+
   .feature-desc {
     font-size: 0.8rem;
   }
-  
+
   /* Футер - уплотняем */
   .footer {
     padding: 20px 3%;
   }
-  
+
   /* Кнопки - компактнее */
   .btn-primary,
   .btn-secondary {
     padding: 0.7rem 1.25rem;
     font-size: 0.85rem;
   }
-  
+
   /* Loader - меньше */
   .orbit-container {
     width: 60px;
     height: 60px;
   }
+
   .plane-icon {
     width: 18px;
     height: 18px;
     top: -8px;
   }
+
   .loader-text {
     font-size: 0.85rem;
     margin-top: 16px;
   }
-  
+
   /* Модальные окна - компактнее */
   .modal-overlay {
     overflow: auto;
     align-items: flex-start;
     padding: 0.75rem 0;
   }
+
   .modal-container {
     margin-top: 0.1rem;
     max-width: calc(100% - 1.5rem);
     max-height: calc(95vh - 1.5rem);
     overflow-y: auto;
   }
-  
+
   .modal-header {
     padding: clamp(1rem, 3vw, 2rem);
   }
+
   .modal-title {
     font-size: 1.15rem;
   }
+
   .modal-subtitle {
     font-size: 0.8rem;
   }
+
   .modal-body {
     padding: 0.85rem;
     max-height: none;
   }
+
   .modal-category {
     font-size: 0.7rem;
     padding: 0.3rem 1rem;
   }
+
   .modal-date {
     font-size: 0.75rem;
   }
+
   .modal-content {
     font-size: 0.85rem;
   }
-  
+
   /* Кнопка закрытия модалки - адаптируем для маленьких экранов */
   .modal-close {
     top: 8px;
@@ -4523,11 +5015,13 @@ body.app-ready > footer {
     height: 30px;
     border-width: 1.5px;
   }
+
   .modal-close svg {
     width: 16px;
     height: 16px;
     fill: #000;
   }
+
   /* Lightbox - кнопка закрытия внутри области просмотра */
   .lightbox-close {
     top: 10px;
@@ -4537,316 +5031,325 @@ body.app-ready > footer {
     background: rgba(255, 255, 255, 0.9);
     z-index: 10;
   }
+
   .lightbox-close svg {
     width: 18px;
     height: 18px;
     fill: #333;
   }
+
   .lightbox-close:hover {
     background: rgba(255, 255, 255, 1);
   }
+
   .lightbox-close:hover svg {
     fill: #000;
   }
-  
+
   /* Формы - компактнее */
   .form-input,
   .form-select,
   .form-textarea {
-    font-size: 16px; /* Предотвращает масштабирование на iOS */
+    font-size: 16px;
+    /* Предотвращает масштабирование на iOS */
     padding: 0.75rem 0.9rem;
   }
+
   .form-label {
     font-size: 0.85rem;
   }
+
   .form-submit {
     font-size: 0.9rem;
     padding: 0.85rem 1.25rem;
   }
+
   .form-agreement-text {
     font-size: 0.75rem;
   }
 }
+
 /* User Notice Banner Styles - Нейтральные стили для уведомления о настройках */
 
 /* Статический фолбэк без JS (требование безопасности) */
 .no-js .user-notice-fallback {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #f5f5f5;
-    padding: 1rem;
-    text-align: center;
-    z-index: 2900;
-    border-top: 2px solid #0033A0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #f5f5f5;
+  padding: 1rem;
+  text-align: center;
+  z-index: 2900;
+  border-top: 2px solid #0033A0;
 }
 
 .no-js .user-notice-fallback p {
-    margin: 0 0 0.5rem 0;
-    color: #333;
-    font-size: 0.9rem;
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 0.9rem;
 }
 
 .no-js .user-notice-fallback a {
-    color: #0033A0;
-    text-decoration: underline;
+  color: #0033A0;
+  text-decoration: underline;
 }
 
 .user-notice-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-    z-index: 2900;
-    display: none;
-    flex-direction: column;
-    padding: 1.5rem;
-    max-height: 90vh;
-    overflow-y: auto;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 2900;
+  display: none;
+  flex-direction: column;
+  padding: 1.5rem;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .user-notice-banner.active {
-    animation: slideUp 0.3s ease-out;
+  animation: slideUp 0.3s ease-out;
 }
 
 .user-notice-banner.visible {
-    display: flex;
+  display: flex;
 }
 
 .user-notice-banner.hidden {
-    display: none;
+  display: none;
 }
 
 @keyframes slideUp {
-    from {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .user-notice-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .user-notice-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1a1a1a;
-    margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.75rem;
 }
 
 .user-notice-text {
-    font-size: 0.95rem;
-    color: #4a4a4a;
-    line-height: 1.6;
-    margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+  color: #4a4a4a;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
 }
 
 .user-notice-buttons {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
 
 .user-btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: none;
-    font-family: inherit;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  font-family: inherit;
 }
 
 .user-btn-primary {
-    background: #0033A0;
-    color: #fff;
+  background: #0033A0;
+  color: #fff;
 }
 
 .user-btn-primary:hover {
-    background: #002880;
+  background: #002880;
 }
 
 .user-btn-secondary {
-    background: #f0f0f0;
-    color: #333;
+  background: #f0f0f0;
+  color: #333;
 }
 
 .user-btn-secondary:hover {
-    background: #e0e0e0;
+  background: #e0e0e0;
 }
 
 .user-btn-outline {
-    background: transparent;
-    color: #0033A0;
-    border: 2px solid #0033A0;
+  background: transparent;
+  color: #0033A0;
+  border: 2px solid #0033A0;
 }
 
 .user-btn-outline:hover {
-    background: #0033A0;
-    color: #fff;
+  background: #0033A0;
+  color: #fff;
 }
 
 .user-privacy-link {
-    font-size: 0.85rem;
-    color: #0033A0;
-    text-decoration: underline;
+  font-size: 0.85rem;
+  color: #0033A0;
+  text-decoration: underline;
 }
 
 .user-privacy-link:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .user-back-btn {
-    background: none;
-    border: none;
-    color: #0033A0;
-    font-size: 0.95rem;
-    cursor: pointer;
-    padding: 0.5rem 0;
-    margin-bottom: 0.5rem;
+  background: none;
+  border: none;
+  color: #0033A0;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  margin-bottom: 0.5rem;
 }
 
 .user-back-btn:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .user-settings-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: #1a1a1a;
-    margin-bottom: 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
 }
 
 .user-settings-subtitle {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.25rem;
 }
 
 .user-categories {
-    margin-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .user-category {
-    padding: 1rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    margin-bottom: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
 }
 
 .user-category-required {
-    background: #f9f9f9;
+  background: #f9f9f9;
 }
 
 .user-category-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
 .user-category-info {
-    flex: 1;
+  flex: 1;
 }
 
 .user-category-name {
-    display: block;
-    font-weight: 500;
-    color: #1a1a1a;
-    margin-bottom: 0.25rem;
+  display: block;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 0.25rem;
 }
 
 .user-category-desc {
-    display: block;
-    font-size: 0.85rem;
-    color: #666;
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
 }
 
 .user-settings-icon {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: #0033A0;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 51, 160, 0.3);
-    transition: all 0.2s ease;
-    z-index: 9999;
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #0033A0;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 51, 160, 0.3);
+  transition: all 0.2s ease;
+  z-index: 9999;
 }
 
 .user-settings-icon.visible {
-    display: flex;
+  display: flex;
 }
 
 .user-settings-icon.hidden {
-    display: none;
+  display: none;
 }
 
 .user-settings-icon:hover {
-    background: #002880;
-    transform: scale(1.1);
+  background: #002880;
+  transform: scale(1.1);
 }
 
 .user-settings-icon svg {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }
 
 @media (max-width: 768px) {
-    .user-notice-banner {
-        padding: 1rem;
-    }
-    
-    .user-notice-buttons {
-        flex-direction: column;
-    }
-    
-    .user-btn {
-        width: 100%;
-        text-align: center;
-    }
-    
-    .user-category-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .user-settings-icon {
-        width: 45px;
-        height: 45px;
-        bottom: 1rem;
-        right: 1rem;
-    }
+  .user-notice-banner {
+    padding: 1rem;
+  }
+
+  .user-notice-buttons {
+    flex-direction: column;
+  }
+
+  .user-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .user-category-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-settings-icon {
+    width: 45px;
+    height: 45px;
+    bottom: 1rem;
+    right: 1rem;
+  }
 }
 
 /* Стили для уровней переключения */
 .user-notice-level-2 {
-    display: none;
+  display: none;
 }
 
 .user-notice-level-2.visible {
-    display: block;
+  display: block;
 }
 
 .user-notice-level-1.hidden {
-    display: none;
+  display: none;
 }
