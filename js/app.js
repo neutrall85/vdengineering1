@@ -64,6 +64,21 @@ class Application {
         }
       }
       
+      // Инициализация специфичных страниц через глобальные функции
+      const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
+      const pageInitMap = {
+        'projects': 'initProjectsPage',
+        'services': 'initServicesPage',
+        'vacancies': 'initVacanciesPage'
+      };
+      
+      if (pageInitMap[currentPage]) {
+        const initFn = window[pageInitMap[currentPage]];
+        if (typeof initFn === 'function') {
+          initFn();
+        }
+      }
+      
       this._initFloatingCTA();
       this._initImageLazyLoading();
       this._initPrefersReducedMotion();

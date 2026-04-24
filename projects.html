@@ -44,13 +44,6 @@
   <script src="js/app.js" defer></script>
   <script src="js/pages/projects.js" defer></script>
   <script>
-    // Инициализация страницы проектов через глобальную функцию
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof window.initProjectsPage === 'function') {
-        window.initProjectsPage();
-      }
-    });
-    // Удаляем класс no-js при загрузке JS
     document.documentElement.classList.remove('no-js');
   </script>
 </head>

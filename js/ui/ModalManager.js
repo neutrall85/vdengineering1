@@ -226,6 +226,11 @@ class ModalManager {
     
     this.activeModal = null;
 
+    // Сброс формы КП после закрытия модалки
+    if (key === 'proposal' && typeof formManager !== 'undefined' && typeof formManager._resetForm === 'function') {
+      formManager._resetForm();
+    }
+
     if (config.onClose) config.onClose(overlay);
     if (window.Services?.eventBus) {
       window.Services.eventBus.emit('modal:closed', { key });

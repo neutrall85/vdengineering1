@@ -210,10 +210,3 @@ window.initServicesPage = function() {
     });
   }
 };
-
-// Автоматический запуск, если страница загружена
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', window.initServicesPage);
-} else {
-  window.initServicesPage();
-}

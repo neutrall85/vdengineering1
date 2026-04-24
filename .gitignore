@@ -1,5 +1,1 @@
-(js/ui/managers/PolicyModalManager.js, js/ui/managers/UniversalApplicationModalManager.js, js/ui/templates/ComponentTemplates.js, js/ui/templates/ModalTemplates.js)
-
-(about.html, docs.html, index.html, js/ui/ComponentLoader.js, news.html, projects.html, services.html, vacancies.html)
-
-(empty)
+Nothing should be ignored since the changes only include source files (.js, .html) and no build artifacts, dependencies, or temporary files.

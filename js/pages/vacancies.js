@@ -13,10 +13,3 @@ window.initVacanciesPage = function() {
   
   console.log('Страница вакансий инициализирована');
 };
-
-// Автозапуск если не используется как модуль, или ожидание DOMContentLoaded
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', window.initVacanciesPage);
-} else {
-  window.initVacanciesPage();
-}

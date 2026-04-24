@@ -72,13 +72,7 @@
   <script src="js/app.js" defer></script>
   <script src="js/pages/vacancies.js" defer></script>
   <script>
-    // Удаляем класс no-js при загрузке JS
     document.documentElement.classList.remove('no-js');
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof window.initVacanciesPage === 'function') {
-        window.initVacanciesPage();
-      }
-    });
   </script>
 </head>
 <body>
