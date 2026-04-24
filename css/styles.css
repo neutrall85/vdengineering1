@@ -2703,9 +2703,35 @@ body.app-ready > footer {
 
 
 /* ==================== УТИЛИТАРНЫЕ КЛАССЫ ДЛЯ СТРАНИЦ ==================== */
-.page-header-bg { background: var(--vd-light-blue); padding: 120px 5% 60px; text-align: center; color: #004E96; }
-.page-header-title { font-size: 2.5rem; margin-bottom: 1rem; }
-.page-header-desc { font-size: 1.1rem; max-width: 800px; margin: 0 auto; }
+.page-header {
+  background: var(--vd-light-blue);
+  padding: 120px 5% 60px;
+  text-align: center;
+  color: #004E96;
+}
+
+.page-header h1 {
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  margin-bottom: 1rem;
+}
+
+.page-header p {
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0.9;
+}
+
+.page-header-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.page-header-desc {
+  font-size: 1.1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
 
 .certificate-section-bg { padding: 60px 5%; background: var(--vd-light-gray); }
 .certificate-widgets-container { max-width: 900px; margin: 0 auto; }

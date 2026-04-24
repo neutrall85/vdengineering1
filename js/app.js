@@ -277,11 +277,9 @@ class Application {
 
   _initFloatingCTA() {
     const floatingBtn = document.querySelector('.floating-cta-btn');
-    const commercialOfferTitle = document.querySelector('#commercial-offer-title');
+    const footer = document.querySelector('footer');
 
     if (!floatingBtn) return;
-
-    let hasPassedTitle = false;
 
     // Обработчик клика по плавающей кнопке
     floatingBtn.addEventListener('click', () => {
@@ -295,38 +293,23 @@ class Application {
     const toggleButton = () => {
       const scrollY = window.scrollY;
 
+      // Показываем кнопку после прокрутки 350px от верха
       if (scrollY <= 350) {
         floatingBtn.classList.remove('visible');
-        hasPassedTitle = false;
         return;
       }
 
-      if (!commercialOfferTitle) {
-        floatingBtn.classList.add('visible');
-        return;
+      // Скрываем кнопку, когда виден футер
+      if (footer) {
+        const footerRect = footer.getBoundingClientRect();
+        if (footerRect.top < window.innerHeight) {
+          floatingBtn.classList.remove('visible');
+          return;
+        }
       }
 
-      const rect = commercialOfferTitle.getBoundingClientRect();
-      const isTitleVisible = rect.top < window.innerHeight && rect.bottom > 0;
-      const isTitleAbove = rect.bottom <= 0;
-
-      if (isTitleVisible) {
-        floatingBtn.classList.remove('visible');
-        hasPassedTitle = false;
-        return;
-      }
-
-      if (isTitleAbove) {
-        hasPassedTitle = true;
-        floatingBtn.classList.remove('visible');
-        return;
-      }
-
-      if (!hasPassedTitle) {
-        floatingBtn.classList.add('visible');
-      } else {
-        floatingBtn.classList.remove('visible');
-      }
+      // Показываем кнопку во всех остальных случаях
+      floatingBtn.classList.add('visible');
     };
 
     toggleButton();
@@ -467,8 +450,6 @@ function initApp() {
         newsRenderer = new NewsRenderer(NEWS_DATA);
         newsManager = new NewsManager(NEWS_DATA, newsRenderer);
         newsManager.init();
-        window.newsManager = newsManager;
-        window.newsRenderer = newsRenderer;
       } else {
         Logger.ERROR('NewsRenderer или NewsManager не определен');
       }
@@ -486,7 +467,6 @@ function initApp() {
         Utils.Validator
       );
       formManager.init();
-      window.formManager = formManager;
       window.openModal = () => formManager.openModal();
     } catch (err) {
       Logger.ERROR('Failed to initialize FormManager:', err);

@@ -61,9 +61,9 @@
         // Делегирование кликов
         container.addEventListener('click', (e) => {
           const link = e.target.closest('.news-card-link');
-          if (link && link.dataset.newsId && window.newsManager) {
+          if (link && link.dataset.newsId && typeof newsManager !== 'undefined') {
             e.preventDefault();
-            window.newsManager.openNewsModal(parseInt(link.dataset.newsId, 10));
+            newsManager.openNewsModal(parseInt(link.dataset.newsId, 10));
           }
         });
     }
