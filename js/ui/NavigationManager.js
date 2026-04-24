@@ -112,6 +112,9 @@ class NavigationManager {
   _initMobileMenu() {
     if (!this.mobileMenu) return;
 
+    // Инициализация доступности мобильного меню: при закрытом меню ссылки недоступны для Tab
+    this._updateMobileMenuAccessibility(false);
+
     this.mobileMenu.addEventListener('touchstart', (e) => {
       this.touchStartX = e.touches[0].clientX;
     }, { passive: true });
@@ -219,6 +222,9 @@ class NavigationManager {
     if (this.mobileMenuOverlay) this.mobileMenuOverlay.classList.add('active');
     if (this.mobileMenuBtn) this.mobileMenuBtn.classList.add('active');
 
+    // Обновляем доступность: делаем ссылки мобильного меню доступными для Tab
+    this._updateMobileMenuAccessibility(true);
+
     // Обновляем состояние через AppState
     if (window.AppState) {
       AppState.setState('navigation.isMobileMenuOpen', true);
@@ -238,6 +244,9 @@ class NavigationManager {
     this.mobileMenu.classList.remove('active');
     if (this.mobileMenuOverlay) this.mobileMenuOverlay.classList.remove('active');
     if (this.mobileMenuBtn) this.mobileMenuBtn.classList.remove('active');
+
+    // Обновляем доступность: делаем ссылки мобильного меню недоступными для Tab
+    this._updateMobileMenuAccessibility(false);
 
     // Обновляем состояние через AppState
     if (window.AppState) {
@@ -262,6 +271,25 @@ class NavigationManager {
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /**
+   * Обновление доступности ссылок мобильного меню для навигации с клавиатуры
+   * @param {boolean} isOpen - состояние меню (открыто/закрыто)
+   */
+  _updateMobileMenuAccessibility(isOpen) {
+    if (!this.mobileMenu) return;
+    
+    const links = this.mobileMenu.querySelectorAll('a');
+    links.forEach(link => {
+      if (isOpen) {
+        link.setAttribute('tabindex', '0');
+        link.removeAttribute('aria-hidden');
+      } else {
+        link.setAttribute('tabindex', '-1');
+        link.setAttribute('aria-hidden', 'true');
+      }
+    });
   }
 
   destroy() {

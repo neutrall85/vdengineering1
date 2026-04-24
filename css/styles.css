@@ -7,7 +7,7 @@
 
 /* Доступность - стили фокуса для клавиатурной навигации */
 *:focus-visible {
-  outline: 3px solid var(--vd-light-blue);
+  outline: 3px solid #9CA3AF;
   outline-offset: 2px;
 }
 
@@ -17,9 +17,9 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid var(--vd-light-blue);
+  outline: 3px solid #9CA3AF;
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(230, 240, 250, 0.5);
+  box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3);
 }
 
 /* Убираем стандартный outline для форм, так как уже есть кастомный */
@@ -310,15 +310,27 @@ body.app-ready > footer {
   font-size: clamp(0.875rem, 1.2vw, 1rem);
   padding: 0.5rem 0;
   border-radius: 50px;
-  transition: color var(--duration-fast) var(--ease-smooth);
+  transition: color var(--duration-fast) var(--ease-smooth),
+              transform var(--duration-fast) var(--ease-smooth);
   position: relative;
   display: inline-block;
+}
+
+.nav-links a:focus-visible {
+  outline: 3px solid #9CA3AF;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3);
+  transform: none !important;
 }
 
 .nav-links a:hover {
   background: transparent;
   color: white;
   transform: translateY(-2px);
+}
+
+.nav-links a:focus-visible:hover {
+  transform: none !important;
 }
 
 .nav-links a.active {
@@ -341,6 +353,11 @@ body.app-ready > footer {
 
 .nav-links a:hover::after {
   transform: scaleX(1);
+}
+
+/* Скрываем подчеркивание при фокусе с клавиатуры */
+.nav-links a:focus-visible::after {
+  transform: scaleX(0);
 }
 
 /* Полоса для активной ссылки */
@@ -411,6 +428,18 @@ body.app-ready > footer {
   padding-left: 1.25rem;
 }
 
+/* Стили для ссылок мобильного меню, скрытых от клавиатуры */
+.mobile-menu a[tabindex="-1"] {
+  pointer-events: none;
+}
+
+.mobile-menu a:focus-visible {
+  outline: 3px solid #9CA3AF;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3);
+  transform: none;
+}
+
 .mobile-menu a:hover {
     background: rgba(0, 78, 150, 0.1);
     padding-left: 0.85rem;
@@ -419,6 +448,10 @@ body.app-ready > footer {
     margin-right: -0.85rem;
     transform: translateX(6px);
     border-bottom-color: transparent;
+}
+
+.mobile-menu a:focus-visible:hover {
+    transform: none;
 }
 
 .mobile-menu-overlay {
