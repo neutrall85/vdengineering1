@@ -195,11 +195,6 @@ window.initServicesPage = function() {
     });
   });
 
-  const closeBtn = document.getElementById('serviceModalCloseBtn');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeServiceModal);
-  }
-
   // Кнопка "Запросить КП" внутри страницы (если есть)
   const requestQuoteBtn = document.getElementById('servicesRequestQuoteBtn');
   if (requestQuoteBtn) {
