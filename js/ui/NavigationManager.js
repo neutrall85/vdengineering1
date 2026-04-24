@@ -21,11 +21,11 @@ class NavigationManager {
 
   init() {
     try {
-      this.navbar = Utils.DOM.getElement('navbar');
-      this.scrollToTopBtn = Utils.DOM.getElement('scrollToTop');
-      this.mobileMenu = Utils.DOM.getElement('mobileMenu');
-      this.mobileMenuBtn = Utils.DOM.getElement('mobileMenuBtn');
-      this.mobileMenuOverlay = Utils.DOM.getElement('mobileMenuOverlay');
+      this.navbar = document.getElementById('navbar');
+      this.scrollToTopBtn = document.getElementById('scrollToTop');
+      this.mobileMenu = document.getElementById('mobileMenu');
+      this.mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      this.mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
 
       if (!this.navbar || !this.mobileMenu || !this.mobileMenuBtn) {
         Logger.WARN('Navigation elements not found');
@@ -94,17 +94,17 @@ class NavigationManager {
 
     if (this.navbar) {
       if (scrollY > this.scrollThreshold) {
-        Utils.DOM.addClass(this.navbar, 'scrolled');
+        this.navbar.classList.add('scrolled');
       } else {
-        Utils.DOM.removeClass(this.navbar, 'scrolled');
+        this.navbar.classList.remove('scrolled');
       }
     }
 
     if (this.scrollToTopBtn) {
       if (scrollY > this.scrollTopThreshold) {
-        Utils.DOM.addClass(this.scrollToTopBtn, 'visible');
+        this.scrollToTopBtn.classList.add('visible');
       } else {
-        Utils.DOM.removeClass(this.scrollToTopBtn, 'visible');
+        this.scrollToTopBtn.classList.remove('visible');
       }
     }
   }
@@ -181,9 +181,9 @@ class NavigationManager {
   openMobileMenu() {
     if (!this.mobileMenu) return;
 
-    Utils.DOM.addClass(this.mobileMenu, 'active');
-    if (this.mobileMenuOverlay) Utils.DOM.addClass(this.mobileMenuOverlay, 'active');
-    if (this.mobileMenuBtn) Utils.DOM.addClass(this.mobileMenuBtn, 'active');
+    this.mobileMenu.classList.add('active');
+    if (this.mobileMenuOverlay) this.mobileMenuOverlay.classList.add('active');
+    if (this.mobileMenuBtn) this.mobileMenuBtn.classList.add('active');
 
     // Обновляем состояние через AppState
     if (window.AppState) {
@@ -201,9 +201,9 @@ class NavigationManager {
   closeMobileMenu() {
     if (!this.mobileMenu) return;
 
-    Utils.DOM.removeClass(this.mobileMenu, 'active');
-    if (this.mobileMenuOverlay) Utils.DOM.removeClass(this.mobileMenuOverlay, 'active');
-    if (this.mobileMenuBtn) Utils.DOM.removeClass(this.mobileMenuBtn, 'active');
+    this.mobileMenu.classList.remove('active');
+    if (this.mobileMenuOverlay) this.mobileMenuOverlay.classList.remove('active');
+    if (this.mobileMenuBtn) this.mobileMenuBtn.classList.remove('active');
 
     // Обновляем состояние через AppState
     if (window.AppState) {

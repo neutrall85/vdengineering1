@@ -351,8 +351,8 @@ const ComponentLoader = {
                         form.classList.remove('form-element-hidden');
                         successMessage.classList.remove('show');
                         
-                        if (window.formManager) {
-                            window.formManager.currentFiles = [];
+                        if (typeof formManager !== 'undefined') {
+                            formManager.currentFiles = [];
                             const fileList = document.getElementById('universalFileList');
                             if (fileList) fileList.innerHTML = '';
                             const fileText = document.querySelector('#universalFileDrop .form-file-text');
@@ -370,11 +370,11 @@ const ComponentLoader = {
             Utils.PhoneUtils.setupAutoPrefix(phoneInput);
         }
 
-        if (window.formManager) {
+        if (typeof formManager !== 'undefined') {
             setTimeout(() => {
                 const universalFileDrop = document.getElementById('universalFileDrop');
                 if (universalFileDrop) {
-                    window.formManager._initFileUpload(document.getElementById('universalApplicationModalOverlay'));
+                    formManager._initFileUpload(document.getElementById('universalApplicationModalOverlay'));
                 }
             }, 150);
         }

@@ -180,8 +180,8 @@ class ModalManager {
     setTimeout(() => {
       overlay.classList.add('active');
 
-      if (key === 'form' && window.formManager) {
-        window.formManager.initFileUploadOnModalOpen();
+      if (key === 'form' && typeof formManager !== 'undefined') {
+        formManager.initFileUploadOnModalOpen();
       }
 
       const focusTarget = options.focusSelector 

@@ -62,8 +62,51 @@
 <!-- Статический фолбэк без JS (требование безопасности) -->
 <noscript>
   <div class="user-notice-fallback">
-    <p>Для улучшения работы сайта используются технологии хранения данных. <a href="#privacy-policy">Политика конфиденциальности</a></p>
+    <p>Для улучшения работы сайта используются технологии хранения данных. <a href="docs.html">Политика конфиденциальности</a></p>
   </div>
+  
+  <!-- Базовая навигация без JS -->
+  <header class="no-js-header">
+    <div class="container">
+      <div class="logo">
+        <img src="images/logo.svg" alt="Волга-Днепр Инжиниринг" width="180" height="60">
+      </div>
+      <nav class="no-js-nav">
+        <ul>
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="about.html">О компании</a></li>
+          <li><a href="services.html">Услуги</a></li>
+          <li><a href="projects.html">Проекты</a></li>
+          <li><a href="news.html">Новости</a></li>
+          <li><a href="vacancies.html">Вакансии</a></li>
+          <li><a href="docs.html">Документы</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <!-- Основной контент без JS -->
+  <main class="no-js-main">
+    <div class="container">
+      <h1>Волга-Днепр Инжиниринг</h1>
+      <p>Для полноценной работы сайта необходимо включить JavaScript в настройках браузера.</p>
+      <p>Вы можете ознакомиться с основной информацией о компании в статическом режиме:</p>
+      <ul>
+        <li><a href="about.html">О компании</a></li>
+        <li><a href="services.html">Наши услуги</a></li>
+        <li><a href="projects.html">Реализованные проекты</a></li>
+        <li><a href="docs.html">Документация и сертификаты</a></li>
+      </ul>
+    </div>
+  </main>
+  
+  <!-- Футер без JS -->
+  <footer class="no-js-footer">
+    <div class="container">
+      <p>&copy; <span id="currentYearNoJS">2024</span> ООО «Волга-Днепр Инжиниринг». Все права защищены.</p>
+      <p>Телефон: +7 (495) 123-45-67 | Email: info@volga-dnepr.com</p>
+    </div>
+  </footer>
 </noscript>
 
 <!-- Лоадер страницы - показывается до полной загрузки компонентов -->

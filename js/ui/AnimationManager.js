@@ -25,19 +25,13 @@ class AnimationManager {
     this.fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          if (window.Utils && Utils.DOM) {
-            Utils.DOM.addClass(entry.target, 'visible');
-          } else {
-            entry.target.classList.add('visible');
-          }
+          entry.target.classList.add('visible');
           this.fadeObserver.unobserve(entry.target);
         }
       });
     }, options);
 
-    const elements = window.Utils && Utils.DOM 
-      ? Utils.DOM.queryAll('.fade-in')
-      : document.querySelectorAll('.fade-in');
+    const elements = document.querySelectorAll('.fade-in');
     
     elements.forEach(el => {
       this.fadeObserver.observe(el);
@@ -47,9 +41,7 @@ class AnimationManager {
   }
 
   _initCounters() {
-    const counters = window.Utils && Utils.DOM 
-      ? Utils.DOM.queryAll('.stat-number')
-      : document.querySelectorAll('.stat-number');
+    const counters = document.querySelectorAll('.stat-number');
     
     if (counters.length === 0) return;
 

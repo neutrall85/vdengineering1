@@ -35,16 +35,16 @@ class FormManager {
   
   openModal() {
     if (!this.rateLimiter.canProceed()) {
-      const warning = Utils.DOM.getElement('rateLimitWarning');
+      const warning = document.getElementById('rateLimitWarning');
       if (warning) {
-        Utils.DOM.addClass(warning, 'show');
-        setTimeout(() => Utils.DOM.removeClass(warning, 'show'), 5000);
+        warning.classList.add('show');
+        setTimeout(() => warning.classList.remove('show'), 5000);
       }
       return;
     }
 
-    const warning = Utils.DOM.getElement('rateLimitWarning');
-    if (warning) Utils.DOM.removeClass(warning, 'show');
+    const warning = document.getElementById('rateLimitWarning');
+    if (warning) warning.classList.remove('show');
 
     if (typeof modalManager !== 'undefined') {
       modalManager.open('form');
@@ -304,14 +304,14 @@ class FormManager {
     }
     
     // Иначе используем стандартное предупреждение
-    const warning = Utils.DOM.getElement('rateLimitWarning');
+    const warning = document.getElementById('rateLimitWarning');
     if (warning) {
       warning.replaceChildren();
       const p = document.createElement('p');
       p.textContent = `⚠️ ${message}`;
       warning.appendChild(p);
-      Utils.DOM.addClass(warning, 'show');
-      setTimeout(() => Utils.DOM.removeClass(warning, 'show'), 5000);
+      warning.classList.add('show');
+      setTimeout(() => warning.classList.remove('show'), 5000);
     } else {
       alert(message);
     }
@@ -392,14 +392,14 @@ class FormManager {
   }
 
   _initFormSubmit() {
-    const form = Utils.DOM.getElement('proposalForm');
+    const form = document.getElementById('proposalForm');
     if (form) {
       form.addEventListener('submit', (e) => this._handleSubmit(e));
     }
   }
 
   _initFloatingButton() {
-    const btn = Utils.DOM.query('.floating-cta-btn');
+    const btn = document.querySelector('.floating-cta-btn');
     if (btn) {
       btn.addEventListener('click', () => this.openModal());
     }
@@ -419,21 +419,21 @@ class FormManager {
     let isValid = true;
 
     fields.forEach(field => {
-      const element = Utils.DOM.getElement(field.id);
-      const errorEl = Utils.DOM.getElement(`${field.id}Error`);
+      const element = document.getElementById(field.id);
+      const errorEl = document.getElementById(`${field.id}Error`);
       const value = element?.value?.trim() || '';
 
       if (!field.validate(value)) {
-        if (element) Utils.DOM.addClass(element, 'error');
-        if (errorEl) Utils.DOM.addClass(errorEl, 'show');
+        if (element) element.classList.add('error');
+        if (errorEl) errorEl.classList.add('show');
         isValid = false;
       } else {
-        if (element) Utils.DOM.removeClass(element, 'error');
-        if (errorEl) Utils.DOM.removeClass(errorEl, 'show');
+        if (element) element.classList.remove('error');
+        if (errorEl) errorEl.classList.remove('show');
       }
     });
 
-    const honeypot = Utils.DOM.getElement('hp_website');
+    const honeypot = document.getElementById('hp_website');
     if (honeypot && honeypot.value) {
       return false;
     }
@@ -447,8 +447,8 @@ class FormManager {
     if (!this._validateForm()) return;
 
     if (!this.rateLimiter.canProceed()) {
-      const warning = Utils.DOM.getElement('rateLimitWarning');
-      if (warning) Utils.DOM.addClass(warning, 'show');
+      const warning = document.getElementById('rateLimitWarning');
+      if (warning) warning.classList.add('show');
       return;
     }
 
@@ -460,7 +460,7 @@ class FormManager {
       AppState.setState('forms.lastSubmissionTime', Date.now());
     }
 
-    const submitBtn = Utils.DOM.getElement('submitBtn');
+    const submitBtn = document.getElementById('submitBtn');
     
     // Сохраняем оригинальное содержимое кнопки (текст)
     const originalText = submitBtn.textContent;
@@ -482,13 +482,13 @@ class FormManager {
       const csrfToken = csrfTokenField?.value || window.CONFIG?.CSRF_TOKEN || '';
       
       const formData = {
-        companyName: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('companyName')?.value.trim() || ''),
-        contactPerson: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('contactPerson')?.value.trim() || ''),
-        email: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('email')?.value.trim() || ''),
-        phone: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('phone')?.value.trim() || ''),
-        aircraftType: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('aircraftType')?.value || ''),
-        serviceType: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('serviceType')?.value || ''),
-        taskDescription: Utils.Sanitizer.escapeHtml(Utils.DOM.getElement('taskDescription')?.value.trim() || ''),
+        companyName: Utils.Sanitizer.escapeHtml(document.getElementById('companyName')?.value.trim() || ''),
+        contactPerson: Utils.Sanitizer.escapeHtml(document.getElementById('contactPerson')?.value.trim() || ''),
+        email: Utils.Sanitizer.escapeHtml(document.getElementById('email')?.value.trim() || ''),
+        phone: Utils.Sanitizer.escapeHtml(document.getElementById('phone')?.value.trim() || ''),
+        aircraftType: Utils.Sanitizer.escapeHtml(document.getElementById('aircraftType')?.value || ''),
+        serviceType: Utils.Sanitizer.escapeHtml(document.getElementById('serviceType')?.value || ''),
+        taskDescription: Utils.Sanitizer.escapeHtml(document.getElementById('taskDescription')?.value.trim() || ''),
         files: this.currentFiles.map(file => ({
           name: file.name,
           size: file.size,
@@ -506,11 +506,11 @@ class FormManager {
       const result = await this.apiClient.submitForm(formData, { 'X-CSRF-Token': csrfToken });
 
       if (result.success) {
-        const form = Utils.DOM.getElement('proposalForm');
-        const successMessage = Utils.DOM.getElement('successMessage');
+        const formEl = document.getElementById('proposalForm');
+        const successMessage = document.getElementById('successMessage');
 
-        if (form) Utils.DOM.addClass(form, 'form-element-hidden');
-        if (successMessage) Utils.DOM.addClass(successMessage, 'show');
+        if (formEl) formEl.classList.add('form-element-hidden');
+        if (successMessage) successMessage.classList.add('show');
 
         setTimeout(() => {
           if (typeof modalManager !== 'undefined') {
@@ -539,23 +539,23 @@ class FormManager {
   }
 
   _resetForm() {
-    const form = Utils.DOM.getElement('proposalForm');
-    const successMessage = Utils.DOM.getElement('successMessage');
-    const fileList = Utils.DOM.getElement('fileList');
+    const form = document.getElementById('proposalForm');
+    const successMessage = document.getElementById('successMessage');
+    const fileList = document.getElementById('fileList');
 
     if (form) {
       form.reset();
-      Utils.DOM.removeClass(form, 'form-element-hidden');
+      form.classList.remove('form-element-hidden');
     }
 
-    if (successMessage) Utils.DOM.removeClass(successMessage, 'show');
+    if (successMessage) successMessage.classList.remove('show');
 
-    Utils.DOM.queryAll('.form-input, .form-select, .form-textarea').forEach(el => {
-      Utils.DOM.removeClass(el, 'error');
+    document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(el => {
+      el.classList.remove('error');
     });
 
-    Utils.DOM.queryAll('.error-message').forEach(el => {
-      Utils.DOM.removeClass(el, 'show');
+    document.querySelectorAll('.error-message').forEach(el => {
+      el.classList.remove('show');
     });
 
     this.currentFiles = [];
