@@ -100,11 +100,11 @@ class NewsManager {
 
     this.lightboxOverlay.classList.remove('active');
     
-    // Используем централизованный ScrollManager для восстановления скролла
+    // Используем только ScrollManager для восстановления скролла
     if (window.ScrollManager) {
       ScrollManager.unlock();
     } else {
-      document.body.classList.remove('no-scroll');
+      Logger.WARN('ScrollManager not available for news lightbox close');
     }
     
     // Сбрасываем обработчик клика

@@ -89,17 +89,8 @@ const Utils = (function() {
       return () => element.removeEventListener('keydown', handler);
     },
 
-    toggleBodyScroll(disable) {
-      if (disable) {
-        document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
-      } else {
-        document.body.style.overflow = '';
-        document.body.style.position = '';
-        document.body.style.width = '';
-      }
-    },
+    // Удалено: используйте ScrollManager.lock()/unlock() вместо этого метода
+    // toggleBodyScroll(disable) { ... }
 
     setAttributes(element, attributes) {
       Object.entries(attributes).forEach(([key, value]) => {
