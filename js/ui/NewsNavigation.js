@@ -37,6 +37,11 @@ class NewsNavigation {
    */
   _handleDirectLink() {
     const path = window.location.pathname;
+    // Проверяем, что мы на странице новостей (news.html)
+    if (!path.includes('news.html') && !path.match(/^\/news\//)) {
+      return;
+    }
+    
     const newsMatch = path.match(/^\/news\/(\d{4})\/(\d{2})\/(.+)$/);
     
     if (newsMatch) {
@@ -75,14 +80,12 @@ class NewsNavigation {
     const allNews = Object.values(this.newsManager.newsData).flat();
     
     for (const news of allNews) {
-      // Проверяем дату новости
-      const newsDate = new Date(news.date);
-      const newsYear = newsDate.getFullYear().toString();
-      const newsMonth = (newsDate.getMonth() + 1).toString().padStart(2, '0');
+      // Используем тот же метод парсинга даты что и в NewsRenderer для консистентности
+      const { year: newsYear, month: newsMonth } = Utils.SlugUtils ? Utils.SlugUtils.parseDate(news.date) : this._parseDateFallback(news.date);
       
       if (newsYear === year && newsMonth === month) {
         // Генерируем slug из заголовка
-        const generatedSlug = this._generateSlug(news.title);
+        const generatedSlug = Utils.SlugUtils ? Utils.SlugUtils.createShortSlug(news.title) : this._generateSlug(news.title);
         if (generatedSlug === slug || news.id.toString() === slug) {
           return news;
         }
@@ -91,19 +94,53 @@ class NewsNavigation {
     
     return null;
   }
+  
+  /**
+   * Fallback для парсинга даты если Utils.SlugUtils недоступен
+   * @param {string} dateStr - строка даты вида "Январь 2026"
+   * @returns {{year: string, month: string}}
+   */
+  _parseDateFallback(dateStr) {
+    if (!dateStr) return { year: '2023', month: '01' };
+    
+    const months = {
+      'январь': '01', 'февраль': '02', 'март': '03', 'апрель': '04',
+      'май': '05', 'июнь': '06', 'июль': '07', 'август': '08',
+      'сентябрь': '09', 'октябрь': '10', 'ноябрь': '11', 'декабрь': '12'
+    };
+    
+    const parts = dateStr.trim().split(/\s+/);
+    const monthName = parts[0].toLowerCase();
+    const year = parts[1] || '2023';
+    const month = months[monthName] || '01';
+    
+    return { year, month };
+  }
 
   /**
    * Генерация slug из заголовка
+   * Использует централизованную утилиту Utils.SlugUtils для соблюдения DRY
    * @param {string} title - Заголовок новости
    * @returns {string} Slug
    */
   _generateSlug(title) {
+    return Utils.SlugUtils ? Utils.SlugUtils.createShortSlug(title) : this._fallbackGenerateSlug(title);
+  }
+  
+  /**
+   * Fallback для генерации slug если Utils.SlugUtils недоступен
+   * @param {string} title - Заголовок новости
+   * @returns {string} Slug
+   */
+  _fallbackGenerateSlug(title) {
+    if (!title) return '';
+    
     return title
       .toLowerCase()
-      .replace(/[^а-яёa-z0-9\s-]/g, '')
+      .replace(/[^а-яёa-z0-9\s-]/gi, '')
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
-      .trim();
+      .replace(/^-|-$/g, '');
   }
 
   /**
@@ -125,9 +162,8 @@ class NewsNavigation {
       return;
     }
 
-    const date = new Date(newsItem.date);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    // Используем тот же метод парсинга даты что и в NewsRenderer для консистентности (DRY)
+    const { year, month } = Utils.SlugUtils ? Utils.SlugUtils.parseDate(newsItem.date) : this._parseDateFallback(newsItem.date);
     const slug = this._generateSlug(title);
 
     const url = `/news/${year}/${month}/${slug}`;

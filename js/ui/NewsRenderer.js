@@ -127,10 +127,48 @@ class NewsRenderer {
   }
 
   _createNewsLink(news) {
-    const { year, month } = Utils.SlugUtils ? Utils.SlugUtils.parseDate(news.date) : { year: '2023', month: '01' };
-    const day = '01';
-    const shortSlug = Utils.SlugUtils ? Utils.SlugUtils.createShortSlug(news.title) : this._escapeHtml(news.title).toLowerCase().replace(/\s+/g, '-');
-    return `/${year}/${month}/${day}/${shortSlug}-${news.id}`;
+    // Используем централизованную утилиту Utils.SlugUtils для соблюдения DRY
+    const { year, month } = Utils.SlugUtils ? Utils.SlugUtils.parseDate(news.date) : this._parseDateFallback(news.date);
+    const slug = Utils.SlugUtils ? Utils.SlugUtils.createShortSlug(news.title) : this._fallbackGenerateSlug(news.title);
+    return `/news/${year}/${month}/${slug}`;
+  }
+  
+  /**
+   * Fallback для парсинга даты если Utils.SlugUtils недоступен
+   * @param {string} dateStr - строка даты вида "Январь 2026"
+   * @returns {{year: string, month: string}}
+   */
+  _parseDateFallback(dateStr) {
+    if (!dateStr) return { year: '2023', month: '01' };
+    
+    const months = {
+      'январь': '01', 'февраль': '02', 'март': '03', 'апрель': '04',
+      'май': '05', 'июнь': '06', 'июль': '07', 'август': '08',
+      'сентябрь': '09', 'октябрь': '10', 'ноябрь': '11', 'декабрь': '12'
+    };
+    
+    const parts = dateStr.trim().split(/\s+/);
+    const monthName = parts[0].toLowerCase();
+    const year = parts[1] || '2023';
+    const month = months[monthName] || '01';
+    
+    return { year, month };
+  }
+  
+  /**
+   * Fallback для генерации slug если Utils.SlugUtils недоступен
+   * @param {string} title - Заголовок новости
+   * @returns {string} Slug
+   */
+  _fallbackGenerateSlug(title) {
+    if (!title) return '';
+    
+    return title
+      .toLowerCase()
+      .replace(/[^а-яёa-z0-9\s-]/gi, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
   }
 
   _addAccordionButton(container, totalNews, defaultVisible) {
