@@ -32,7 +32,6 @@ const ConsentManager = {
 
   // Состояние
   state: {
-    preferencesService: null,
     userNoticeUI: null,
     observer: null,
     recoveryTimer: null

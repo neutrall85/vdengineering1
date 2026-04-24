@@ -405,40 +405,22 @@ class FormManager {
     }
   }
 
+  /**
+   * Валидация формы через FormValidation
+   * Использует декларативные правила из data-атрибутов
+   */
   _validateForm() {
-    const fields = [
-      { id: 'companyName', validate: (v) => this.validator.required(v) && this.validator.minLength(v, 2) },
-      { id: 'contactPerson', validate: (v) => this.validator.required(v) && this.validator.minLength(v, 2) },
-      { id: 'email', validate: (v) => this.validator.required(v) && this.validator.email(v) },
-      { id: 'phone', validate: (v) => this.validator.required(v) && this.validator.phone(v) },
-      { id: 'aircraftType', validate: (v) => this.validator.required(v) },
-      { id: 'serviceType', validate: (v) => this.validator.required(v) },
-      { id: 'taskDescription', validate: (v) => this.validator.required(v) && this.validator.minLength(v, 10) }
-    ];
+    const form = document.getElementById('proposalForm');
+    if (!form) return false;
 
-    let isValid = true;
-
-    fields.forEach(field => {
-      const element = document.getElementById(field.id);
-      const errorEl = document.getElementById(`${field.id}Error`);
-      const value = element?.value?.trim() || '';
-
-      if (!field.validate(value)) {
-        if (element) element.classList.add('error');
-        if (errorEl) errorEl.classList.add('show');
-        isValid = false;
-      } else {
-        if (element) element.classList.remove('error');
-        if (errorEl) errorEl.classList.remove('show');
-      }
-    });
-
+    // Проверяем honeypot
     const honeypot = document.getElementById('hp_website');
     if (honeypot && honeypot.value) {
       return false;
     }
 
-    return isValid;
+    const validator = FormValidation.createValidator(form);
+    return validator.validate();
   }
 
   async _handleSubmit(e) {
