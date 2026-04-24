@@ -32,5 +32,5 @@ window.initVacanciesPage = function() {
     }, { passive: true });
   });
   
-  console.log('Страница вакансий инициализирована');
+  Logger.INFO('Страница вакансий инициализирована');
 };

@@ -150,7 +150,6 @@ const ConsentManager = {
   _render() {
     if (document.getElementById('user-notice-banner')) return;
 
-    const categories = this.getCategories();
     const sanitizer = Utils.Sanitizer || { escapeHtml: (str) => str };
     
     const bannerHTML = `
