@@ -4656,27 +4656,36 @@ body.app-ready>footer {
     margin-top: 1.5rem;
     padding-top: 1rem;
     border-top: 1px solid rgba(0, 78, 150, 0.15);
-    flex-wrap: nowrap;
-    /* Жёстко запрещаем перенос */
-    overflow-x: auto;
-    /* Скролл если не хватает места */
-    -webkit-overflow-scrolling: touch;
+    flex-wrap: wrap;
+    /* Разрешаем перенос на мобильных */
+    overflow-x: visible;
   }
 
   .stat-item {
-    flex: 1;
+    flex: 1 1 auto;
     min-width: 70px;
     padding: 0.5rem 0.25rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .stat-number {
     font-size: 1.2rem;
     margin-bottom: 0.25rem;
+    white-space: nowrap;
+    /* Цифры не переносим */
   }
 
   .stat-label {
     font-size: 0.65rem;
     line-height: 1.2;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    white-space: normal;
+    display: block;
   }
 
   /* Секции - значительно уменьшаем отступы между секциями */
