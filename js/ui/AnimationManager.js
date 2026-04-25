@@ -60,6 +60,7 @@ class AnimationManager {
 
   _animateCounter(element) {
     const target = parseInt(element.getAttribute('data-target'), 10);
+    const suffix = element.getAttribute('data-suffix') || '';
     if (!target || isNaN(target)) return;
 
     let current = 0;
@@ -69,10 +70,10 @@ class AnimationManager {
     const update = () => {
       current += step;
       if (current < target) {
-        element.textContent = Math.floor(current);
+        element.textContent = Math.floor(current) + suffix;
         requestAnimationFrame(update);
       } else {
-        element.textContent = target;
+        element.textContent = target + suffix;
       }
     };
     
