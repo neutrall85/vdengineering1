@@ -21,10 +21,7 @@ node_modules/
 *.swp
 *.swo
 
-# Environment
-.env
-.env.local
-*.env.*
+```css
 
 # Editors
 .vscode/
