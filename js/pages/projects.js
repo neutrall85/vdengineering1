@@ -35,11 +35,18 @@ function initProjectsPage() {
       }
     }
   });
+
+  // Обработчик для кнопки запроса КП
+  const requestQuoteBtn = document.getElementById('projectsRequestQuoteBtn');
+  if (requestQuoteBtn) {
+    requestQuoteBtn.addEventListener('click', function() {
+      if (typeof window.openApplicationModal === 'function') {
+        window.openApplicationModal();
+      }
+    });
+  }
 }
 
-/**
- * Открытие модального окна проекта
- */
 function openProjectModal(title, details, images, category) {
   const modalTitle = document.getElementById('projectModalTitle');
   const modalContent = document.getElementById('projectModalContent');
@@ -331,8 +338,3 @@ if (document.readyState === 'loading') {
 } else {
   initProjectsPage();
 }
-
-// Экспорт функций в глобальную область видимости для доступа из HTML
-window.openProjectModal = openProjectModal;
-window.openProjectLightbox = openProjectLightbox;
-window.closeLightbox = closeLightbox;
