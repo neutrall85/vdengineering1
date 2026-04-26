@@ -791,10 +791,6 @@ body.app-ready>footer {
   margin: 0 auto;
 }
 
-.service-card {
-  /* Наследует все стили от .card через HTML class="service-card card" */
-}
-
 .service-icon {
   width: 60px;
   height: 60px;
@@ -2362,10 +2358,6 @@ body.app-ready>footer {
   gap: 2rem;
   max-width: 1400px;
   margin: 0 auto;
-}
-
-.project-card {
-  /* Наследует все стили от .card через HTML class="project-card card" */
 }
 
 .project-image {
