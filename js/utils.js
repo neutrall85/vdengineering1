@@ -131,9 +131,9 @@ const Utils = (function() {
         '*': ['class', 'id']
       };
       
-      // Создаем временный DOM элемент
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = html;
+      // Используем DOMParser для безопасного парсинга
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
       
       // Рекурсивная очистка узлов
       const cleanNode = (node) => {
@@ -176,8 +176,14 @@ const Utils = (function() {
         }
       };
       
-      Array.from(tempDiv.childNodes).forEach(child => cleanNode(child));
-      return tempDiv.innerHTML;
+      // Собираем результат через сериализацию очищенных узлов
+      const resultContainer = document.createElement('div');
+      Array.from(doc.body.childNodes).forEach(child => {
+        cleanNode(child);
+        resultContainer.appendChild(child.cloneNode(true));
+      });
+      
+      return resultContainer.innerHTML;
     },
 
     // Проверка URL на безопасность

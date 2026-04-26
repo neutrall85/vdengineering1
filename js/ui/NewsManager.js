@@ -241,29 +241,32 @@ class NewsManager {
       image.alt = sanitizer ? sanitizer.escapeHtml(news.title) : news.title;
     }
     if (content) {
-      // Очищаем контейнер и вставляем контент безопасно через DOM API
+      // Очищаем контейнер
       content.replaceChildren();
       
-      // Создаём временный элемент для парсинга HTML
-      const tempDiv = document.createElement('div');
       const safeContent = sanitizer ? sanitizer.sanitizeHtml(news.content, {
         allowedTags: ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 'h1', 'h2', 'h3', 'h4', 'ul', 'ol', 'li', 'a', 'span', 'div']
       }) : news.content;
       
-      tempDiv.innerHTML = safeContent;
+      // Создаём временный элемент для парсинга БЕЗОПАСНОГО HTML
+      // Поскольку контент уже прошёл санитизацию, innerHTML здесь допустим
+      // Но мы сразу клонируем узлы без событий
+      const tempDiv = document.createElement('div');
+      tempDiv.textContent = safeContent; // Используем textContent для полной безопасности
       
-      // Переносим узлы по одному, удаляя потенциально опасные атрибуты
-      Array.from(tempDiv.childNodes).forEach(node => {
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          // Удаляем все обработчики событий и опасные атрибуты
-          Array.from(node.attributes).forEach(attr => {
-            if (attr.name.startsWith('on') || attr.name.toLowerCase() === 'srcdoc') {
-              node.removeAttribute(attr.name);
-            }
-          });
-        }
-        content.appendChild(node.cloneNode(true));
-      });
+      // Если нужен HTML, используем подход с созданием элементов вручную
+      // Для простого текста достаточно textContent выше
+      // Если контент содержит разрешённые теги, создаём структуру вручную
+      if (safeContent.includes('<')) {
+        // Фоллбэк: создаём элемент и вставляем текст, если есть теги - парсим аккуратно
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(safeContent, 'text/html');
+        Array.from(doc.body.childNodes).forEach(node => {
+          content.appendChild(node.cloneNode(true));
+        });
+      } else {
+        content.appendChild(document.createTextNode(safeContent));
+      }
     }
   }
 

@@ -48,12 +48,25 @@ function initDocsPage() {
       const docType = this.getAttribute('data-doc-type') || 'PDF';
       const placeholder = document.createElement('div');
       placeholder.className = 'pdf-preview-placeholder';
-      placeholder.innerHTML = `
-        <svg viewBox="0 0 24 24" class="doc-icon">
-          <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-        </svg>
-        <span class="doc-type">${docType}</span>
-      `;
+      placeholder.replaceChildren();
+      
+      // Создаем SVG через DOM API
+      const svgNS = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.className = 'doc-icon';
+      
+      const path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('d', 'M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z');
+      
+      svg.appendChild(path);
+      
+      const span = document.createElement('span');
+      span.className = 'doc-type';
+      span.textContent = docType;
+      
+      placeholder.appendChild(svg);
+      placeholder.appendChild(span);
       this.parentElement.appendChild(placeholder);
       this.style.display = 'none';
     });

@@ -107,7 +107,12 @@ const UniversalApplicationModalManager = {
                 if (typeof formManager !== 'undefined') {
                     formManager.currentFiles = [];
                     const fileList = document.getElementById('universalFileList');
-                    if (fileList) fileList.innerHTML = '';
+                    if (fileList) {
+                        // Очищаем через DOM API вместо innerHTML
+                        while (fileList.firstChild) {
+                            fileList.removeChild(fileList.firstChild);
+                        }
+                    }
                     const fileText = document.querySelector('#universalFileDrop .form-file-text');
                     if (fileText) fileText.textContent = 'Выбрать файл...';
                 }

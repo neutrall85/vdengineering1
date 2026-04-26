@@ -10,7 +10,11 @@
         if (!container) return;
 
         if (typeof NEWS_DATA === 'undefined' || typeof NewsRenderer === 'undefined') {
-            container.innerHTML = '<p class="no-news">Новости временно недоступны</p>';
+            const errorMsg = document.createElement('p');
+            errorMsg.className = 'no-news';
+            errorMsg.textContent = 'Новости временно недоступны';
+            container.replaceChildren();
+            container.appendChild(errorMsg);
             return;
         }
 
