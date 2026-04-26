@@ -5379,11 +5379,6 @@ body.app-ready>footer {
   width: 100%;
 }
 
-.error-page-graphic {
-  margin-bottom: 2rem;
-  animation: float 3s ease-in-out infinite;
-}
-
 @keyframes float {
   0%, 100% {
     transform: translateY(0);
