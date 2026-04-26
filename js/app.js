@@ -123,8 +123,11 @@ class Application {
       modulesToRegister.push(newsManager);
     }
     // initDocPreviews вызывается напрямую в initApp(), не требует регистрации в services
+    // ModalManager регистрируется для доступа через app.services
     if (typeof modalManager !== 'undefined') {
       this.services.modalManager = modalManager;
+      // Также сохраняем ссылку в ModalHelpers для кэширования
+      ModalHelpers._manager = modalManager;
     }
     
     this.modules = modulesToRegister;
@@ -133,7 +136,7 @@ class Application {
   _registerModals() {
     // Защита от повторной регистрации
     if (this._modalsRegistered) return;
-
+    
     const modalsToRegister = [
       { key: 'about', overlayId: 'aboutModalOverlay', required: false },
       { key: 'details', overlayId: 'detailsModalOverlay', required: false },
@@ -170,22 +173,6 @@ class Application {
     });
     
     this._modalsRegistered = true;
-  }
-
-  _registerStaticModals() {
-    // Регистрация модалок, которые есть в HTML статически (не загружаются через ComponentLoader)
-    const staticModals = [
-      { key: 'project', overlayId: 'projectModalOverlay' },
-      { key: 'service', overlayId: 'serviceModalOverlay' }
-    ];
-
-    staticModals.forEach(({ key, overlayId }) => {
-      const overlay = document.getElementById(overlayId);
-      if (overlay && !ModalHelpers.isOpen(key)) {
-        ModalHelpers.register(key, { overlayId });
-        Logger.INFO(`Static modal "${key}" registered`);
-      }
-    });
   }
 
   _initGlobalHelpers() {
