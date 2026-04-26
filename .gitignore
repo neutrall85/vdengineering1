@@ -1,51 +1,5 @@
-```
-# Compiled and build artifacts
-*.pyc
-__pycache__/
-*.o
-*.obj
-dist/
-build/
-target/
+(js/app.js, js/pages/projects.js, projects.html are all source files, no build artifacts, dependencies, or temp files in the changes)
 
-# Dependencies
-.venv/
-venv/
-node_modules/
-.julia/
-zig*/
+```javascript
 
-# Logs and temp files
-*.log
-*.tmp
-*.swp
-
-# Environment
-.env
-.env.local
-.env.*
-
-# Editors
-.vscode/
-.idea/
-*.swo
-
-# OS specific
-.DS_Store
-Thumbs.db
-
-# Testing and coverage
-.coverage
-coverage/
-htmlcov/
-
-# Package management
-*.tar.gz
-*.zip
-*.gz
-*.rar
-*.7z
-
-# Original rules preserved
-*.log
 ```

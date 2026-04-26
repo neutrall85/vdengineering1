@@ -256,6 +256,16 @@ class Application {
         e.preventDefault();
         if (window.openApplicationModal) window.openApplicationModal(applicationTrigger);
       }
+      
+      const projectTrigger = e.target.closest('[data-modal-open="project"]');
+      if (projectTrigger) {
+        e.preventDefault();
+        const projectId = projectTrigger.getAttribute('data-project-id');
+        if (projectId && typeof projectsData !== 'undefined' && projectsData[projectId]) {
+          const project = projectsData[projectId];
+          openProjectModal(project.title, project.details, project.images, project.category);
+        }
+      }
     });
   }
 
