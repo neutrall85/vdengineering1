@@ -1,5 +1,1 @@
-(js/app.js, js/pages/projects.js, projects.html are all source files, no build artifacts, dependencies, or temp files in the changes)
-
-```javascript
-
-```
+(js/pages/projects.js is just a source file, no build artifacts, dependencies, or temp files in the changes - per rule 6, output nothing)

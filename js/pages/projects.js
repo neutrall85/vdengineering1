@@ -94,9 +94,15 @@ function initProjectGallery(images, container, mainImage) {
   
   if (images.length === 1) {
     updateMainImage(0);
-    if (mainImage && typeof openProjectLightbox === 'function') {
+    if (mainImage) {
       mainImage.style.cursor = 'zoom-in';
-      mainImage.addEventListener('click', () => openProjectLightbox(images, 0));
+      mainImage.addEventListener('click', () => {
+        if (typeof window.openProjectLightbox === 'function') {
+          window.openProjectLightbox(images, 0);
+        } else {
+          Logger.WARN('openProjectLightbox ещё не загружена');
+        }
+      });
     }
     return;
   }
@@ -143,9 +149,15 @@ function initProjectGallery(images, container, mainImage) {
     container.appendChild(indicatorsContainer);
   }
   
-  if (mainImage && typeof openProjectLightbox === 'function') {
+  if (mainImage) {
     mainImage.style.cursor = 'zoom-in';
-    mainImage.addEventListener('click', () => openProjectLightbox(images, currentIndex));
+    mainImage.addEventListener('click', () => {
+      if (typeof window.openProjectLightbox === 'function') {
+        window.openProjectLightbox(images, currentIndex);
+      } else {
+        Logger.WARN('openProjectLightbox ещё не загружена');
+      }
+    });
   }
   
   updateMainImage(0);
