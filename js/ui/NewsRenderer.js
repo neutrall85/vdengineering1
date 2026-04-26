@@ -311,6 +311,14 @@ class NewsRenderer {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
   }
+
+  /**
+   * Очистка ресурсов при уничтожении
+   */
+  destroy() {
+    // Очищаем множество загруженных лет
+    this.loadedYears.clear();
+  }
 }
 
 // Экспорт удален - регистрация происходит через Application.services

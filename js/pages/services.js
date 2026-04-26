@@ -183,7 +183,12 @@ function closeServiceModal() {
 window.openServiceModal = openServiceModal;
 window.closeServiceModal = closeServiceModal;
 
-// Инициализация страницы: обработчики теперь централизованы в ModalManager через data-modal-open
+// Хранилище для обработчиков страницы услуг
+const _servicesPageHandlers = {
+  requestQuoteHandler: null
+};
+
+// Экспортируем функцию инициализации для module режима
 window.initServicesPage = function() {
   const closeBtn = document.getElementById('serviceModalCloseBtn');
   if (closeBtn) {
@@ -193,10 +198,27 @@ window.initServicesPage = function() {
   // Кнопка "Запросить КП" внутри страницы (если есть)
   const requestQuoteBtn = document.getElementById('servicesRequestQuoteBtn');
   if (requestQuoteBtn) {
-    requestQuoteBtn.addEventListener('click', () => {
+    _servicesPageHandlers.requestQuoteHandler = () => {
       if (typeof window.openModal === 'function') {
         window.openModal();
       }
-    });
+    };
+    requestQuoteBtn.addEventListener('click', _servicesPageHandlers.requestQuoteHandler);
+  }
+};
+
+/**
+ * Очистка ресурсов страницы услуг
+ */
+window.destroyServicesPage = function() {
+  const closeBtn = document.getElementById('serviceModalCloseBtn');
+  if (closeBtn) {
+    closeBtn.removeEventListener('click', closeServiceModal);
+  }
+  
+  const requestQuoteBtn = document.getElementById('servicesRequestQuoteBtn');
+  if (requestQuoteBtn && _servicesPageHandlers.requestQuoteHandler) {
+    requestQuoteBtn.removeEventListener('click', _servicesPageHandlers.requestQuoteHandler);
+    _servicesPageHandlers.requestQuoteHandler = null;
   }
 };

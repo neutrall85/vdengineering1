@@ -1,9 +1,13 @@
 /**
- * Инициализация обработчиков для страницы документов
- * ООО "Волга-Днепр Инжиниринг"
+ * Инициализация страницы (без export, так как это не модуль)
  */
 
-// Функция инициализации (без export, так как это не модуль)
+// Хранилище для обработчиков
+const _pageInitHandlers = {
+  emailClickHandler: null,
+  containerClickHandler: null
+};
+
 function initDocsPage() {
   // Обработчик для кнопок просмотра документов
   const docViewLinks = document.querySelectorAll('.doc-view-link');
@@ -21,18 +25,17 @@ function initDocsPage() {
   // Ленивая загрузка изображений превью с использованием Intersection Observer
   const previewImages = document.querySelectorAll('.doc-preview-image');
   
+  let imageObserver = null;
   if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
+    imageObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const img = entry.target;
-          // Изображение уже начнет загружаться браузером благодаря loading="lazy"
-          // Здесь можно добавить дополнительную логику если needed
           observer.unobserve(img);
         }
       });
     }, {
-      rootMargin: '50px 0px', // Начинать загрузку заранее (50px до видимости)
+      rootMargin: '50px 0px',
       threshold: 0.01
     });
 
@@ -42,15 +45,14 @@ function initDocsPage() {
   }
 
   // Обработка ошибок загрузки изображений превью
+  const errorHandlerMap = new Map();
   previewImages.forEach(img => {
-    img.addEventListener('error', function() {
-      // Если изображение не загрузилось, показываем placeholder
+    const errorHandler = function() {
       const docType = this.getAttribute('data-doc-type') || 'PDF';
       const placeholder = document.createElement('div');
       placeholder.className = 'pdf-preview-placeholder';
       placeholder.replaceChildren();
       
-      // Создаем SVG через DOM API
       const svgNS = 'http://www.w3.org/2000/svg';
       const svg = document.createElementNS(svgNS, 'svg');
       svg.setAttribute('viewBox', '0 0 24 24');
@@ -69,8 +71,32 @@ function initDocsPage() {
       placeholder.appendChild(span);
       this.parentElement.appendChild(placeholder);
       this.style.display = 'none';
-    });
+    };
+    
+    img.addEventListener('error', errorHandler);
+    errorHandlerMap.set(img, errorHandler);
   });
+  
+  // Сохраняем ссылки для очистки
+  _pageInitHandlers.imageObserver = imageObserver;
+  _pageInitHandlers.errorHandlerMap = errorHandlerMap;
+}
+
+/**
+ * Очистка ресурсов страницы документов
+ */
+function destroyDocsPage() {
+  if (_pageInitHandlers.imageObserver) {
+    _pageInitHandlers.imageObserver.disconnect();
+    _pageInitHandlers.imageObserver = null;
+  }
+  
+  if (_pageInitHandlers.errorHandlerMap) {
+    _pageInitHandlers.errorHandlerMap.forEach((handler, img) => {
+      img.removeEventListener('error', handler);
+    });
+    _pageInitHandlers.errorHandlerMap.clear();
+  }
 }
 
 // Автозапуск если не используется как модуль, или ожидание DOMContentLoaded
@@ -79,3 +105,6 @@ if (document.readyState === 'loading') {
 } else {
   initDocsPage();
 }
+
+// Экспортируем функцию очистки
+window.destroyDocsPage = destroyDocsPage;

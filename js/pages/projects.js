@@ -12,6 +12,16 @@ window.projectsData = {
   }
 };
 
+// Хранилище для обработчиков страницы проектов
+const _projectsPageHandlers = {
+  requestQuoteHandler: null,
+  escapeKeyHandler: null,
+  lightboxImageClickHandler: null,
+  galleryPrevHandler: null,
+  galleryNextHandler: null,
+  indicatorHandlers: new Map()
+};
+
 function initProjectsPage() {
   if (window._projectsPageInitialized) {
     return;
@@ -22,7 +32,8 @@ function initProjectsPage() {
   
   const requestQuoteBtn = document.getElementById('projectsRequestQuoteBtn');
   if (requestQuoteBtn) {
-    requestQuoteBtn.addEventListener('click', handleRequestQuote);
+    _projectsPageHandlers.requestQuoteHandler = handleRequestQuote;
+    requestQuoteBtn.addEventListener('click', _projectsPageHandlers.requestQuoteHandler);
   }
 }
 
@@ -279,6 +290,28 @@ function createNavButton(className, ariaLabel, pathData) {
   return btn;
 }
 
+/**
+ * Очистка ресурсов страницы проектов
+ */
+window.destroyProjectsPage = function() {
+  // Удаляем обработчик кнопки запроса КП
+  const requestQuoteBtn = document.getElementById('projectsRequestQuoteBtn');
+  if (requestQuoteBtn && _projectsPageHandlers.requestQuoteHandler) {
+    requestQuoteBtn.removeEventListener('click', _projectsPageHandlers.requestQuoteHandler);
+    _projectsPageHandlers.requestQuoteHandler = null;
+  }
+  
+  // Очищаем хранилище обработчиков
+  if (_projectsPageHandlers.indicatorHandlers) {
+    _projectsPageHandlers.indicatorHandlers.clear();
+  }
+  _projectsPageHandlers.escapeKeyHandler = null;
+  _projectsPageHandlers.lightboxImageClickHandler = null;
+  _projectsPageHandlers.galleryPrevHandler = null;
+  _projectsPageHandlers.galleryNextHandler = null;
+};
+
 window.initProjectsPage = initProjectsPage;
 window.openProjectModal = openProjectModal;
 window.initProjectGallery = initProjectGallery;
+window.destroyProjectsPage = destroyProjectsPage;

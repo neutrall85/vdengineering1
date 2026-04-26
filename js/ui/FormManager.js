@@ -603,6 +603,46 @@ class FormManager {
     const fileDrop = document.querySelector('#fileDrop');
     this._renderFileList(fileDrop);
   }
+
+  /**
+   * Очистка ресурсов при уничтожении
+   */
+  destroy() {
+    // Сбрасываем таймер предупреждения о загрузке файлов
+    if (this.uploadWarningTimeout) {
+      clearTimeout(this.uploadWarningTimeout);
+      this.uploadWarningTimeout = null;
+    }
+    
+    // Сбрасываем таймер отправки формы
+    if (this.submitTimeoutId) {
+      clearTimeout(this.submitTimeoutId);
+      this.submitTimeoutId = null;
+    }
+    
+    // Очищаем обработчики drag&drop и change на зонах загрузки
+    const fileDrops = document.querySelectorAll('.form-file');
+    fileDrops.forEach(fileDrop => {
+      const container = fileDrop.querySelector('.form-file-list');
+      if (container && container._clickHandler) {
+        container.removeEventListener('click', container._clickHandler);
+        container._clickHandler = null;
+      }
+      
+      const fileInput = fileDrop.querySelector('input[type="file"]');
+      if (fileInput && fileInput._changeHandlerAttached) {
+        fileInput._changeHandlerAttached = false;
+      }
+      
+      if (fileDrop._dragDropHandlerAttached) {
+        fileDrop._dragDropHandlerAttached = false;
+      }
+    });
+    
+    // Очищаем файлы
+    this.currentFiles = [];
+    this.formValidator = null;
+  }
 }
 
 // Экспорт удален - регистрация происходит через Application.services

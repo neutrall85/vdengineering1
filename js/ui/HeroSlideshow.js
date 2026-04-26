@@ -9,8 +9,10 @@ class HeroSlideshow {
     
     this.slides = this.container.querySelectorAll('.slideshow-slide');
     this.currentSlide = 0;
-    this.slideInterval = 4000; // 4 секунды между слайдами
+    this.slideInterval = 4000;
     this.intervalId = null;
+    this._boundMouseEnterHandler = null;
+    this._boundMouseLeaveHandler = null;
     
     this.init();
   }
@@ -21,8 +23,10 @@ class HeroSlideshow {
     this.startAutoPlay();
     
     // Пауза при наведении
-    this.container.addEventListener('mouseenter', () => this.pause());
-    this.container.addEventListener('mouseleave', () => this.resume());
+    this._boundMouseEnterHandler = () => this.pause();
+    this._boundMouseLeaveHandler = () => this.resume();
+    this.container.addEventListener('mouseenter', this._boundMouseEnterHandler);
+    this.container.addEventListener('mouseleave', this._boundMouseLeaveHandler);
   }
   
   startAutoPlay() {
@@ -45,20 +49,24 @@ class HeroSlideshow {
   }
   
   nextSlide() {
-    // Убираем активный класс с текущего слайда
     this.slides[this.currentSlide].classList.remove('active');
-    
-    // Вычисляем следующий слайд
     this.currentSlide = (this.currentSlide + 1) % this.slides.length;
-    
-    // Добавляем активный класс следующему слайду
     this.slides[this.currentSlide].classList.add('active');
   }
   
   destroy() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
+      this.intervalId = null;
     }
+    if (this._boundMouseEnterHandler && this.container) {
+      this.container.removeEventListener('mouseenter', this._boundMouseEnterHandler);
+    }
+    if (this._boundMouseLeaveHandler && this.container) {
+      this.container.removeEventListener('mouseleave', this._boundMouseLeaveHandler);
+    }
+    this.container = null;
+    this.slides = null;
   }
 }
 

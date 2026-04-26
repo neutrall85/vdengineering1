@@ -484,6 +484,9 @@ class ModalManager {
     if (this._boundClickHandler) {
       document.removeEventListener('click', this._boundClickHandler);
     }
+    if (this._boundOpenHandler) {
+      document.removeEventListener('click', this._boundOpenHandler);
+    }
     
     // Удаляем focus trap если активен
     this._removeFocusTrap();

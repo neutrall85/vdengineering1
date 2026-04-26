@@ -4,6 +4,12 @@
  * Следует принципу KISS
  */
 
+// Хранилище для обработчиков и наблюдателя
+const _docPreviewsState = {
+  observer: null,
+  loadHandlerMap: new Map()
+};
+
 function initDocPreviews() {
   const frames = document.querySelectorAll('.pdf-frame');
   
@@ -18,7 +24,7 @@ function initDocPreviews() {
     threshold: 0.1
   };
 
-  const observer = new IntersectionObserver((entries) => {
+  _docPreviewsState.observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const frame = entry.target;
@@ -30,9 +36,12 @@ function initDocPreviews() {
           }
           frame.src = src;
           
-          frame.addEventListener('load', () => {
+          const loadHandler = () => {
             frame.classList.add('loaded');
-          });
+          };
+          
+          frame.addEventListener('load', loadHandler);
+          _docPreviewsState.loadHandlerMap.set(frame, loadHandler);
           
           // Принудительно показываем placeholder если iframe не загрузился за 3 секунды
           setTimeout(() => {
@@ -43,14 +52,14 @@ function initDocPreviews() {
             }
           }, 3000);
           
-          observer.unobserve(frame);
+          _docPreviewsState.observer.unobserve(frame);
         }
       }
     });
   }, observerOptions);
 
   frames.forEach(frame => {
-    observer.observe(frame);
+    _docPreviewsState.observer.observe(frame);
   });
   
   if (window.Logger) {
@@ -58,7 +67,25 @@ function initDocPreviews() {
   }
 }
 
+/**
+ * Очистка ресурсов превью документов
+ */
+function destroyDocPreviews() {
+  if (_docPreviewsState.observer) {
+    _docPreviewsState.observer.disconnect();
+    _docPreviewsState.observer = null;
+  }
+  
+  if (_docPreviewsState.loadHandlerMap) {
+    _docPreviewsState.loadHandlerMap.forEach((handler, frame) => {
+      frame.removeEventListener('load', handler);
+    });
+    _docPreviewsState.loadHandlerMap.clear();
+  }
+}
+
 // Экспорт в глобальную область
 if (typeof window !== 'undefined') {
   window.initDocPreviews = initDocPreviews;
+  window.destroyDocPreviews = destroyDocPreviews;
 }

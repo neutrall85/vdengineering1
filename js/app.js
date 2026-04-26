@@ -115,6 +115,9 @@ class Application {
       this.services.newsManager = newsManager;
       modulesToRegister.push(newsManager);
     }
+    if (typeof newsRenderer !== 'undefined') {
+      this.services.newsRenderer = newsRenderer;
+    }
     if (typeof modalManager !== 'undefined') {
       this.services.modalManager = modalManager;
     }
@@ -268,7 +271,7 @@ class Application {
 
     if (!floatingBtn) return;
 
-    floatingBtn.addEventListener('click', () => {
+    this._boundFloatingBtnClick = () => {
       if (typeof modalManager !== 'undefined') {
         modalManager.open('proposal');
       } else if (window.App?.services?.modalManager) {
@@ -276,13 +279,14 @@ class Application {
       } else if (typeof window.openModal === 'function') {
         window.openModal();
       }
-    }, { passive: true });
+    };
+    floatingBtn.addEventListener('click', this._boundFloatingBtnClick, { passive: true });
 
     let heroExited = false;
     
     const heroSection = document.querySelector('.hero, header');
     if (heroSection) {
-      const heroObserver = new IntersectionObserver((entries) => {
+      this._heroObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (!entry.isIntersecting) {
             heroExited = true;
@@ -294,7 +298,7 @@ class Application {
         });
       }, { threshold: 0 });
       
-      heroObserver.observe(heroSection);
+      this._heroObserver.observe(heroSection);
     }
   }
 
@@ -330,9 +334,9 @@ class Application {
   }
 
   _initPrefersReducedMotion() {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    this._prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     
-    if (prefersReducedMotion.matches) {
+    if (this._prefersReducedMotion.matches) {
       document.body.classList.add('reduced-motion');
       const style = document.createElement('style');
       style.textContent = `
@@ -348,13 +352,14 @@ class Application {
       document.head.appendChild(style);
     }
     
-    prefersReducedMotion.addEventListener('change', (e) => {
+    this._boundMotionChangeHandler = (e) => {
       if (e.matches) {
         document.body.classList.add('reduced-motion');
       } else {
         document.body.classList.remove('reduced-motion');
       }
-    });
+    };
+    this._prefersReducedMotion.addEventListener('change', this._boundMotionChangeHandler);
   }
 
   _handleHashScroll() {
@@ -430,6 +435,53 @@ class Application {
     } else {
       alert('Ошибка загрузки приложения: ' + Utils.Sanitizer.escapeHtml(error.message));
     }
+  }
+
+  destroy() {
+    // Очищаем обработчик prefers-reduced-motion
+    if (this._prefersReducedMotion && this._boundMotionChangeHandler) {
+      this._prefersReducedMotion.removeEventListener('change', this._boundMotionChangeHandler);
+    }
+    
+    // Отключаем IntersectionObserver для hero секции
+    if (this._heroObserver) {
+      this._heroObserver.disconnect();
+    }
+    
+    // Удаляем обработчик плавающей кнопки CTA
+    const floatingBtn = document.querySelector('.floating-cta-btn');
+    if (floatingBtn && this._boundFloatingBtnClick) {
+      floatingBtn.removeEventListener('click', this._boundFloatingBtnClick);
+    }
+    
+    // Делегируем очистку модулям
+    if (this.services.navigationManager && typeof this.services.navigationManager.destroy === 'function') {
+      this.services.navigationManager.destroy();
+    }
+    if (this.services.animationManager && typeof this.services.animationManager.destroy === 'function') {
+      this.services.animationManager.destroy();
+    }
+    if (this.services.modalManager && typeof this.services.modalManager.destroy === 'function') {
+      this.services.modalManager.destroy();
+    }
+    if (this.services.newsManager && typeof this.services.newsManager.destroy === 'function') {
+      this.services.newsManager.destroy();
+    }
+    if (this.services.newsRenderer && typeof this.services.newsRenderer.destroy === 'function') {
+      this.services.newsRenderer.destroy();
+    }
+    if (this.services.formManager && typeof this.services.formManager.destroy === 'function') {
+      this.services.formManager.destroy();
+    }
+    if (this.services.consentManager && typeof this.services.consentManager.destroy === 'function') {
+      this.services.consentManager.destroy();
+    }
+    
+    // Очищаем ссылки
+    this.modules = [];
+    this.errors = [];
+    this.services = {};
+    this.initialized = false;
   }
 }
 

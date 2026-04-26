@@ -10,6 +10,12 @@ class NewsManager {
     this.activeYear = null;
     this.lightboxOverlay = null;
     this.lightboxImage = null;
+    this._lightboxModalClickHandler = null;
+    this._lightboxCloseBtnHandler = null;
+    this._lightboxOverlayClickHandler = null;
+    this._lightboxKeydownHandler = null;
+    this._lightboxImageClickHandler = null;
+    this._cardClickHandler = null;
   }
 
   init() {
@@ -39,32 +45,36 @@ class NewsManager {
     // Клик по изображению в модалке новостей открывает лайтбокс
     const modalImage = document.getElementById('newsModalImage');
     if (modalImage) {
-      modalImage.addEventListener('click', () => {
+      this._lightboxModalClickHandler = () => {
         if (modalImage.src && modalImage.src !== window.location.href + '#') {
           this.openLightbox(modalImage.src, modalImage.alt);
         }
-      });
+      };
+      modalImage.addEventListener('click', this._lightboxModalClickHandler);
       modalImage.style.cursor = 'zoom-in';
     }
 
     // Закрытие лайтбокса по кнопке
     if (closeBtn) {
-      closeBtn.addEventListener('click', () => this.closeLightbox());
+      this._lightboxCloseBtnHandler = () => this.closeLightbox();
+      closeBtn.addEventListener('click', this._lightboxCloseBtnHandler);
     }
 
     // Закрытие лайтбокса по клику на оверлей
-    this.lightboxOverlay.addEventListener('click', (e) => {
+    this._lightboxOverlayClickHandler = (e) => {
       if (e.target === this.lightboxOverlay) {
         this.closeLightbox();
       }
-    });
+    };
+    this.lightboxOverlay.addEventListener('click', this._lightboxOverlayClickHandler);
 
     // Закрытие по Escape
-    document.addEventListener('keydown', (e) => {
+    this._lightboxKeydownHandler = (e) => {
       if (e.key === 'Escape' && this.lightboxOverlay.classList.contains('active')) {
         this.closeLightbox();
       }
-    });
+    };
+    document.addEventListener('keydown', this._lightboxKeydownHandler);
 
     Logger.INFO('Lightbox initialized');
   }
@@ -84,7 +94,8 @@ class NewsManager {
     }
     
     // Добавляем закрытие по клику на изображение через addEventListener
-    this.lightboxImage.addEventListener('click', () => this.closeLightbox());
+    this._lightboxImageClickHandler = () => this.closeLightbox();
+    this.lightboxImage.addEventListener('click', this._lightboxImageClickHandler);
     
     // Фокус на кнопку закрытия для доступности
     const closeBtn = document.getElementById('lightboxCloseBtn');
@@ -107,11 +118,10 @@ class NewsManager {
       Logger.WARN('ScrollManager not available for news lightbox close');
     }
     
-    // Сбрасываем обработчик клика (удаляем listener)
-    if (this.lightboxImage) {
-      const newLightboxImage = this.lightboxImage.cloneNode(true);
-      this.lightboxImage.parentNode.replaceChild(newLightboxImage, this.lightboxImage);
-      this.lightboxImage = newLightboxImage;
+    // Удаляем обработчик клика по изображению
+    if (this.lightboxImage && this._lightboxImageClickHandler) {
+      this.lightboxImage.removeEventListener('click', this._lightboxImageClickHandler);
+      this._lightboxImageClickHandler = null;
     }
     
     // Очищаем src после анимации
@@ -186,7 +196,7 @@ class NewsManager {
   }
 
   _initCardClickHandler() {
-    document.addEventListener('click', (e) => {
+    this._cardClickHandler = (e) => {
       const link = e.target.closest('.news-card-link');
       if (link) {
         const newsId = parseInt(link.dataset.newsId, 10);
@@ -196,7 +206,8 @@ class NewsManager {
           this.openNewsModal(newsId);
         }
       }
-    });
+    };
+    document.addEventListener('click', this._cardClickHandler);
   }
 
   openNewsModal(id) {
@@ -273,6 +284,40 @@ class NewsManager {
   _resetModalContent() {
     const image = document.getElementById('newsModalImage');
     if (image) image.src = '';
+  }
+
+  destroy() {
+    // Удаляем обработчики лайтбокса
+    if (this._lightboxModalClickHandler) {
+      const modalImage = document.getElementById('newsModalImage');
+      if (modalImage) {
+        modalImage.removeEventListener('click', this._lightboxModalClickHandler);
+      }
+    }
+    if (this._lightboxCloseBtnHandler) {
+      const closeBtn = document.getElementById('lightboxCloseBtn');
+      if (closeBtn) {
+        closeBtn.removeEventListener('click', this._lightboxCloseBtnHandler);
+      }
+    }
+    if (this._lightboxOverlayClickHandler && this.lightboxOverlay) {
+      this.lightboxOverlay.removeEventListener('click', this._lightboxOverlayClickHandler);
+    }
+    if (this._lightboxKeydownHandler) {
+      document.removeEventListener('keydown', this._lightboxKeydownHandler);
+    }
+    if (this._lightboxImageClickHandler && this.lightboxImage) {
+      this.lightboxImage.removeEventListener('click', this._lightboxImageClickHandler);
+    }
+    
+    // Удаляем обработчик кликов по карточкам новостей
+    if (this._cardClickHandler) {
+      document.removeEventListener('click', this._cardClickHandler);
+    }
+    
+    // Очищаем ссылки на DOM элементы
+    this.lightboxOverlay = null;
+    this.lightboxImage = null;
   }
 }
 
