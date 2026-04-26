@@ -163,6 +163,7 @@ class Application {
       { key: 'policy', overlayId: 'policyModalOverlay', required: false }
     ];
 
+    // Сначала регистрируем все модальные окна, которые уже есть в DOM
     modalsToRegister.forEach(({ key, overlayId, required, onClose, onOpen, focusSelector }) => {
       const overlay = document.getElementById(overlayId);
       if (overlay) {
