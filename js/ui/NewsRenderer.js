@@ -30,11 +30,14 @@ class NewsRenderer {
     const latestNews = allNews.sort((a, b) => parseDate(b.date) - parseDate(a.date)).slice(0, count);
 
     if (latestNews.length === 0) {
-      container.innerHTML = '<p class="no-news">Нет новостей</p>';
+      const noNews = document.createElement('p');
+      noNews.classList.add('no-news');
+      noNews.textContent = 'Нет новостей';
+      container.appendChild(noNews);
       return;
     }
 
-    container.innerHTML = '';
+    container.replaceChildren();
     const fragment = document.createDocumentFragment();
     
     latestNews.forEach((news, index) => {

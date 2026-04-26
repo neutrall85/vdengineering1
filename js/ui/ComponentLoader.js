@@ -59,12 +59,21 @@ const ComponentLoader = {
     _loadNavbar(activePage) {
         const navContainer = document.getElementById('navbar');
         if (navContainer && !navContainer.hasChildNodes()) {
-            navContainer.innerHTML = this.templates.navbar.trim();
+            // Безопасная вставка через DOM API
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = this.templates.navbar.trim();
+            while (tempDiv.firstChild) {
+                navContainer.appendChild(tempDiv.firstChild);
+            }
             this.setActiveLink(activePage);
         } else if (!navContainer) {
             const newNavContainer = document.createElement('div');
             newNavContainer.id = 'navbar';
-            newNavContainer.innerHTML = this.templates.navbar.trim();
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = this.templates.navbar.trim();
+            while (tempDiv.firstChild) {
+                newNavContainer.appendChild(tempDiv.firstChild);
+            }
             const firstBodyChild = document.body.firstChild;
             document.body.insertBefore(newNavContainer, firstBodyChild);
             this.setActiveLink(activePage);
@@ -85,7 +94,11 @@ const ComponentLoader = {
         const existingModal = document.getElementById('modalOverlay');
         if (!existingModal) {
             const modalContainer = document.createElement('div');
-            modalContainer.innerHTML = this.templates.proposalModal.trim();
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = this.templates.proposalModal.trim();
+            while (tempDiv.firstChild) {
+                modalContainer.appendChild(tempDiv.firstChild);
+            }
             document.body.appendChild(modalContainer.firstElementChild);
             setTimeout(() => {
                 const modalPhoneInput = document.querySelector('#modalOverlay #phone');
@@ -99,7 +112,11 @@ const ComponentLoader = {
         const existingUniversalModal = document.getElementById('universalApplicationModalOverlay');
         if (!existingUniversalModal) {
             const universalModalContainer = document.createElement('div');
-            universalModalContainer.innerHTML = this.templates.universalApplicationModal.trim();
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = this.templates.universalApplicationModal.trim();
+            while (tempDiv.firstChild) {
+                universalModalContainer.appendChild(tempDiv.firstChild);
+            }
             document.body.appendChild(universalModalContainer.firstElementChild);
             setTimeout(() => {
                 if (typeof UniversalApplicationModalManager !== 'undefined') {
@@ -115,10 +132,20 @@ const ComponentLoader = {
         const existingFooter = document.querySelector('body > footer.footer');
         if (!existingFooter) {
             const footerContainer = document.createElement('div');
-            footerContainer.innerHTML = this.templates.footer.trim();
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = this.templates.footer.trim();
+            while (tempDiv.firstChild) {
+                footerContainer.appendChild(tempDiv.firstChild);
+            }
             document.body.appendChild(footerContainer.firstElementChild);
         } else {
-            existingFooter.outerHTML = this.templates.footer;
+            // Безопасная замена через DOM API
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = this.templates.footer.trim();
+            const newFooter = tempDiv.firstElementChild;
+            if (newFooter) {
+                existingFooter.replaceWith(newFooter);
+            }
         }
         
         this.updateYear();

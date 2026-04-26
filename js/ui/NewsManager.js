@@ -241,11 +241,29 @@ class NewsManager {
       image.alt = sanitizer ? sanitizer.escapeHtml(news.title) : news.title;
     }
     if (content) {
-      // Санитизируем HTML контент
+      // Очищаем контейнер и вставляем контент безопасно через DOM API
+      content.replaceChildren();
+      
+      // Создаём временный элемент для парсинга HTML
+      const tempDiv = document.createElement('div');
       const safeContent = sanitizer ? sanitizer.sanitizeHtml(news.content, {
         allowedTags: ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 'h1', 'h2', 'h3', 'h4', 'ul', 'ol', 'li', 'a', 'span', 'div']
       }) : news.content;
-      content.innerHTML = safeContent;
+      
+      tempDiv.innerHTML = safeContent;
+      
+      // Переносим узлы по одному, удаляя потенциально опасные атрибуты
+      Array.from(tempDiv.childNodes).forEach(node => {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          // Удаляем все обработчики событий и опасные атрибуты
+          Array.from(node.attributes).forEach(attr => {
+            if (attr.name.startsWith('on') || attr.name.toLowerCase() === 'srcdoc') {
+              node.removeAttribute(attr.name);
+            }
+          });
+        }
+        content.appendChild(node.cloneNode(true));
+      });
     }
   }
 
