@@ -69,14 +69,26 @@ function openProjectModal(title, details, images, category) {
 function initProjectGallery(images, container, mainImage) {
   const sanitizer = window.Utils?.Sanitizer;
   
+  // Полностью очищаем контейнер перед инициализацией
   if (container) {
     container.replaceChildren();
   }
   
+  // Сбрасываем стили и обработчики основного изображения
+  if (mainImage) {
+    mainImage.src = '';
+    mainImage.alt = '';
+    mainImage.style.cursor = '';
+    mainImage.replaceWith(mainImage.cloneNode(false));
+  }
+  
+  const newMainImage = document.getElementById('projectModalImage');
+  const newContainer = document.getElementById('projectModalImageContainer');
+  
   if (!images || images.length === 0) {
-    if (mainImage) {
-      mainImage.src = 'assets/images/placeholder.jpg';
-      mainImage.alt = 'Изображение проекта';
+    if (newMainImage) {
+      newMainImage.src = 'assets/images/placeholder.jpg';
+      newMainImage.alt = 'Изображение проекта';
     }
     return;
   }
@@ -84,83 +96,89 @@ function initProjectGallery(images, container, mainImage) {
   let currentIndex = 0;
   
   function updateMainImage(index) {
-    if (!mainImage) return;
+    if (!newMainImage) return;
     const safeUrl = sanitizer && sanitizer.isValidUrl 
       ? (sanitizer.isValidUrl(images[index]) ? images[index] : 'assets/images/placeholder.jpg')
       : images[index];
-    mainImage.src = safeUrl;
-    mainImage.alt = `Изображение ${index + 1} из ${images.length}`;
+    newMainImage.src = safeUrl;
+    newMainImage.alt = `Изображение ${index + 1} из ${images.length}`;
+  }
+  
+  function openLightbox() {
+    if (typeof window.openProjectLightbox === 'function') {
+      window.openProjectLightbox(images, currentIndex);
+    } else {
+      Logger.WARN('openProjectLightbox ещё не загружена');
+    }
   }
   
   if (images.length === 1) {
     updateMainImage(0);
-    if (mainImage) {
-      mainImage.style.cursor = 'zoom-in';
-      mainImage.addEventListener('click', () => {
-        if (typeof window.openProjectLightbox === 'function') {
-          window.openProjectLightbox(images, 0);
-        } else {
-          Logger.WARN('openProjectLightbox ещё не загружена');
-        }
-      });
+    if (newMainImage) {
+      newMainImage.style.cursor = 'zoom-in';
+      newMainImage.addEventListener('click', openLightbox, { once: false });
     }
     return;
   }
   
-  if (container && mainImage) {
-    const prevBtn = createNavButton('gallery-nav gallery-nav-prev', 'Предыдущее изображение', 'M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z');
-    prevBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
+  // Создаём кнопку "Назад"
+  const prevBtn = createNavButton('gallery-nav gallery-nav-prev', 'Предыдущее изображение', 'M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z');
+  prevBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    updateMainImage(currentIndex);
+    // Обновляем активный индикатор
+    const indicators = newContainer.querySelectorAll('.gallery-indicator');
+    indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentIndex));
+  });
+  newContainer.appendChild(prevBtn);
+  
+  // Оборачиваем изображение
+  const imageWrapper = document.createElement('div');
+  imageWrapper.className = 'gallery-image-wrapper';
+  if (newMainImage.parentNode) {
+    newMainImage.parentNode.insertBefore(imageWrapper, newMainImage);
+    imageWrapper.appendChild(newMainImage);
+  }
+  
+  // Создаём кнопку "Вперёд"
+  const nextBtn = createNavButton('gallery-nav gallery-nav-next', 'Следующее изображение', 'M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z');
+  nextBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % images.length;
+    updateMainImage(currentIndex);
+    // Обновляем активный индикатор
+    const indicators = newContainer.querySelectorAll('.gallery-indicator');
+    indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentIndex));
+  });
+  newContainer.appendChild(nextBtn);
+  
+  // Создаём индикаторы
+  const indicatorsContainer = document.createElement('div');
+  indicatorsContainer.className = 'gallery-indicators';
+  
+  images.forEach((_, index) => {
+    const indicator = document.createElement('button');
+    indicator.className = 'gallery-indicator' + (index === 0 ? ' active' : '');
+    indicator.setAttribute('aria-label', `Изображение ${index + 1}`);
+    indicator.addEventListener('click', () => {
+      currentIndex = index;
       updateMainImage(currentIndex);
-    });
-    container.appendChild(prevBtn);
-    
-    const imageWrapper = document.createElement('div');
-    imageWrapper.className = 'gallery-image-wrapper';
-    if (mainImage.parentNode) {
-      mainImage.parentNode.insertBefore(imageWrapper, mainImage);
-      imageWrapper.appendChild(mainImage);
-    }
-    
-    const nextBtn = createNavButton('gallery-nav gallery-nav-next', 'Следующее изображение', 'M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z');
-    nextBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % images.length;
-      updateMainImage(currentIndex);
-    });
-    container.appendChild(nextBtn);
-    
-    const indicatorsContainer = document.createElement('div');
-    indicatorsContainer.className = 'gallery-indicators';
-    
-    images.forEach((_, index) => {
-      const indicator = document.createElement('button');
-      indicator.className = 'gallery-indicator' + (index === 0 ? ' active' : '');
-      indicator.setAttribute('aria-label', `Изображение ${index + 1}`);
-      indicator.addEventListener('click', () => {
-        currentIndex = index;
-        updateMainImage(currentIndex);
-        indicatorsContainer.querySelectorAll('.gallery-indicator').forEach((ind, i) => {
-          ind.classList.toggle('active', i === index);
-        });
+      indicatorsContainer.querySelectorAll('.gallery-indicator').forEach((ind, i) => {
+        ind.classList.toggle('active', i === index);
       });
-      indicatorsContainer.appendChild(indicator);
     });
-    
-    container.appendChild(indicatorsContainer);
-  }
+    indicatorsContainer.appendChild(indicator);
+  });
   
-  if (mainImage) {
-    mainImage.style.cursor = 'zoom-in';
-    mainImage.addEventListener('click', () => {
-      if (typeof window.openProjectLightbox === 'function') {
-        window.openProjectLightbox(images, currentIndex);
-      } else {
-        Logger.WARN('openProjectLightbox ещё не загружена');
-      }
-    });
-  }
+  newContainer.appendChild(indicatorsContainer);
   
+  // Устанавливаем первое изображение
   updateMainImage(0);
+  
+  // Добавляем обработчик клика для открытия лайтбокса
+  if (newMainImage) {
+    newMainImage.style.cursor = 'zoom-in';
+    newMainImage.addEventListener('click', openLightbox, { once: false });
+  }
 }
 
 function createNavButton(className, ariaLabel, pathData) {
