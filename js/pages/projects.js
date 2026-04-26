@@ -7,14 +7,10 @@
 // Данные проектов с поддержкой нескольких изображений
 const projectsData = {
   1: {
-    title: 'Модернизация Ан-124-100',
-    details: ['Замена авионики на современную', 'Установка новых двигателей', 'Модернизация навигационных систем', 'Обновление системы управления полётом', 'Улучшение топливной эффективности'],
-    images: [
-      'assets/images/placeholder.jpg',
-      'assets/images/placeholder.jpg',
-      'assets/images/placeholder.jpg'
-    ],
-    category: 'Модификация воздушных судов'
+    title: 'Суперпроект',
+    details: ['Реализация 1', 'Реализация 2', 'Реализация 3', 'Реализация 4', 'Реализация 5'],
+    image: 'assets/images/placeholder.jpg',
+    category: 'Какая-то категория'
   }
 };
 
@@ -34,11 +30,18 @@ function initProjectsPage() {
       }
     }
   });
+
+  // Обработчик для кнопки запроса КП
+  const requestQuoteBtn = document.getElementById('projectsRequestQuoteBtn');
+  if (requestQuoteBtn) {
+    requestQuoteBtn.addEventListener('click', function() {
+      if (typeof window.openApplicationModal === 'function') {
+        window.openApplicationModal();
+      }
+    });
+  }
 }
 
-/**
- * Открытие модального окна проекта
- */
 function openProjectModal(title, details, images, category) {
   const modalTitle = document.getElementById('projectModalTitle');
   const modalContent = document.getElementById('projectModalContent');
@@ -330,8 +333,3 @@ if (document.readyState === 'loading') {
 } else {
   initProjectsPage();
 }
-
-// Экспорт функций в глобальную область видимости для доступа из HTML
-window.openProjectModal = openProjectModal;
-window.openProjectLightbox = openProjectLightbox;
-window.closeLightbox = closeLightbox;
