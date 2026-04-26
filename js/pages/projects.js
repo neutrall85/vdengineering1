@@ -316,3 +316,4 @@ function closeLightbox(lightboxOverlay, lightboxImage, prevBtn, nextBtn) {
 window.initProjectsPage = initProjectsPage;
 window.openProjectModal = openProjectModal;
 window.openProjectLightbox = openProjectLightbox;
+window.initProjectGallery = initProjectGallery;
