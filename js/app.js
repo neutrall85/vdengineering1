@@ -261,9 +261,11 @@ class Application {
       if (projectTrigger) {
         e.preventDefault();
         const projectId = projectTrigger.getAttribute('data-project-id');
-        if (projectId && typeof projectsData !== 'undefined' && projectsData[projectId]) {
-          const project = projectsData[projectId];
-          openProjectModal(project.title, project.details, project.images, project.category);
+        if (projectId && window.projectsData && window.projectsData[projectId]) {
+          const project = window.projectsData[projectId];
+          if (typeof window.openProjectModal === 'function') {
+            window.openProjectModal(project.title, project.details, project.images, project.category);
+          }
         }
       }
     });
