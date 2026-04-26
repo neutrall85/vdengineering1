@@ -1,1 +1,1 @@
-(js/ui/managers/UniversalApplicationModalManager.js)
+(js/app.js, js/pages/projects.js, js/pages/services.js, js/ui/FormManager.js, js/ui/ModalHelpers.js, js/ui/NewsManager.js, js/ui/managers/PolicyModalManager.js, js/ui/managers/UniversalApplicationModalManager.js)

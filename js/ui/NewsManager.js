@@ -208,20 +208,12 @@ class NewsManager {
     this._populateModal(news);
     
     // Используем централизованный ModalHelpers
-    if (typeof ModalHelpers !== 'undefined') {
-      ModalHelpers.open('news');
-    } else {
-      Logger.WARN('ModalManager not available');
-    }
+    ModalHelpers.open('news');
   }
 
   closeNewsModal() {
     // Используем централизованный ModalHelpers
-    if (typeof ModalHelpers !== 'undefined') {
-      ModalHelpers.close('news');
-    } else {
-      Logger.WARN('ModalManager not available');
-    }
+    ModalHelpers.close('news');
   }
 
   _populateModal(news) {
