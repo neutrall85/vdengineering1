@@ -58,22 +58,22 @@ const ComponentLoader = {
 
     _loadNavbar(activePage) {
         const navContainer = document.getElementById('navbar');
+        // Используем DOMParser для безопасного парсинга статических шаблонов
+        const parser = new DOMParser();
+        
         if (navContainer && !navContainer.hasChildNodes()) {
-            // Безопасная вставка через DOM API
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = this.templates.navbar.trim();
-            while (tempDiv.firstChild) {
-                navContainer.appendChild(tempDiv.firstChild);
-            }
+            const doc = parser.parseFromString(this.templates.navbar, 'text/html');
+            Array.from(doc.body.childNodes).forEach(node => {
+                navContainer.appendChild(node.cloneNode(true));
+            });
             this.setActiveLink(activePage);
         } else if (!navContainer) {
             const newNavContainer = document.createElement('div');
             newNavContainer.id = 'navbar';
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = this.templates.navbar.trim();
-            while (tempDiv.firstChild) {
-                newNavContainer.appendChild(tempDiv.firstChild);
-            }
+            const doc = parser.parseFromString(this.templates.navbar, 'text/html');
+            Array.from(doc.body.childNodes).forEach(node => {
+                newNavContainer.appendChild(node.cloneNode(true));
+            });
             const firstBodyChild = document.body.firstChild;
             document.body.insertBefore(newNavContainer, firstBodyChild);
             this.setActiveLink(activePage);
@@ -94,11 +94,11 @@ const ComponentLoader = {
         const existingModal = document.getElementById('modalOverlay');
         if (!existingModal) {
             const modalContainer = document.createElement('div');
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = this.templates.proposalModal.trim();
-            while (tempDiv.firstChild) {
-                modalContainer.appendChild(tempDiv.firstChild);
-            }
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(this.templates.proposalModal, 'text/html');
+            Array.from(doc.body.childNodes).forEach(node => {
+                modalContainer.appendChild(node.cloneNode(true));
+            });
             document.body.appendChild(modalContainer.firstElementChild);
             setTimeout(() => {
                 const modalPhoneInput = document.querySelector('#modalOverlay #phone');
@@ -112,11 +112,11 @@ const ComponentLoader = {
         const existingUniversalModal = document.getElementById('universalApplicationModalOverlay');
         if (!existingUniversalModal) {
             const universalModalContainer = document.createElement('div');
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = this.templates.universalApplicationModal.trim();
-            while (tempDiv.firstChild) {
-                universalModalContainer.appendChild(tempDiv.firstChild);
-            }
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(this.templates.universalApplicationModal, 'text/html');
+            Array.from(doc.body.childNodes).forEach(node => {
+                universalModalContainer.appendChild(node.cloneNode(true));
+            });
             document.body.appendChild(universalModalContainer.firstElementChild);
             setTimeout(() => {
                 if (typeof UniversalApplicationModalManager !== 'undefined') {
@@ -130,19 +130,19 @@ const ComponentLoader = {
 
     _loadFooter(activePage) {
         const existingFooter = document.querySelector('body > footer.footer');
+        const parser = new DOMParser();
+        
         if (!existingFooter) {
             const footerContainer = document.createElement('div');
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = this.templates.footer.trim();
-            while (tempDiv.firstChild) {
-                footerContainer.appendChild(tempDiv.firstChild);
-            }
+            const doc = parser.parseFromString(this.templates.footer, 'text/html');
+            Array.from(doc.body.childNodes).forEach(node => {
+                footerContainer.appendChild(node.cloneNode(true));
+            });
             document.body.appendChild(footerContainer.firstElementChild);
         } else {
-            // Безопасная замена через DOM API
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = this.templates.footer.trim();
-            const newFooter = tempDiv.firstElementChild;
+            // Безопасная замена через DOM API и DOMParser
+            const doc = parser.parseFromString(this.templates.footer, 'text/html');
+            const newFooter = doc.body.firstElementChild;
             if (newFooter) {
                 existingFooter.replaceWith(newFooter);
             }

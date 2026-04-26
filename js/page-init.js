@@ -13,7 +13,7 @@
             const errorMsg = document.createElement('p');
             errorMsg.className = 'no-news';
             errorMsg.textContent = 'Новости временно недоступны';
-            container.innerHTML = '';
+            container.replaceChildren();
             container.appendChild(errorMsg);
             return;
         }

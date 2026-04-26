@@ -43,15 +43,16 @@ const PolicyModalManager = {
           allowedAttributes: { 'a': ['href', 'target', 'rel'] }
         });
         
-        // Безопасная вставка через DOM API
+        // Безопасная вставка через DOM API и DOMParser
         const contentContainer = document.getElementById('policyModalContent');
         contentContainer.replaceChildren();
         
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = safeContent;
+        // Используем DOMParser для безопасного парсинга HTML
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(safeContent, 'text/html');
         
-        // Переносим узлы по одному с дополнительной проверкой
-        Array.from(tempDiv.childNodes).forEach(node => {
+        // Переносим узлы с проверкой
+        Array.from(doc.body.childNodes).forEach(node => {
           if (node.nodeType === Node.ELEMENT_NODE) {
             // Удаляем опасные атрибуты
             Array.from(node.attributes).forEach(attr => {
