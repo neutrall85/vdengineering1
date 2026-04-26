@@ -79,33 +79,24 @@ function initProjectGallery(images, container, mainImage) {
     container.replaceChildren();
   }
   
-  // Сбрасываем стили и обработчики основного изображения
-  let currentMainImage = mainImage;
-  if (currentMainImage) {
-    currentMainImage.src = '';
-    currentMainImage.alt = '';
-    currentMainImage.style.cursor = '';
-    const clonedImage = currentMainImage.cloneNode(false);
-    currentMainImage.replaceWith(clonedImage);
-    currentMainImage = clonedImage;
-  }
-  
-  // Переполучаем ссылки на элементы после замены
-  const newMainImage = currentMainImage || document.getElementById('projectModalImage');
+  // Используем существующий элемент изображения без замены
+  const newMainImage = mainImage || document.getElementById('projectModalImage');
   const newContainer = container || document.getElementById('projectModalImageContainer');
   
+  if (!newMainImage || !newContainer) {
+    Logger.WARN('Элементы галереи проекта не найдены');
+    return;
+  }
+  
   if (!images || images.length === 0) {
-    if (newMainImage) {
-      newMainImage.src = 'assets/images/placeholder.jpg';
-      newMainImage.alt = 'Изображение проекта';
-    }
+    newMainImage.src = 'assets/images/placeholder.jpg';
+    newMainImage.alt = 'Изображение проекта';
     return;
   }
   
   let currentIndex = 0;
   
   function updateMainImage(index) {
-    if (!newMainImage) return;
     const safeUrl = sanitizer && sanitizer.isValidUrl 
       ? (sanitizer.isValidUrl(images[index]) ? images[index] : 'assets/images/placeholder.jpg')
       : images[index];
@@ -121,12 +112,12 @@ function initProjectGallery(images, container, mainImage) {
     }
   }
   
+  // Добавляем обработчик клика для открытия лайтбокса
+  newMainImage.style.cursor = 'zoom-in';
+  newMainImage.addEventListener('click', openLightbox, { once: false });
+  
   if (images.length === 1) {
     updateMainImage(0);
-    if (newMainImage) {
-      newMainImage.style.cursor = 'zoom-in';
-      newMainImage.addEventListener('click', openLightbox, { once: false });
-    }
     return;
   }
   
@@ -144,10 +135,8 @@ function initProjectGallery(images, container, mainImage) {
   // Оборачиваем изображение
   const imageWrapper = document.createElement('div');
   imageWrapper.className = 'gallery-image-wrapper';
-  if (newMainImage && newMainImage.parentNode) {
-    newMainImage.parentNode.insertBefore(imageWrapper, newMainImage);
-    imageWrapper.appendChild(newMainImage);
-  }
+  newContainer.appendChild(imageWrapper);
+  imageWrapper.appendChild(newMainImage);
   
   // Создаём кнопку "Вперёд"
   const nextBtn = createNavButton('gallery-nav gallery-nav-next', 'Следующее изображение', 'M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z');
@@ -182,12 +171,6 @@ function initProjectGallery(images, container, mainImage) {
   
   // Устанавливаем первое изображение
   updateMainImage(0);
-  
-  // Добавляем обработчик клика для открытия лайтбокса
-  if (newMainImage) {
-    newMainImage.style.cursor = 'zoom-in';
-    newMainImage.addEventListener('click', openLightbox, { once: false });
-  }
 }
 
 function createNavButton(className, ariaLabel, pathData) {
