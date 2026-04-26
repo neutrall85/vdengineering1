@@ -5404,16 +5404,6 @@ body.app-ready>footer {
   height: 240px;
   margin: 0 auto;
   fill: var(--vd);
-  animation: errorPlaneFloat 3s ease-in-out infinite;
-}
-
-@keyframes errorPlaneFloat {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-15px) rotate(2deg);
-  }
 }
 
 .error-code {
