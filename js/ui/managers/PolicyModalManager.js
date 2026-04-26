@@ -69,8 +69,6 @@ const PolicyModalManager = {
         // Открываем через централизованный ModalHelpers
         if (typeof ModalHelpers !== 'undefined') {
             ModalHelpers.open('policy', { keepParentModal });
-        } else if (typeof modalManager !== 'undefined') {
-            modalManager.open('policy', { keepParentModal });
         } else {
             Logger.WARN('ModalManager not available for policy modal');
         }
@@ -83,8 +81,6 @@ const PolicyModalManager = {
         // Используем централизованный ModalHelpers
         if (typeof ModalHelpers !== 'undefined') {
             ModalHelpers.close('policy');
-        } else if (typeof modalManager !== 'undefined') {
-            modalManager.close('policy');
         } else {
             Logger.WARN('ModalManager not available for policy modal close');
         }

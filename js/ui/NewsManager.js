@@ -211,12 +211,7 @@ class NewsManager {
     if (typeof ModalHelpers !== 'undefined') {
       ModalHelpers.open('news');
     } else {
-      const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.App?.services?.modalManager);
-      if (manager) {
-        manager.open('news');
-      } else {
-        Logger.WARN('ModalManager not available');
-      }
+      Logger.WARN('ModalManager not available');
     }
   }
 
@@ -225,10 +220,7 @@ class NewsManager {
     if (typeof ModalHelpers !== 'undefined') {
       ModalHelpers.close('news');
     } else {
-      const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.App?.services?.modalManager);
-      if (manager) {
-        manager.close('news');
-      }
+      Logger.WARN('ModalManager not available');
     }
   }
 

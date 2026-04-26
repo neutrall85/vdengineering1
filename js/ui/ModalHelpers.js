@@ -1,175 +1,113 @@
 /**
- * ModalHelpers - утилиты для работы с модальными окнами
+ * ModalHelpers - простой и универсальный интерфейс для работы с модальными окнами
  * ООО "Волга-Днепр Инжиниринг"
  * 
- * Единая точка входа для всех операций с модальными окнами:
- * - ModalHelpers.open(key, options) - открытие модалки
- * - ModalHelpers.close(key) - закрытие модалки
- * - ModalHelpers.isOpen(key) - проверка состояния
- * - ModalHelpers.closeAll() - закрытие всех модалок
+ * Единый API для всех модалок:
+ * - ModalHelpers.open(key, options) - открыть модалку
+ * - ModalHelpers.close(key) - закрыть модалку
+ * - ModalHelpers.isOpen(key) - проверить состояние
+ * - ModalHelpers.closeAll() - закрыть все модалки
  * 
- * Все остальные способы открытия/закрытия модалок считаются устаревшими
+ * Использование:
+ *   ModalHelpers.open('form')
+ *   ModalHelpers.open('proposal', { keepParentModal: true })
+ *   ModalHelpers.close('form')
  */
 
 const ModalHelpers = {
   /**
-   * Инициализация обработчиков для data-атрибутов
-   * Автоматически находит все элементы с [data-modal-open] и вешает обработчики
+   * Инициализация: навешивает обработчики на data-атрибуты
+   * Вызывается один раз при старте приложения
    */
   init() {
-    this._setupModalOpenHandlers();
-    this._setupGlobalFunctions();
+    this._setupDataAttributes();
     Logger.INFO('ModalHelpers initialized');
   },
 
   /**
-   * Настройка обработчиков для элементов с data-modal-open
-   * Поддерживаемые значения: proposal, application
+   * Настройка обработчиков для [data-modal-open] и [data-modal-close]
+   * Пример HTML: <button data-modal-open="proposal">Открыть КП</button>
    */
-  _setupModalOpenHandlers() {
+  _setupDataAttributes() {
     document.addEventListener('click', (e) => {
-      // Обработка кнопки открытия КП
-      const proposalTrigger = e.target.closest('[data-modal-open="proposal"]');
-      if (proposalTrigger) {
+      // Открытие модалки
+      const openTrigger = e.target.closest('[data-modal-open]');
+      if (openTrigger) {
         e.preventDefault();
-        this.open('proposal');
+        const key = openTrigger.getAttribute('data-modal-open');
+        this.open(key);
         return;
       }
 
-      // Обработка кнопки отклика на вакансию
-      const applicationTrigger = e.target.closest('[data-modal-open="application"]');
-      if (applicationTrigger) {
+      // Закрытие модалки
+      const closeTrigger = e.target.closest('[data-modal-close]');
+      if (closeTrigger) {
         e.preventDefault();
-        this.openApplicationModal(applicationTrigger);
+        const key = closeTrigger.getAttribute('data-modal-close') || null;
+        if (key) {
+          this.close(key);
+        } else {
+          this.closeAll();
+        }
         return;
       }
     });
   },
 
   /**
-   * Настройка глобальных функций для обратной совместимости
-   * Все глобальные функции делегируют вызовы к ModalHelpers
-   */
-  _setupGlobalFunctions() {
-    // Глобальная функция открытия основной формы
-    window.openModal = () => this.open('form');
-
-    // Глобальная функция закрытия основной формы
-    window.closeModal = () => this.close('form');
-    
-    // Глобальные функции для специфичных модалок (обратная совместимость)
-    window.openDetailsModal = (title, details) => {
-      const modalTitle = document.getElementById('detailsModalTitle');
-      const modalList = document.getElementById('detailsModalList');
-      
-      if (modalTitle && modalList) {
-        const sanitizer = window.Utils?.Sanitizer;
-        modalTitle.textContent = sanitizer ? sanitizer.escapeHtml(title) : title;
-        
-        modalList.replaceChildren();
-        const ul = document.createElement('ul');
-        details.forEach(item => {
-          const li = document.createElement('li');
-          li.textContent = sanitizer ? sanitizer.escapeHtml(item) : item;
-          ul.appendChild(li);
-        });
-        modalList.appendChild(ul);
-        this.open('details');
-      }
-    };
-    
-    window.closeAboutModal = () => this.close('about');
-    window.closeDetailsModal = () => this.close('details');
-    window.closeNewsModal = () => this.close('news');
-    window.closePolicyModal = () => this.close('policy');
-    window.closeServiceModal = () => this.close('service');
-    window.closeProjectModal = () => this.close('project');
-  },
-
-  /**
-   * Получение экземпляра ModalManager с фоллбэком
-   * @returns {ModalManager|null}
+   * Получить экземпляр ModalManager
+   * @returns {ModalManager}
    */
   _getManager() {
-    return (typeof modalManager !== 'undefined') 
-      ? modalManager 
-      : (window.App?.services?.modalManager || null);
+    return window.modalManager || window.App?.services?.modalManager;
   },
 
   /**
-   * Универсальный метод открытия модалки по ключу
+   * Открыть модалку по ключу
    * @param {string} key - ключ модалки (form, proposal, news, details, universal, policy, project, service, about)
-   * @param {Object} options - опции для открытия { keepParentModal, focusSelector, onOpen }
+   * @param {Object} options - опции: { keepParentModal, focusSelector, onOpen }
    * @returns {boolean}
    */
   open(key, options = {}) {
     const manager = this._getManager();
-    if (manager) {
-      return manager.open(key, options);
+    if (!manager) {
+      Logger.WARN(`ModalManager not available for key: ${key}`);
+      return false;
     }
-    Logger.WARN(`ModalManager not available for key: ${key}`);
-    return false;
+    return manager.open(key, options);
   },
 
   /**
-   * Универсальный метод закрытия модалки по ключу
+   * Закрыть модалку по ключу
    * @param {string} key - ключ модалки
    * @returns {boolean}
    */
   close(key) {
     const manager = this._getManager();
-    if (manager) {
-      return manager.close(key);
+    if (!manager) {
+      Logger.WARN(`ModalManager not available for key: ${key}`);
+      return false;
     }
-    Logger.WARN(`ModalManager not available for key: ${key}`);
-    return false;
+    return manager.close(key);
   },
 
   /**
-   * Проверка состояния модалки
-   * @param {string|null} key - ключ модалки или null для любой активной
+   * Проверить, открыта ли модалка
+   * @param {string|null} key - ключ или null для проверки любой активной
    * @returns {boolean}
    */
   isOpen(key = null) {
     const manager = this._getManager();
-    if (manager) {
-      return manager.isOpen(key);
-    }
-    return false;
+    return manager ? manager.isOpen(key) : false;
   },
 
   /**
-   * Закрытие всех модалок
+   * Закрыть все модалки
    */
   closeAll() {
     const manager = this._getManager();
     if (manager) {
       manager.closeAll();
-    }
-  },
-
-  /**
-   * Открытие универсального модального окна заявки/отклика
-   * @param {HTMLElement} triggerElement - элемент, вызвавший модалку
-   */
-  openApplicationModal(triggerElement) {
-    if (typeof window.openApplicationModal === 'function') {
-      window.openApplicationModal(triggerElement);
-    } else {
-      Logger.WARN('openApplicationModal function not available');
-    }
-  },
-
-  /**
-   * Открытие модального окна политики
-   * @param {string} policyKey - ключ политики (terms, privacy, personal-data, cookies)
-   * @param {boolean} keepParentModal - если true, не закрывать родительскую модалку
-   */
-  openPolicyModal(policyKey, keepParentModal = true) {
-    if (typeof PolicyModalManager !== 'undefined') {
-      PolicyModalManager.openPolicyModal(policyKey, keepParentModal);
-    } else {
-      Logger.WARN('PolicyModalManager not available');
     }
   }
 };

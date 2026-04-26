@@ -1,1 +1,1 @@
-Nothing should be ignored since the changes only include JavaScript source files (.js) which are legitimate code files that should be tracked in version control.
+(js/ui/managers/UniversalApplicationModalManager.js)
