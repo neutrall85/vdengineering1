@@ -48,16 +48,17 @@ const projectsData = {
  * Вызывается из HTML после загрузки DOM
  */
 window.initProjectsPage = function() {
-  // Обработчики для кнопок "Подробнее"
-  const projectButtons = document.querySelectorAll('.news-card-link[data-project-id]');
-  projectButtons.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const projectId = this.getAttribute('data-project-id');
+  // Обработчик для кнопок "Подробнее" через делегирование событий (как в NewsManager)
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.news-card-link[data-project-id]');
+    if (btn) {
+      e.preventDefault();
+      const projectId = btn.getAttribute('data-project-id');
       const project = projectsData[projectId];
       if (project) {
         openProjectModal(project.title, project.details, project.image, project.category);
       }
-    });
+    }
   });
 
   // Обработчик для кнопки закрытия модального окна
