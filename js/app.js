@@ -13,7 +13,6 @@ class Application {
 
   async init() {
     try {
-      // Проверка: ConsentManager должен быть инициализирован
       if (typeof ConsentManager === 'undefined') {
         throw new Error('ConsentManager is not loaded - critical security module missing');
       }
@@ -41,12 +40,6 @@ class Application {
       this._setCurrentYear();
       this._registerModules();
       
-      // Ранняя регистрация статических модалок (например, projectModal на странице проектов)
-      // Это необходимо для страниц, где модалки уже есть в HTML до загрузки компонентов
-      this._registerStaticModals();
-      
-      // Регистрация модальных окон после загрузки компонентов
-      // Это необходимо т.к. некоторые модалки (proposal, universal) загружаются динамически через ComponentLoader
       const registerModalsOnce = () => {
         if (!this._modalsRegistered) {
           this._registerModals();
@@ -55,8 +48,6 @@ class Application {
       
       document.addEventListener('components:loaded', registerModalsOnce, { once: true });
       
-      // Fallback: если компоненты уже загружены (например, при кэшировании или повторной инициализации)
-      // Проверяем наличие основных модалок
       setTimeout(() => {
         registerModalsOnce();
       }, 100);
@@ -74,7 +65,6 @@ class Application {
         }
       }
       
-      // Инициализация специфичных страниц через глобальные функции
       const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
       const pageInitMap = {
         'projects': 'initProjectsPage',
@@ -107,7 +97,6 @@ class Application {
   }
 
   _registerModules() {
-    // Регистрация модулей в центральном реестре services
     const modulesToRegister = [];
     
     if (typeof navigationManager !== 'undefined') {
@@ -126,8 +115,6 @@ class Application {
       this.services.newsManager = newsManager;
       modulesToRegister.push(newsManager);
     }
-    // initDocPreviews вызывается напрямую в initApp(), не требует регистрации в services
-    // ModalManager регистрируется для доступа через app.services
     if (typeof modalManager !== 'undefined') {
       this.services.modalManager = modalManager;
     }
@@ -138,7 +125,6 @@ class Application {
   _registerModals() {
     if (typeof modalManager === 'undefined') return;
     
-    // Защита от повторной регистрации
     if (this._modalsRegistered) return;
     
     const modalsToRegister = [
@@ -163,7 +149,6 @@ class Application {
       },
       { key: 'project', overlayId: 'projectModalOverlay', required: false },
       { key: 'service', overlayId: 'serviceModalOverlay', required: false },
-      // Добавлена регистрация модального окна политик
       { key: 'policy', overlayId: 'policyModalOverlay', required: false }
     ];
 
@@ -179,25 +164,6 @@ class Application {
     this._modalsRegistered = true;
   }
 
-  /**
-   * Ранняя регистрация статических модалок, которые уже есть в HTML страницы
-   * Вызывается до загрузки компонентов для страниц со статическими модалками
-   */
-  _registerStaticModals() {
-    if (typeof modalManager === 'undefined') return;
-    
-    const staticModals = [
-      { key: 'project', overlayId: 'projectModalOverlay' }
-    ];
-
-    staticModals.forEach(({ key, overlayId }) => {
-      const overlay = document.getElementById(overlayId);
-      if (overlay && !modalManager.modals.has(key)) {
-        modalManager.register(key, { overlayId });
-      }
-    });
-  }
-
   _initGlobalHelpers() {
     window.scrollToTop = () => {
       if (navigationManager) navigationManager.scrollToTop();
@@ -206,8 +172,6 @@ class Application {
     window.toggleMobileMenu = () => {
       if (navigationManager) navigationManager.toggleMobileMenu();
     };
-    
-    // window.openModal будет определён в initFormManager() после инициализации formManager
     
     window.closeModal = () => {
       if (typeof modalManager !== 'undefined') modalManager.close('form');
@@ -320,7 +284,6 @@ class Application {
 
     if (!floatingBtn) return;
 
-    // Обработчик клика по плавающей кнопке
     floatingBtn.addEventListener('click', () => {
       if (typeof modalManager !== 'undefined') {
         modalManager.open('proposal');
@@ -331,15 +294,12 @@ class Application {
       }
     }, { passive: true });
 
-    // Используем IntersectionObserver для управления видимостью кнопки
-    // Кнопка появляется после ухода героя
     let heroExited = false;
     
     const heroSection = document.querySelector('.hero, header');
     if (heroSection) {
       const heroObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          // Герой полностью ушел из viewport - можно показывать кнопку
           if (!entry.isIntersecting) {
             heroExited = true;
             floatingBtn.classList.add('visible');
@@ -414,7 +374,6 @@ class Application {
   }
 
   _handleHashScroll() {
-    // Работаем только на главной странице
     const isHomePage = window.location.pathname === '/' || window.location.pathname.endsWith('index.html');
     if (!isHomePage) return;
 
@@ -426,22 +385,19 @@ class Application {
     if (!targetElement) return;
 
     const scrollToTarget = () => {
-      // Даём время на завершение всех асинхронных рендеров (новости, партнёры)
       setTimeout(() => {
-        const offset = 80; // высота фиксированной шапки
+        const offset = 80;
         const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
         window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
       }, 400);
     };
 
-    // Если компоненты уже загружены – скроллим, иначе ждём события
     const onComponentsLoaded = () => {
       document.removeEventListener('components:loaded', onComponentsLoaded);
       scrollToTarget();
     };
 
     document.addEventListener('components:loaded', onComponentsLoaded);
-    // Fallback, если событие уже произошло или никогда не случится
     setTimeout(() => {
       document.removeEventListener('components:loaded', onComponentsLoaded);
       scrollToTarget();

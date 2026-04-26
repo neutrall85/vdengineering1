@@ -1,4 +1,20 @@
 ```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
+dist/
+build/
+target/
+
+# Dependencies
+.venv/
+venv/
+node_modules/
+.julia/
+zig*/
+
 # Logs and temp files
 *.log
 *.tmp
@@ -12,6 +28,23 @@
 # Editors
 .vscode/
 .idea/
+*.swo
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Testing and coverage
+.coverage
+coverage/
+htmlcov/
+
+# Package management
+*.tar.gz
+*.zip
+*.gz
+*.rar
+*.7z
 
 # Original rules preserved
 *.log
