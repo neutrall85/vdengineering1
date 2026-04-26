@@ -28,18 +28,14 @@ const ModalHelpers = {
 
   /**
    * Получение экземпляра modalManager
-   * Ищет в window.App.services.modalManager или window.modalManager
+   * Ищет в window.App.services.modalManager
    */
   _getManager() {
     if (this._manager) return this._manager;
     
-    // Пробуем получить из App.services
+    // Получаем из App.services
     if (window.App?.services?.modalManager) {
       this._manager = window.App.services.modalManager;
-    }
-    // Fallback на глобальный window.modalManager
-    else if (window.modalManager) {
-      this._manager = window.modalManager;
     }
     
     return this._manager;
