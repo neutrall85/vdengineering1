@@ -781,8 +781,8 @@ body.app-ready>footer {
   color: var(--metallic);
   line-height: 1.6;
   font-size: clamp(0.85rem, 1.2vw, 0.95rem);
-  margin-bottom: auto;
-  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0;
 }
 
 /* ==================== SERVICES ==================== */
@@ -1356,7 +1356,7 @@ body.app-ready>footer {
 .modal-container,
 .details-modal-container {
   background: white;
-  border-radius: 32px;
+  border-radius: 32px 32px 0 0;
   width: 100%;
   max-width: 650px;
   max-height: 90vh;
@@ -3118,10 +3118,6 @@ body.app-ready>footer {
   line-height: 1.6;
   font-size: clamp(0.85rem, 1.2vw, 0.95rem);
   margin-bottom: 1.5rem;
-}
-
-.project-card:hover .project-img-cover {
-  transform: scale(1.05) rotate(5deg);
 }
 
 .news-full-padding {
