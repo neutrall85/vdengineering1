@@ -90,7 +90,7 @@ class NavigationManager {
 
     this.resizeHandler = () => {
       if (resizeTimeout) clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => this._handleResize(), window.CONFIG?.PERFORMANCE?.RESIZE_DEBOUNCE_MS || 150);
+      resizeTimeout = setTimeout(() => this._onResize(), window.CONFIG?.PERFORMANCE?.RESIZE_DEBOUNCE_MS || 150);
     };
 
     window.addEventListener('scroll', this.scrollHandler, { passive: true });
@@ -115,6 +115,11 @@ class NavigationManager {
         this.scrollToTopBtn.classList.remove('visible');
       }
     }
+  }
+
+  _onResize() {
+    // Обработчик изменения размера окна
+    // Дополнительная логика может быть добавлена при необходимости
   }
 
   _initMobileMenu() {

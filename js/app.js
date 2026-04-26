@@ -41,6 +41,10 @@ class Application {
       this._setCurrentYear();
       this._registerModules();
       
+      // Ранняя регистрация статических модалок (например, projectModal на странице проектов)
+      // Это необходимо для страниц, где модалки уже есть в HTML до загрузки компонентов
+      this._registerStaticModals();
+      
       // Регистрация модальных окон после загрузки компонентов
       // Это необходимо т.к. некоторые модалки (proposal, universal) загружаются динамически через ComponentLoader
       const registerModalsOnce = () => {
@@ -173,6 +177,25 @@ class Application {
     });
     
     this._modalsRegistered = true;
+  }
+
+  /**
+   * Ранняя регистрация статических модалок, которые уже есть в HTML страницы
+   * Вызывается до загрузки компонентов для страниц со статическими модалками
+   */
+  _registerStaticModals() {
+    if (typeof modalManager === 'undefined') return;
+    
+    const staticModals = [
+      { key: 'project', overlayId: 'projectModalOverlay' }
+    ];
+
+    staticModals.forEach(({ key, overlayId }) => {
+      const overlay = document.getElementById(overlayId);
+      if (overlay && !modalManager.modals.has(key)) {
+        modalManager.register(key, { overlayId });
+      }
+    });
   }
 
   _initGlobalHelpers() {
