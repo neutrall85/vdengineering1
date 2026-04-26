@@ -21,38 +21,10 @@ const UniversalApplicationModalManager = {
 
     /**
      * Настройка глобальных функций открытия/закрытия модального окна
+     * Убрано: глобальные функции больше не нужны, используется ModalHelpers напрямую
      */
     _setupGlobalFunctions() {
-        window.openApplicationModal = (triggerElement) => {
-            const overlay = document.getElementById('universalApplicationModalOverlay');
-            if (!overlay) return;
-
-            let mode = 'vacancy';
-            const vacancyId = triggerElement ? triggerElement.getAttribute('data-vacancy-id') : null;
-            if (!vacancyId) mode = 'application';
-
-            const modalTitle = document.getElementById('universalApplicationModalTitle');
-            const submitBtnText = document.getElementById('universalSubmitBtnText');
-            const successTitle = document.getElementById('universalSuccessTitle');
-            
-            if (mode === 'application') {
-                if (modalTitle) modalTitle.textContent = 'Отправить заявку';
-                if (submitBtnText) submitBtnText.textContent = 'Отправить информацию';
-                if (successTitle) successTitle.textContent = 'Данные отправлены!';
-            } else {
-                if (modalTitle) modalTitle.textContent = 'Отклик на вакансию';
-                if (submitBtnText) submitBtnText.textContent = 'Отправить отклик';
-                if (successTitle) successTitle.textContent = 'Отклик отправлен!';
-            }
-
-            // Открываем через централизованный ModalHelpers
-            ModalHelpers.open('universal');
-        };
-
-        window.closeUniversalApplicationModal = () => {
-            // Используем централизованный ModalHelpers
-            ModalHelpers.close('universal');
-        };
+        // Глобальные функции удалены - везде используется ModalHelpers напрямую
     },
 
     /**
@@ -94,7 +66,7 @@ const UniversalApplicationModalManager = {
             successMessage.classList.add('show');
             
             setTimeout(() => {
-                window.closeUniversalApplicationModal();
+                ModalHelpers.close('universal');
                 form.reset();
                 form.classList.remove('hidden-form');
                 successMessage.classList.remove('show');

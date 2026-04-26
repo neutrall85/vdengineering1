@@ -16,7 +16,7 @@ const PolicyModalManager = {
             if (policyLink) {
                 e.preventDefault();
                 const policyKey = policyLink.getAttribute('data-policy');
-                this.openPolicyModal(policyKey);
+                ModalHelpers.open('policy');
             }
         });
     },

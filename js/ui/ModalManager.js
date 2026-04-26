@@ -156,8 +156,6 @@ class ModalManager {
       // Закрываем через ModalManager если модалка зарегистрирована
       if (modalKey && this.modals.has(modalKey)) {
         this.close(modalKey);
-      } else if (overlayId === 'universalApplicationModalOverlay' && typeof window.closeUniversalApplicationModal === 'function') {
-        window.closeUniversalApplicationModal();
       } else {
         // Fallback для незарегистрированных модалок
         overlay.classList.remove('active');
