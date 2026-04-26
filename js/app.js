@@ -203,10 +203,52 @@ class Application {
       if (navigationManager) navigationManager.closeMobileMenu();
     };
     
+    window.closeAboutModal = () => {
+      if (typeof modalManager !== 'undefined') modalManager.close('about');
+    };
+    
+    window.closeDetailsModal = () => {
+      if (typeof modalManager !== 'undefined') modalManager.close('details');
+    };
+    
+    window.closeNewsModal = () => {
+      if (newsManager && typeof newsManager.closeNewsModal === 'function') {
+        newsManager.closeNewsModal();
+      } else if (typeof modalManager !== 'undefined') {
+        modalManager.close('news');
+      }
+    };
+    
+    window.closePolicyModal = () => {
+      if (typeof modalManager !== 'undefined') {
+        modalManager.close('policy');
+      }
+    };
+    
     window.toggleWidget = (header) => {
       const widget = header.closest('.certificate-widget');
       if (widget) {
         widget.classList.toggle('active');
+      }
+    };
+    
+    window.openDetailsModal = (title, details) => {
+      const modalTitle = document.getElementById('detailsModalTitle');
+      const modalList = document.getElementById('detailsModalList');
+      
+      if (modalTitle && modalList) {
+        const sanitizer = window.Utils?.Sanitizer;
+        modalTitle.textContent = sanitizer ? sanitizer.escapeHtml(title) : title;
+        
+        modalList.replaceChildren();
+        const ul = document.createElement('ul');
+        details.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = sanitizer ? sanitizer.escapeHtml(item) : item;
+          ul.appendChild(li);
+        });
+        modalList.appendChild(ul);
+        if (typeof modalManager !== 'undefined') modalManager.open('details');
       }
     };
   }
@@ -236,11 +278,9 @@ class Application {
 
     if (!floatingBtn) return;
 
-    // Обработчик клика по плавающей кнопке - используем централизованный ModalHelpers
+    // Обработчик клика по плавающей кнопке
     floatingBtn.addEventListener('click', () => {
-      if (typeof ModalHelpers !== 'undefined') {
-        ModalHelpers.open('proposal');
-      } else if (typeof modalManager !== 'undefined') {
+      if (typeof modalManager !== 'undefined') {
         modalManager.open('proposal');
       } else if (window.App?.services?.modalManager) {
         window.App.services.modalManager.open('proposal');
