@@ -14,6 +14,8 @@ class FormManager {
     this.maxFiles = 10;
     this.maxFileSize = 10 * 1024 * 1024; // 10MB
     this.formValidator = null;
+    this.isSubmitting = false;
+    this.submitTimeoutId = null;
   }
 
   init() {
@@ -457,6 +459,12 @@ class FormManager {
   async _handleSubmit(e) {
     e.preventDefault();
 
+    // Защита от гонки состояний: предотвращаем повторную отправку
+    if (this.isSubmitting) {
+      Logger.WARN('Form submission already in progress, ignoring duplicate request');
+      return;
+    }
+
     const form = document.getElementById('proposalForm');
     
     if (!this._validateForm()) return;
@@ -468,6 +476,7 @@ class FormManager {
     }
 
     this.rateLimiter.record();
+    this.isSubmitting = true;
 
     const submitBtn = document.getElementById('submitBtn');
     
@@ -484,6 +493,15 @@ class FormManager {
     loadingText.textContent = 'Отправка...';
     submitBtn.appendChild(spinner);
     submitBtn.appendChild(loadingText);
+
+    // Таймаут защиты от зависания (30 секунд)
+    this.submitTimeoutId = setTimeout(() => {
+      if (this.isSubmitting) {
+        Logger.ERROR('Form submission timeout after 30 seconds');
+        this._showError('Превышено время ожидания ответа сервера. Пожалуйста, попробуйте позже.');
+        this._resetSubmitState(submitBtn, originalText);
+      }
+    }, 30000);
 
     try {
       // Получаем CSRF токен из скрытого поля формы или из sessionStorage
@@ -532,8 +550,26 @@ class FormManager {
       }
     } catch (error) {
       Logger.ERROR('Form submission error:', error);
-      this._showError('Произошла ошибка при отправке. Пожалуйста, попробуйте позже.');
+      const errorMessage = error.message.includes('HTTP') 
+        ? `Ошибка сервера: ${error.message}`
+        : 'Произошла ошибка при отправке. Пожалуйста, попробуйте позже.';
+      this._showError(errorMessage);
     } finally {
+      this._resetSubmitState(submitBtn, originalText);
+    }
+  }
+
+  /**
+   * Сброс состояния отправки формы
+   */
+  _resetSubmitState(submitBtn, originalText) {
+    if (this.submitTimeoutId) {
+      clearTimeout(this.submitTimeoutId);
+      this.submitTimeoutId = null;
+    }
+    this.isSubmitting = false;
+    
+    if (submitBtn) {
       submitBtn.disabled = false;
       // Восстанавливаем оригинальное содержимое кнопки
       submitBtn.replaceChildren();

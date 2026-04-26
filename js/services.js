@@ -90,6 +90,9 @@ const Services = (function() {
     }
 
     async post(endpoint, data, options = {}) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 сек таймаут
+
       try {
         const response = await fetch(`${this.baseUrl}${endpoint}`, {
           method: 'POST',
@@ -98,15 +101,23 @@ const Services = (function() {
             ...options.headers
           },
           body: JSON.stringify(data),
-          ...options
+          ...options,
+          signal: controller.signal
         });
 
+        clearTimeout(timeoutId);
+
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          const errorText = await response.text().catch(() => response.statusText);
+          throw new Error(`HTTP ${response.status}: ${errorText || response.statusText}`);
         }
 
         return await response.json();
       } catch (error) {
+        clearTimeout(timeoutId);
+        if (error.name === 'AbortError') {
+          throw new Error('Превышено время ожидания ответа сервера (30 сек)');
+        }
         throw error;
       }
     }
