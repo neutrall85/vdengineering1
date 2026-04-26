@@ -1,6 +1,7 @@
 /**
- * Инициализация специфичных обработчиков для страницы проектов
+ * Инициализация страницы проектов
  * ООО "Волга-Днепр Инжиниринг"
+ * Автоматическая инициализация после загрузки DOM
  */
 
 // Данные проектов
@@ -44,11 +45,10 @@ const projectsData = {
 };
 
 /**
- * Глобальная функция инициализации страницы проектов
- * Вызывается из HTML после загрузки DOM
+ * Основная функция инициализации
  */
-window.initProjectsPage = function() {
-  // Обработчик для кнопок "Подробнее" через делегирование событий (как в NewsManager)
+function initProjectsPage() {
+  // Обработчик для кнопок "Подробнее" через делегирование событий
   document.addEventListener('click', function(e) {
     const btn = e.target.closest('.news-card-link[data-project-id]');
     if (btn) {
@@ -61,12 +61,6 @@ window.initProjectsPage = function() {
     }
   });
 
-  // Обработчик для кнопки закрытия модального окна
-  const closeBtn = document.getElementById('projectModalCloseBtn');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeProjectModal);
-  }
-
   // Обработчик для кнопки запроса КП
   const requestQuoteBtn = document.getElementById('projectsRequestQuoteBtn');
   if (requestQuoteBtn) {
@@ -76,7 +70,7 @@ window.initProjectsPage = function() {
       }
     });
   }
-};
+}
 
 function openProjectModal(title, details, image, category) {
   const modalTitle = document.getElementById('projectModalTitle');
@@ -84,29 +78,39 @@ function openProjectModal(title, details, image, category) {
   const modalCategory = document.getElementById('projectModalCategory');
   const modalImage = document.getElementById('projectModalImage');
 
-  if (modalTitle && modalContent) {
-    const sanitizer = window.Utils?.Sanitizer;
-    modalTitle.textContent = sanitizer ? sanitizer.escapeHtml(title) : title;
-    modalCategory.textContent = sanitizer ? sanitizer.escapeHtml(category) : category;
-    modalImage.src = sanitizer ? (sanitizer.isValidUrl(image) ? image : 'assets/images/placeholder.jpg') : image;
-    modalImage.alt = sanitizer ? sanitizer.escapeHtml(title) : title;
-    
-    // Создаем список через DOM API вместо innerHTML для безопасности
-    modalContent.replaceChildren();
-    const ul = document.createElement('ul');
-    ul.className = 'modal-list-ul';
-    details.forEach(item => {
-      const li = document.createElement('li');
-      li.className = 'modal-list-li';
-      li.textContent = sanitizer ? sanitizer.escapeHtml(item) : item;
-      ul.appendChild(li);
-    });
-    modalContent.appendChild(ul);
+  if (!modalTitle || !modalContent || !modalCategory || !modalImage) {
+    Logger.WARN('Элементы модального окна проекта не найдены');
+    return;
+  }
 
-    if (typeof modalManager !== 'undefined') modalManager.open('project');
+  const sanitizer = window.Utils?.Sanitizer;
+  modalTitle.textContent = sanitizer ? sanitizer.escapeHtml(title) : title;
+  modalCategory.textContent = sanitizer ? sanitizer.escapeHtml(category) : category;
+  modalImage.src = sanitizer ? (sanitizer.isValidUrl(image) ? image : 'assets/images/placeholder.jpg') : image;
+  modalImage.alt = sanitizer ? sanitizer.escapeHtml(title) : title;
+  
+  // Создаем список через DOM API для безопасности
+  modalContent.replaceChildren();
+  const ul = document.createElement('ul');
+  ul.className = 'modal-list-ul';
+  details.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'modal-list-li';
+    li.textContent = sanitizer ? sanitizer.escapeHtml(item) : item;
+    ul.appendChild(li);
+  });
+  modalContent.appendChild(ul);
+
+  if (typeof modalManager !== 'undefined') {
+    modalManager.open('project');
+  } else {
+    Logger.ERROR('ModalManager не доступен');
   }
 }
 
-function closeProjectModal() {
-  if (typeof modalManager !== 'undefined') modalManager.close('project');
+// Автоматическая инициализация после загрузки DOM
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initProjectsPage);
+} else {
+  initProjectsPage();
 }
