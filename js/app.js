@@ -240,12 +240,6 @@ class Application {
     floatingBtn.addEventListener('click', () => {
       if (typeof ModalHelpers !== 'undefined') {
         ModalHelpers.open('proposal');
-      } else if (typeof modalManager !== 'undefined') {
-        modalManager.open('proposal');
-      } else if (window.App?.services?.modalManager) {
-        window.App.services.modalManager.open('proposal');
-      } else if (typeof window.openModal === 'function') {
-        window.openModal();
       }
     }, { passive: true });
 
