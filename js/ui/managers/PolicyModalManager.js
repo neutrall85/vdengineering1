@@ -119,9 +119,9 @@ const PolicyModalManager = {
         modalOverlay.appendChild(modalContainer);
         document.body.appendChild(modalOverlay);
 
-        // Регистрация в ModalManager
-        if (typeof modalManager !== 'undefined') {
-            modalManager.register('policy', { overlayId: 'policyModalOverlay' });
+        // Регистрация в ModalManager через централизованный ModalHelpers
+        if (typeof ModalHelpers !== 'undefined') {
+            ModalHelpers.register('policy', { overlayId: 'policyModalOverlay' });
         }
         
         return modalOverlay;

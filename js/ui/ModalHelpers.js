@@ -15,6 +15,8 @@
  */
 
 const ModalHelpers = {
+  _manager: null,
+
   /**
    * Инициализация: навешивает обработчики на data-атрибуты
    * Вызывается один раз при старте приложения
@@ -22,6 +24,25 @@ const ModalHelpers = {
   init() {
     this._setupDataAttributes();
     Logger.INFO('ModalHelpers initialized');
+  },
+
+  /**
+   * Получение экземпляра modalManager
+   * Ищет в window.App.services.modalManager или window.modalManager
+   */
+  _getManager() {
+    if (this._manager) return this._manager;
+    
+    // Пробуем получить из App.services
+    if (window.App?.services?.modalManager) {
+      this._manager = window.App.services.modalManager;
+    }
+    // Fallback на глобальный window.modalManager
+    else if (window.modalManager) {
+      this._manager = window.modalManager;
+    }
+    
+    return this._manager;
   },
 
   /**
@@ -61,11 +82,12 @@ const ModalHelpers = {
    * @returns {boolean}
    */
   open(key, options = {}) {
-    if (!window.modalManager) {
+    const manager = this._getManager();
+    if (!manager) {
       Logger.WARN(`ModalManager not available for key: ${key}`);
       return false;
     }
-    return window.modalManager.open(key, options);
+    return manager.open(key, options);
   },
 
   /**
@@ -74,11 +96,12 @@ const ModalHelpers = {
    * @returns {boolean}
    */
   close(key) {
-    if (!window.modalManager) {
+    const manager = this._getManager();
+    if (!manager) {
       Logger.WARN(`ModalManager not available for key: ${key}`);
       return false;
     }
-    return window.modalManager.close(key);
+    return manager.close(key);
   },
 
   /**
@@ -87,15 +110,29 @@ const ModalHelpers = {
    * @returns {boolean}
    */
   isOpen(key = null) {
-    return window.modalManager ? window.modalManager.isOpen(key) : false;
+    const manager = this._getManager();
+    return manager ? manager.isOpen(key) : false;
   },
 
   /**
    * Закрыть все модалки
    */
   closeAll() {
-    if (window.modalManager) {
-      window.modalManager.closeAll();
+    const manager = this._getManager();
+    if (manager) {
+      manager.closeAll();
+    }
+  },
+
+  /**
+   * Зарегистрировать модалку (для внутреннего использования)
+   * @param {string} key - ключ модалки
+   * @param {Object} config - конфигурация { overlayId, onOpen, onClose, focusSelector }
+   */
+  register(key, config) {
+    const manager = this._getManager();
+    if (manager && typeof manager.register === 'function') {
+      manager.register(key, config);
     }
   }
 };

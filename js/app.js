@@ -126,14 +126,14 @@ class Application {
     // ModalManager регистрируется для доступа через app.services
     if (typeof modalManager !== 'undefined') {
       this.services.modalManager = modalManager;
+      // Также сохраняем ссылку в ModalHelpers для кэширования
+      ModalHelpers._manager = modalManager;
     }
     
     this.modules = modulesToRegister;
   }
 
   _registerModals() {
-    if (typeof modalManager === 'undefined') return;
-    
     // Защита от повторной регистрации
     if (this._modalsRegistered) return;
     
@@ -166,7 +166,7 @@ class Application {
     modalsToRegister.forEach(({ key, overlayId, required, onClose, onOpen, focusSelector }) => {
       const overlay = document.getElementById(overlayId);
       if (overlay) {
-        modalManager.register(key, { overlayId, onClose, onOpen, focusSelector });
+        ModalHelpers.register(key, { overlayId, onClose, onOpen, focusSelector });
       } else if (required) {
         Logger.WARN(`Required modal "${key}" not found`);
       }
