@@ -1,5 +1,5 @@
-(css/styles.css is just a source file modification, no build artifacts, dependencies, or temp files in the changes)
+(css/styles.css, index.html, projects.html, services.html are all source files like .css and .html, no build artifacts, dependencies, or temp files in the changes)
 
-```css
+```html
 
 ```
