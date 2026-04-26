@@ -81,7 +81,14 @@ class ModalManager {
     const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-close';
     closeBtn.setAttribute('aria-label', 'Закрыть');
-    closeBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+    
+    // Создаём SVG через DOM API вместо innerHTML для безопасности
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z');
+    svg.appendChild(path);
+    closeBtn.appendChild(svg);
     
     // Вставляем кнопку в начало контейнера
     container.insertBefore(closeBtn, container.firstChild);
