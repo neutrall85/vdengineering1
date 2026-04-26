@@ -105,11 +105,104 @@ function initProjectGallery(images, container, mainImage) {
   }
   
   function openLightbox() {
-    if (typeof window.openProjectLightbox === 'function') {
-      window.openProjectLightbox(images, currentIndex);
-    } else {
-      Logger.WARN('openProjectLightbox ещё не загружена');
+    const lightboxOverlay = document.getElementById('lightboxOverlay');
+    const lightboxImage = document.getElementById('lightboxImage');
+    
+    if (!lightboxOverlay || !lightboxImage) {
+      Logger.WARN('Lightbox элементы не найдены');
+      return;
     }
+    
+    let currentIndexLocal = currentIndex;
+    
+    function updateLightboxImage(index) {
+      const safeUrl = sanitizer && sanitizer.isValidUrl 
+        ? (sanitizer.isValidUrl(images[index]) ? images[index] : 'assets/images/placeholder.jpg')
+        : images[index];
+      lightboxImage.src = safeUrl;
+      lightboxImage.alt = `Изображение ${index + 1} из ${images.length}`;
+      
+      const lightboxIndicators = document.getElementById('lightboxIndicators');
+      if (lightboxIndicators) {
+        lightboxIndicators.querySelectorAll('.lightbox-indicator').forEach((ind, i) => {
+          ind.classList.toggle('active', i === index);
+        });
+      }
+    }
+    
+    const lightboxIndicators = document.getElementById('lightboxIndicators');
+    if (lightboxIndicators) {
+      lightboxIndicators.replaceChildren();
+      if (images.length > 1) {
+        images.forEach((_, index) => {
+          const indicator = document.createElement('button');
+          indicator.className = 'lightbox-indicator' + (index === currentIndexLocal ? ' active' : '');
+          indicator.setAttribute('aria-label', `Изображение ${index + 1}`);
+          indicator.addEventListener('click', () => {
+            currentIndexLocal = index;
+            updateLightboxImage(currentIndexLocal);
+          });
+          lightboxIndicators.appendChild(indicator);
+        });
+      }
+    }
+    
+    function navigate(direction) {
+      currentIndexLocal = (currentIndexLocal + direction + images.length) % images.length;
+      updateLightboxImage(currentIndexLocal);
+    }
+    
+    const prevBtn = document.getElementById('lightboxPrevBtn');
+    const nextBtn = document.getElementById('lightboxNextBtn');
+    
+    if (prevBtn) {
+      prevBtn.style.display = images.length > 1 ? 'flex' : 'none';
+      prevBtn.onclick = () => navigate(-1);
+    }
+    
+    if (nextBtn) {
+      nextBtn.style.display = images.length > 1 ? 'flex' : 'none';
+      nextBtn.onclick = () => navigate(1);
+    }
+    
+    updateLightboxImage(currentIndexLocal);
+    lightboxOverlay.classList.add('active');
+    
+    if (window.ScrollManager && !ScrollManager.isLocked()) {
+      ScrollManager.lock();
+    }
+    
+    const closeBtn = document.getElementById('lightboxCloseBtn');
+    const closeHandler = () => {
+      lightboxOverlay.classList.remove('active');
+      if (window.ScrollManager) {
+        ScrollManager.unlock();
+      }
+      setTimeout(() => {
+        lightboxImage.src = '';
+      }, 300);
+      if (prevBtn) prevBtn.onclick = null;
+      if (nextBtn) nextBtn.onclick = null;
+      if (closeBtn) closeBtn.onclick = null;
+      lightboxOverlay.onclick = null;
+    };
+    
+    if (closeBtn) {
+      closeBtn.onclick = closeHandler;
+    }
+    
+    lightboxOverlay.onclick = (e) => {
+      if (e.target === lightboxOverlay) {
+        closeHandler();
+      }
+    };
+    
+    document.addEventListener('keydown', function escapeHandler(e) {
+      if (e.key === 'Escape') {
+        closeHandler();
+        document.removeEventListener('keydown', escapeHandler);
+      }
+    });
   }
   
   // Добавляем обработчик клика для открытия лайтбокса
@@ -186,117 +279,6 @@ function createNavButton(className, ariaLabel, pathData) {
   return btn;
 }
 
-function openProjectLightbox(images, startIndex = 0) {
-  const lightboxOverlay = document.getElementById('lightboxOverlay');
-  const lightboxImage = document.getElementById('lightboxImage');
-  const lightboxIndicators = document.getElementById('lightboxIndicators');
-  const prevBtn = document.getElementById('lightboxPrevBtn');
-  const nextBtn = document.getElementById('lightboxNextBtn');
-  
-  if (!lightboxOverlay || !lightboxImage) {
-    Logger.WARN('Lightbox элементы не найдены');
-    return;
-  }
-  
-  const sanitizer = window.Utils?.Sanitizer;
-  let currentIndex = startIndex;
-  
-  function updateLightboxImage(index) {
-    const safeUrl = sanitizer && sanitizer.isValidUrl 
-      ? (sanitizer.isValidUrl(images[index]) ? images[index] : 'assets/images/placeholder.jpg')
-      : images[index];
-    lightboxImage.src = safeUrl;
-    lightboxImage.alt = `Изображение ${index + 1} из ${images.length}`;
-    
-    if (lightboxIndicators) {
-      lightboxIndicators.querySelectorAll('.lightbox-indicator').forEach((ind, i) => {
-        ind.classList.toggle('active', i === index);
-      });
-    }
-  }
-  
-  if (lightboxIndicators) {
-    lightboxIndicators.replaceChildren();
-    if (images.length > 1) {
-      images.forEach((_, index) => {
-        const indicator = document.createElement('button');
-        indicator.className = 'lightbox-indicator' + (index === startIndex ? ' active' : '');
-        indicator.setAttribute('aria-label', `Изображение ${index + 1}`);
-        indicator.addEventListener('click', () => {
-          currentIndex = index;
-          updateLightboxImage(currentIndex);
-        });
-        lightboxIndicators.appendChild(indicator);
-      });
-    }
-  }
-  
-  function navigate(direction) {
-    currentIndex = (currentIndex + direction + images.length) % images.length;
-    updateLightboxImage(currentIndex);
-  }
-  
-  if (prevBtn) {
-    prevBtn.style.display = images.length > 1 ? 'flex' : 'none';
-    prevBtn.onclick = () => navigate(-1);
-  }
-  
-  if (nextBtn) {
-    nextBtn.style.display = images.length > 1 ? 'flex' : 'none';
-    nextBtn.onclick = () => navigate(1);
-  }
-  
-  updateLightboxImage(currentIndex);
-  lightboxOverlay.classList.add('active');
-  
-  if (window.ScrollManager && !ScrollManager.isLocked()) {
-    ScrollManager.lock();
-  }
-  
-  const closeBtn = document.getElementById('lightboxCloseBtn');
-  const closeHandler = () => closeLightbox(lightboxOverlay, lightboxImage, prevBtn, nextBtn);
-  
-  if (closeBtn) {
-    closeBtn.onclick = closeHandler;
-  }
-  
-  lightboxOverlay.onclick = (e) => {
-    if (e.target === lightboxOverlay) {
-      closeHandler();
-    }
-  };
-  
-  document.addEventListener('keydown', function escapeHandler(e) {
-    if (e.key === 'Escape') {
-      closeHandler();
-      document.removeEventListener('keydown', escapeHandler);
-    }
-  });
-}
-
-function closeLightbox(lightboxOverlay, lightboxImage, prevBtn, nextBtn) {
-  if (!lightboxOverlay) return;
-  
-  lightboxOverlay.classList.remove('active');
-  
-  if (window.ScrollManager) {
-    ScrollManager.unlock();
-  }
-  
-  setTimeout(() => {
-    if (lightboxImage) {
-      lightboxImage.src = '';
-    }
-  }, 300);
-  
-  if (prevBtn) prevBtn.onclick = null;
-  if (nextBtn) nextBtn.onclick = null;
-  const closeBtn = document.getElementById('lightboxCloseBtn');
-  if (closeBtn) closeBtn.onclick = null;
-  lightboxOverlay.onclick = null;
-}
-
 window.initProjectsPage = initProjectsPage;
 window.openProjectModal = openProjectModal;
-window.openProjectLightbox = openProjectLightbox;
 window.initProjectGallery = initProjectGallery;

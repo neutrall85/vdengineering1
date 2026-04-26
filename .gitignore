@@ -15,20 +15,15 @@
 
 # Dependencies
 node_modules/
-venv/
 .venv/
+venv/
 __pycache__/
-*.egg-info/
+.mypy_cache/
+.pytest_cache/
 dist/
 build/
 target/
 .gradle/
-.mypy_cache/
-.pytest_cache/
-
-# OS generated files
-.DS_Store
-Thumbs.db
 
 # Compiled files
 *.pyc
@@ -41,7 +36,9 @@ Thumbs.db
 *.obj
 *.out
 
-# Coverage
+# System files
+.DS_Store
+Thumbs.db
 coverage/
 htmlcov/
 .coverage
