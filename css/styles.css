@@ -5399,17 +5399,21 @@ body.app-ready>footer {
   margin: 0 auto;
 }
 
-.error-circle-bg {
-  fill: rgba(0, 78, 150, 0.08);
-}
-
-.error-plane-path {
-  filter: drop-shadow(0 4px 8px rgba(0, 78, 150, 0.2));
-}
-
-.error-dot {
+.error-plane-icon {
+  width: 240px;
+  height: 240px;
+  margin: 0 auto;
   fill: var(--vd);
-  opacity: 0.6;
+  animation: errorPlaneFloat 3s ease-in-out infinite;
+}
+
+@keyframes errorPlaneFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(2deg);
+  }
 }
 
 .error-code {
@@ -5494,9 +5498,9 @@ body.app-ready>footer {
     padding: 2rem 5%;
   }
 
-  .error-plane {
-    width: 140px;
-    height: 140px;
+  .error-plane-icon {
+    width: 180px;
+    height: 180px;
   }
 
   .error-actions {
