@@ -2,8 +2,6 @@
  * PolicyModalManager - менеджер модальных окон политик
  * Отвечает за открытие/закрытие модальных окон с текстами политик
  * ООО "Волга-Днепр Инжиниринг"
- * 
- * Использует централизованный ModalHelpers для управления модалками
  */
 
 const PolicyModalManager = {
@@ -66,10 +64,8 @@ const PolicyModalManager = {
           contentContainer.appendChild(node.cloneNode(true));
         });
 
-        // Открываем через централизованный ModalHelpers
-        if (typeof ModalHelpers !== 'undefined') {
-            ModalHelpers.open('policy', { keepParentModal });
-        } else if (typeof modalManager !== 'undefined') {
+        // Открываем через ModalManager - все манипуляции со скроллом только через ScrollManager
+        if (typeof modalManager !== 'undefined') {
             modalManager.open('policy', { keepParentModal });
         } else {
             Logger.WARN('ModalManager not available for policy modal');
@@ -80,10 +76,7 @@ const PolicyModalManager = {
      * Закрытие модального окна политики
      */
     closePolicyModal() {
-        // Используем централизованный ModalHelpers
-        if (typeof ModalHelpers !== 'undefined') {
-            ModalHelpers.close('policy');
-        } else if (typeof modalManager !== 'undefined') {
+        if (typeof modalManager !== 'undefined') {
             modalManager.close('policy');
         } else {
             Logger.WARN('ModalManager not available for policy modal close');

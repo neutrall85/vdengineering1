@@ -207,28 +207,18 @@ class NewsManager {
     
     this._populateModal(news);
     
-    // Используем централизованный ModalHelpers
-    if (typeof ModalHelpers !== 'undefined') {
-      ModalHelpers.open('news');
+    const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.App?.services?.modalManager);
+    if (manager) {
+      manager.open('news');
     } else {
-      const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.App?.services?.modalManager);
-      if (manager) {
-        manager.open('news');
-      } else {
-        Logger.WARN('ModalManager not available');
-      }
+      Logger.WARN('ModalManager not available');
     }
   }
 
   closeNewsModal() {
-    // Используем централизованный ModalHelpers
-    if (typeof ModalHelpers !== 'undefined') {
-      ModalHelpers.close('news');
-    } else {
-      const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.App?.services?.modalManager);
-      if (manager) {
-        manager.close('news');
-      }
+    const manager = (typeof modalManager !== 'undefined') ? modalManager : (window.App?.services?.modalManager);
+    if (manager) {
+      manager.close('news');
     }
   }
 
