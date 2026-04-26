@@ -18,24 +18,9 @@ function initProjectsPage() {
   }
   window._projectsPageInitialized = true;
 
-  document.addEventListener('click', handleProjectClick);
-
   const requestQuoteBtn = document.getElementById('projectsRequestQuoteBtn');
   if (requestQuoteBtn) {
     requestQuoteBtn.addEventListener('click', handleRequestQuote);
-  }
-}
-
-function handleProjectClick(e) {
-  const btn = e.target.closest('.news-card-link[data-project-id]');
-  if (!btn) return;
-
-  e.preventDefault();
-  const projectId = btn.getAttribute('data-project-id');
-  const project = projectsData[projectId];
-  
-  if (project) {
-    openProjectModal(project.title, project.details, project.images, project.category);
   }
 }
 
