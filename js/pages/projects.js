@@ -60,6 +60,12 @@ window.initProjectsPage = function() {
     });
   });
 
+  // Обработчик для кнопки закрытия модального окна
+  const closeBtn = document.getElementById('projectModalCloseBtn');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeProjectModal);
+  }
+
   // Обработчик для кнопки запроса КП
   const requestQuoteBtn = document.getElementById('projectsRequestQuoteBtn');
   if (requestQuoteBtn) {
