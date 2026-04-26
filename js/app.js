@@ -294,7 +294,6 @@ class Application {
 
   _initFloatingCTA() {
     const floatingBtn = document.querySelector('.floating-cta-btn');
-    const footer = document.querySelector('footer');
 
     if (!floatingBtn) return;
 
@@ -310,7 +309,7 @@ class Application {
     }, { passive: true });
 
     // Используем IntersectionObserver для управления видимостью кнопки
-    // Кнопка появляется после ухода героя и скрывается у футера
+    // Кнопка появляется после ухода героя
     let heroExited = false;
     
     const heroSection = document.querySelector('.hero, header');
@@ -320,46 +319,16 @@ class Application {
           // Герой полностью ушел из viewport - можно показывать кнопку
           if (!entry.isIntersecting) {
             heroExited = true;
+            floatingBtn.classList.add('visible');
           } else {
             heroExited = false;
+            floatingBtn.classList.remove('visible');
           }
-          updateButtonVisibility();
         });
       }, { threshold: 0 });
       
       heroObserver.observe(heroSection);
     }
-
-    const footerObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        // Футер появился в viewport - скрываем кнопку
-        if (entry.isIntersecting) {
-          floatingBtn.classList.remove('visible');
-        } else if (heroExited) {
-          floatingBtn.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
-    
-    if (footer) {
-      footerObserver.observe(footer);
-    }
-
-    const updateButtonVisibility = () => {
-      if (heroExited && footer) {
-        const footerRect = footer.getBoundingClientRect();
-        const footerVisible = footerRect.top < window.innerHeight;
-        if (!footerVisible) {
-          floatingBtn.classList.add('visible');
-        } else {
-          floatingBtn.classList.remove('visible');
-        }
-      } else if (heroExited) {
-        floatingBtn.classList.add('visible');
-      } else {
-        floatingBtn.classList.remove('visible');
-      }
-    };
   }
 
   _initImageLazyLoading() {
