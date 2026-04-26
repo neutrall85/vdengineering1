@@ -162,10 +162,8 @@ class ModalManager {
       return false;
     }
 
-    // Синхронная проверка – предотвращает повторные вызовы
-    if (this.activeModal === key) {
-      return true;
-    }
+    const overlay = document.getElementById(config.overlayId);
+    if (!overlay) return false;
 
     // Проверяем флаг keepParentModal - если true, не закрываем текущую модалку, а сохраняем в стек
     const keepParentModal = options.keepParentModal === true;
@@ -177,10 +175,7 @@ class ModalManager {
       this.activeModalStack.push(this.activeModal);
     }
 
-    const overlay = document.getElementById(config.overlayId);
-    if (!overlay) return false;
-
-    // ✅ Устанавливаем активное окно синхронно
+    // Устанавливаем активное окно синхронно
     this.activeModal = key;
 
     // Блокируем скролл через централизованный ScrollManager
