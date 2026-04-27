@@ -485,6 +485,9 @@ class Application {
   }
 }
 
+// Экспортируем Application в глобальную область
+window.Application = Application;
+
 if (typeof Utils !== 'undefined' && Utils.DOM && !Utils.DOM.escapeHtml) {
   Utils.DOM.escapeHtml = function(str) {
     if (!str) return '';

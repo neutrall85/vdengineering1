@@ -445,7 +445,7 @@ class ModalManager {
     const firstFocusable = focusableElements[0];
     const lastFocusable = focusableElements[focusableElements.length - 1];
     
-    // Обработчик для перехвата Tab
+    // Обработчик для перехвата Tab - создаем один раз и сохраняем ссылку
     this._boundFocusTrapHandler = (e) => {
       if (e.key !== 'Tab') return;
       

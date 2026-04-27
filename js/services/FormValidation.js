@@ -129,15 +129,25 @@ const FormValidation = (function() {
       this.fields.forEach((fieldData, name) => {
         const { element } = fieldData;
         
-        element.addEventListener('input', () => {
+        // Сохраняем ссылки на обработчики для последующего удаления
+        const inputHandler = () => {
           this.validateField(name);
           this._clearError(name);
-        });
-
-        element.addEventListener('blur', () => {
+        };
+        const blurHandler = () => {
           this.validateField(name);
-        });
+        };
+        
+        element.addEventListener('input', inputHandler);
+        element.addEventListener('blur', blurHandler);
+        
+        // Сохраняем обработчики для очистки
+        fieldData.handlers = { input: inputHandler, blur: blurHandler };
       });
+      
+      // Сохраняем обработчик submit
+      this._submitHandler = (e) => this._handleSubmit(e);
+      this.form.addEventListener('submit', this._submitHandler);
     }
 
     _handleSubmit(e) {
@@ -385,4 +395,29 @@ FormValidation.destroy = function() {
   // Валидаторы FormValidator создают обработчики на элементах формы
   // При удалении формы из DOM обработчики будут автоматически удалены браузером
   // Дополнительная очистка не требуется так как используются анонимные функции
+};
+
+/**
+ * Метод очистки для экземпляра FormValidator
+ */
+FormValidation.FormValidator.prototype.destroy = function() {
+  // Удаляем обработчик submit
+  if (this._submitHandler) {
+    this.form.removeEventListener('submit', this._submitHandler);
+    this._submitHandler = null;
+  }
+  
+  // Удаляем обработчики input/blur с полей
+  this.fields.forEach((fieldData, name) => {
+    const { element, handlers } = fieldData;
+    if (handlers) {
+      element.removeEventListener('input', handlers.input);
+      element.removeEventListener('blur', handlers.blur);
+      fieldData.handlers = null;
+    }
+  });
+  
+  this.fields.clear();
+  this.errors.clear();
+  this.form = null;
 };
