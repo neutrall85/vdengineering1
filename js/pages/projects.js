@@ -8,10 +8,10 @@ window.projectsData = {
       'Получено ДСТ ФАВТ, выпущен отдельный бюллетень для модернизации флота АК'
     ],
     images: [
-      'assets/images/projects/ADS-B_Out/track.png',
-      'assets/images/projects/ADS-B_Out/view.png',
-      'assets/images/projects/ADS-B_Out/block.png',
-      'assets/images/projects/ADS-B_Out/Display.png'
+      'assets/images/Projects/ADS-B_Out/track.png',
+      'assets/images/Projects/ADS-B_Out/view.png',
+      'assets/images/Projects/ADS-B_Out/block.png',
+      'assets/images/Projects/ADS-B_Out/Display.png'
     ],
     category: 'Модернизация'
   },
@@ -24,9 +24,9 @@ window.projectsData = {
       'Одобрение второстепенного изменения'
     ],
     images: [
-      'assets/images/projects/An-124-100_paint/An-124-100_paint.png',
-      'assets/images/projects/An-124-100_paint/dwg1.webp',
-      'assets/images/projects/An-124-100_paint/dwg2.jpg'
+      'assets/images/Projects/An-124-100_paint/An-124-100_paint.png',
+      'assets/images/Projects/An-124-100_paint/dwg1.webp',
+      'assets/images/Projects/An-124-100_paint/dwg2.jpg'
     ],
     category: 'Модификация'
   },
