@@ -599,17 +599,6 @@ class FormManager {
 
     this.currentFiles = [];
     
-    // Сбрасываем таймеры, чтобы избежать "висячих" коллбэков после закрытия формы
-    if (this.uploadWarningTimeout) {
-      clearTimeout(this.uploadWarningTimeout);
-      this.uploadWarningTimeout = null;
-    }
-    
-    if (this.submitTimeoutId) {
-      clearTimeout(this.submitTimeoutId);
-      this.submitTimeoutId = null;
-    }
-    
     // Находим зону загрузки для сброса текста
     const fileDrop = document.querySelector('#fileDrop');
     this._renderFileList(fileDrop);
