@@ -7,7 +7,7 @@
 
 /* Доступность - стили фокуса для клавиатурной навигации */
 *:focus-visible {
-  outline: 3px solid #9CA3AF;
+  outline: 3px solid #6B7280;
   outline-offset: 2px;
 }
 
@@ -17,15 +17,17 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid #9CA3AF;
+  outline: 3px solid #6B7280;
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3);
+  box-shadow: 0 0 0 4px rgba(107, 114, 128, 0.3);
 }
 
-/* Убираем стандартный outline для форм, так как уже есть кастомный */
+/* Добавляем стандартный outline для доступности форм */
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
+  outline: 2px solid var(--vd);
+  outline-offset: 1px;
   box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3);
 }
 
@@ -82,10 +84,11 @@ textarea:focus-visible,
   --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
   --shadow-2xl: 0 25px 45px rgba(0, 0, 0, 0.18);
   --shadow-orange: 0 4px 15px rgba(var(--vd-orange-rgb), 0.3);
+  --shadow-orange-sm: 0 4px 12px rgba(var(--vd-orange-rgb), 0.2);
+  --shadow-orange-md: 0 6px 20px rgba(var(--vd-orange-rgb), 0.25);
   --shadow-primary: 0 4px 15px rgba(0, 78, 150, 0.3);
   --shadow-primary-sm: 0 4px 12px rgba(0, 78, 150, 0.2);
   --shadow-primary-md: 0 6px 20px rgba(0, 78, 150, 0.25);
-  /* --shadow-nav: -5px 0 30px rgba(0, 0, 0, 0.3); */
 
   /* Отступы (шкала spacing) */
   --space-1: 0.25rem;
@@ -318,9 +321,9 @@ body.app-ready>footer {
 }
 
 .nav-links a:focus-visible {
-  outline: 3px solid #9CA3AF;
+  outline: 3px solid #6B7280;
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3);
+  box-shadow: 0 0 0 4px rgba(107, 114, 128, 0.3);
   transform: none !important;
 }
 
@@ -347,7 +350,6 @@ body.app-ready>footer {
   height: 2px;
   background: rgba(255, 255, 255, 0.6);
   border-radius: 50% 50% 0 0;
-  /* ← Полуовал (закругление сверху) */
   transform: scaleX(0);
   transform-origin: center;
   transition: transform var(--duration-normal) var(--ease-smooth);
@@ -436,9 +438,9 @@ body.app-ready>footer {
 }
 
 .mobile-menu a:focus-visible {
-  outline: 3px solid #9CA3AF;
+  outline: 3px solid #4B5563;
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3);
+  box-shadow: 0 0 0 4px rgba(75, 85, 99, 0.3);
   transform: none;
 }
 
@@ -562,10 +564,6 @@ body.app-ready>footer {
   letter-spacing: -0.02em;
 }
 
-.hero-text h1 span {
-  color: var(--vd);
-}
-
 .hero-text p {
   font-size: clamp(1rem, 2vw, 1.2rem);
   color: var(--metallic);
@@ -604,7 +602,7 @@ body.app-ready>footer {
   box-shadow: 0 8px 32px rgba(0, 78, 150, 0.15);
   backdrop-filter: blur(40px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.9);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
 }
 
 .stat-item:hover {
@@ -802,7 +800,7 @@ body.app-ready>footer {
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: transform 0.3s, background 0.3s;
 }
 
 .service-card:hover .service-icon {
@@ -1388,7 +1386,7 @@ body.app-ready>footer {
   right: -28px;
   width: 36px;
   height: 36px;
-  background: transparent;
+  background: white;
   border: 2px solid white;
   border-radius: 50%;
   cursor: pointer;
@@ -2097,8 +2095,6 @@ body.app-ready>footer {
   cursor: zoom-out;
 }
 
-/* Для мобильных устройств – чуть больше отступов */
-
 .lightbox-close {
   position: absolute;
   top: 20px;
@@ -2520,9 +2516,7 @@ body.app-ready>footer {
   opacity: 0;
 }
 
-.news-card-image img.loaded,
-.news-card-image img[src],
-.news-card-image img[data-src] {
+.news-card-image img.loaded {
   opacity: 1;
 }
 
@@ -2690,8 +2684,7 @@ body.app-ready>footer {
   display: none;
 }
 
-.image-loading + .image-placeholder,
-img.loading + .image-placeholder {
+.image-loading + .image-placeholder {
   display: block;
 }
 
@@ -2941,152 +2934,7 @@ img.loading + .image-placeholder {
   line-height: 1.55;
   font-size: clamp(0.8rem, 1.1vw, 0.9rem);
 }
-
-
-/* ==================== УТИЛИТАРНЫЕ КЛАССЫ ДЛЯ СТРАНИЦ ==================== */
-
-.certificate-section-bg {
-  padding: 60px 5%;
-  background: var(--vd-light-gray);
-}
-
-.certificate-widgets-container {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.features-grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* feature-card-box и feature-icon-circle удалены как дублирующие .feature-card и .feature-icon */
-.feature-title {
-  color: var(--vd);
-  margin-bottom: 0.75rem;
-  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
-}
-
-.feature-desc {
-  color: var(--metallic);
-  line-height: 1.55;
-  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
-}
-
-.services-full-padding {
-  padding: clamp(40px, 8vh, 60px) 5%;
-}
-
-.btn-secondary-sm {
-  padding: 0.6rem 1.2rem;
-  font-size: 0.9rem;
-  align-self: flex-start;
-}
-
-.process-section-bg {
-  padding: 60px 5%;
-  background: var(--vd-light-gray);
-}
-
-.step-number-circle {
-  width: 80px;
-  height: 80px;
-  background: var(--vd);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-  color: white;
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.project-image-container {
-  height: auto;
-  margin-bottom: 1.5rem;
-}
-
-.project-img-cover {
-  width: 100%;
-  border-radius: 15px;
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.project-content-padding {
-  padding: 0;
-}
-
-.project-category-badge {
-  display: inline-block;
-  background: var(--vd-light-blue);
-  color: var(--vd);
-  padding: 0.3rem 1rem;
-  border-radius: 20px;
-  font-size: clamp(0.7rem, 1vw, 0.8rem);
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
-
-.project-card-title {
-  font-size: clamp(1.1rem, 2vw, 1.25rem);
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--vd);
-}
-
-.project-card-desc {
-  color: var(--metallic);
-  line-height: 1.6;
-  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
-  margin-bottom: 1.5rem;
-}
-
-.news-full-padding {
-  padding: 60px 5%;
-}
-
-.news-tabs-container {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-}
-
-.news-card--full {
-  width: 100%;
-  max-width: 1200px;
-}
-
-.modal-list-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.modal-list-li {
-  padding: 0.75rem 0;
-  color: var(--metallic);
-  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
-  border-bottom: 1px solid var(--border-color);
-  position: relative;
-  padding-left: 1.75rem;
-  margin-bottom: 0;
-}
-
-.modal-list-li::before {
-  content: '✓';
-  color: var(--vd);
-  font-weight: bold;
-  position: absolute;
-  left: 0;
-}
-
-/* Docs Page Styles */
+/* ==================== DOCS PAGE STYLES ==================== */
 .docs-page {
   min-height: 100vh;
 }
@@ -4211,9 +4059,7 @@ img.loading + .image-placeholder {
     opacity: 0;
   }
 
-  .news-card-image img.loaded,
-  .news-card-image img[src],
-  .news-card-image img[data-src] {
+  .news-card-image img.loaded {
     opacity: 1;
   }
 
