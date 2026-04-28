@@ -26,7 +26,7 @@ textarea:focus-visible,
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
-  box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3);
+  outline: none;
 }
 
 :root {
@@ -57,9 +57,9 @@ textarea:focus-visible,
   --duration-normal: 0.35s;
   --duration-slow: 0.5s;
   --duration-slower: 0.7s;
-  --transition-base: transform var(--duration-normal) var(--ease-smooth), opacity var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth);
-  --transition-fast: transform var(--duration-fast) var(--ease-smooth), opacity var(--duration-fast) var(--ease-smooth);
-  --transition-slow: transform var(--duration-slow) var(--ease-smooth), opacity var(--duration-slow) var(--ease-smooth), box-shadow var(--duration-slow) var(--ease-smooth);
+  --transition-base: all var(--duration-normal) var(--ease-smooth);
+  --transition-fast: all var(--duration-fast) var(--ease-smooth);
+  --transition-slow: all var(--duration-slow) var(--ease-smooth);
   --transition-transform: transform var(--duration-normal) var(--ease-smooth);
   --transition-shadow: box-shadow var(--duration-normal) var(--ease-smooth);
 
@@ -221,6 +221,7 @@ body.app-ready>footer {
   height: 100%;
   animation: rotatePlane 2s linear infinite;
   transform-origin: 50% 50%;
+  will-change: transform;
 }
 
 /* Самолётик */
@@ -384,7 +385,7 @@ body.app-ready>footer {
   height: 3px;
   background: white;
   border-radius: 2px;
-  transition: transform var(--duration-fast) var(--ease-smooth), opacity var(--duration-fast) var(--ease-smooth);
+  transition: all var(--duration-fast) var(--ease-smooth);
 }
 
 /* ==================== МОБИЛЬНОЕ МЕНЮ ==================== */
@@ -424,7 +425,7 @@ body.app-ready>footer {
   font-weight: 500;
   padding: 0.85rem 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  transition: transform var(--duration-fast) var(--ease-smooth), opacity var(--duration-fast) var(--ease-smooth);
+  transition: all var(--duration-fast) var(--ease-smooth);
   display: block;
   border-radius: 50px;
   padding-left: 1.25rem;
@@ -466,7 +467,7 @@ body.app-ready>footer {
   z-index: calc(var(--z-fixed) + 5);
   opacity: 0;
   visibility: hidden;
-  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
   pointer-events: none;
 }
 
@@ -604,7 +605,7 @@ body.app-ready>footer {
   box-shadow: 0 8px 32px rgba(0, 78, 150, 0.15);
   backdrop-filter: blur(40px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.9);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .stat-item:hover {
@@ -679,7 +680,7 @@ body.app-ready>footer {
   font-size: clamp(0.875rem, 1.2vw, 1rem);
   border: 2px solid var(--vd);
   cursor: pointer;
-  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
@@ -802,7 +803,7 @@ body.app-ready>footer {
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .service-card:hover .service-icon {
@@ -905,19 +906,19 @@ body.app-ready>footer {
 }
 
 /* Карточки новостей на главной странице - вертикальная раскладка как на news.html */
-.news-card--compact {
+.news-grid-inline .news-card {
   display: flex;
   flex-direction: column;
   grid-template-columns: none;
   margin-bottom: 0;
 }
 
-.news-card--compact .news-card-image {
+.news-grid-inline .news-card-image {
   width: 100%;
   height: 200px;
 }
 
-.news-card--compact .news-card-content {
+.news-grid-inline .news-card-content {
   flex: 1;
 }
 
@@ -930,7 +931,7 @@ body.app-ready>footer {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  transition: transform var(--duration-normal) var(--ease-elastic), gap var(--duration-normal) var(--ease-elastic);
+  transition: all var(--duration-normal) var(--ease-elastic);
   background: none;
   border: none;
   cursor: pointer;
@@ -997,7 +998,7 @@ body.app-ready>footer {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   padding: 1rem;
 }
@@ -1276,7 +1277,7 @@ body.app-ready>footer {
   cursor: pointer;
   opacity: 0;
   visibility: hidden;
-  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
   border: none;
   z-index: 900;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -1326,7 +1327,6 @@ body.app-ready>footer {
 }
 
 /* ==================== МОДАЛЬНЫЕ ОКНА ==================== */
-/* Базовый класс для всех модальных оверлеев */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -1336,12 +1336,13 @@ body.app-ready>footer {
   background: rgba(0, 78, 150, 0.95);
   z-index: 3000;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 1.5rem;
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--duration-normal) var(--ease-smooth), visibility var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
+  backdrop-filter: blur(5px);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -1351,21 +1352,9 @@ body.app-ready>footer {
   visibility: visible;
 }
 
-/* Модификатор для модалок с прокруткой контента (новости) */
-.modal-overlay--scrollable {
-  align-items: flex-start;
-  padding-top: 2rem;
-}
-
-/* Модификатор для узких модалок (детали вакансий и т.п.) */
-.modal-overlay--narrow .modal-container {
-  max-width: 600px;
-  max-height: 80vh;
-  padding: 16px;
-}
-
 /* Контейнер модального окна - позиционируется относительно overlay */
-.modal-container {
+.modal-container,
+.details-modal-container {
   background: white;
   border-radius: 32px;
   overflow: visible;
@@ -1395,7 +1384,7 @@ body.app-ready>footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--duration-fast) var(--ease-smooth), opacity var(--duration-fast) var(--ease-smooth);
+  transition: all var(--duration-fast) var(--ease-smooth);
   padding: 0;
   flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -1482,12 +1471,13 @@ body.app-ready>footer {
   font-family: inherit;
   font-size: clamp(0.85rem, 1.2vw, 0.95rem);
   color: var(--text-dark);
-  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
 }
 
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
+  outline: none;
   border-color: var(--vd);
   background: white;
   box-shadow: 0 0 0 3px rgba(0, 78, 150, 0.15);
@@ -1523,7 +1513,7 @@ body.app-ready>footer {
   padding: 0.75rem;
   text-align: center;
   background: var(--vd-light-gray);
-  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
   cursor: pointer;
   min-height: 120px;
 }
@@ -1733,7 +1723,7 @@ body.app-ready>footer {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  transition: transform var(--duration-normal) var(--ease-elastic), gap var(--duration-normal) var(--ease-elastic);
+  transition: all var(--duration-normal) var(--ease-elastic);
 }
 
 .form-submit:hover {
@@ -1867,7 +1857,8 @@ body.app-ready>footer {
 }
 
 /* Тело модального окна */
-.modal-body {
+.modal-body,
+.details-modal-body {
   padding: clamp(1rem, 3vw, 2rem);
   overflow-y: auto;
 }
@@ -1895,7 +1886,8 @@ body.app-ready>footer {
   font-size: clamp(0.8rem, 1.2vw, 0.9rem);
 }
 
-.modal-title {
+.modal-title,
+.details-modal-title {
   font-size: clamp(1.3rem, 4vw, 1.8rem);
   font-weight: 700;
   margin-bottom: 1.5rem;
@@ -1913,13 +1905,15 @@ body.app-ready>footer {
   margin-bottom: 1.5rem;
 }
 
-.modal-list {
+.modal-list,
+.details-modal-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.modal-list li {
+.modal-list li,
+.details-modal-list li {
   padding: 0.75rem 0;
   color: var(--metallic);
   font-size: clamp(0.85rem, 1.2vw, 0.95rem);
@@ -1928,7 +1922,8 @@ body.app-ready>footer {
   padding-left: 1.75rem;
 }
 
-.modal-list li::before {
+.modal-list li::before,
+.details-modal-list li::before {
   content: '✓';
   color: var(--vd);
   font-weight: bold;
@@ -1995,7 +1990,7 @@ body.app-ready>footer {
   align-items: center;
   justify-content: center;
   z-index: 10;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
   padding: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
@@ -2043,7 +2038,7 @@ body.app-ready>footer {
   border: none;
   cursor: pointer;
   padding: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .gallery-indicator:hover {
@@ -2141,7 +2136,7 @@ body.app-ready>footer {
   align-items: center;
   justify-content: center;
   z-index: 10;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
   padding: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
@@ -2189,7 +2184,7 @@ body.app-ready>footer {
   border: none;
   cursor: pointer;
   padding: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .lightbox-indicator:hover {
@@ -2216,6 +2211,48 @@ body.app-ready>footer {
 
 .modal-close:hover svg {
   fill: var(--vd-dark);
+}
+
+/* Специфичные стили для details-modal (узкий контейнер) */
+.details-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 78, 150, 0.95);
+  z-index: 3500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--duration-normal) var(--ease-smooth);
+  backdrop-filter: blur(5px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.details-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.details-modal-container {
+  max-width: 600px;
+  max-height: 80vh;
+  padding: 16px;
+  position: relative;
+  border-radius: 32px;
+}
+
+.details-modal-body {
+  padding: clamp(1.5rem, 4vw, 2rem);
+}
+
+.details-modal-title {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
 }
 
 /* ==================== СТРАНИЦА УСЛУГ ==================== */
@@ -2409,7 +2446,7 @@ body.app-ready>footer {
   font-weight: 600;
   color: var(--text-dark);
   cursor: pointer;
-  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
 }
 
 .news-tab:hover {
@@ -2480,7 +2517,7 @@ body.app-ready>footer {
   margin-bottom: 1.5rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   border: 1px solid var(--border-color);
-  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
   opacity: 0;
   transform: translateX(-30px);
   height: auto;
@@ -2624,7 +2661,7 @@ body.app-ready>footer {
   font-size: clamp(0.85rem, 1.2vw, 0.95rem);
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 78, 150, 0.3);
 }
 
@@ -2690,8 +2727,12 @@ body.app-ready>footer {
   display: none;
 }
 
-.image-loading + .image-placeholder,
-img.loading + .image-placeholder {
+.news-card-image img:not([src]):not([data-src])+.image-placeholder,
+.news-card-image img.loading+.image-placeholder,
+.modal-container .modal-image img:not([src]):not([data-src])+.image-placeholder,
+.modal-container .modal-image img.loading+.image-placeholder,
+.modal-image img:not([src]):not([data-src])+.image-placeholder,
+.modal-image img.loading+.image-placeholder {
   display: block;
 }
 
@@ -2754,7 +2795,7 @@ img.loading + .image-placeholder {
   margin-bottom: 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   border: 1px solid var(--border-color);
-  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
 }
 
 .certificate-widget:hover {
@@ -2770,7 +2811,7 @@ img.loading + .image-placeholder {
   padding: 1rem 1.5rem;
   cursor: pointer;
   background: white;
-  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
   position: relative;
   overflow: hidden;
 }
@@ -2895,7 +2936,7 @@ img.loading + .image-placeholder {
   padding: clamp(1.25rem, 2.5vw, 1.75rem);
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
   text-align: center;
-  transition: transform var(--duration-normal) var(--ease-elastic), gap var(--duration-normal) var(--ease-elastic);
+  transition: all var(--duration-normal) var(--ease-elastic);
 }
 
 .feature-card:hover {
@@ -2980,6 +3021,14 @@ img.loading + .image-placeholder {
   padding: clamp(40px, 8vh, 60px) 5%;
 }
 
+.services-grid-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
 .btn-secondary-sm {
   padding: 0.6rem 1.2rem;
   font-size: 0.9rem;
@@ -2989,6 +3038,18 @@ img.loading + .image-placeholder {
 .process-section-bg {
   padding: 60px 5%;
   background: var(--vd-light-gray);
+}
+
+.process-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.step-box {
+  text-align: center;
 }
 
 .step-number-circle {
@@ -3003,6 +3064,23 @@ img.loading + .image-placeholder {
   color: white;
   font-size: 2rem;
   font-weight: bold;
+}
+
+.step-title {
+  color: var(--vd);
+  margin-bottom: 0.5rem;
+}
+
+.step-desc {
+  color: var(--metallic);
+}
+
+.projects-grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .project-image-container {
@@ -3057,7 +3135,16 @@ img.loading + .image-placeholder {
   margin-bottom: 2rem;
 }
 
-.news-card--full {
+.news-grid-auto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.news-grid-auto .news-card {
   width: 100%;
   max-width: 1200px;
 }
@@ -3237,7 +3324,7 @@ img.loading + .image-placeholder {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  transition: transform var(--duration-normal) var(--ease-elastic), gap var(--duration-normal) var(--ease-elastic);
+  transition: all var(--duration-normal) var(--ease-elastic);
   font-size: clamp(0.8rem, 1.2vw, 0.9rem);
   background: none;
   border: none;
@@ -3256,6 +3343,50 @@ img.loading + .image-placeholder {
   height: 18px;
   fill: currentColor;
 }
+
+.btn-doc {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--vd-blue);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-doc:hover {
+  background: var(--vd-dark-blue);
+  transform: translateY(-2px);
+}
+
+.btn-doc svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.btn-view {
+  background: var(--vd);
+}
+
+.btn-view:hover {
+  background: var(--vd-dark);
+}
+
+.btn-download {
+  background: var(--vd-orange);
+}
+
+.btn-download:hover {
+  background: var(--vd-orange-light);
+}
+
+/* Responsive styles for docs page */
 
 /* ==================== ABOUT PAGE STYLES ==================== */
 /* Основная секция о компании */
@@ -3325,7 +3456,7 @@ img.loading + .image-placeholder {
   background: white;
   border-radius: 16px;
   padding: clamp(1.25rem, 2.5vw, 2rem);
-  transition: transform var(--duration-normal) var(--ease-elastic), gap var(--duration-normal) var(--ease-elastic);
+  transition: all var(--duration-normal) var(--ease-elastic);
   position: relative;
   overflow: hidden;
 }
@@ -3364,7 +3495,7 @@ img.loading + .image-placeholder {
   align-items: center;
   justify-content: center;
   margin-bottom: 1.25rem;
-  transition: transform var(--duration-normal) var(--ease-bounce), box-shadow var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-bounce);
 }
 
 .direction-card:hover .direction-icon-wrapper {
@@ -3415,7 +3546,7 @@ img.loading + .image-placeholder {
   border-radius: 20px;
   padding: clamp(2rem, 4vw, 2.5rem);
   text-align: center;
-  transition: transform var(--duration-normal) var(--ease-elastic), gap var(--duration-normal) var(--ease-elastic);
+  transition: all var(--duration-normal) var(--ease-elastic);
   border: 1px solid var(--border-color);
 }
 
@@ -3541,7 +3672,7 @@ img.loading + .image-placeholder {
   background: white;
   border-radius: 12px;
   padding: 1rem;
-  transition: transform var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-smooth);
 }
 
 .value-item-shadow {
@@ -3562,7 +3693,7 @@ img.loading + .image-placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--duration-normal) var(--ease-bounce), box-shadow var(--duration-normal) var(--ease-smooth);
+  transition: all var(--duration-normal) var(--ease-bounce);
 }
 
 .value-item:hover .value-icon {
@@ -3847,7 +3978,7 @@ img.loading + .image-placeholder {
   cursor: pointer;
   position: relative;
   flex-shrink: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .checkbox-label input[type="checkbox"]:checked {
@@ -3872,6 +4003,7 @@ img.loading + .image-placeholder {
 }
 
 .checkbox-label input[type="checkbox"]:focus {
+  outline: none;
   box-shadow: 0 0 0 3px rgba(0, 78, 150, 0.2);
 }
 
@@ -4131,9 +4263,16 @@ img.loading + .image-placeholder {
     margin-bottom: 0.85rem;
   }
 
+  .services-grid-container {
+    grid-template-columns: 1fr;
+  }
+
   /* Проекты - компактнее */
   .projects-grid {
     gap: 1rem;
+  }
+
+  .projects-grid-container {
     grid-template-columns: 1fr;
   }
 
@@ -4173,7 +4312,7 @@ img.loading + .image-placeholder {
     gap: 1rem;
   }
 
-  .news-card--compact .news-card-image {
+  .news-grid-inline .news-card-image {
     height: 180px;
   }
 
@@ -5215,7 +5354,7 @@ img.loading + .image-placeholder {
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
   border: none;
   font-family: inherit;
 }
@@ -5340,7 +5479,7 @@ img.loading + .image-placeholder {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 12px rgba(0, 51, 160, 0.3);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
   z-index: 9999;
 }
 
