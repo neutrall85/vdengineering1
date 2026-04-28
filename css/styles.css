@@ -1386,14 +1386,14 @@ body.app-ready>footer {
   right: -28px;
   width: 36px;
   height: 36px;
-  background: white;
-  border: 2px solid white;
+  background: transparent;
+  border: 2px solid transparent;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--duration-fast) var(--ease-smooth), opacity var(--duration-fast) var(--ease-smooth);
+  transition: transform var(--duration-fast) var(--ease-smooth), opacity var(--duration-fast) var(--ease-smooth), background-color var(--duration-fast) var(--ease-smooth), border-color var(--duration-fast) var(--ease-smooth);
   padding: 0;
   flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -1763,9 +1763,10 @@ body.app-ready>footer {
 
 .error-message {
   color: var(--error-color);
-  font-size: 0.75rem;
-  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  margin-top: 0.4rem;
   display: none;
+  font-weight: 500;
 }
 
 .error-message.show {
@@ -2211,7 +2212,7 @@ body.app-ready>footer {
 }
 
 .modal-close:hover svg {
-  fill: var(--vd-dark);
+  fill: var(--vd);
 }
 
 /* ==================== СТРАНИЦА УСЛУГ ==================== */
@@ -2346,12 +2347,16 @@ body.app-ready>footer {
 .project-image {
   height: clamp(200px, 25vw, 250px);
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .project-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .project-content {
@@ -2706,7 +2711,7 @@ body.app-ready>footer {
 
 /* ==================== СТРАНИЦА О НАС ==================== */
 .about-full {
-  padding: clamp(40px, 8vh, 80px) 5%;
+  padding: clamp(60px, 10vh, 100px) 5% clamp(40px, 8vh, 80px);
 }
 
 .about-grid {
