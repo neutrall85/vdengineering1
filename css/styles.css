@@ -12,11 +12,13 @@
   box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3);
 }
 
-/* Убираем стандартный outline для форм, так как уже есть кастомный */
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
-  outline: none; box-shadow: 0 0 0 3px rgba(0, 78, 150, 0.2);
+/* Убираем стандартный outline для форм, оставляя только кастомный box-shadow для видимости */
+.form-input:focus-visible,
+.form-select:focus-visible,
+.form-textarea:focus-visible {
+  outline: 3px solid #9CA3AF;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3), 0 0 0 3px rgba(0, 78, 150, 0.2);
 }
 
 :root {
@@ -47,9 +49,9 @@
   --duration-normal: 0.35s;
   --duration-slow: 0.5s;
   --duration-slower: 0.7s;
-  --transition-base: all var(--duration-normal) var(--ease-smooth);
-  --transition-fast: all var(--duration-fast) var(--ease-smooth);
-  --transition-slow: all var(--duration-slow) var(--ease-smooth);
+  --transition-base: transform var(--duration-normal) var(--ease-smooth), opacity var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth), background-color var(--duration-normal) var(--ease-smooth);
+  --transition-fast: transform var(--duration-fast) var(--ease-smooth), opacity var(--duration-fast) var(--ease-smooth), box-shadow var(--duration-fast) var(--ease-smooth), background-color var(--duration-fast) var(--ease-smooth);
+  --transition-slow: transform var(--duration-slow) var(--ease-smooth), opacity var(--duration-slow) var(--ease-smooth), box-shadow var(--duration-slow) var(--ease-smooth), background-color var(--duration-slow) var(--ease-smooth);
   --transition-transform: transform var(--duration-normal) var(--ease-smooth);
   --transition-shadow: box-shadow var(--duration-normal) var(--ease-smooth);
 
@@ -124,10 +126,32 @@
   font-size: 16px;
   scroll-padding-top: 100px;
 
-  /* Часто используемые clamp() значения */
-  --font-size-sm: var(--font-size-sm);
-  --font-size-base: var(--font-size-base);
-  --spacing-lg: var(--spacing-lg);
+  /* Размеры шрифтов - реальные значения */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+
+  /* Отступы - часто используемые значения */
+  --spacing-sm: 1rem;         /* 16px */
+  --spacing-md: 1.5rem;       /* 24px */
+  --spacing-lg: 2rem;         /* 32px */
+  --spacing-xl: 2.5rem;       /* 40px */
+  --spacing-2xl: 3rem;        /* 48px */
+
+  /* Компонентные отступы */
+  --card-padding: 1.5rem;
+  --section-gap: 2rem;
+  --section-padding: clamp(2rem, 5vw, 4rem);
+
+  /* Скругления компонентов */
+  --card-radius: 16px;
+  --button-radius: 12px;
+
   --container-max: 1400px;
 }
 
@@ -242,7 +266,6 @@ body.app-ready>footer {
   height: 100%;
   animation: rotatePlane 2s linear infinite;
   transform-origin: 50% 50%;
-  will-change: transform;
 }
 
 /* Самолётик */
@@ -414,9 +437,7 @@ body.app-ready>footer {
   width: 220px;
   max-width: 75%;
   height: 100dvh;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
   z-index: var(--z-mobile-menu);
   display: flex;
   flex-direction: column;
@@ -429,6 +450,15 @@ body.app-ready>footer {
   box-shadow: var(--shadow-nav);
   overflow-y: auto;
   touch-action: pan-y;
+}
+
+/* backdrop-filter только для десктопов */
+@media (min-width: 1024px) {
+  .mobile-menu {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
 
 
@@ -612,12 +642,19 @@ body.app-ready>footer {
   align-items: center;
   min-width: 90px;
   padding: 1.25rem 1rem;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 78, 150, 0.15);
-  backdrop-filter: blur(40px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.9);
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+/* backdrop-filter только для десктопов */
+@media (min-width: 1024px) {
+  .stat-item {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(40px) saturate(180%);
+  }
 }
 
 .stat-item:hover {
@@ -815,7 +852,7 @@ body.app-ready>footer {
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55), background-color 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .service-card:hover .service-icon {
@@ -908,29 +945,22 @@ body.app-ready>footer {
   margin: 0 auto;
 }
 
-/* Grid-сетка для превью новостей на главной (3 колонки) */
-.news-grid-inline {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: var(--container-max);
-  margin: 0 auto;
-}
+/* Удалено: .news-grid-inline - использовать базовые стили .news-grid с модификаторами */
 
-/* Карточки новостей на главной странице - вертикальная раскладка как на news.html */
-.news-grid-inline .news-card {
+/* Карточки новостей с компактной раскладкой (модификатор) */
+.news-card--compact {
   display: flex;
   flex-direction: column;
   grid-template-columns: none;
   margin-bottom: 0;
 }
 
-.news-grid-inline .news-card-image {
+.news-card--compact .news-card-image {
   width: 100%;
   height: 200px;
 }
 
-.news-grid-inline .news-card-content {
+.news-card--compact .news-card-content {
   flex: 1;
 }
 
@@ -1339,6 +1369,7 @@ body.app-ready>footer {
 }
 
 /* ==================== МОДАЛЬНЫЕ ОКНА ==================== */
+/* Базовый класс для всех модальных окон (унифицированный) */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -1348,13 +1379,12 @@ body.app-ready>footer {
   background: rgba(0, 78, 150, 0.95);
   z-index: 3000;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding: 1.5rem;
   opacity: 0;
   visibility: hidden;
-  transition: var(--transition-base);
-  backdrop-filter: blur(5px);
+  transition: opacity var(--duration-normal) var(--ease-smooth), visibility var(--duration-normal) var(--ease-smooth);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -1363,6 +1393,13 @@ body.app-ready>footer {
   opacity: 1;
   visibility: visible;
 }
+
+/* Модификатор для модалок с alignment сверху */
+.modal-overlay--top-aligned {
+  align-items: flex-start;
+}
+
+/* Удалено: .details-modal-overlay - объединено с .modal-overlay */
 
 /* Контейнер модального окна - позиционируется относительно overlay */
 .modal-container,
@@ -1489,10 +1526,11 @@ body.app-ready>footer {
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
-  outline: none; box-shadow: 0 0 0 3px rgba(0, 78, 150, 0.2);
+  outline: 3px solid #9CA3AF;
+  outline-offset: 2px;
   border-color: var(--vd);
   background: white;
-  box-shadow: 0 0 0 3px rgba(0, 78, 150, 0.15);
+  box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3), 0 0 0 3px rgba(0, 78, 150, 0.2);
 }
 
 .form-input.error,
@@ -2225,31 +2263,7 @@ body.app-ready>footer {
   fill: var(--vd-dark);
 }
 
-/* Специфичные стили для details-modal (узкий контейнер) */
-.details-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 78, 150, 0.95);
-  z-index: 3500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  opacity: 0;
-  visibility: hidden;
-  transition: var(--transition-base);
-  backdrop-filter: blur(5px);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.details-modal-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
+/* Удалено: .details-modal-overlay - объединено с .modal-overlay */
 
 .details-modal-container {
   max-width: 600px;
@@ -2739,8 +2753,7 @@ body.app-ready>footer {
   display: none;
 }
 
-.image-loading + .image-placeholder,
-img:not([src]):not([data-src]) + .image-placeholder {
+.image-loading + .image-placeholder {
   display: block;
 }
 
@@ -3021,53 +3034,15 @@ img:not([src]):not([data-src]) + .image-placeholder {
   padding: clamp(40px, 8vh, 60px) 5%;
 }
 
-.services-grid-container {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-}
+/* Удалено: .services-grid-container - дублирует .services-grid */
+/* Удалено: .process-steps-grid - дублирует .process-steps */
+/* Удалено: .step-box, .step-title, .step-desc - использовать .step и вложенные h3, p */
+/* Удалено: .projects-grid-container - дублирует .projects-grid */
 
 .btn-secondary-sm {
   padding: 0.6rem 1.2rem;
   font-size: 0.9rem;
   align-self: flex-start;
-}
-
-.process-section-bg {
-  padding: 60px 5%;
-  background: var(--vd-light-gray);
-}
-
-.process-steps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.step-box {
-  text-align: center;
-}
-
-
-.step-title {
-  color: var(--vd);
-  margin-bottom: 0.5rem;
-}
-
-.step-desc {
-  color: var(--metallic);
-}
-
-.projects-grid-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  max-width: var(--container-max);
-  margin: 0 auto;
 }
 
 .project-image-container {
@@ -3122,19 +3097,7 @@ img:not([src]):not([data-src]) + .image-placeholder {
   margin-bottom: 2rem;
 }
 
-.news-grid-auto {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.news-grid-auto .news-card {
-  width: 100%;
-  max-width: 1200px;
-}
+/* Удалено: .news-grid-auto - использовать базовые стили .news-grid с модификаторами */
 
 .modal-list-ul {
   list-style: none;
@@ -3331,25 +3294,9 @@ img:not([src]):not([data-src]) + .image-placeholder {
   fill: currentColor;
 }
 
-.btn-doc { /* Используйте .btn-primary с модификатором */ }
-
-
-
-.btn-view {
-  background: var(--vd);
-}
-
-.btn-view:hover {
-  background: var(--vd-dark);
-}
-
-.btn-download {
-  background: var(--vd-orange);
-}
-
-.btn-download:hover {
-  background: var(--vd-orange-light);
-}
+/* Удалено: .btn-doc - используйте .btn-primary */
+/* Удалено: .btn-view - используйте .btn-primary */
+/* Удалено: .btn-download - используйте .btn-primary */
 
 /* Responsive styles for docs page */
 
@@ -3968,8 +3915,9 @@ img:not([src]):not([data-src]) + .image-placeholder {
 }
 
 .checkbox-label input[type="checkbox"]:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 78, 150, 0.2);
+  outline: 3px solid #9CA3AF;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(156, 163, 175, 0.3), 0 0 0 3px rgba(0, 78, 150, 0.2);
 }
 
 .checkbox-text {
@@ -4228,18 +4176,14 @@ img:not([src]):not([data-src]) + .image-placeholder {
     margin-bottom: 0.85rem;
   }
 
-  .services-grid-container {
-    grid-template-columns: 1fr;
-  }
+  /* Удалено: .services-grid-container - дублирует .services-grid */
 
   /* Проекты - компактнее */
   .projects-grid {
     gap: 1rem;
   }
 
-  .projects-grid-container {
-    grid-template-columns: 1fr;
-  }
+  /* Удалено: .projects-grid-container - дублирует .projects-grid */
 
   .project-card {
     border-radius: 16px;
@@ -4265,19 +4209,20 @@ img:not([src]):not([data-src]) + .image-placeholder {
   }
 
   .project-content p {
-    font-size: 0.9rem;
+      font-size: 0.9rem;
     margin-bottom: 0.75rem;
   }
 
   /* Новости */
   .preview-news-grid,
-  .news-grid,
-  .news-grid-inline {
+  .news-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
 
-  .news-grid-inline .news-card-image {
+  /* Удалено: .news-grid-inline - использовать базовые стили .news-grid с модификаторами */
+
+  .news-card--compact .news-card-image {
     height: 180px;
   }
 
