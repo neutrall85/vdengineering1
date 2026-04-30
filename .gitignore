@@ -1,3 +1,1 @@
-(css/styles.css, index.html) are source files, and there are no build artifacts, dependencies, or temporary files in the changes.
-
-(empty)
+Nothing should be ignored since only a source file (services.html) was modified and there are no build artifacts, dependencies, or temporary files in the changes.
